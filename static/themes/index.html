@@ -1,0 +1,267 @@
+
+  <head>
+    <title>Setting up your own Ghost theme</title>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="apple-touch-icon" sizes="57x57" href="../assets/img/apple-touch-icon-57x57.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/img/apple-touch-icon-60x60.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="72x72" href="../assets/img/apple-touch-icon-72x72.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-touch-icon-76x76.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="114x114" href="../assets/img/apple-touch-icon-114x114.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/img/apple-touch-icon-120x120.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="144x144" href="../assets/img/apple-touch-icon-144x144.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="152x152" href="../assets/img/apple-touch-icon-152x152.png?v=wAAv6Wqe6l">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon-180x180.png?v=wAAv6Wqe6l">
+<link rel="icon" type="image/png" href="../assets/img/favicon-32x32.png?v=wAAv6Wqe6l" sizes="32x32">
+<link rel="icon" type="image/png" href="../assets/img/favicon-194x194.png?v=wAAv6Wqe6l" sizes="194x194">
+<link rel="icon" type="image/png" href="../assets/img/favicon-96x96.png?v=wAAv6Wqe6l" sizes="96x96">
+<link rel="icon" type="image/png" href="../assets/img/android-chrome-192x192.png?v=wAAv6Wqe6l" sizes="192x192">
+<link rel="icon" type="image/png" href="../assets/img/favicon-16x16.png?v=wAAv6Wqe6l" sizes="16x16">
+<link rel="manifest" href="../assets/img/manifest.json?v=wAAv6Wqe6l">
+<link rel="shortcut icon" href="../assets/img/favicon.ico?v=wAAv6Wqe6l">
+<meta name="msapplication-TileColor" content="#e74c3c">
+<meta name="msapplication-TileImage" content="/assets/img/mstile-144x144.png?v=wAAv6Wqe6l">
+<meta name="msapplication-config" content="/assets/img/browserconfig.xml?v=wAAv6Wqe6l">
+<meta name="theme-color" content="#e74c3c">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,600%7CRoboto+Slab:300,400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/uno-zen.css?v=2e8d264be6">
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Arthur Pesah">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Setting up your own Ghost theme">
+    <meta property="og:description" content="Creating a totally custom design for your publication Ghost comes with a beautiful default theme called Casper, which is designed to be a clean, readable publication layout and can be easily adapted for most purposes. However, Ghost can also be completely themed to suit your needs. Rather than just giving">
+    <meta property="og:url" content="http://localhost:2368/themes/">
+    <meta property="og:image" content="https://casper.ghost.org/v1.0.0/images/design.jpg">
+    <meta property="article:published_time" content="2017-10-24T22:00:09.000Z">
+    <meta property="article:modified_time" content="2017-10-24T22:00:09.000Z">
+    <meta property="article:tag" content="Getting Started">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/arthur.pesah">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Setting up your own Ghost theme">
+    <meta name="twitter:description" content="Creating a totally custom design for your publication Ghost comes with a beautiful default theme called Casper, which is designed to be a clean, readable publication layout and can be easily adapted for most purposes. However, Ghost can also be completely themed to suit your needs. Rather than just giving">
+    <meta name="twitter:url" content="http://localhost:2368/themes/">
+    <meta name="twitter:image" content="https://casper.ghost.org/v1.0.0/images/design.jpg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Ghost">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Getting Started">
+    <meta name="twitter:site" content="@artix41">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="1050">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Arthur Pesah",
+        "logo": "http://localhost:2368/content/images/2017/10/lyon_2017_squared-1.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Ghost",
+        "url": "http://localhost:2368/author/ghost/",
+        "sameAs": []
+    },
+    "headline": "Setting up your own Ghost theme",
+    "url": "http://localhost:2368/themes/",
+    "datePublished": "2017-10-24T22:00:09.000Z",
+    "dateModified": "2017-10-24T22:00:09.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://casper.ghost.org/v1.0.0/images/design.jpg",
+        "width": 1400,
+        "height": 1050
+    },
+    "keywords": "Getting Started",
+    "description": "Creating a totally custom design for your publication Ghost comes with a beautiful default theme called Casper, which is designed to be a clean, readable publication layout and can be easily adapted for most purposes. However, Ghost can also be completely themed to suit your needs. Rather than just giving",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368/"
+    }
+}
+    </script>
+
+    <script type="text/javascript" src="../public/ghost-sdk.js?v=2e8d264be6"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "c87af3bac556"
+});
+</script>
+    <meta name="generator" content="Ghost 1.15">
+    <link rel="alternate" type="application/rss+xml" title="Arthur Pesah" href="../rss/index.html">
+  </head>
+  <body class="post-template tag-getting-started">
+    <header id="menu-button" class="expanded">
+      <a><i class="icon icon-list"></i></a>
+    </header>
+    <aside class="cover" style="background: url(https://casper.ghost.org/v1.0.0/images/blog-cover.jpg) center/cover no-repeat fixed">
+  <div class="cover container">
+    <div class="profile">
+      <a id="avatar-link" title="link to homepage for Arthur Pesah" href="../index.html#open">
+        <img src="../content/images/2017/10/lyon_2017_squared-1.jpg" alt="Arthur Pesah avatar" class="profile avatar rounded hvr-buzz-out">
+        <h1 id="profile-title">Arthur Pesah</h1>
+        <h3 id="profile-resume"></h3>
+      </a>
+
+      <hr class="divider long">
+      <p>Machine learning enthusiast, physics and maths lover, computer geek.</p>
+      <hr class="divider short">
+      <div class="navigation">
+        <div class="profile contact">
+          <nav class="navigation left">
+  <ul class="links">
+      <li class="nav-home ">
+        <a href="../">Home</a>
+      </li>
+  </ul>
+</nav>
+
+          
+<nav class="navigation right">
+  <ul class="social expanded">
+
+  <!-- Twitter -->
+  <li class="social item hvr-grow-rotate">
+    <a rel="me" target="blank" href="https://twitter.com/kikobeats" title="@Kikobeats on Twitter">
+      <i class="icon icon-social-twitter"></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+
+  <!-- Linkedin -->
+  <li class="social item hvr-grow-rotate">
+    <a rel="me" target="blank" href="https://linkedin.com/in/kikobeats" title="Kikobeats on LinkedIn">
+      <i class="icon icon-social-linkedin"></i>
+      <span class="label">Linkedin</span>
+    </a>
+  </li>
+
+  <!-- Github -->
+  <li class="social item hvr-grow-rotate">
+    <a rel="me" target="blank" href="https://github.com/Kikobeats" title="Kikobeats on Github">
+      <i class="icon icon-social-github"></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+  <!-- RSS -->
+  <li class="social item hvr-grow-rotate">
+    <a href="../rss/index.rss" title="Subscribe to RSS">
+      <i class="icon icon-rss"></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  </ul>
+</nav>
+          <section class="icon icon-search" id="search-container">
+  <hr class="divider short">
+  <form target="blank" id="search-form" action="https://www.google.com/#q=site:http://localhost:2368">
+    <input type="text" name="search" placeholder="git, css, javascript,..." id="search-field">
+  </form>
+</section>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <main data-no-instant>
+      <section class="content">
+        
+
+  <article class="post tag-getting-started">
+    <header>
+      <div class="post meta">
+        <time datetime="2017-10-25T00:10">25 Oct 2017</time>
+        <span class="post tags">in <a href="../tag/getting-started/">Getting Started</a></span>
+
+
+        <span class="post reading-time"> ~ <span></span> read.</span>
+      </div>
+      <a title="Tweet 'Setting up your own Ghost theme'" href="https://twitter.com/intent/tweet?text=Setting%20up%20your%20own%20Ghost%20theme%20%C2%BB&amp;hashtags=Getting%20Started&amp;url=http://localhost:2368/themes/">
+        <img id="post-image" src="https://casper.ghost.org/v1.0.0/images/design.jpg" alt="Setting up your own Ghost theme">
+        <h1 class="icon-reverse icon-social-twitter-post" id="post-title">Setting up your own Ghost theme</h1>
+      </a>
+    </header>
+
+    <div id="post-content" class="post tag-getting-started">
+      <div class="kg-card-markdown"><p>Creating a totally custom design for your publication</p>
+<p>Ghost comes with a beautiful default theme called Casper, which is designed to be a clean, readable publication layout and can be easily adapted for most purposes. However, Ghost can also be completely themed to suit your needs. Rather than just giving you a few basic settings which act as a poor proxy for code, we just let you write code.</p>
+<p>There are a huge range of both free and premium pre-built themes which you can get from the <a href="http://marketplace.ghost.org">Ghost Theme Marketplace</a>, or you can simply create your own from scratch.</p>
+<p><a href="http://marketplace.ghost.org"><img src="https://casper.ghost.org/v1.0.0/images/marketplace.jpg" alt="marketplace"></a></p>
+<blockquote>
+<p>Anyone can write a completely custom Ghost theme, with just some solid knowledge of HTML and CSS</p>
+</blockquote>
+<p>Ghost themes are written with a templating language called handlebars, which has a bunch of dynamic helpers to insert your data into template files. Like <code>{{author.name}}</code>, for example, outputs the name of the current author.</p>
+<p>The best way to learn how to write your own Ghost theme is to have a look at <a href="https://github.com/TryGhost/Casper">the source code for Casper</a>, which is heavily commented and should give you a sense of how everything fits together.</p>
+<ul>
+<li><code>default.hbs</code> is the main template file, all contexts will load inside this file unless specifically told to use a different template.</li>
+<li><code>post.hbs</code> is the file used in the context of viewing a post.</li>
+<li><code>index.hbs</code> is the file used in the context of viewing the home page.</li>
+<li>and so on</li>
+</ul>
+<p>We've got <a href="http://themes.ghost.org/docs/about">full and extensive theme documentation</a> which outlines every template file, context and helper that you can use.</p>
+<p>If you want to chat with other people making Ghost themes to get any advice or help, there's also a <strong>#themes</strong> channel in our <a href="https://slack.ghost.org">public Slack community</a> which we always recommend joining!</p>
+</div>
+    </div>
+
+    <div class="post related">
+
+        <a rel="next" id="next-btn" class="btn small square" href="../advanced-markdown/">Advanced Markdown tips →</a>
+    </div>
+
+    <footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + window.disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</footer>
+
+  </article>
+
+
+        <footer>
+  <span class="copyright">
+    © 2017. All rights reserved. Built with <a href="https://github.com/Kikobeats/uno-zen" target="_blank">Uno Zen</a> under <a href="https://ghost.org/" target="_blank">Ghost</a>. Original design by <a href="https://daleanthony.com" target="_blank">Dale Anthony</a>.
+  </span>
+</footer>
+      </section>
+    </main>
+
+    
+
+    <script src="../assets/js/uno-zen.common.js?v=2e8d264be6" type="text/javascript" charset="utf-8"></script>
+      <script src="../assets/js/uno-zen.post.js?v=2e8d264be6" type="text/javascript" charset="utf-8"></script>
+    <script>
+  if (window.ga_id) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', window.ga_id, 'auto');
+    ga('require', 'linkid', 'linkid.js');
+    ga('send', 'pageview');
+  }
+</script>
+  </body>
