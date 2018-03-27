@@ -1,5 +1,4 @@
-<!doctype html>
-<html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -28,10 +27,10 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-                    <br />
+                    <br>
                     <h2>Introduction to Domain Adaptation</h2>
                     <div style="text-align: center">
-                        <img src="images/cycleGAN.png" />
+                        <img src="images/cycleGAN.png">
                     </div>
                     By Arthur Pesah − Master's student at KTH
 
@@ -39,9 +38,9 @@
                 </section>
                 <section>
                     Can you recognize this image?
-                    <br />
+                    <br>
                     <img src="images/castle-painting.jpg">
-                    <br />
+                    <br>
                     <span class="fragment">Stockholms Slott − Anna Palm de Rosa</span>
                 </section>
                 <section>
@@ -51,21 +50,21 @@
                             <tr>
                                 <td>
                                     <p class="small">Photo day</p>
-                                    <img src="images/castle-photo.jpg" />
+                                    <img src="images/castle-photo.jpg">
                                 </td>
                                 <td>
                                     <p class="small">Photo night</p>
-                                    <img src="images/castle-night.jpg" />
+                                    <img src="images/castle-night.jpg">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <p class="small">Painting black and white</p>
-                                    <img src="images/castle-black-white.png" />
+                                    <img src="images/castle-black-white.png">
                                 </td>
                                 <td>
                                     <p class="small">Painting color</p>
-                                    <img src="images/castle-painting.jpg" />
+                                    <img src="images/castle-painting.jpg">
                                 </td>
                             </tr>
                         </table>
@@ -75,7 +74,7 @@
                 </section>
                 <section data-background-image="images/cat-hybrid.png" data-background-size="contain">
                     <p style="margin-right: 0px; text-align: right; font-size: 50px; color: white;">That's what we call...</p>
-                    <br /><br /><br /><br /><br /><br /><br /><br />
+                    <br><br><br><br><br><br><br><br>
                     <p style="margin-right: 0px; text-align: right; font-size: 50px; color: #F03434">...domain adaptation</p>
                 </section>
                 <section>
@@ -97,7 +96,7 @@
                             </td>
                         </tr>
                     </table>
-                    <span class="dataset"><img src="images/cat-dog-dataset/final.png" /></span>
+                    <span class="dataset"><img src="images/cat-dog-dataset/final.png"></span>
 
                 </section>
 
@@ -109,25 +108,25 @@
                             <td>
                                 <p class="small">Calibration (physics, biology...)</p>
 
-                                <img src="images/image-calibration.jpg" />
+                                <img src="images/image-calibration.jpg">
                             </td>
                             <td>
                                 <p class="small">Simulation vs Reality</p>
 
-                                <img src="images/gta2reality.png" />
+                                <img src="images/gta2reality.png">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <p class="small">Sentiment analysis between different categories</p>
 
-                                <img src="images/sentiment-analysis.png" />
+                                <img src="images/sentiment-analysis.png">
                             </td>
 
                             <td>
                                 <p class="small">Adaptation between cameras</p>
 
-                                <img src="images/dslr2webcam.jpg" />
+                                <img src="images/dslr2webcam.jpg">
                             </td>
                         </tr>
                     </table>
@@ -136,7 +135,7 @@
                 <section>
                     <h3>Relation with transfer learning</h3>
 
-                    <img src="images/transfer-learning-diagram.jpg" />
+                    <img src="images/transfer-learning-diagram.jpg">
                 </section>
 
                 <section>
@@ -182,7 +181,7 @@
                             \epsilon_T(h) \leq \epsilon_S(h) + \frac{1}{2} d_{H\Delta H}(X_s, X_t) + \lambda(VC)
                             \]
                             where $h \in \mathcal{H}$ is a classifier, $\epsilon_{S/T}$ the error on the source/target distribution and
-                            <br />
+                            <br>
                             \[
                             d_{H\Delta H}(X_s, X_t) = 2 \sup_{h,h' \in \mathcal{H}}
                             | \mathbb{E}_{x \sim X_s}[h(x) \neq  h'(x)] - \mathbb{E}_{x \sim X_t}[h(x) \neq  h'(x)] |
@@ -213,10 +212,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <img src="images/HDH/h1.png" />
+                                <img src="images/HDH/h1.png">
                             </td>
                             <td>
-                                <img src="images/HDH/h2.png" />
+                                <img src="images/HDH/h2.png">
                             </td>
                         </tr>
                     </table>
@@ -242,16 +241,16 @@
                         <p>
                             <strong>Definition.</strong> Let $S$ be a space of probability distributions.
                             A divergence $D: S \times S \rightarrow \mathbb{R}$ is a function such that:
-                            <br /><br />
-                            <ol>
+                            <br><br>
+                            </p></ul><ol>
                                 <li>$D(P, Q) \geq 0$ for all $P,Q \in S$</li>
                                 <li>$D(P,Q) = 0 \iff P=Q$</li>
                             </ol>
 
-                        </p>
+                        
                         <li>Examples: KL-divergence, Wasserstein distance, JS-divergence, etc.</li>
                         <li>Most DA algorithms consists in choosing a divergence and minimizing it</li>
-                    </ul>
+                    
                 </section>
 
                 <section data-transition="none">
@@ -266,10 +265,10 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img style="" src="images/emd-1.png" />
+                                    <img style="" src="images/emd-1.png">
                                 </td>
                                 <td>
-                                    <img style="" src="images/emd-2.png" />
+                                    <img style="" src="images/emd-2.png">
                                 </td>
                             </tr>
                         </table>
@@ -290,7 +289,7 @@
                          </li>
 
                          <div style="text-align: center">
-                             <img style="width: 500px" src="images/emd-3.png" />
+                             <img style="width: 500px" src="images/emd-3.png">
                              <p style="text-align: center; font-size: 15px;">
                                  (Courtesy Vincent Herrmann)
                              </p>
@@ -312,7 +311,7 @@
                     <p style="margin-bottom: 25px;">Special case: empirical distribution (uniform distribution on every sample)</p>
 
                     <div style="text-align: center">
-                        <img style="width: 450px" src="images/simple-ot.png" />
+                        <img style="width: 450px" src="images/simple-ot.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -332,7 +331,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-01.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-01.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -344,7 +343,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-02.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-02.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -356,7 +355,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-03.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-03.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -368,7 +367,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-04.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-04.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -379,7 +378,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-05.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-05.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -390,7 +389,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-06.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-06.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -401,7 +400,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-07.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-07.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -412,7 +411,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-08.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-08.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -423,7 +422,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-09.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-09.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -434,7 +433,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-10.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-10.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -445,7 +444,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-11.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-11.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -456,7 +455,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-12.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-12.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -467,7 +466,7 @@
                     <p class="sub"><em>(Courty et al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img style="width: 60%" src="images/jdot/gaussian-13.png" />
+                        <img style="width: 60%" src="images/jdot/gaussian-13.png">
                         <p style="text-align: center; font-size: 15px;">
                             (Made with the optimal transport library POT)
                         </p>
@@ -507,134 +506,134 @@
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Example of CycleGAN (Zhu et Al., 2017)</p>
-                    <img src="images/cycleGAN.png" width="200%"/>
+                    <img src="images/cycleGAN.png" width="200%">
                 </section>
 
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-01.png" width="80%"/>
+                    <img src="images/adda/adda-step-01.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-03.png" width="80%"/>
+                    <img src="images/adda/adda-step-03.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-05.png" width="80%"/>
+                    <img src="images/adda/adda-step-05.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-07.png" width="80%"/>
+                    <img src="images/adda/adda-step-07.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-09.png" width="80%"/>
+                    <img src="images/adda/adda-step-09.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-11.png" width="80%"/>
+                    <img src="images/adda/adda-step-11.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-13.png" width="80%"/>
+                    <img src="images/adda/adda-step-13.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-15.png" width="80%"/>
+                    <img src="images/adda/adda-step-15.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-17.png" width="80%"/>
+                    <img src="images/adda/adda-step-17.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-19.png" width="80%"/>
+                    <img src="images/adda/adda-step-19.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-21.png" width="80%"/>
+                    <img src="images/adda/adda-step-21.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-23.png" width="80%"/>
+                    <img src="images/adda/adda-step-23.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-25.png" width="80%"/>
+                    <img src="images/adda/adda-step-25.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-27.png" width="80%"/>
+                    <img src="images/adda/adda-step-27.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-29.png" width="80%"/>
+                    <img src="images/adda/adda-step-29.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-31.png" width="80%"/>
+                    <img src="images/adda/adda-step-31.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-33.png" width="80%"/>
+                    <img src="images/adda/adda-step-33.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-39.png" width="80%"/>
+                    <img src="images/adda/adda-step-39.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-43.png" width="80%"/>
+                    <img src="images/adda/adda-step-43.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-49.png" width="80%"/>
+                    <img src="images/adda/adda-step-49.png" width="80%">
                 </section>
                 <section data-transition="none">
                     <h3>Adversarial Domain Adaptation</h3>
 
                     <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
-                    <img src="images/adda/adda-step-54.png" width="80%"/>
+                    <img src="images/adda/adda-step-54.png" width="80%">
                 </section>
 
                 <section>
@@ -642,7 +641,7 @@
                     <p class="sub"><em>(Liu et Al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img src="images/unit.png" />
+                        <img src="images/unit.png">
                     </div>
 
                     <ul>
@@ -658,7 +657,7 @@
 
                     <div style="text-align: center">
                         Results
-                        <img src="images/day2night.gif" />
+                        <img src="images/day2night.gif">
                     </div>
                 </section>
 
@@ -667,7 +666,7 @@
                     <p class="sub"><em>(Shu et Al., 2017)</em></p>
 
                     <div style="text-align: center">
-                        <img src="images/dirt-t.png" />
+                        <img src="images/dirt-t.png">
                     </div>
                 </section>
 
@@ -675,7 +674,7 @@
                     <h3 class="with-sub">Evolution of domain adaptation results</h3>
                     <p class="sub">On the MNIST-SVHN benchmark</p>
                     <div style="text-align: center; line-height: 1px; margin-bottom: 10px;">
-                        <img style="width: 200px;" src="images/svhn2mnist-SBDA-GAN.png" />
+                        <img style="width: 200px;" src="images/svhn2mnist-SBDA-GAN.png">
                         <p class="small"><a href="https://arxiv.org/pdf/1705.08824.pdf">(Russo et Al., 2017)</a></p>
                     </div>
 
@@ -687,7 +686,7 @@
                             <th>Accuracy</th>
                         </tr>
                         <tr>
-                            <th rowspan=2 style="vertical-align: middle;">2015</th>
+                            <th rowspan="2" style="vertical-align: middle;">2015</th>
                             <td><a href="https://pdfs.semanticscholar.org/51a4/d658c93c5169eef7568d3d1cf53e8e495087.pdf">SA</a></td>
                             <td>59.3</td>
                         </tr>
@@ -696,7 +695,7 @@
                             <td style="border-bottom: 1px solid white">73.8</td>
                         </tr>
                         <tr>
-                            <th rowspan=3 style="vertical-align: middle;">2016</th>
+                            <th rowspan="3" style="vertical-align: middle;">2016</th>
                             <td><a href="https://arxiv.org/pdf/1607.03516.pdf">DRCN</a></td>
                             <td>82.0</td>
                         </tr>
@@ -709,7 +708,7 @@
                             <td style="border-bottom: 1px solid white">90.7</td>
                         </tr>
                         <tr>
-                            <th rowspan=3 style="vertical-align: middle;">2017</th>
+                            <th rowspan="3" style="vertical-align: middle;">2017</th>
                             <td><a href="https://arxiv.org/abs/1703.00848">UNIT</a></td>
                             <td>90.5</td>
                         </tr>
@@ -722,7 +721,7 @@
                             <td style="border-bottom: 1px solid white">97.6</td>
                         </tr>
                         <tr>
-                            <th rowspan=1 style="vertical-align: middle;">2018</th>
+                            <th rowspan="1" style="vertical-align: middle;">2018</th>
                             <td><a href="https://arxiv.org/pdf/1802.08735.pdf">DIRT-T</a></td>
                             <td>99.4</td>
                         </tr>
@@ -793,4 +792,3 @@
 			});
 		</script>
 	</body>
-</html>
