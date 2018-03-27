@@ -1,0 +1,796 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Introduction to Domain Adaptation</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- My own CSS -->
+        <link rel="stylesheet" href="css/custom.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+                    <br />
+                    <h2>Introduction to Domain Adaptation</h2>
+                    <div style="text-align: center">
+                        <img src="images/cycleGAN.png" />
+                    </div>
+                    By Arthur Pesah − Master's student at KTH
+
+                    <!--<img src="images/logos/sthml-ai.png" class="logo-left">-->
+                </section>
+                <section>
+                    Can you recognize this image?
+                    <br />
+                    <img src="images/castle-painting.jpg">
+                    <br />
+                    <span class="fragment">Stockholms Slott − Anna Palm de Rosa</span>
+                </section>
+                <section>
+                    You might have never seen paintings of the Castle...
+                    <div class="castle-images fragment">
+                        <table>
+                            <tr>
+                                <td>
+                                    <p class="small">Photo day</p>
+                                    <img src="images/castle-photo.jpg" />
+                                </td>
+                                <td>
+                                    <p class="small">Photo night</p>
+                                    <img src="images/castle-night.jpg" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="small">Painting black and white</p>
+                                    <img src="images/castle-black-white.png" />
+                                </td>
+                                <td>
+                                    <p class="small">Painting color</p>
+                                    <img src="images/castle-painting.jpg" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        ...but can manage to recognize it in many domains
+                    </div>
+                </section>
+                <section data-background-image="images/cat-hybrid.png" data-background-size="contain">
+                    <p style="margin-right: 0px; text-align: right; font-size: 50px; color: white;">That's what we call...</p>
+                    <br /><br /><br /><br /><br /><br /><br /><br />
+                    <p style="margin-right: 0px; text-align: right; font-size: 50px; color: #F03434">...domain adaptation</p>
+                </section>
+                <section>
+                    <h3>Domain adaptation</h3>
+
+                    <p style="text-align: left;">One task (classification, segmentation...)</p>
+
+                    <p style="text-align: left;">Two datasets</p>
+
+                    <table>
+                        <tr>
+                            <td style="width: 300px; text-align: center;">
+                                <p class="small">Target − paintings</p>
+                                <p class="small">Unlabeled or semi-labeled</p>
+                            </td>
+                            <td style="width: 300px;">
+                                <p class="small">Source − photos</p>
+                                <p class="small">Fully labelled</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <span class="dataset"><img src="images/cat-dog-dataset/final.png" /></span>
+
+                </section>
+
+                <section>
+                    <h3>Applications</h3>
+
+                    <table class="applications">
+                        <tr>
+                            <td>
+                                <p class="small">Calibration (physics, biology...)</p>
+
+                                <img src="images/image-calibration.jpg" />
+                            </td>
+                            <td>
+                                <p class="small">Simulation vs Reality</p>
+
+                                <img src="images/gta2reality.png" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="small">Sentiment analysis between different categories</p>
+
+                                <img src="images/sentiment-analysis.png" />
+                            </td>
+
+                            <td>
+                                <p class="small">Adaptation between cameras</p>
+
+                                <img src="images/dslr2webcam.jpg" />
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Relation with transfer learning</h3>
+
+                    <img src="images/transfer-learning-diagram.jpg" />
+                </section>
+
+                <section>
+                    <h3>Different flavours of domain adaptation</h3>
+
+                    <table class="real-table">
+                        <tr>
+                            <th></th>
+                            <th>Source</th>
+                            <th>Target</th>
+                        </tr>
+                        <tr>
+                            <td>Unsupervised domain adaptation</td>
+                            <td>Fully labeled</td>
+                            <td>Fully unlabeled</td>
+                        </tr>
+                        <tr>
+                            <td>Semi-supervised domain adaptation</td>
+                            <td>Fully labeled</td>
+                            <td>Partially labeled</td>
+                        </tr>
+                        <tr>
+                            <td>Few-shot domain adaptation</td>
+                            <td>Fully labeled</td>
+                            <td>Few samples</td>
+                        </tr>
+                    </table>
+
+                </section>
+
+                <section>
+                    <h3 class="with-sub">Classical model of domain adaptation</h3>
+                    <p class="sub"><em>(Ben David et al., 2010)</em></p>
+                    <ul>
+                        <li>
+                            <strong>Probabilistic perspective</strong>: we consider
+                            two distributions $P(X_s, Y_s)$ and $P(X_t, Y_t)$ for
+                            source and target samples/labels
+                        </li>
+                        <li class="fragment">
+                            <strong>Discrepency between the domains</strong>:
+                            \[
+                            \epsilon_T(h) \leq \epsilon_S(h) + \frac{1}{2} d_{H\Delta H}(X_s, X_t) + \lambda(VC)
+                            \]
+                            where $h \in \mathcal{H}$ is a classifier, $\epsilon_{S/T}$ the error on the source/target distribution and
+                            <br />
+                            \[
+                            d_{H\Delta H}(X_s, X_t) = 2 \sup_{h,h' \in \mathcal{H}}
+                            | \mathbb{E}_{x \sim X_s}[h(x) \neq  h'(x)] - \mathbb{E}_{x \sim X_t}[h(x) \neq  h'(x)] |
+                            \]
+                        </li>
+
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="with-sub">Classical model of domain adaptation</h3>
+                    <p class="sub"><em>(Ben David et al., 2010)</em></p>
+                    <p class="left" style="font-size: 20px;">
+                        \[
+                        d_{H\Delta H}(X_s, X_t) = 2 \sup_{h,h' \in \mathcal{H}}
+                        | \mathbb{E}_{x \sim X_s}[h(x) \neq  h'(x)] - \mathbb{E}_{x \sim X_t}[h(x) \neq  h'(x)] |
+                        \]
+                    </p>
+
+                    <table class="hdh">
+                        <tr>
+                            <td>
+                                <p style="text-align: center;">Hypothesis 1</p>
+                            </td>
+                            <td>
+                                <p style="text-align: center;">Hypothesis 2</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="images/HDH/h1.png" />
+                            </td>
+                            <td>
+                                <img src="images/HDH/h2.png" />
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="left">
+                        To which extent can we find two hypothesis very similar in one domain,
+                        but very different in the other
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Classical model of domain adaptation</h3>
+
+                    <ul>
+                        <li>
+                            But this theoretical distance is hard to compute,
+                            so even harder to minimize with any classicial optimization algorithm...
+                            We have to find other distances
+                        </li>
+                        <li>
+                            In probability theory, we often use <strong>divergences</strong>
+
+                        </li>
+                        <p>
+                            <strong>Definition.</strong> Let $S$ be a space of probability distributions.
+                            A divergence $D: S \times S \rightarrow \mathbb{R}$ is a function such that:
+                            <br /><br />
+                            <ol>
+                                <li>$D(P, Q) \geq 0$ for all $P,Q \in S$</li>
+                                <li>$D(P,Q) = 0 \iff P=Q$</li>
+                            </ol>
+
+                        </p>
+                        <li>Examples: KL-divergence, Wasserstein distance, JS-divergence, etc.</li>
+                        <li>Most DA algorithms consists in choosing a divergence and minimizing it</li>
+                    </ul>
+                </section>
+
+                <section data-transition="none">
+                    <h3>Optimal Transport</h3>
+                    <ul>
+                        <li>Mathematical framework describing how to minimize the Earth Mover Distance, also called Wasserstein Distance
+                            <span style="font-size: 21px;">
+                             $\mathrm{W}(P_r,P_{\theta}) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \Vert x - y \Vert \gamma (x,y)$
+                            </span>
+                         </li>
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <img style="" src="images/emd-1.png" />
+                                </td>
+                                <td>
+                                    <img style="" src="images/emd-2.png" />
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="text-align: center; font-size: 15px;">
+                            (Courtesy Vincent Herrmann)
+                        </p>
+                    </ul>
+
+                </section>
+
+                <section data-transition="none">
+                    <h3>Optimal Transport</h3>
+                    <ul>
+                        <li>Mathematical framework describing how to minimize the Earth Mover Distance, also called Wasserstein Distance
+                            <span style="font-size: 21px;">
+                             $\mathrm{W}(P_r,P_{\theta}) = \inf_{\gamma \in \Pi} \, \sum\limits_{x,y} \Vert x - y \Vert \gamma (x,y)$
+                            </span>
+                         </li>
+
+                         <div style="text-align: center">
+                             <img style="width: 500px" src="images/emd-3.png" />
+                             <p style="text-align: center; font-size: 15px;">
+                                 (Courtesy Vincent Herrmann)
+                             </p>
+                         </div>
+
+                         <li>
+                             <span style="font-size: 23px;">
+                                 $\mathrm{W}(P_r,P_{\theta})=\inf_{\gamma \in \Pi} \, \langle \mathbf{D}, \mathbf{\Gamma} \rangle_\mathrm{F}$
+                             </span>
+                         </li>
+
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h3>Optimal Transport</h3>
+
+                    <p style="margin-bottom: 25px;">Special case: empirical distribution (uniform distribution on every sample)</p>
+
+                    <div style="text-align: center">
+                        <img style="width: 450px" src="images/simple-ot.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                    <p style="margin-top: 25px;">
+                        $\mathrm{W}(P_r,P_{\theta}) = \inf_{\gamma \in \Pi} \, \sum\limits_{i,j} \Vert x_i - y_j \Vert \gamma (x_i,y_j)$
+                         with $\gamma (x_i,y_j) \in \{0,1\}$
+                     </p>
+                </section>
+
+                <section>
+
+                </section>
+
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-01.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-02.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-03.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-04.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-05.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-06.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-07.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-08.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-09.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-10.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-11.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-12.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+                <section data-transition="none">
+                    <h3 class="with-sub">Joint Distribution Optimal Transportation</h3>
+                    <p class="sub"><em>(Courty et al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img style="width: 60%" src="images/jdot/gaussian-13.png" />
+                        <p style="text-align: center; font-size: 15px;">
+                            (Made with the optimal transport library POT)
+                        </p>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <ul>
+                        <li class="fragment">Revolution in domain adaptation starting with <em>Ganin et Al., 2015</em></li>
+                        <li class="fragment">
+                            Using GAN-like deep architectures to minimize the Jensen-Shannon divergence
+                            between our distributions
+                        </li>
+                        <li class="fragment">
+                            Adversarial domain adaptation framework:
+                            <ul>
+                                <li>
+                                    A conditional generator that takes a target input
+                                    and tries to generate a source-like output
+                                </li>
+                                <li>
+                                    A discriminator that tries to separate real source samples
+                                    from source-like generated samples
+                                </li>
+                                <li>
+                                    The generator tries to make the discriminator bad
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Almost all the recent DA papers are variations on that structure</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Example of CycleGAN (Zhu et Al., 2017)</p>
+                    <img src="images/cycleGAN.png" width="200%"/>
+                </section>
+
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-01.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-03.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-05.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-07.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-09.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-11.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-13.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-15.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-17.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-19.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-21.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-23.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-25.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-27.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-29.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-31.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-33.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-39.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-43.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-49.png" width="80%"/>
+                </section>
+                <section data-transition="none">
+                    <h3>Adversarial Domain Adaptation</h3>
+
+                    <p style="margin-bottom: 25px">Toy example: 2D gaussians</p>
+                    <img src="images/adda/adda-step-54.png" width="80%"/>
+                </section>
+
+                <section>
+                    <h3 class="with-sub">UNsupervised Image-to-Image Translation (UNIT)</h3>
+                    <p class="sub"><em>(Liu et Al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img src="images/unit.png" />
+                    </div>
+
+                    <ul>
+                        <li>Hypothesis: shared latent-space</li>
+                        <li>Training: VAE and GAN</li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h3 class="with-sub">UNsupervised Image-to-Image Translation (UNIT)</h3>
+                    <p class="sub"><em>(Liu et Al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        Results
+                        <img src="images/day2night.gif" />
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="with-sub">Decision-boundary Iterative Refinement Training with a Teacher (DIRT-T)</h3>
+                    <p class="sub"><em>(Shu et Al., 2017)</em></p>
+
+                    <div style="text-align: center">
+                        <img src="images/dirt-t.png" />
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="with-sub">Evolution of domain adaptation results</h3>
+                    <p class="sub">On the MNIST-SVHN benchmark</p>
+                    <div style="text-align: center; line-height: 1px; margin-bottom: 10px;">
+                        <img style="width: 200px;" src="images/svhn2mnist-SBDA-GAN.png" />
+                        <p class="small"><a href="https://arxiv.org/pdf/1705.08824.pdf">(Russo et Al., 2017)</a></p>
+                    </div>
+
+                    <p style="font-size: 25px;">SVHN (source) → MNIST (target)</p>
+                    <table class="real-table" style="font-size: 23px;">
+                        <tr>
+                            <th>Year</th>
+                            <th>Algorithm</th>
+                            <th>Accuracy</th>
+                        </tr>
+                        <tr>
+                            <th rowspan=2 style="vertical-align: middle;">2015</th>
+                            <td><a href="https://pdfs.semanticscholar.org/51a4/d658c93c5169eef7568d3d1cf53e8e495087.pdf">SA</a></td>
+                            <td>59.3</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid white"><a href="https://arxiv.org/pdf/1505.07818.pdf">DANN</a></td>
+                            <td style="border-bottom: 1px solid white">73.8</td>
+                        </tr>
+                        <tr>
+                            <th rowspan=3 style="vertical-align: middle;">2016</th>
+                            <td><a href="https://arxiv.org/pdf/1607.03516.pdf">DRCN</a></td>
+                            <td>82.0</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://arxiv.org/pdf/1608.06019.pdf">DSN</a></td>
+                            <td>82.7</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid white"><a href="https://arxiv.org/pdf/1611.02200.pdf">DTN</a></td>
+                            <td style="border-bottom: 1px solid white">90.7</td>
+                        </tr>
+                        <tr>
+                            <th rowspan=3 style="vertical-align: middle;">2017</th>
+                            <td><a href="https://arxiv.org/abs/1703.00848">UNIT</a></td>
+                            <td>90.5</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://arxiv.org/pdf/1704.01705.pdf">GenToAdapt</a></td>
+                            <td>92.4</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid white"><a href="https://arxiv.org/pdf/1708.00938.pdf">DA_assoc</a></td>
+                            <td style="border-bottom: 1px solid white">97.6</td>
+                        </tr>
+                        <tr>
+                            <th rowspan=1 style="vertical-align: middle;">2018</th>
+                            <td><a href="https://arxiv.org/pdf/1802.08735.pdf">DIRT-T</a></td>
+                            <td>99.4</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Resources</h3>
+
+                    <ul>
+                        <li>
+                            <strong>Awesome Transfer Learning</strong>: curated list of papers,
+                            datasets and other resources in domain adaptation and transfer learning
+                            (<a href="https://github.com/artix41/awesome-transfer-learning">https://github.com/artix41/awesome-transfer-learning</a>)
+                        </li>
+                        <li>
+                            <strong>Domain Adaptation in 2017</strong>: blog article
+                            (<a href="https://artix41.github.io/static/domain-adaptation-in-2017/">https://artix41.github.io/static/domain-adaptation-in-2017/</a>)
+                        </li>
+                        <li>
+                            <strong>Introduction to optimal transport for GANs</strong>:
+                            blog article (<a href="https://vincentherrmann.github.io/blog/wasserstein/">https://vincentherrmann.github.io/blog/wasserstein/</a>
+                        </li>
+                        <li>
+                            <strong>Computational Optimal Transport (2017)</strong>:
+                            online book by Peyré and Cuturi, excellent visual introduction to OT
+                        </li>
+                    </ul>
+                </section>
+
+                <section data-background-image="images/thanks.jpg" data-background-size="contain">
+
+                </section>
+
+
+                <!-- <section>
+                    <h3>How do we do that?</h3>
+
+                    <p class="left">Two main kinds of methods:</p>
+                    <ul>
+                        <li>Translating one domain to the other</li>
+                        [2-gif of a translation with gaussians]
+                        <li>Finding a common embedding between the two domains</li>
+                        [2-gif of a common embedding with gaussians]
+                    </ul>
+
+                </section> -->
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+                slideNumber: true,
+                center: false,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/math/math.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

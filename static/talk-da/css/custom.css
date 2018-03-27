@@ -1,0 +1,94 @@
+.logo-left {
+    padding: 0;
+    width: 20%;
+    border:0px;
+    box-shadow:0;
+    bottom:0px;
+    right:0;
+    position:absolute;
+}
+
+.castle-images img {
+    width: 400px;
+    height: 200px;
+}
+
+.reveal table td {
+    border-bottom: 0;
+}
+
+.reveal p.small {
+    text-align: center;
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.reveal section {
+    padding: 0;
+}
+
+.reveal section img {
+    margin: 0;
+    border:0;
+}
+
+.reveal h3 {
+    margin-top:0;
+    font-size: 40px;
+}
+
+.reveal p {
+    font-size: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.reveal ul li {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.reveal section .with-sub {
+    margin-bottom: 2px;
+}
+
+.reveal section .sub {
+    margin-bottom: 25px;
+}
+
+.reveal section .dataset img {
+    width: 60%;
+    background-color:inherit;
+    box-shadow:none;
+}
+
+.reveal section .applications td {
+    text-align: center;
+}
+
+.reveal section .applications img {
+    width: 400px;
+    height: 200px;
+}
+
+.reveal section .applications p {
+    margin-bottom: 2px;
+}
+
+.reveal section .left {
+    text-align: left;
+}
+
+.reveal section .real-table {
+    border: 1px solid white;
+}
+
+.reveal section .real-table th {
+    border: 1px solid white;
+}
+
+.reveal section .hdh img {
+    width: 100%;
+    border: none;
+}
