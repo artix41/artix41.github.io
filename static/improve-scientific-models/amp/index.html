@@ -165,7 +165,7 @@
 <p>Now, same question as for learning to learn by gradient descent, how do we train the RNN? Here, the trick is to generate many random parameters θ and to pretend for each one that it is the “true parameter”. We can then simulate each θ generated and obtain a set of “real observations”. The RNN can then be trained by passing it those real observations, looking at its final proposal distribution, and comparing it to the true parameter (that we know because we have generated it).</p>
 <p><amp-img src="https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png" alt width="1221" height="316" layout="responsive"></amp-img></p>
 <p>Let’s go through an example to clarify all of that. In the figures below, the proposal distribution is represented in color (red = high density). At the beginning, the RNN is initialized randomly and we evaluate it on our first generated true parameter $\theta$ (in red).</p>
-<p></p>
+<p><amp-anim src="https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif" alt width="963" height="520" layout="responsive"></amp-anim></p>
 <p>We can then backpropagate the loss into the RNN. After repeating this process for 200 different “true parameters”, this is what is should look like:</p>
 <p><amp-anim src="https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif" alt width="976" height="517" layout="responsive"></amp-anim></p>
 <p>We can see that it has learnt to exploit the information of the observation space to move towards the good parameter.</p>
@@ -197,7 +197,7 @@
         </article>
     </main>
     <footer class="site-footer clearfix">
-        <section class="copyright"><a href="../../">Arthur Pesah</a> © 2018</section>
+        <section class="copyright"><a href="../../">Arthur Pesah</a> © 2019</section>
         <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
     </footer>
 </body>
