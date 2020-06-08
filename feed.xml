@@ -1,453 +1,486 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-06-08T16:57:26+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
-</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</title><link href="http://localhost:4000/blog/2018-12-23-alfi/" rel="alternate" type="text/html" title="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference" /><published>2018-12-23T00:00:00+01:00</published><updated>2018-12-23T00:00:00+01:00</updated><id>http://localhost:4000/blog/alfi</id><content type="html" xml:base="http://localhost:4000/blog/2018-12-23-alfi/">**Note**: This post was first published as a [Medium Article](https://towardsdatascience.com/improve-your-scientific-models-with-meta-learning-and-likelihood-free-inference-2f904d0bd7fa) for Towards Data Science
-{:.message}
-Introduction to likelihood-free inference and distillation of the paper [Recurrent Machines for Likelihood-Free Inference](https://arxiv.org/abs/1811.12932), published at the [NeurIPS 2018 Workshop on Meta-Learning](http://metalearning.ml).
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-06-08T17:01:58+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</title><link href="http://localhost:4000/blog/2018-12-23-alfi/" rel="alternate" type="text/html" title="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference" /><published>2018-12-23T00:00:00+01:00</published><updated>2018-12-23T00:00:00+01:00</updated><id>http://localhost:4000/blog/alfi</id><content type="html" xml:base="http://localhost:4000/blog/2018-12-23-alfi/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a &lt;a href=&quot;https://towardsdatascience.com/improve-your-scientific-models-with-meta-learning-and-likelihood-free-inference-2f904d0bd7fa&quot;&gt;Medium Article&lt;/a&gt; for Towards Data Science&lt;/p&gt;
+&lt;p&gt;Introduction to likelihood-free inference and distillation of the paper &lt;a href=&quot;https://arxiv.org/abs/1811.12932&quot;&gt;Recurrent Machines for Likelihood-Free Inference&lt;/a&gt;, published at the &lt;a href=&quot;http://metalearning.ml&quot;&gt;NeurIPS 2018 Workshop on Meta-Learning&lt;/a&gt;.&lt;/p&gt;
 
-Article jointly written by Arthur Pesah and Antoine Wehenkel
+&lt;p&gt;Article jointly written by Arthur Pesah and Antoine Wehenkel&lt;/p&gt;
 
-# Motivation
+&lt;h1 id=&quot;motivation&quot;&gt;Motivation&lt;/h1&gt;
 
-There are usually two ways of coming up with a new scientific theory:
+&lt;p&gt;There are usually two ways of coming up with a new scientific theory:&lt;/p&gt;
 
-* Starting from first principles, deducing the consequent laws, and coming up with experimental predictions in order to verify the theory
-* Starting from experiments and inferring the simplest laws that explain your data.
+&lt;ul&gt;
+  &lt;li&gt;Starting from first principles, deducing the consequent laws, and coming up with experimental predictions in order to verify the theory&lt;/li&gt;
+  &lt;li&gt;Starting from experiments and inferring the simplest laws that explain your data.&lt;/li&gt;
+&lt;/ul&gt;
 
-The role of statistics and machine learning in science is usually related to the second kind of inference, also called _induction_.
+&lt;p&gt;The role of statistics and machine learning in science is usually related to the second kind of inference, also called &lt;em&gt;induction&lt;/em&gt;.&lt;/p&gt;
 
-Imagine for instance that you want to model the evolution of two populations (let’s say foxes and rabbits) in an environment. A simple model is the [Lotka-Volterra differential equation](https://en.wikipedia.org/wiki/Lotka–Volterra_equations): you consider the probability that an event such as “a fox eating a rabbit”, “a rabbit being born”, “a fox being born”, etc. happens in a small time interval, deduce a set of differential equations depending on those probabilities, and predict the evolution of the two animals by solving those equations. By comparing your prediction with the evolution of a real population, you can infer the best model parameters (probabilities) in this environment.
+&lt;p&gt;Imagine for instance that you want to model the evolution of two populations (let’s say foxes and rabbits) in an environment. A simple model is the &lt;a href=&quot;https://en.wikipedia.org/wiki/Lotka–Volterra_equations&quot;&gt;Lotka-Volterra differential equation&lt;/a&gt;: you consider the probability that an event such as “a fox eating a rabbit”, “a rabbit being born”, “a fox being born”, etc. happens in a small time interval, deduce a set of differential equations depending on those probabilities, and predict the evolution of the two animals by solving those equations. By comparing your prediction with the evolution of a real population, you can infer the best model parameters (probabilities) in this environment.&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*t9Lv2LZ6EJiutaVzKoQ3lQ.jpeg)
-{:.figure}
-Modern theories require **simulations** in order to be linked to observations. It can be either a simple differential equation solver as in the case of the Lotka-Volterra model, or a complex Monte-Carlo simulator as they use in particle physics for instance.
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*t9Lv2LZ6EJiutaVzKoQ3lQ.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Modern theories require &lt;strong&gt;simulations&lt;/strong&gt; in order to be linked to observations. It can be either a simple differential equation solver as in the case of the Lotka-Volterra model, or a complex Monte-Carlo simulator as they use in particle physics for instance.&lt;/p&gt;
 
-By comparing the results of a simulation, i.e. the predictions of a model, with real data, it is then possible to know the correctness of your model and adjust it accordingly. If this process of going back and forth between the model and the experimental data is usually done manually, the question that any machine learning practitioner would ask is: can we do it automatically? Can we build a machine that takes a tweakable simulator and real data as input, and returns the version of the simulator that fits best some real data?
+&lt;p&gt;By comparing the results of a simulation, i.e. the predictions of a model, with real data, it is then possible to know the correctness of your model and adjust it accordingly. If this process of going back and forth between the model and the experimental data is usually done manually, the question that any machine learning practitioner would ask is: can we do it automatically? Can we build a machine that takes a tweakable simulator and real data as input, and returns the version of the simulator that fits best some real data?&lt;/p&gt;
 
-That’s the object of our recent work [^1], where we trained a neural network to come up with the best sequence of simulator tweaks in order to approximate experimental data, capitalizing on the recent advances in the fields of likelihood-free inference and meta-learning.
+&lt;p&gt;That’s the object of our recent work [^1], where we trained a neural network to come up with the best sequence of simulator tweaks in order to approximate experimental data, capitalizing on the recent advances in the fields of likelihood-free inference and meta-learning.&lt;/p&gt;
 
-# Likelihood-free inference
+&lt;h1 id=&quot;likelihood-free-inference&quot;&gt;Likelihood-free inference&lt;/h1&gt;
 
-Let’s rephrase our problem in a more formal way. We can model a simulator (also called generative model) by a stochastic function that takes some parameters $\theta$ and returns samples $x$ drawn from a certain distribution (the so-called *model*).
+&lt;p&gt;Let’s rephrase our problem in a more formal way. We can model a simulator (also called generative model) by a stochastic function that takes some parameters $\theta$ and returns samples $x$ drawn from a certain distribution (the so-called &lt;em&gt;model&lt;/em&gt;).&lt;/p&gt;
 
-This formalism applies to any scientific theory that includes randomness, as it’s very often the case in modern science (particle collisions are governed by the law of quantum physics which are intrinsically random, biological processes or chemical reactions often occur in a noisy environment, etc.).
+&lt;p&gt;This formalism applies to any scientific theory that includes randomness, as it’s very often the case in modern science (particle collisions are governed by the law of quantum physics which are intrinsically random, biological processes or chemical reactions often occur in a noisy environment, etc.).&lt;/p&gt;
 
-Experimental data consist in a set of points living in the same space as the output of the simulator. The goal of inference is then to find the parameters $\theta$ such that the simulator generate points as close as possible to the real data.
+&lt;p&gt;Experimental data consist in a set of points living in the same space as the output of the simulator. The goal of inference is then to find the parameters $\theta$ such that the simulator generate points as close as possible to the real data.&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*328OmNFA4xBuj4xgLQdK9w.png)
-{:.figure}
-Scientific fields using such simulators include:
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*328OmNFA4xBuj4xgLQdK9w.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Scientific fields using such simulators include:&lt;/p&gt;
 
-* Population genetics. **Model:** [Coalescent theory](https://en.wikipedia.org/wiki/Coalescent_theory). **Observation:** the DNA of a current population. **Parameters:** the DNA of the common ancestor.
-* High-energy particle physics. **Model**: [Standard Model](https://en.wikipedia.org/wiki/Standard_Model) of particle physics. **Observation:** output of the detector during a collision. **Parameters:** coupling constants of the Standard Model (like the mass of the particles or the strength of the different forces).
-* Computational neuroscience. **Model:** [Hodgkin-Huxley model](https://en.wikipedia.org/wiki/Hodgkin%E2%80%93Huxley_model). **Observation:** evolution of the voltage of a neuron after activation. **Parameters**: biophysical parameters of the neuron.
+&lt;ul&gt;
+  &lt;li&gt;Population genetics. &lt;strong&gt;Model:&lt;/strong&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Coalescent_theory&quot;&gt;Coalescent theory&lt;/a&gt;. &lt;strong&gt;Observation:&lt;/strong&gt; the DNA of a current population. &lt;strong&gt;Parameters:&lt;/strong&gt; the DNA of the common ancestor.&lt;/li&gt;
+  &lt;li&gt;High-energy particle physics. &lt;strong&gt;Model&lt;/strong&gt;: &lt;a href=&quot;https://en.wikipedia.org/wiki/Standard_Model&quot;&gt;Standard Model&lt;/a&gt; of particle physics. &lt;strong&gt;Observation:&lt;/strong&gt; output of the detector during a collision. &lt;strong&gt;Parameters:&lt;/strong&gt; coupling constants of the Standard Model (like the mass of the particles or the strength of the different forces).&lt;/li&gt;
+  &lt;li&gt;Computational neuroscience. &lt;strong&gt;Model:&lt;/strong&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Hodgkin%E2%80%93Huxley_model&quot;&gt;Hodgkin-Huxley model&lt;/a&gt;. &lt;strong&gt;Observation:&lt;/strong&gt; evolution of the voltage of a neuron after activation. &lt;strong&gt;Parameters&lt;/strong&gt;: biophysical parameters of the neuron.&lt;/li&gt;
+&lt;/ul&gt;
 
-So how can we predict the parameters of a simulator given some real observations? Let’s consider the simple example of a Gaussian simulator, that takes a vector $\theta=(\mu,\sigma)$ as parameters and returns samples from the Gaussian distribution $\mathcal{N}(\mu,\sigma)$.
+&lt;p&gt;So how can we predict the parameters of a simulator given some real observations? Let’s consider the simple example of a Gaussian simulator, that takes a vector $\theta=(\mu,\sigma)$ as parameters and returns samples from the Gaussian distribution $\mathcal{N}(\mu,\sigma)$.&lt;/p&gt;
 
-The classical way to infer the parameters of such a simulator is called *Maximum Likelihood Estimation (MLE)*. The likelihood is defined as the density of the real data under a parametric model. It means that if most data points are located in high density regions, the likelihood will be high. Hence, the best parameters of a model are often the ones that maximize the likelihood of real data. If you are unfamiliar with likelihood-based inference, you can read [this excellent introduction to the subject](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1).
+&lt;p&gt;The classical way to infer the parameters of such a simulator is called &lt;em&gt;Maximum Likelihood Estimation (MLE)&lt;/em&gt;. The likelihood is defined as the density of the real data under a parametric model. It means that if most data points are located in high density regions, the likelihood will be high. Hence, the best parameters of a model are often the ones that maximize the likelihood of real data. If you are unfamiliar with likelihood-based inference, you can read &lt;a href=&quot;https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1&quot;&gt;this excellent introduction to the subject&lt;/a&gt;.&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*16t2IyuYfARkjea8mfUDTQ.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*16t2IyuYfARkjea8mfUDTQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-If you have explicitly access to the underlying probability distribution of your simulator, as well as the gradient of this distribution, you can for instance perform a gradient descent in the parameters space, in order to maximize the likelihood and infer the best parameters of your model.
+&lt;p&gt;If you have explicitly access to the underlying probability distribution of your simulator, as well as the gradient of this distribution, you can for instance perform a gradient descent in the parameters space, in order to maximize the likelihood and infer the best parameters of your model.&lt;/p&gt;
 
-However, many real-life simulators have an **intractable likelihood**, which means that the explicit probability distribution is too hard to compute (either analytically or numerically) . We must therefore find new ways to infer the optimal parameters without using neither the likelihood function nor its gradient.
+&lt;p&gt;However, many real-life simulators have an &lt;strong&gt;intractable likelihood&lt;/strong&gt;, which means that the explicit probability distribution is too hard to compute (either analytically or numerically) . We must therefore find new ways to infer the optimal parameters without using neither the likelihood function nor its gradient.&lt;/p&gt;
 
-To sum it up, we have a black-box stochastic simulator that takes parameters and generates samples from an unknown probability distribution, as well as real data that we are able to compare to the generated ones. Our goal is to find the parameters that lead the simulator to generate data as close as possible to the real ones. This setting is called **likelihood-free inference**.
+&lt;p&gt;To sum it up, we have a black-box stochastic simulator that takes parameters and generates samples from an unknown probability distribution, as well as real data that we are able to compare to the generated ones. Our goal is to find the parameters that lead the simulator to generate data as close as possible to the real ones. This setting is called &lt;strong&gt;likelihood-free inference&lt;/strong&gt;.&lt;/p&gt;
 
-# How can we likelihood-free infer?
+&lt;h1 id=&quot;how-can-we-likelihood-free-infer&quot;&gt;How can we likelihood-free infer?&lt;/h1&gt;
 
-Let’s try to come up progressively with a method to solve our problem. The first thing we can do is to start from a random parameter, and simulate the corresponding data:
+&lt;p&gt;Let’s try to come up progressively with a method to solve our problem. The first thing we can do is to start from a random parameter, and simulate the corresponding data:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*Dgh8KZYJ_aAYYI73jy8wUQ.png)*Representation of the two spaces of interest. The true parameter (that we wish to infer) is the red point on the left. The real data correspond to the red cloud of points on the right. We start by choosing a random parameter θ (in gray on the left) and simulating the corresponding data points (in gray on the right)*
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*Dgh8KZYJ_aAYYI73jy8wUQ.png&quot; alt=&quot;&quot; /&gt;&lt;em&gt;Representation of the two spaces of interest. The true parameter (that we wish to infer) is the red point on the left. The real data correspond to the red cloud of points on the right. We start by choosing a random parameter θ (in gray on the left) and simulating the corresponding data points (in gray on the right)&lt;/em&gt;&lt;/p&gt;
 
-By doing so, we can see how far our generated data are from the real data, but we have no way to know where to move in the parameter-space. Instead, let’s simulate several parameters:
+&lt;p&gt;By doing so, we can see how far our generated data are from the real data, but we have no way to know where to move in the parameter-space. Instead, let’s simulate several parameters:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*a6mfrolFz-s9CicMOULgvA.png)
-{:.figure}
-To do so, we consider a distribution in the parameter-space, called **proposal distribution** and noted $q(\theta|\psi)$. If we choose $q$ to be a Gaussian distribution, we will have $\psi=(\mu,\sigma)$. The first step consists in initializing $\psi$ randomly. In the figure above, we considered $\psi=\mu$ for simplicity. Then, we can perform the following step until convergence:
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*a6mfrolFz-s9CicMOULgvA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To do so, we consider a distribution in the parameter-space, called &lt;strong&gt;proposal distribution&lt;/strong&gt; and noted $q(\theta|\psi)$. If we choose $q$ to be a Gaussian distribution, we will have $\psi=(\mu,\sigma)$. The first step consists in initializing $\psi$ randomly. In the figure above, we considered $\psi=\mu$ for simplicity. Then, we can perform the following step until convergence:&lt;/p&gt;
 
-*   Sampling a few parameters from the proposal distribution: 4 parameters around $\psi$ in the figure.
-*   Generating data from them: the 4 cloud of points on right.
-*   Choosing a good direction to move $\psi$.
+&lt;ul&gt;
+  &lt;li&gt;Sampling a few parameters from the proposal distribution: 4 parameters around $\psi$ in the figure.&lt;/li&gt;
+  &lt;li&gt;Generating data from them: the 4 cloud of points on right.&lt;/li&gt;
+  &lt;li&gt;Choosing a good direction to move $\psi$.&lt;/li&gt;
+&lt;/ul&gt;
 
-The third step is the hard one. Intuitively, you would like to move $\psi$ towards the orange and green parameters, since the corresponding predictions (orange and green cloud of points) are the closest to the real data. A set of methods, called *natural evolution strategies* [^3], allow you to link the performance of each $\theta$ (in terms of similarity between its predictions and the real data) to a direction in the parameter space. A recent paper [^4] use for instance the similarity measure given by a Generative Adversarial Network (GAN) to find the best direction. Even though those algorithms perform well in the general case, one can wonder if for a given simulator, it is not possible to find a better algorithm that would exploit the particular properties of this simulator. That’s where meta-learning comes into play!
+&lt;p&gt;The third step is the hard one. Intuitively, you would like to move $\psi$ towards the orange and green parameters, since the corresponding predictions (orange and green cloud of points) are the closest to the real data. A set of methods, called &lt;em&gt;natural evolution strategies&lt;/em&gt; [^3], allow you to link the performance of each $\theta$ (in terms of similarity between its predictions and the real data) to a direction in the parameter space. A recent paper [^4] use for instance the similarity measure given by a Generative Adversarial Network (GAN) to find the best direction. Even though those algorithms perform well in the general case, one can wonder if for a given simulator, it is not possible to find a better algorithm that would exploit the particular properties of this simulator. That’s where meta-learning comes into play!&lt;/p&gt;
 
-# Meta-learning for optimization
+&lt;h1 id=&quot;meta-learning-for-optimization&quot;&gt;Meta-learning for optimization&lt;/h1&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*Wip2SwVt4aMqBPtE2Spffw.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*Wip2SwVt4aMqBPtE2Spffw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-The idea behind meta-learning is to learn how to learn, and in our case to **learn the optimization process**. The main idea, introduced in the paper [Learning to learn gradient descent by gradient descent](https://arxiv.org/abs/1606.04474) [^2], is to use a recurrent neural network (RNN) to find the best descent direction at each iteration. Below is an example of sequence of points produced by a randomly initialized RNN:
+&lt;p&gt;The idea behind meta-learning is to learn how to learn, and in our case to &lt;strong&gt;learn the optimization process&lt;/strong&gt;. The main idea, introduced in the paper &lt;a href=&quot;https://arxiv.org/abs/1606.04474&quot;&gt;Learning to learn gradient descent by gradient descent&lt;/a&gt; [^2], is to use a recurrent neural network (RNN) to find the best descent direction at each iteration. Below is an example of sequence of points produced by a randomly initialized RNN:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*5Axutz0l_0TjxRupjEt-1Q.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*5Axutz0l_0TjxRupjEt-1Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-Each descent direction is random and the last point produced is far from the minimum. During training, it should learn to exploit the gradient information at each point in order to move toward the minimum, giving something like:
+&lt;p&gt;Each descent direction is random and the last point produced is far from the minimum. During training, it should learn to exploit the gradient information at each point in order to move toward the minimum, giving something like:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*r2Ww8UZAmL3cBRds_p35OQ.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*r2Ww8UZAmL3cBRds_p35OQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-So how to train it? Generate many functions whose you know the minimum, and ask the RNN to minimize the distance between the last point of the sequence and the real minimum.
+&lt;p&gt;So how to train it? Generate many functions whose you know the minimum, and ask the RNN to minimize the distance between the last point of the sequence and the real minimum.&lt;/p&gt;
 
-# Learning to learn scientific models
+&lt;h1 id=&quot;learning-to-learn-scientific-models&quot;&gt;Learning to learn scientific models&lt;/h1&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*qKC9tH01bkQ_giLs_yGJxg.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*qKC9tH01bkQ_giLs_yGJxg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-In the case of likelihood-free inference, the RNN should return a sequence of proposal parameters $\psi$, given the real observations and the generated cloud of points at each step.
+&lt;p&gt;In the case of likelihood-free inference, the RNN should return a sequence of proposal parameters $\psi$, given the real observations and the generated cloud of points at each step.&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*La-daJwmoy6ksOpAeIrFkQ.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*La-daJwmoy6ksOpAeIrFkQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-Now, same question as for learning to learn by gradient descent, how do we train the RNN? Here, the trick is to generate many random parameters θ and to pretend for each one that it is the “true parameter”. We can then simulate each θ generated and obtain a set of “real observations”. The RNN can then be trained by passing it those real observations, looking at its final proposal distribution, and comparing it to the true parameter (that we know because we have generated it).
+&lt;p&gt;Now, same question as for learning to learn by gradient descent, how do we train the RNN? Here, the trick is to generate many random parameters θ and to pretend for each one that it is the “true parameter”. We can then simulate each θ generated and obtain a set of “real observations”. The RNN can then be trained by passing it those real observations, looking at its final proposal distribution, and comparing it to the true parameter (that we know because we have generated it).&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-Let’s go through an example to clarify all of that. In the figures below, the proposal distribution is represented in color (red = high density). At the beginning, the RNN is initialized randomly and we evaluate it on our first generated true parameter $\theta$ (in red).
+&lt;p&gt;Let’s go through an example to clarify all of that. In the figures below, the proposal distribution is represented in color (red = high density). At the beginning, the RNN is initialized randomly and we evaluate it on our first generated true parameter $\theta$ (in red).&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-We can then backpropagate the loss into the RNN. After repeating this process for 200 different “true parameters”, this is what is should look like:
+&lt;p&gt;We can then backpropagate the loss into the RNN. After repeating this process for 200 different “true parameters”, this is what is should look like:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif)
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-We can see that it has learnt to exploit the information of the observation space to move towards the good parameter.
+&lt;p&gt;We can see that it has learnt to exploit the information of the observation space to move towards the good parameter.&lt;/p&gt;
 
-# Results
+&lt;h1 id=&quot;results&quot;&gt;Results&lt;/h1&gt;
 
-We evaluated our model on different toy simulators, some where we the likelihood is known and some where it is not.
+&lt;p&gt;We evaluated our model on different toy simulators, some where we the likelihood is known and some where it is not.&lt;/p&gt;
 
-## Non-likelihood-free problem: Poisson Simulator
+&lt;h2 id=&quot;non-likelihood-free-problem-poisson-simulator&quot;&gt;Non-likelihood-free problem: Poisson Simulator&lt;/h2&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*204e7qk6Ml3dmQhwbjx7rw.png)*Example of Poisson distributions for various parameters. Source: Wikipedia*
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*204e7qk6Ml3dmQhwbjx7rw.png&quot; alt=&quot;&quot; /&gt;&lt;em&gt;Example of Poisson distributions for various parameters. Source: Wikipedia&lt;/em&gt;&lt;/p&gt;
 
-The first simulator takes a parameter λ and draw samples from a Poisson distribution $P(\lambda)$. The goal of this example was to see if we obtain comparable performance as the maximum likelihood estimator. Here are the results:
+&lt;p&gt;The first simulator takes a parameter λ and draw samples from a Poisson distribution $P(\lambda)$. The goal of this example was to see if we obtain comparable performance as the maximum likelihood estimator. Here are the results:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*ALQZ7-7AD6RVjJqQpgXfMA.png)*Comparison of ALFI (Automatic Likelihood-Free Inference, the name of our model), to a maximum likelihood estimator (MLE). Those box-plots represent the distribution of the mean-squared errors between the true parameters and the expected value of the final proposal distributions.*
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*ALQZ7-7AD6RVjJqQpgXfMA.png&quot; alt=&quot;&quot; /&gt;&lt;em&gt;Comparison of ALFI (Automatic Likelihood-Free Inference, the name of our model), to a maximum likelihood estimator (MLE). Those box-plots represent the distribution of the mean-squared errors between the true parameters and the expected value of the final proposal distributions.&lt;/em&gt;&lt;/p&gt;
 
-We can see that the performance are comparable, even though we didn’t give our model access to the likelihood.
+&lt;p&gt;We can see that the performance are comparable, even though we didn’t give our model access to the likelihood.&lt;/p&gt;
 
-## Likelihood-free problem: Particle Physics Simulator
-{:.figure}
+&lt;h2 class=&quot;figure&quot; id=&quot;likelihood-free-problem-particle-physics-simulator&quot;&gt;Likelihood-free problem: Particle Physics Simulator&lt;/h2&gt;
 
-To evaluate our model in a true likelihood-free setting, we considered a simplified particle physics model that simulate the collision of an electron and a positron turning into a muon and an antimuon.
+&lt;p&gt;To evaluate our model in a true likelihood-free setting, we considered a simplified particle physics model that simulate the collision of an electron and a positron turning into a muon and an antimuon.&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*_Zpy-kvc2wiMW-9KzowoLw.png)*Feynman diagram of the simulated process*
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*_Zpy-kvc2wiMW-9KzowoLw.png&quot; alt=&quot;&quot; /&gt;&lt;em&gt;Feynman diagram of the simulated process&lt;/em&gt;&lt;/p&gt;
 
-The parameters of the simulator are the energy of the incoming particles and the Fermi constant, and the output is the angle between the two muons.
+&lt;p&gt;The parameters of the simulator are the energy of the incoming particles and the Fermi constant, and the output is the angle between the two muons.&lt;/p&gt;
 
-To evaluate our method, we compared the real observations with the ones generated by the last parameter found. Here are the results:
+&lt;p&gt;To evaluate our method, we compared the real observations with the ones generated by the last parameter found. Here are the results:&lt;/p&gt;
 
-![](https://cdn-images-1.medium.com/max/1600/1*gr7tU9hWoGt8FRkPpZKppQ.png)*Results of our method on a simple particle physics model. Comparison of our the real observations (angles of the produced particles) with the ones generated by our predicted parameter.*
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/1*gr7tU9hWoGt8FRkPpZKppQ.png&quot; alt=&quot;&quot; /&gt;&lt;em&gt;Results of our method on a simple particle physics model. Comparison of our the real observations (angles of the produced particles) with the ones generated by our predicted parameter.&lt;/em&gt;&lt;/p&gt;
 
-# Discussion
+&lt;h1 id=&quot;discussion&quot;&gt;Discussion&lt;/h1&gt;
 
-We saw what likelihood-free inference is and how meta-learning can be used to solve it by learning the best sequence of simulator tweaks to fit a model to the reality.
+&lt;p&gt;We saw what likelihood-free inference is and how meta-learning can be used to solve it by learning the best sequence of simulator tweaks to fit a model to the reality.&lt;/p&gt;
 
-As most meta-learning models, a limitation is that it is hard to train. We had trouble scaling our method to more complex simulators, since meta-training requires a lot of simulator calls, which might be very slow in real-world settings. However, as the field of meta-learning makes progress, we hope that new methods will emerge to alleviate this problem and make it more scalable.
+&lt;p&gt;As most meta-learning models, a limitation is that it is hard to train. We had trouble scaling our method to more complex simulators, since meta-training requires a lot of simulator calls, which might be very slow in real-world settings. However, as the field of meta-learning makes progress, we hope that new methods will emerge to alleviate this problem and make it more scalable.&lt;/p&gt;
 
-[1] A. Pesah, A. Wehenkel and G. Louppe, [Recurrent Machines for Likelihood-Free Inference](https://arxiv.org/abs/1811.12932) (2018), NeurIPS 2018 Workshop on Meta-Learning
+&lt;p&gt;[1] A. Pesah, A. Wehenkel and G. Louppe, &lt;a href=&quot;https://arxiv.org/abs/1811.12932&quot;&gt;Recurrent Machines for Likelihood-Free Inference&lt;/a&gt; (2018), NeurIPS 2018 Workshop on Meta-Learning&lt;/p&gt;
 
-[2] M. Andrychowicz, M. Denil, S. Gomez, M. W. Hoffman, D. Pfau, T. Schaul, B. Shillingford, N. de Freitas, [Learning to learn gradient descent by gradient descent](https://arxiv.org/abs/1606.04474) (2016), NIPS 2016
+&lt;p&gt;[2] M. Andrychowicz, M. Denil, S. Gomez, M. W. Hoffman, D. Pfau, T. Schaul, B. Shillingford, N. de Freitas, &lt;a href=&quot;https://arxiv.org/abs/1606.04474&quot;&gt;Learning to learn gradient descent by gradient descent&lt;/a&gt; (2016), NIPS 2016&lt;/p&gt;
 
-[3] D. Wierstra, T. Schaul, T. Glasmachers, Y. Sun, J. Peter, J. Schmidhuber, [Natural Evolution Strategies](http://jmlr.org/papers/v15/wierstra14a.html) (2014), Journal of Machine Learning Research (JMLR).
+&lt;p&gt;[3] D. Wierstra, T. Schaul, T. Glasmachers, Y. Sun, J. Peter, J. Schmidhuber, &lt;a href=&quot;http://jmlr.org/papers/v15/wierstra14a.html&quot;&gt;Natural Evolution Strategies&lt;/a&gt; (2014), Journal of Machine Learning Research (JMLR).&lt;/p&gt;
 
-[4] G. Louppe, J. Hermans, K. Cranmer, [Adversarial Variational Optimization of Non-Differentiable Simulator](https://arxiv.org/abs/1707.07113) (2017), arXiv e-prints 1707.07113</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science Introduction to likelihood-free inference and distillation of the paper Recurrent Machines for Likelihood-Free Inference, published at the NeurIPS 2018 Workshop on Meta-Learning.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/alfi/blackboard.jpg" /></entry><entry><title type="html">Recent Advances for a Better Understanding of Deep Learning</title><link href="http://localhost:4000/blog/2018-08-19-theory-deep-learning/" rel="alternate" type="text/html" title="Recent Advances for a Better Understanding of Deep Learning" /><published>2018-08-19T00:00:00+02:00</published><updated>2018-08-19T00:00:00+02:00</updated><id>http://localhost:4000/blog/theory-deep-learning</id><content type="html" xml:base="http://localhost:4000/blog/2018-08-19-theory-deep-learning/">**Note**: This post was first published as a [Medium Article](https://towardsdatascience.com/recent-advances-for-a-better-understanding-of-deep-learning-part-i-5ce34d1cc914) for Towards Data Science*
-{:.message}
+&lt;p&gt;[4] G. Louppe, J. Hermans, K. Cranmer, &lt;a href=&quot;https://arxiv.org/abs/1707.07113&quot;&gt;Adversarial Variational Optimization of Non-Differentiable Simulator&lt;/a&gt; (2017), arXiv e-prints 1707.07113&lt;/p&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science Introduction to likelihood-free inference and distillation of the paper Recurrent Machines for Likelihood-Free Inference, published at the NeurIPS 2018 Workshop on Meta-Learning.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/alfi/blackboard.jpg" /></entry><entry><title type="html">Recent Advances for a Better Understanding of Deep Learning</title><link href="http://localhost:4000/blog/2018-08-19-theory-deep-learning/" rel="alternate" type="text/html" title="Recent Advances for a Better Understanding of Deep Learning" /><published>2018-08-19T00:00:00+02:00</published><updated>2018-08-19T00:00:00+02:00</updated><id>http://localhost:4000/blog/theory-deep-learning</id><content type="html" xml:base="http://localhost:4000/blog/2018-08-19-theory-deep-learning/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a &lt;a href=&quot;https://towardsdatascience.com/recent-advances-for-a-better-understanding-of-deep-learning-part-i-5ce34d1cc914&quot;&gt;Medium Article&lt;/a&gt; for Towards Data Science*&lt;/p&gt;
 
-&gt; I would like to live in a world whose systems are built on **rigorous, reliable, verifiable knowledge**, and not on alchemy. […] Simple experiments and simple theorems are the **building blocks** that help understand complicated larger phenomena.
-{:.lead}
+&lt;blockquote class=&quot;lead&quot;&gt;
+  &lt;p&gt;I would like to live in a world whose systems are built on &lt;strong&gt;rigorous, reliable, verifiable knowledge&lt;/strong&gt;, and not on alchemy. […] Simple experiments and simple theorems are the &lt;strong&gt;building blocks&lt;/strong&gt; that help understand complicated larger phenomena.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-This call for a better **understanding** of deep learning was the core of Ali Rahimi’s [Test-of-Time Award presentation](http://www.argmin.net/2017/12/05/kitchen-sinks/) at NIPS in December 2017. By comparing deep learning with alchemy, the goal of Ali was not to dismiss the entire field, but “[to open a conversation](http://www.argmin.net/2017/12/11/alchemy-addendum/)”. This goal [has definitely been achieved](https://syncedreview.com/2017/12/12/lecun-vs-rahimi-has-machine-learning-become-alchemy/) and people [are still debating](https://twitter.com/RandomlyWalking/status/1017899452378550273) whether our current practice of deep learning should be considered as alchemy, engineering or science.
+&lt;p&gt;This call for a better &lt;strong&gt;understanding&lt;/strong&gt; of deep learning was the core of Ali Rahimi’s &lt;a href=&quot;http://www.argmin.net/2017/12/05/kitchen-sinks/&quot;&gt;Test-of-Time Award presentation&lt;/a&gt; at NIPS in December 2017. By comparing deep learning with alchemy, the goal of Ali was not to dismiss the entire field, but “&lt;a href=&quot;http://www.argmin.net/2017/12/11/alchemy-addendum/&quot;&gt;to open a conversation&lt;/a&gt;”. This goal &lt;a href=&quot;https://syncedreview.com/2017/12/12/lecun-vs-rahimi-has-machine-learning-become-alchemy/&quot;&gt;has definitely been achieved&lt;/a&gt; and people &lt;a href=&quot;https://twitter.com/RandomlyWalking/status/1017899452378550273&quot;&gt;are still debating&lt;/a&gt; whether our current practice of deep learning should be considered as alchemy, engineering or science.&lt;/p&gt;
 
-Seven months later, the machine learning community gathered again, this time in Stockholm for the International Conference on Machine Learning (ICML). With more than 5,000 participants and 629 papers published, it was one of the most important events regarding fundamental machine learning research. And **deep learning theory** has become one of the biggest subjects of the conference.
+&lt;p&gt;Seven months later, the machine learning community gathered again, this time in Stockholm for the International Conference on Machine Learning (ICML). With more than 5,000 participants and 629 papers published, it was one of the most important events regarding fundamental machine learning research. And &lt;strong&gt;deep learning theory&lt;/strong&gt; has become one of the biggest subjects of the conference.&lt;/p&gt;
 
-![trends](/assets/img/blog/theory-deep-learning/trends.jpg)
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/trends.jpg&quot; alt=&quot;trends&quot; /&gt;&lt;/p&gt;
 
-This renew interest was revealed on the first day, with one of the biggest rooms of the conference full of machine learning practitioners ready to listen to the tutorial [Towards Theoretical Understanding of Deep Learning](http://unsupervised.cs.princeton.edu/deeplearningtutorial.html) by Sanjeev Arora. In his talk, the Professor of computer science at Princeton summarized the current areas of deep learning theory research, by dividing them into four branches:
+&lt;p&gt;This renew interest was revealed on the first day, with one of the biggest rooms of the conference full of machine learning practitioners ready to listen to the tutorial &lt;a href=&quot;http://unsupervised.cs.princeton.edu/deeplearningtutorial.html&quot;&gt;Towards Theoretical Understanding of Deep Learning&lt;/a&gt; by Sanjeev Arora. In his talk, the Professor of computer science at Princeton summarized the current areas of deep learning theory research, by dividing them into four branches:&lt;/p&gt;
 
-* **Non Convex Optimization**: How can we understand the highly non-convex loss function associated with deep neural networks? Why does stochastic gradient descent even converge?
-* **Overparametrization and Generalization**: In classical statistical theory, generalization depends on the number of parameters but not in deep learning. Why? Can we find another good measure of generalization?
-* **Role of Depth**: How does depth help a neural network to converge? What is the link between depth and generalization?
-* **Generative Models**: Why do Generative Adversarial Networks (GANs) work so well? What theoretical properties could we use to stabilize them or avoid mode collapse?
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Non Convex Optimization&lt;/strong&gt;: How can we understand the highly non-convex loss function associated with deep neural networks? Why does stochastic gradient descent even converge?&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Overparametrization and Generalization&lt;/strong&gt;: In classical statistical theory, generalization depends on the number of parameters but not in deep learning. Why? Can we find another good measure of generalization?&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Role of Depth&lt;/strong&gt;: How does depth help a neural network to converge? What is the link between depth and generalization?&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Generative Models&lt;/strong&gt;: Why do Generative Adversarial Networks (GANs) work so well? What theoretical properties could we use to stabilize them or avoid mode collapse?&lt;/li&gt;
+&lt;/ul&gt;
 
-In this series of articles, we will try to build intuition in those four areas based on the most recent papers, with a particular focus on ICML 2018.
+&lt;p&gt;In this series of articles, we will try to build intuition in those four areas based on the most recent papers, with a particular focus on ICML 2018.&lt;/p&gt;
 
-This first article will focus on the mysteries of non-convex optimization for deep networks.
+&lt;p&gt;This first article will focus on the mysteries of non-convex optimization for deep networks.&lt;/p&gt;
 
-# Non-Convex Optimization
+&lt;h1 id=&quot;non-convex-optimization&quot;&gt;Non-Convex Optimization&lt;/h1&gt;
 
-![energy-landscape](/assets/img/blog/theory-deep-learning/energy-landscape.png)
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/energy-landscape.png&quot; alt=&quot;energy-landscape&quot; /&gt;&lt;/p&gt;
 
-&gt; I bet a lot of you have tried training a deep net of your own from scratch and walked away feeling bad about yourself because you couldn’t get it to perform. I don’t think it’s your fault. I think it’s gradient descent’s fault.
+&lt;blockquote&gt;
+  &lt;p&gt;I bet a lot of you have tried training a deep net of your own from scratch and walked away feeling bad about yourself because you couldn’t get it to perform. I don’t think it’s your fault. I think it’s gradient descent’s fault.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-stated Ali Rahimi with a provocative tone in his talk at NIPS. Stochastic Gradient Descent (SGD) is indeed the cornerstone of deep learning. It is supposed to find a solution of a highly non-convex optimization problem, and understanding when it works or not, and why, is one the most fundamental questions we would have to adress in a general theory of deep learning. More specifically, the study of non-convex optimization for deep neural networks can be divided into two questions:
+&lt;p&gt;stated Ali Rahimi with a provocative tone in his talk at NIPS. Stochastic Gradient Descent (SGD) is indeed the cornerstone of deep learning. It is supposed to find a solution of a highly non-convex optimization problem, and understanding when it works or not, and why, is one the most fundamental questions we would have to adress in a general theory of deep learning. More specifically, the study of non-convex optimization for deep neural networks can be divided into two questions:&lt;/p&gt;
 
-* What does the loss function look like?
-* Why does SGD converge?
+&lt;ul&gt;
+  &lt;li&gt;What does the loss function look like?&lt;/li&gt;
+  &lt;li&gt;Why does SGD converge?&lt;/li&gt;
+&lt;/ul&gt;
 
-# What does the loss function look like?
+&lt;h1 id=&quot;what-does-the-loss-function-look-like&quot;&gt;What does the loss function look like?&lt;/h1&gt;
 
-If I ask you to visualize a global minimum, it’s very likely that the first representation that will come to your mind will look something like this:
+&lt;p&gt;If I ask you to visualize a global minimum, it’s very likely that the first representation that will come to your mind will look something like this:&lt;/p&gt;
 
-![minimum](/assets/img/blog/theory-deep-learning/minimum.png)
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/minimum.png&quot; alt=&quot;minimum&quot; /&gt;&lt;/p&gt;
 
-And it’s normal. In a 2D-world, it’s not rare to find problems, where around a global minimum, your function will be **strictly** convex (which means that the two eigenvalues of the hessian matrix at this point will be both strictly positive). But in a world with billions of parameters, as it is the case in deep learning, what are the odds that none of the directions around a global minimum are flat? Or equivalently that the hessian contains not a single zero (or almost zero) eigenvalue?
+&lt;p&gt;And it’s normal. In a 2D-world, it’s not rare to find problems, where around a global minimum, your function will be &lt;strong&gt;strictly&lt;/strong&gt; convex (which means that the two eigenvalues of the hessian matrix at this point will be both strictly positive). But in a world with billions of parameters, as it is the case in deep learning, what are the odds that none of the directions around a global minimum are flat? Or equivalently that the hessian contains not a single zero (or almost zero) eigenvalue?&lt;/p&gt;
 
-One of the first comment of Sanjeev Arora in his tutorial was that the number of possible directions that you can take on a loss function grows exponentially with the dimension.
+&lt;p&gt;One of the first comment of Sanjeev Arora in his tutorial was that the number of possible directions that you can take on a loss function grows exponentially with the dimension.&lt;/p&gt;
 
-![curse-dimensionality](/assets/img/blog/theory-deep-learning/curse-dimensionality.png)
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/curse-dimensionality.png&quot; alt=&quot;curse-dimensionality&quot; /&gt;&lt;/p&gt;
 
-Then, intuitively, it seems likely that a global minimum will not be a point, but a **connected manifold**. Which means that if you’ve reached a global minimum, you should be able to walk around on a flat path where all the points are also minima. This has been experimentally proven on large networks by a team at Heidelberg University, in their paper [Essentially No Barriers in Neural Network Energy Landscape](https://icml.cc/Conferences/2018/Schedule?showEvent=2780)[^1]. They argue an even more general statement, namely that any two global minima can be connected through a flat path.
+&lt;p&gt;Then, intuitively, it seems likely that a global minimum will not be a point, but a &lt;strong&gt;connected manifold&lt;/strong&gt;. Which means that if you’ve reached a global minimum, you should be able to walk around on a flat path where all the points are also minima. This has been experimentally proven on large networks by a team at Heidelberg University, in their paper &lt;a href=&quot;https://icml.cc/Conferences/2018/Schedule?showEvent=2780&quot;&gt;Essentially No Barriers in Neural Network Energy Landscape&lt;/a&gt;&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. They argue an even more general statement, namely that any two global minima can be connected through a flat path.&lt;/p&gt;
 
-![no-barrier](/assets/img/blog/theory-deep-learning/no-barrier.png)
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/no-barrier.png&quot; alt=&quot;no-barrier&quot; /&gt;&lt;/p&gt;
 
-It was already known to be the case for a CNN on MNIST or an RNN on PTB[^2], but this work extended that knowledge to much bigger networks (some DenseNets and ResNets) trained on more advanced datasets (CIFAR10 and CIFAR100). To find this path, they used a heuristic coming from molecular statistical mechanics, called AutoNEB. The idea is to create an initial path (for instance linear) between your two minima, and to place pivots on that path. You then iteratively modify the positions of the pivots, such that it minimizes the loss of each pivot and make sure the distances between pivots stay about the same (by modelling the space between pivots by springs).
+&lt;p&gt;It was already known to be the case for a CNN on MNIST or an RNN on PTB&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;, but this work extended that knowledge to much bigger networks (some DenseNets and ResNets) trained on more advanced datasets (CIFAR10 and CIFAR100). To find this path, they used a heuristic coming from molecular statistical mechanics, called AutoNEB. The idea is to create an initial path (for instance linear) between your two minima, and to place pivots on that path. You then iteratively modify the positions of the pivots, such that it minimizes the loss of each pivot and make sure the distances between pivots stay about the same (by modelling the space between pivots by springs).&lt;/p&gt;
 
-If they didn’t prove that result theoretically, they gave some intuitive explanations on why such path exists:
+&lt;p&gt;If they didn’t prove that result theoretically, they gave some intuitive explanations on why such path exists:&lt;/p&gt;
 
-&gt; If we perturb a single parameter, say by adding a small constant, but leave the others free to adapt to this change to still minimise the loss, it may be argued that by adjusting somewhat, the myriad other parameters can “make up” for the change imposed on only one of them
+&lt;blockquote&gt;
+  &lt;p&gt;If we perturb a single parameter, say by adding a small constant, but leave the others free to adapt to this change to still minimise the loss, it may be argued that by adjusting somewhat, the myriad other parameters can “make up” for the change imposed on only one of them&lt;/p&gt;
+&lt;/blockquote&gt;
 
-Thus, the results of this paper can help us seeing minima in a different way, through the lens of overparametrization and high-dimensional spaces.
+&lt;p&gt;Thus, the results of this paper can help us seeing minima in a different way, through the lens of overparametrization and high-dimensional spaces.&lt;/p&gt;
 
-More generally, when thinking about the loss function of neural network, you should always have in mind that the number of possible directions at a given point is huge. Another consequence of that is the fact that saddle points must be much more abundant than local minima: at a given (critical) point, among the billions of possible directions, it’s very likely to find one that goes down (if you’re not in a global minimum). This intuition was formalized rigorously and proved empirically in a paper published at NIPS 2014: [Identifying and attacking the saddle point problem in high-dimensional non-convex optimization](https://arxiv.org/abs/1406.2572)[^6]
+&lt;p&gt;More generally, when thinking about the loss function of neural network, you should always have in mind that the number of possible directions at a given point is huge. Another consequence of that is the fact that saddle points must be much more abundant than local minima: at a given (critical) point, among the billions of possible directions, it’s very likely to find one that goes down (if you’re not in a global minimum). This intuition was formalized rigorously and proved empirically in a paper published at NIPS 2014: &lt;a href=&quot;https://arxiv.org/abs/1406.2572&quot;&gt;Identifying and attacking the saddle point problem in high-dimensional non-convex optimization&lt;/a&gt;&lt;sup id=&quot;fnref:6&quot;&gt;&lt;a href=&quot;#fn:6&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
-# Why does SGD converge (or not)?
+&lt;h1 id=&quot;why-does-sgd-converge-or-not&quot;&gt;Why does SGD converge (or not)?&lt;/h1&gt;
 
-The second important question in optimization of deep neural networks is related to the convergence properties of SGD. While this algorithm has long been seen as a faster but approximate version of gradient descent, we now have evidence that SGD actually converges to better, more general, minima[^3]. But can we formalize it and explain quantitatively the capacity of SGD to escape from local minima or saddle points?
+&lt;p&gt;The second important question in optimization of deep neural networks is related to the convergence properties of SGD. While this algorithm has long been seen as a faster but approximate version of gradient descent, we now have evidence that SGD actually converges to better, more general, minima&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;. But can we formalize it and explain quantitatively the capacity of SGD to escape from local minima or saddle points?&lt;/p&gt;
 
-## SGD modifies the loss function
+&lt;h2 id=&quot;sgd-modifies-the-loss-function&quot;&gt;SGD modifies the loss function&lt;/h2&gt;
 
-The paper [An Alternative View: When Does SGD Escape Local Minima?](https://arxiv.org/abs/1802.06175)[^4] showed that performing SGD is equivalent to doing regular gradient descent on a convolved (thus smoothed) loss function. With that point of view and under certain assumptions (shown by the authors to be often true in practice), they prove that SGD will manage to escape local minima and converge to a small region around a global minimum.
+&lt;p&gt;The paper &lt;a href=&quot;https://arxiv.org/abs/1802.06175&quot;&gt;An Alternative View: When Does SGD Escape Local Minima?&lt;/a&gt;&lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; showed that performing SGD is equivalent to doing regular gradient descent on a convolved (thus smoothed) loss function. With that point of view and under certain assumptions (shown by the authors to be often true in practice), they prove that SGD will manage to escape local minima and converge to a small region around a global minimum.&lt;/p&gt;
 
-![sgd-convolution](/assets/img/blog/theory-deep-learning/sgd-convolution.png)
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/sgd-convolution.png&quot; alt=&quot;sgd-convolution&quot; /&gt;&lt;/p&gt;
 
-## SGD is governed by stochastic differential equations
+&lt;h2 id=&quot;sgd-is-governed-by-stochastic-differential-equations&quot;&gt;SGD is governed by stochastic differential equations&lt;/h2&gt;
 
-Another approach to SGD that has really changed my vision of this algorithm is continuous SGD. The idea was presented by Yoshua Bengio during his talk [On stochastic gradient descent, flatness and generalization](http://www.iro.umontreal.ca/~bengioy/talks/ICMLW-nonconvex-14july2018.pptx.pdf), given at the ICML Workshop on Non-Convex Optimization. SGD does not move a point on a loss function, but a **cloud of points**, or in other words, **a distribution**.
+&lt;p&gt;Another approach to SGD that has really changed my vision of this algorithm is continuous SGD. The idea was presented by Yoshua Bengio during his talk &lt;a href=&quot;http://www.iro.umontreal.ca/~bengioy/talks/ICMLW-nonconvex-14july2018.pptx.pdf&quot;&gt;On stochastic gradient descent, flatness and generalization&lt;/a&gt;, given at the ICML Workshop on Non-Convex Optimization. SGD does not move a point on a loss function, but a &lt;strong&gt;cloud of points&lt;/strong&gt;, or in other words, &lt;strong&gt;a distribution&lt;/strong&gt;.&lt;/p&gt;
 
-![bengio-01](/assets/img/blog/theory-deep-learning/bengio-01.png)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/bengio-01.png&quot; alt=&quot;bengio-01&quot; /&gt;
 Slide extracted from the presentation On stochastic gradient descent, flatness and generalization, 
 by Y. Bengio, at ICML 2018. He presented an alternative way to see SGD, 
-where you replace points by distributions (clouds of points)
-{:.figure}
+where you replace points by distributions (clouds of points)&lt;/p&gt;
 
-The size of this cloud of point (i.e. the variance of the associated distribution) is proportional to the factor *learning_rate / batch_size*. A proof of this is given in the amazing paper by Pratik Chaudhari and Stefano Soatto, [Stochastic gradient descent performs variational inference](https://arxiv.org/pdf/1710.11029.pdf), converges to limit cycles for deep networks[^5], that they presented during the Workshop on Geometry in Machine Learning. This formula is quite intuitive: a low batch size means a very noisy gradient (because computed on a very small subset of the dataset), and a high learning rate means noisy steps.
+&lt;p&gt;The size of this cloud of point (i.e. the variance of the associated distribution) is proportional to the factor &lt;em&gt;learning_rate / batch_size&lt;/em&gt;. A proof of this is given in the amazing paper by Pratik Chaudhari and Stefano Soatto, &lt;a href=&quot;https://arxiv.org/pdf/1710.11029.pdf&quot;&gt;Stochastic gradient descent performs variational inference&lt;/a&gt;, converges to limit cycles for deep networks&lt;sup id=&quot;fnref:5&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;, that they presented during the Workshop on Geometry in Machine Learning. This formula is quite intuitive: a low batch size means a very noisy gradient (because computed on a very small subset of the dataset), and a high learning rate means noisy steps.&lt;/p&gt;
 
-The consequence of seeing SGD as a distribution moving over time is that the equations governing the descent are now [stochastic partial differential equations](https://en.wikipedia.org/wiki/Stochastic_partial_differential_equation). More precisely, under certain assumptions, [5] showed that the governing equation is actually a [Fokker-Planck equation](https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation).
+&lt;p&gt;The consequence of seeing SGD as a distribution moving over time is that the equations governing the descent are now &lt;a href=&quot;https://en.wikipedia.org/wiki/Stochastic_partial_differential_equation&quot;&gt;stochastic partial differential equations&lt;/a&gt;. More precisely, under certain assumptions, [5] showed that the governing equation is actually a &lt;a href=&quot;https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation&quot;&gt;Fokker-Planck equation&lt;/a&gt;.&lt;/p&gt;
 
-![continuous-sgd](/assets/img/blog/theory-deep-learning/continuous-sgd.jpeg)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/continuous-sgd.jpeg&quot; alt=&quot;continuous-sgd&quot; /&gt;
 Slide extracted from the presentation High-dimensional Geometry and Dynamics of 
 Stochastic Gradient Descent for Deep Networks, by P. Chaudhari and S. Soatto, at ICML 2018. 
 They showed how to pass from a discrete system to a continuous one described
-by the Fokker-Plank equation
-{:.figure}
+by the Fokker-Plank equation&lt;/p&gt;
 
-In statistical physics, this type of equations describes the evolution of particles exposed to a drag force (that drifts the distribution, i.e. moves its mean) and to random forces (that diffuse the distribution, i.e. increase its variance). In SGD, the drag force is modeled by the true gradient while the random forces correspond to noise inherent to the algorithm. As you can see in the slide above, the diffusion term is proportional to a temperature term T=1/β=learning_rate/(2*batch_size), which shows once again the importance of this ratio!
+&lt;p&gt;In statistical physics, this type of equations describes the evolution of particles exposed to a drag force (that drifts the distribution, i.e. moves its mean) and to random forces (that diffuse the distribution, i.e. increase its variance). In SGD, the drag force is modeled by the true gradient while the random forces correspond to noise inherent to the algorithm. As you can see in the slide above, the diffusion term is proportional to a temperature term T=1/β=learning_rate/(2*batch_size), which shows once again the importance of this ratio!&lt;/p&gt;
 
-![FokkerPlanck](/assets/img/blog/theory-deep-learning/FokkerPlanck.gif)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/FokkerPlanck.gif&quot; alt=&quot;FokkerPlanck&quot; /&gt;
 Evolution of a distribution under the Fokker-Planck equation. 
 It drifts on the left and diffuses with time. 
-Source: Wikipedia
-{:.figure}
+Source: Wikipedia&lt;/p&gt;
 
-Using this framework, Chaudhari and Soatto proved that our distribution will monotonically converge to a certain steady distribution (in the sense of the KL-divergence):
+&lt;p&gt;Using this framework, Chaudhari and Soatto proved that our distribution will monotonically converge to a certain steady distribution (in the sense of the KL-divergence):&lt;/p&gt;
 
-![theorem-5](/assets/img/blog/theory-deep-learning/theorem-5.png)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/theory-deep-learning/theorem-5.png&quot; alt=&quot;theorem-5&quot; /&gt;
 One of the main theorems of [5], proving monotonic convergence of the distribution to a steady state 
 (in the sense of the KL divergence). The second equation shows that minimizing F is equivalent to 
 minimizing a certain potential ϕ as well as maximizing the entropy of the distribution 
-(trade-off controlled by the temperature 1/β)*
-{:.figure}
+(trade-off controlled by the temperature 1/β)*&lt;/p&gt;
 
-There are several interesting points to comment in the theorem above:
+&lt;p&gt;There are several interesting points to comment in the theorem above:&lt;/p&gt;
 
-* The functional that is minimized by SGD can be rewritten as a sum of two terms (Eq. 11): the expectancy of a potential Φ, and the entropy of the distribution. The temperature 1/β controls the trade-off between those two terms.
-* The potential Φ depends only on the data and the architecture of the network (and not the optimization process). If it is equal to the loss function, SGD will converge to a global minimum. However, the paper shows that it’s rarely the case, and knowing how far Φ is from the loss function will tell you how likely your SGD will converge.
-* The entropy of the final distribution depends on the ratio *learning_rate/batch_size* (the temperature). Intuitively, the entropy is related to the size of a distribution and having a high temperature often comes down to having a distribution with high variance, which usually means a flat minimum. Since flat minima are often considered to generalize better, it’s consistent with the empirical finding that high learning and low batch size often lead to better minima.
+&lt;ul&gt;
+  &lt;li&gt;The functional that is minimized by SGD can be rewritten as a sum of two terms (Eq. 11): the expectancy of a potential Φ, and the entropy of the distribution. The temperature 1/β controls the trade-off between those two terms.&lt;/li&gt;
+  &lt;li&gt;The potential Φ depends only on the data and the architecture of the network (and not the optimization process). If it is equal to the loss function, SGD will converge to a global minimum. However, the paper shows that it’s rarely the case, and knowing how far Φ is from the loss function will tell you how likely your SGD will converge.&lt;/li&gt;
+  &lt;li&gt;The entropy of the final distribution depends on the ratio &lt;em&gt;learning_rate/batch_size&lt;/em&gt; (the temperature). Intuitively, the entropy is related to the size of a distribution and having a high temperature often comes down to having a distribution with high variance, which usually means a flat minimum. Since flat minima are often considered to generalize better, it’s consistent with the empirical finding that high learning and low batch size often lead to better minima.&lt;/li&gt;
+&lt;/ul&gt;
 
-Therefore, seeing SGD as a distribution moving over time showed us that *learning_rate/batch_size* is more meaningful than each hyperparameter separated regarding convergence and generalization. Moreover, it enabled the introduction of the potentiel of a network, related to convergence and that could give a good metric for architecture search.
+&lt;p&gt;Therefore, seeing SGD as a distribution moving over time showed us that &lt;em&gt;learning_rate/batch_size&lt;/em&gt; is more meaningful than each hyperparameter separated regarding convergence and generalization. Moreover, it enabled the introduction of the potentiel of a network, related to convergence and that could give a good metric for architecture search.&lt;/p&gt;
 
-# Conclusion
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-The quest of finding a deep learning theory can be broken down into two parts: first, building intuitions on how and why it works, through toy models and experiments, then expressing those intuitions into a mathematical form that can help us explaining our current results and making new ones.
+&lt;p&gt;The quest of finding a deep learning theory can be broken down into two parts: first, building intuitions on how and why it works, through toy models and experiments, then expressing those intuitions into a mathematical form that can help us explaining our current results and making new ones.&lt;/p&gt;
 
-In this first article, we tried to convey more intuition of both the high-dimensional loss function of neural networks and the interpretations of SGD, while showing that new kinds of formalism are being built in the objective of having a real mathematical theory of deep neural networks optimization.
+&lt;p&gt;In this first article, we tried to convey more intuition of both the high-dimensional loss function of neural networks and the interpretations of SGD, while showing that new kinds of formalism are being built in the objective of having a real mathematical theory of deep neural networks optimization.&lt;/p&gt;
 
-However, while non-convex optimization is the cornerstone of deep learning, its success comes mostly from its ability to generalize well despite a huge number of layers and parameters. This will be the object of the next part.
+&lt;p&gt;However, while non-convex optimization is the cornerstone of deep learning, its success comes mostly from its ability to generalize well despite a huge number of layers and parameters. This will be the object of the next part.&lt;/p&gt;
 
-[^1]: Felix Draxler, Kambis Veschgini, Manfred Salmhofer, Fred Hamprecht. Essentially No Barriers in Neural Network Energy Landscape, ICML 2018.
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;Felix Draxler, Kambis Veschgini, Manfred Salmhofer, Fred Hamprecht. Essentially No Barriers in Neural Network Energy Landscape, ICML 2018. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+      &lt;p&gt;C. Daniel Freeman, Joan Bruna. Topology and Geometry of Half-Rectified Network Optimization, arXiv:1611.01540, 2016. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:6&quot;&gt;
+      &lt;p&gt;Yann Dauphin, Razvan Pascanu, Caglar Gulcehre, Kyunghyun Cho, Surya Ganguli, Yoshua Bengio. Identifying and attacking the saddle point problem in high-dimensional non-convex optimization, NIPS 2014 &lt;a href=&quot;#fnref:6&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot;&gt;
+      &lt;p&gt;Nitish Shirish Keskar, Dheevatsa Mudigere, Jorge Nocedal, Mikhail Smelyanskiy, Ping Tak Peter Tang. On large-batch training for deep learning: Generalization gap and sharp minima, ICLR 2017. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot;&gt;
+      &lt;p&gt;Robert Kleinberg, Yuanzhi Li, Yang Yuan. An Alternative View: When Does SGD Escape Local Minima?, ICML 2018 &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:5&quot;&gt;
+      &lt;p&gt;Pratik Chaudhari, Stefano Soatto. Stochastic gradient descent performs variational inference, converges to limit cycles for deep network, ICLR 2018 &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science*</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" /></entry><entry><title type="html">A Little Review of Domain Adaptation in 2017</title><link href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" rel="alternate" type="text/html" title="A Little Review of Domain Adaptation in 2017" /><published>2018-01-03T00:00:00+01:00</published><updated>2018-01-03T00:00:00+01:00</updated><id>http://localhost:4000/blog/domain-adaptation-2017</id><content type="html" xml:base="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a Quora answer to the question &lt;a href=&quot;https://www.quora.com/What-are-the-most-significant-machine-learning-advances-in-2017/answer/Arthur-Pesah&quot;&gt;What are the most significant machine learning advances in 2017?&lt;/a&gt;&lt;/p&gt;
 
-[^2]: C. Daniel Freeman, Joan Bruna. Topology and Geometry of Half-Rectified Network Optimization, arXiv:1611.01540, 2016.
+&lt;p&gt;2017 has been an amazing year for domain adaptation: awesome image-to-image and language-to-language translations have been produced, adversarial methods for DA have made huge progress and very innovative algorithms have been proposed to tackle the giant problem of adapting two domains.&lt;/p&gt;
 
-[^3]: Nitish Shirish Keskar, Dheevatsa Mudigere, Jorge Nocedal, Mikhail Smelyanskiy, Ping Tak Peter Tang. On large-batch training for deep learning: Generalization gap and sharp minima, ICLR 2017.
+&lt;p&gt;By domain adaptation, I mean any algorithm trying to transfer two domains, usually called source and target (for instance paintings and real photos), into a common domain. To do so, one can chose either to translate one domain into the other (e.g. translate paintings to photos) or to find a common embedding between the two domains. When only the source domain has labels and the goal is to predict the labels of the target domain, it’s called unsupervised domain adaptation and that’s where the advances were the most incredible. There are many benchmarks to evaluate a DA algorithm, one of the most common being to predict the labels of SVHN (a dataset of digits built with house numbers) by using MNIST (the most common handwritten digits dataset) and its labels. In a year, the results have passed from 90% (with Domain Transfer Network (DTN)&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, which was already a great improvement on previous methods that turned around 82%, like DRCN&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;) to 99.2% (with self-ensembling DA&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;). Besides this quantitative analysis, the translations performed by some algorithms released this year are qualitatively amazing, particularly in visual DA and NLP.&lt;/p&gt;
 
-[^4]: Robert Kleinberg, Yuanzhi Li, Yang Yuan. An Alternative View: When Does SGD Escape Local Minima?, ICML 2018
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png&quot; alt=&quot;&quot; /&gt;
+Figure 1. Transfer of SVHN to MNIST by SBADA-GAN&lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;, May 2017. For testing a DA algorithm, one can try to predict the labels of SVHN by only using the labels of MNIST and the unsupervised translation between SVHN and MNIST.*&lt;/p&gt;
 
-[^5]: Pratik Chaudhari, Stefano Soatto. Stochastic gradient descent performs variational inference, converges to limit cycles for deep network, ICLR 2018
+&lt;p&gt;Let’s try to summarize how awesome this year has been for domain adaptation.&lt;/p&gt;
 
-[^6]: Yann Dauphin, Razvan Pascanu, Caglar Gulcehre, Kyunghyun Cho, Surya Ganguli, Yoshua Bengio. Identifying and attacking the saddle point problem in high-dimensional non-convex optimization, NIPS 2014</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science*</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" /></entry><entry><title type="html">A Little Review of Domain Adaptation in 2017</title><link href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" rel="alternate" type="text/html" title="A Little Review of Domain Adaptation in 2017" /><published>2018-01-03T00:00:00+01:00</published><updated>2018-01-03T00:00:00+01:00</updated><id>http://localhost:4000/blog/domain-adaptation-2017</id><content type="html" xml:base="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/">**Note**: This post was first published as a Quora answer to the question [What are the most significant machine learning advances in 2017?](https://www.quora.com/What-are-the-most-significant-machine-learning-advances-in-2017/answer/Arthur-Pesah)
-{:.message}
+&lt;h1 id=&quot;adversarial-domain-adaptation&quot;&gt;Adversarial Domain Adaptation&lt;/h1&gt;
 
-2017 has been an amazing year for domain adaptation: awesome image-to-image and language-to-language translations have been produced, adversarial methods for DA have made huge progress and very innovative algorithms have been proposed to tackle the giant problem of adapting two domains.
+&lt;p&gt;If 2015 saw the birth of adversarial domain adaptation (with DANN&lt;sup id=&quot;fnref:5&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;) and 2016 the birth of GAN-based domain adaptation (with CoGAN&lt;sup id=&quot;fnref:6&quot;&gt;&lt;a href=&quot;#fn:6&quot; class=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt; and DTN&lt;sup id=&quot;fnref:2:1&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; ), 2017 has seen huge improvements and amazing results with these methods. The idea behind adversarial DA is to train two neural networks: a discriminator that tries to separate the target domain from the transformed source domain, and a generator that tries to fool the discriminator to make the source domain look like the target one as much as possible. It’s basically a GAN but taking the source distribution as input instead of a uniform distribution (it is usually called a conditional GAN). I’ve realized a little animation to explain the concept more visually (you can find the code &lt;a href=&quot;https://github.com/artix41/transfer-learning-algorithms/tree/master/adda&quot;&gt;here&lt;/a&gt;):&lt;/p&gt;
 
-By domain adaptation, I mean any algorithm trying to transfer two domains, usually called source and target (for instance paintings and real photos), into a common domain. To do so, one can chose either to translate one domain into the other (e.g. translate paintings to photos) or to find a common embedding between the two domains. When only the source domain has labels and the goal is to predict the labels of the target domain, it’s called unsupervised domain adaptation and that’s where the advances were the most incredible. There are many benchmarks to evaluate a DA algorithm, one of the most common being to predict the labels of SVHN (a dataset of digits built with house numbers) by using MNIST (the most common handwritten digits dataset) and its labels. In a year, the results have passed from 90% (with Domain Transfer Network (DTN)[^1], which was already a great improvement on previous methods that turned around 82%, like DRCN[^2]) to 99.2% (with self-ensembling DA[^3]). Besides this quantitative analysis, the translations performed by some algorithms released this year are qualitatively amazing, particularly in visual DA and NLP.
-
-![](/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png)
-Figure 1. Transfer of SVHN to MNIST by SBADA-GAN[^4], May 2017. For testing a DA algorithm, one can try to predict the labels of SVHN by only using the labels of MNIST and the unsupervised translation between SVHN and MNIST.*
-{:.figure}
-
-Let’s try to summarize how awesome this year has been for domain adaptation.
-
-# Adversarial Domain Adaptation
-
-If 2015 saw the birth of adversarial domain adaptation (with DANN[^5]) and 2016 the birth of GAN-based domain adaptation (with CoGAN[^6] and DTN[^2] ), 2017 has seen huge improvements and amazing results with these methods. The idea behind adversarial DA is to train two neural networks: a discriminator that tries to separate the target domain from the transformed source domain, and a generator that tries to fool the discriminator to make the source domain look like the target one as much as possible. It’s basically a GAN but taking the source distribution as input instead of a uniform distribution (it is usually called a conditional GAN). I’ve realized a little animation to explain the concept more visually (you can find the code [here](https://github.com/artix41/transfer-learning-algorithms/tree/master/adda)):
-
-![](/assets/img/blog/domain-adaptation/gan-working.gif)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/gan-working.gif&quot; alt=&quot;&quot; /&gt;
 Figure 2. GAN-based adversarial domain adaptation for two Gaussian domains. 
 The discriminator (background) tries to separate the green distribution from the orange 
 distribution, and the generator modifies the green distribution to fool the discriminator. 
-You can find the code [here](https://github.com/artix41/transfer-learning-algorithms/tree/master/adda).
-{:.figure}
+You can find the code &lt;a href=&quot;https://github.com/artix41/transfer-learning-algorithms/tree/master/adda&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-So, what were the “significant advances” in 2017?
+&lt;p&gt;So, what were the “significant advances” in 2017?&lt;/p&gt;
 
-## ADDA
+&lt;h2 id=&quot;adda&quot;&gt;ADDA&lt;/h2&gt;
 
-First, in February, ADDA[^8] released a generalized theoretical framework for adversarial domain adaptation and achieved a 76.0% score with a simple GAN loss on SVHN → MNIST (which they thought to be the best score for an adversarial network on this task, but they had probably not heard of DTN at the time they submitted their article).
+&lt;p&gt;First, in February, ADDA&lt;sup id=&quot;fnref:8&quot;&gt;&lt;a href=&quot;#fn:8&quot; class=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt; released a generalized theoretical framework for adversarial domain adaptation and achieved a 76.0% score with a simple GAN loss on SVHN → MNIST (which they thought to be the best score for an adversarial network on this task, but they had probably not heard of DTN at the time they submitted their article).&lt;/p&gt;
 
-## CycleGAN
+&lt;h2 id=&quot;cyclegan&quot;&gt;CycleGAN&lt;/h2&gt;
 
-A month later, the most important contribution of adversarial DA occurred: the invention of the cycle-consistency loss by **CycleGAN**[^9]. This paper was a real revolution. Their idea was to train two conditional GANs, one transferring source to target, and the other target to source, and to consider a new loss, called cycle-consistency, which ensures that if you connect the two networks together it will produce an identity mapping (source → target → source). Their examples of transferring horses to zebra or painting to photos have become really famous and I consider it to be one of the coolest thing of this year! Contrary to other methods like pix2pix[^10], they didn’t train their algorithm on pairs of images (like a photo of cat and the sketch of this same cat, for pix2pix), but only on the two distributions separated, which makes their results even more impressive.
+&lt;p&gt;A month later, the most important contribution of adversarial DA occurred: the invention of the cycle-consistency loss by &lt;strong&gt;CycleGAN&lt;/strong&gt;&lt;sup id=&quot;fnref:9&quot;&gt;&lt;a href=&quot;#fn:9&quot; class=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt;. This paper was a real revolution. Their idea was to train two conditional GANs, one transferring source to target, and the other target to source, and to consider a new loss, called cycle-consistency, which ensures that if you connect the two networks together it will produce an identity mapping (source → target → source). Their examples of transferring horses to zebra or painting to photos have become really famous and I consider it to be one of the coolest thing of this year! Contrary to other methods like pix2pix&lt;sup id=&quot;fnref:10&quot;&gt;&lt;a href=&quot;#fn:10&quot; class=&quot;footnote&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;, they didn’t train their algorithm on pairs of images (like a photo of cat and the sketch of this same cat, for pix2pix), but only on the two distributions separated, which makes their results even more impressive.&lt;/p&gt;
 
-![](/assets/img/blog/domain-adaptation/cycleGAN.png)
-Figure 3. Examples of image-to-image translations with CycleGAN
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/cycleGAN.png&quot; alt=&quot;&quot; /&gt;
+Figure 3. Examples of image-to-image translations with CycleGAN&lt;/p&gt;
 
-## DiscoGAN
+&lt;h2 id=&quot;discogan&quot;&gt;DiscoGAN&lt;/h2&gt;
 
-What’s fun is that a bunch of other papers discovered the cycle-consistency loss simultaneously, between March and May, sometimes giving it another name (like reconstruction loss). It’s for instance the case of **DiscoGAN**[^11], whose loss was a bit different (cross-entropy for the GAN loss instead of MSE for instance) but they also achieved incredible results, by managing to transfer both texture properties (like transforming blonde-haired to brown-haired people, women to men or people with glasses to people without glasses) and geometrical properties (chairs to cars and faces to cars).
+&lt;p&gt;What’s fun is that a bunch of other papers discovered the cycle-consistency loss simultaneously, between March and May, sometimes giving it another name (like reconstruction loss). It’s for instance the case of &lt;strong&gt;DiscoGAN&lt;/strong&gt;&lt;sup id=&quot;fnref:11&quot;&gt;&lt;a href=&quot;#fn:11&quot; class=&quot;footnote&quot;&gt;10&lt;/a&gt;&lt;/sup&gt;, whose loss was a bit different (cross-entropy for the GAN loss instead of MSE for instance) but they also achieved incredible results, by managing to transfer both texture properties (like transforming blonde-haired to brown-haired people, women to men or people with glasses to people without glasses) and geometrical properties (chairs to cars and faces to cars).&lt;/p&gt;
 
-![discoGAN-01](/assets/img/blog/domain-adaptation/discoGAN-01.png)
-![discoGAN-02](/assets/img/blog/domain-adaptation/discoGAN-02.png)
-Figure 4. Examples of image-to-image translations with DiscoGAN
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/discoGAN-01.png&quot; alt=&quot;discoGAN-01&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/domain-adaptation/discoGAN-02.png&quot; alt=&quot;discoGAN-02&quot; /&gt;
+Figure 4. Examples of image-to-image translations with DiscoGAN&lt;/p&gt;
 
-## DualGAN
+&lt;h2 id=&quot;dualgan&quot;&gt;DualGAN&lt;/h2&gt;
 
-It’s also the case of **DualGAN**[^12], who used the cycle loss with a WGAN and other recent tricks on how to train GANs. They applied it on day ←→ night or sketch ←→ photos translations, and here are the results:
+&lt;p&gt;It’s also the case of &lt;strong&gt;DualGAN&lt;/strong&gt;&lt;sup id=&quot;fnref:12&quot;&gt;&lt;a href=&quot;#fn:12&quot; class=&quot;footnote&quot;&gt;11&lt;/a&gt;&lt;/sup&gt;, who used the cycle loss with a WGAN and other recent tricks on how to train GANs. They applied it on day ←→ night or sketch ←→ photos translations, and here are the results:&lt;/p&gt;
 
-![dualgan](/assets/img/blog/domain-adaptation/dualgan.png)
-Figure 5. Examples of image-to-image translations with DualGAN
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/dualgan.png&quot; alt=&quot;dualgan&quot; /&gt;
+Figure 5. Examples of image-to-image translations with DualGAN&lt;/p&gt;
 
-## SBADA-GAN
+&lt;h2 id=&quot;sbada-gan&quot;&gt;SBADA-GAN&lt;/h2&gt;
 
-But those 3 papers didn’t consider any dataset with a task (like classification), so didn’t give any quantitative evaluation of their method. **SBADA-GAN**[^4] did it by adding a classifier at the end of their network in order to predict the labels of both the source and the transformed target sample. During the training, pseudo-labels are assigned to the target samples and contribute to the classification loss. The score obtained for SVHN → MNIST is not very good (~76%, same as ADDA), but they achieved new state-of-the-arts on the opposite transformation (MNIST→SVHN) and on MNIST ←→ USPS (another handwritten-digits dataset very close to MNIST).
+&lt;p&gt;But those 3 papers didn’t consider any dataset with a task (like classification), so didn’t give any quantitative evaluation of their method. &lt;strong&gt;SBADA-GAN&lt;/strong&gt;&lt;sup id=&quot;fnref:4:1&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; did it by adding a classifier at the end of their network in order to predict the labels of both the source and the transformed target sample. During the training, pseudo-labels are assigned to the target samples and contribute to the classification loss. The score obtained for SVHN → MNIST is not very good (~76%, same as ADDA), but they achieved new state-of-the-arts on the opposite transformation (MNIST→SVHN) and on MNIST ←→ USPS (another handwritten-digits dataset very close to MNIST).&lt;/p&gt;
 
-## GenToAdapt
+&lt;h2 id=&quot;gentoadapt&quot;&gt;GenToAdapt&lt;/h2&gt;
 
-Other kind of adversarial architectures have been tried this year with more success on digits benchmarks, like **GenToAdapt**[^14] in April who made the first real state-of-the-art of the year in SVHN → MNIST, with a score of 92.4%. Their technique was basically to use a GAN to generate source images from both source and target samples, and to discriminate both real vs fake samples and the different classes of the source samples (like AC-GAN). The learned embedding is then used to train a third network, C, to directly predict the labels of the input samples. The figure below (from the original paper) is certainly clearer than my explanation:
+&lt;p&gt;Other kind of adversarial architectures have been tried this year with more success on digits benchmarks, like &lt;strong&gt;GenToAdapt&lt;/strong&gt;&lt;sup id=&quot;fnref:14&quot;&gt;&lt;a href=&quot;#fn:14&quot; class=&quot;footnote&quot;&gt;12&lt;/a&gt;&lt;/sup&gt; in April who made the first real state-of-the-art of the year in SVHN → MNIST, with a score of 92.4%. Their technique was basically to use a GAN to generate source images from both source and target samples, and to discriminate both real vs fake samples and the different classes of the source samples (like AC-GAN). The learned embedding is then used to train a third network, C, to directly predict the labels of the input samples. The figure below (from the original paper) is certainly clearer than my explanation:&lt;/p&gt;
 
-![gentoadapt](/assets/img/blog/domain-adaptation/gentoadapt.png)
-Figure 6. The architecture of GenToAdapt
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/gentoadapt.png&quot; alt=&quot;gentoadapt&quot; /&gt;
+Figure 6. The architecture of GenToAdapt&lt;/p&gt;
 
-## UNIT
+&lt;h2 id=&quot;unit&quot;&gt;UNIT&lt;/h2&gt;
 
-It’s also the case of **UNIT**[^15], an adversarial method proposed by Nvidia. Like in many Nvidia papers, they performed a large bunch of amazing experiments (image-to-image translation between different outside conditions on the road, between GTA and reality, between different breeds of dogs, etc.). They have also tested their algorithm on SVHN → MNIST, and obtained 90.53%, which is very close to DTN score, but they manage to transfer much higher-resolution images. Their technique is based on CoGAN[^6], which consists in two GANs, one for generating the source domain and one for the target domain, with weight-sharing for some layers. Nvidia’s main contribution was to replace the generator by a VAE. They indeed show that the VAE loss is equivalent to the cycle-consistency constraint described in the previous papers.
+&lt;p&gt;It’s also the case of &lt;strong&gt;UNIT&lt;/strong&gt;&lt;sup id=&quot;fnref:15&quot;&gt;&lt;a href=&quot;#fn:15&quot; class=&quot;footnote&quot;&gt;13&lt;/a&gt;&lt;/sup&gt;, an adversarial method proposed by Nvidia. Like in many Nvidia papers, they performed a large bunch of amazing experiments (image-to-image translation between different outside conditions on the road, between GTA and reality, between different breeds of dogs, etc.). They have also tested their algorithm on SVHN → MNIST, and obtained 90.53%, which is very close to DTN score, but they manage to transfer much higher-resolution images. Their technique is based on CoGAN&lt;sup id=&quot;fnref:6:1&quot;&gt;&lt;a href=&quot;#fn:6&quot; class=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;, which consists in two GANs, one for generating the source domain and one for the target domain, with weight-sharing for some layers. Nvidia’s main contribution was to replace the generator by a VAE. They indeed show that the VAE loss is equivalent to the cycle-consistency constraint described in the previous papers.&lt;/p&gt;
 
-![UNIT](/assets/img/blog/domain-adaptation/UNIT.png)
-Figure 7. Examples of image-to-image translations with UNIT
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/UNIT.png&quot; alt=&quot;UNIT&quot; /&gt;
+Figure 7. Examples of image-to-image translations with UNIT&lt;/p&gt;
 
-## StarGAN
+&lt;h2 id=&quot;stargan&quot;&gt;StarGAN&lt;/h2&gt;
 
-However, those architectures are only capable of transferring one source domain to one target domain at a time. But if you have multiple domains, there should be a way to train a network to perform transfers in all the domains. In November **StarGAN**[^17] adapted CycleGAN to this so-called multi-source domain adaptation problem. Their results in transferring different hair colors or emotions for the same person were pretty amazing as you can see:
+&lt;p&gt;However, those architectures are only capable of transferring one source domain to one target domain at a time. But if you have multiple domains, there should be a way to train a network to perform transfers in all the domains. In November &lt;strong&gt;StarGAN&lt;/strong&gt;&lt;sup id=&quot;fnref:17&quot;&gt;&lt;a href=&quot;#fn:17&quot; class=&quot;footnote&quot;&gt;14&lt;/a&gt;&lt;/sup&gt; adapted CycleGAN to this so-called multi-source domain adaptation problem. Their results in transferring different hair colors or emotions for the same person were pretty amazing as you can see:&lt;/p&gt;
 
-![StarGAN](/assets/img/blog/domain-adaptation/StarGAN.png)
-Figure 8. Example of multi-domain image translations with StarGAN
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/StarGAN.png&quot; alt=&quot;StarGAN&quot; /&gt;
+Figure 8. Example of multi-domain image translations with StarGAN&lt;/p&gt;
 
-## Word Translation Without Parallel Data
+&lt;h2 id=&quot;word-translation-without-parallel-data&quot;&gt;Word Translation Without Parallel Data&lt;/h2&gt;
 
-It might seem from the examples above that the DA community is putting all its efforts into computer vision (CV). But one of the most impressive (and shared) DA paper of the year is in natural language processing (NLP) : **Word Translation Without Parallel Data**[^18]. They basically used adversarial DA to find a common embedding between samples from two languages (source and target), and managed to perform very accurate translations without having trained on any example of translation! If you read the paper, you can notice that the expression “domain adaptation” haven’t been used once… Since most DA folks are into computer vision, it seems that the NLP guys who wrote this paper were not aware that their work entered into domain adaptation. So I think NLP would benefit a great deal by testing on their data all the brand new DA methods that the CV community has invented this year.
+&lt;p&gt;It might seem from the examples above that the DA community is putting all its efforts into computer vision (CV). But one of the most impressive (and shared) DA paper of the year is in natural language processing (NLP) : &lt;strong&gt;Word Translation Without Parallel Data&lt;/strong&gt;&lt;sup id=&quot;fnref:18&quot;&gt;&lt;a href=&quot;#fn:18&quot; class=&quot;footnote&quot;&gt;15&lt;/a&gt;&lt;/sup&gt;. They basically used adversarial DA to find a common embedding between samples from two languages (source and target), and managed to perform very accurate translations without having trained on any example of translation! If you read the paper, you can notice that the expression “domain adaptation” haven’t been used once… Since most DA folks are into computer vision, it seems that the NLP guys who wrote this paper were not aware that their work entered into domain adaptation. So I think NLP would benefit a great deal by testing on their data all the brand new DA methods that the CV community has invented this year.&lt;/p&gt;
 
-![translation-without-pairs](/assets/img/blog/domain-adaptation/translation-without-pairs.png)
-Figure 9. Alignement of the embedding word spaces of the source (english) and the target (italian) domains.
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/translation-without-pairs.png&quot; alt=&quot;translation-without-pairs&quot; /&gt;
+Figure 9. Alignement of the embedding word spaces of the source (english) and the target (italian) domains.&lt;/p&gt;
 
-## Pix2Pix HD
+&lt;h2 id=&quot;pix2pix-hd&quot;&gt;Pix2Pix HD&lt;/h2&gt;
 
-Finally, I have talked only about unpaired domain adaptation (where you don’t use any pair of corresponding source/target samples during the training), but paired DA has also known a little revolution with **pix2pixHD**[^19]. It’s basically an improved version of pix2pix (a conditional GAN trained on pairs of images) with many tricks to make it scalable to bigger images. They trained their network to transform semantic maps into realistic photos of street scenes, as you can see on the animation below:
+&lt;p&gt;Finally, I have talked only about unpaired domain adaptation (where you don’t use any pair of corresponding source/target samples during the training), but paired DA has also known a little revolution with &lt;strong&gt;pix2pixHD&lt;/strong&gt;&lt;sup id=&quot;fnref:19&quot;&gt;&lt;a href=&quot;#fn:19&quot; class=&quot;footnote&quot;&gt;16&lt;/a&gt;&lt;/sup&gt;. It’s basically an improved version of pix2pix (a conditional GAN trained on pairs of images) with many tricks to make it scalable to bigger images. They trained their network to transform semantic maps into realistic photos of street scenes, as you can see on the animation below:&lt;/p&gt;
 
-![pix2pixHD](/assets/img/blog/domain-adaptation/pix2pixHD.gif)
-Figure 10. Translation of a semantic map (map of labels) to a real street scene with pix2pixHD
-{:.figure}
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/pix2pixHD.gif&quot; alt=&quot;pix2pixHD&quot; /&gt;
+Figure 10. Translation of a semantic map (map of labels) to a real street scene with pix2pixHD&lt;/p&gt;
 
-# Embedding methods
+&lt;h1 id=&quot;embedding-methods&quot;&gt;Embedding methods&lt;/h1&gt;
 
-Apart from adversarial DA, many other methods have been tried this year, some of them being very successful. That’s the case of two recent methods which try to find a common embedding between the source and target domains, leading at the end to a single neural network capable of classifying both source and target samples.
+&lt;p&gt;Apart from adversarial DA, many other methods have been tried this year, some of them being very successful. That’s the case of two recent methods which try to find a common embedding between the source and target domains, leading at the end to a single neural network capable of classifying both source and target samples.&lt;/p&gt;
 
-## Associative DA
+&lt;h2 id=&quot;associative-da&quot;&gt;Associative DA&lt;/h2&gt;
 
-The first one is **Associative DA** $$ DA_{assoc} $$[^20] who achieved a score of **97.6%** on SVHN→MNIST. In order to find the best embedding, they used the new trend of 2017… cycle-consistency loss! Yes, again, but this time without any GAN or other adversarial network: they just try to learn an embedding (last layer of a neural network) such that the probability of translating a source sample to a target sample (based on the distance between the two points in the embedding space), then converting back this target sample to another source sample will be high if the two source samples belong to the same class.
+&lt;p&gt;The first one is &lt;strong&gt;Associative DA&lt;/strong&gt; &lt;code class=&quot;MathJax_Preview&quot;&gt;DA_{assoc}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;DA_{assoc}&lt;/script&gt;&lt;sup id=&quot;fnref:20&quot;&gt;&lt;a href=&quot;#fn:20&quot; class=&quot;footnote&quot;&gt;17&lt;/a&gt;&lt;/sup&gt; who achieved a score of &lt;strong&gt;97.6%&lt;/strong&gt; on SVHN→MNIST. In order to find the best embedding, they used the new trend of 2017… cycle-consistency loss! Yes, again, but this time without any GAN or other adversarial network: they just try to learn an embedding (last layer of a neural network) such that the probability of translating a source sample to a target sample (based on the distance between the two points in the embedding space), then converting back this target sample to another source sample will be high if the two source samples belong to the same class.&lt;/p&gt;
 
-## Self-Ensembling DA
+&lt;h2 id=&quot;self-ensembling-da&quot;&gt;Self-Ensembling DA&lt;/h2&gt;
 
-The second one is **Self-Ensembling DA**[^3], who really destroyed our benchmark SVHN→MNIST with a score of **99.2%** ! We’ll have to find other benchmarks next year! They did this exploit by adapting Mean Teacher − a method coming from semi-supervised learning that has achieved recent SOTA in this field − to domain adaptation. The idea is to have two networks, a student and a teacher, and to make the weights of the teacher a moving average of all the weights that the student got during training. Then, labeled source samples are used to train the student to be a good classifier, and unlabeled target samples to train the student to be like the teacher (with a consistency loss). You can find a more visual explanation [here](https://thecuriousaicompany.com/mean-teacher/).
+&lt;p&gt;The second one is &lt;strong&gt;Self-Ensembling DA&lt;/strong&gt;&lt;sup id=&quot;fnref:3:1&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;, who really destroyed our benchmark SVHN→MNIST with a score of &lt;strong&gt;99.2%&lt;/strong&gt; ! We’ll have to find other benchmarks next year! They did this exploit by adapting Mean Teacher − a method coming from semi-supervised learning that has achieved recent SOTA in this field − to domain adaptation. The idea is to have two networks, a student and a teacher, and to make the weights of the teacher a moving average of all the weights that the student got during training. Then, labeled source samples are used to train the student to be a good classifier, and unlabeled target samples to train the student to be like the teacher (with a consistency loss). You can find a more visual explanation &lt;a href=&quot;https://thecuriousaicompany.com/mean-teacher/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-# Optimal Transport
+&lt;h1 id=&quot;optimal-transport&quot;&gt;Optimal Transport&lt;/h1&gt;
 
-Another kind of method has been developed this year: domain adaptation based on optimal transport. Optimal transport is a huge area of applied mathematics, consisting in finding the best transport plan from one distribution to another, by minimizing the total cost of transporting a source mass to a target point. For instance, if you consider two sets of points (with the same number of points each), source and target, and take as the cost function simply the euclidean distance, optimal transport asks you to associate every source point to a target points, so that the total distance is minimized. Here is the solution for two Gaussian domains:
+&lt;p&gt;Another kind of method has been developed this year: domain adaptation based on optimal transport. Optimal transport is a huge area of applied mathematics, consisting in finding the best transport plan from one distribution to another, by minimizing the total cost of transporting a source mass to a target point. For instance, if you consider two sets of points (with the same number of points each), source and target, and take as the cost function simply the euclidean distance, optimal transport asks you to associate every source point to a target points, so that the total distance is minimized. Here is the solution for two Gaussian domains:&lt;/p&gt;
 
-![simple-ot](/assets/img/blog/domain-adaptation/simple-ot.png)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/simple-ot.png&quot; alt=&quot;simple-ot&quot; /&gt;
 Figure 11. Best transport plan between two Gaussian domains. 
 Each source point is transported to a target point, and the total distance is minimized. 
-This graph has been produced with the library [POT](https://github.com/rflamary/POT).
-{:.figure}
+This graph has been produced with the library &lt;a href=&quot;https://github.com/rflamary/POT&quot;&gt;POT&lt;/a&gt;.&lt;/p&gt;
 
-This [blog article](https://vincentherrmann.github.io/blog/wasserstein/) is an excellent introduction if you want to learn more about OT.
+&lt;p&gt;This &lt;a href=&quot;https://vincentherrmann.github.io/blog/wasserstein/&quot;&gt;blog article&lt;/a&gt; is an excellent introduction if you want to learn more about OT.&lt;/p&gt;
 
-If you start to understand a bit domain adaptation, I think you can now clearly see the link between OT and DA. The relation between those two fields had been theorized in 2016[^22], but a very interesting algorithm has come out in 2017: **Joint Distribution Optimal Transportation (JDOT)**[^23]. Their method is an iterative process: at each iteration, pseudo-labels are given to every target points (at first using a classifier trained on the source samples). Then, the goal is to transport every source point to a target point, minimizing not only the total distance traveled, but also the number of change of label during the transport (between the label of the source point and the pseudo-label of the target point). I made a visual explanation here : [A Visual Explanation of JDOT Algorithm](https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md), summarized in this GIF (not sure if understandable without pausing at each step):
+&lt;p&gt;If you start to understand a bit domain adaptation, I think you can now clearly see the link between OT and DA. The relation between those two fields had been theorized in 2016&lt;sup id=&quot;fnref:22&quot;&gt;&lt;a href=&quot;#fn:22&quot; class=&quot;footnote&quot;&gt;18&lt;/a&gt;&lt;/sup&gt;, but a very interesting algorithm has come out in 2017: &lt;strong&gt;Joint Distribution Optimal Transportation (JDOT)&lt;/strong&gt;&lt;sup id=&quot;fnref:23&quot;&gt;&lt;a href=&quot;#fn:23&quot; class=&quot;footnote&quot;&gt;19&lt;/a&gt;&lt;/sup&gt;. Their method is an iterative process: at each iteration, pseudo-labels are given to every target points (at first using a classifier trained on the source samples). Then, the goal is to transport every source point to a target point, minimizing not only the total distance traveled, but also the number of change of label during the transport (between the label of the source point and the pseudo-label of the target point). I made a visual explanation here : &lt;a href=&quot;https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md&quot;&gt;A Visual Explanation of JDOT Algorithm&lt;/a&gt;, summarized in this GIF (not sure if understandable without pausing at each step):&lt;/p&gt;
 
-![animation](/assets/img/blog/domain-adaptation/animation.gif)
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/domain-adaptation/animation.gif&quot; alt=&quot;animation&quot; /&gt;
 Figure 12. Animation showing the different steps of the JDOT algorithm. 
 You can find all those images separated and associated to some explanations 
-[here](https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md)
-{:.figure}
+&lt;a href=&quot;https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-# Conclusion
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-To sum it up, not only has 2017 destroyed some domain adaptation benchmarks, it has also produced the first high-quality translations from one domain to another (as you can see in all those pictures above). But we can still do much better on many more complicated benchmarks and adapt DA to other areas of machine learning (like reinforcement learning and NLP), so 2018 has all its chances to be as awesome as 2017, and I look forward to see what it gives!
+&lt;p&gt;To sum it up, not only has 2017 destroyed some domain adaptation benchmarks, it has also produced the first high-quality translations from one domain to another (as you can see in all those pictures above). But we can still do much better on many more complicated benchmarks and adapt DA to other areas of machine learning (like reinforcement learning and NLP), so 2018 has all its chances to be as awesome as 2017, and I look forward to see what it gives!&lt;/p&gt;
 
-If you want to learn more about domain adaptation, I’m maintaining an updated list of great resources (papers, datasets, results, etc.) about DA and transfer learning on [this GitHub repository](https://github.com/artix41/awesome-transfer-learning).
+&lt;p&gt;If you want to learn more about domain adaptation, I’m maintaining an updated list of great resources (papers, datasets, results, etc.) about DA and transfer learning on &lt;a href=&quot;https://github.com/artix41/awesome-transfer-learning&quot;&gt;this GitHub repository&lt;/a&gt;.&lt;/p&gt;
 
-**Disclaimer**: the description of those papers only corresponds to my current understanding of them, so take it with a grain of salt and don’t hesitate to tell me if I am incorrect or imprecise in some of my explanations. Concerning the results I give, they are only the ones given in the original papers and a more rigorous methodology should be used in order to make a real comparison.
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: the description of those papers only corresponds to my current understanding of them, so take it with a grain of salt and don’t hesitate to tell me if I am incorrect or imprecise in some of my explanations. Concerning the results I give, they are only the ones given in the original papers and a more rigorous methodology should be used in order to make a real comparison.&lt;/p&gt;
 
-[^1]: [Unsupervised Cross-domain Image Generation](https://arxiv.org/pdf/1611.02200.pdf) (2016)
-[^2]: [Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation](https://arxiv.org/pdf/1607.03516.pdf) (2016)
-[^3]: [Self-ensembling for domain adaptation](https://arxiv.org/pdf/1706.05208.pdf) (2017)
-[^4]: [From source to target and back: symmetric bi-directional adaptive GAN](https://arxiv.org/pdf/1705.08824.pdf) (2017)
-[^5]: [Domain-Adversarial Training of Neural Networks](https://arxiv.org/pdf/1505.07818.pdf) (2015)
-[^6]: [Coupled Generative Adversarial Networks](https://arxiv.org/pdf/1606.07536.pdf) (2016)
-[^8]: [Adaptative Discriminative Domain Adaptation](https://arxiv.org/pdf/1702.05464.pdf) (2017)
-[^9]: [Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks](https://arxiv.org/pdf/1703.10593) (2017)
-[^10]: [Image-to-Image Translation with Conditional Adversarial Networks](https://arxiv.org/pdf/1611.07004.pdf) (2016)
-[^11]: [Learning to Discover Cross-Domain Relations with Generative Adversarial Networks](https://arxiv.org/pdf/1703.05192.pdf) (2017)
-[^12]: [DualGAN: Unsupervised Dual Learning for Image-to-Image Translation](https://arxiv.org/pdf/1704.02510.pdf) (2017)
-[^14]: [Generate To Adapt: Aligning Domains using Generative Adversarial Networks](https://arxiv.org/pdf/1704.01705.pdf) (2017)
-[^15]: [Unsupervised Image-to-Image Translation Networks](https://arxiv.org/pdf/1703.00848.pdf) (2017)
-[^17]: [StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation](https://arxiv.org/pdf/1711.09020.pdf) (2017)
-[^18]: [Word Translation without Parallel Data]() (2017)
-[^19]: [High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs](https://arxiv.org/pdf/1711.11585.pdf)
-[^20]: [Associative Domain Adaptation](https://arxiv.org/pdf/1708.00938.pdf) (2017)
-[^22]: [Theoretical Analysis of Domain Adaptation with Optimal Transport](https://arxiv.org/pdf/1610.04420.pdf) (2016)
-[^23]: [Joint distribution optimal transportation for domain adaptation](https://arxiv.org/pdf/1705.08848.pdf) (2017)</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="machine-learning" /><summary type="html">Note: This post was first published as a Quora answer to the question What are the most significant machine learning advances in 2017?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" /></entry></feed>
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1611.02200.pdf&quot;&gt;Unsupervised Cross-domain Image Generation&lt;/a&gt; (2016) &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1607.03516.pdf&quot;&gt;Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation&lt;/a&gt; (2016) &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt; &lt;a href=&quot;#fnref:2:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1706.05208.pdf&quot;&gt;Self-ensembling for domain adaptation&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt; &lt;a href=&quot;#fnref:3:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1705.08824.pdf&quot;&gt;From source to target and back: symmetric bi-directional adaptive GAN&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt; &lt;a href=&quot;#fnref:4:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:5&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1505.07818.pdf&quot;&gt;Domain-Adversarial Training of Neural Networks&lt;/a&gt; (2015) &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:6&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1606.07536.pdf&quot;&gt;Coupled Generative Adversarial Networks&lt;/a&gt; (2016) &lt;a href=&quot;#fnref:6&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt; &lt;a href=&quot;#fnref:6:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:8&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1702.05464.pdf&quot;&gt;Adaptative Discriminative Domain Adaptation&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:8&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:9&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1703.10593&quot;&gt;Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:9&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:10&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1611.07004.pdf&quot;&gt;Image-to-Image Translation with Conditional Adversarial Networks&lt;/a&gt; (2016) &lt;a href=&quot;#fnref:10&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:11&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1703.05192.pdf&quot;&gt;Learning to Discover Cross-Domain Relations with Generative Adversarial Networks&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:11&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:12&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1704.02510.pdf&quot;&gt;DualGAN: Unsupervised Dual Learning for Image-to-Image Translation&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:12&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:14&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1704.01705.pdf&quot;&gt;Generate To Adapt: Aligning Domains using Generative Adversarial Networks&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:14&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:15&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1703.00848.pdf&quot;&gt;Unsupervised Image-to-Image Translation Networks&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:15&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:17&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1711.09020.pdf&quot;&gt;StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:17&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:18&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;&quot;&gt;Word Translation without Parallel Data&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:18&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:19&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1711.11585.pdf&quot;&gt;High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs&lt;/a&gt; &lt;a href=&quot;#fnref:19&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:20&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1708.00938.pdf&quot;&gt;Associative Domain Adaptation&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:20&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:22&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1610.04420.pdf&quot;&gt;Theoretical Analysis of Domain Adaptation with Optimal Transport&lt;/a&gt; (2016) &lt;a href=&quot;#fnref:22&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:23&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1705.08848.pdf&quot;&gt;Joint distribution optimal transportation for domain adaptation&lt;/a&gt; (2017) &lt;a href=&quot;#fnref:23&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="machine-learning" /><summary type="html">Note: This post was first published as a Quora answer to the question What are the most significant machine learning advances in 2017?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" /></entry></feed>
