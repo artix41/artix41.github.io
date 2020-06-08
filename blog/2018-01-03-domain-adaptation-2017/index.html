@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>A Little Review of Domain Adaptation in 2017 | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="A Little Review of Domain Adaptation in 2017" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" />
+<meta property="og:url" content="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-01-03T00:00:00+01:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/","headline":"A Little Review of Domain Adaptation in 2017","dateModified":"2018-01-03T00:00:00+01:00","datePublished":"2018-01-03T00:00:00+01:00","image":"http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg","author":{"@type":"Person","name":"Arthur Pesah"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"description":"Research blog","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-domain-adaptation-2017" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        A Little Review of Domain Adaptation in 2017
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2018-01-03T00:00:00+01:00">03 Jan 2018</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-machine-learning/" class="flip-title">Machine Learning</a>
+
+    </p>
+
+    
+    
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/teaser_high_res.jpg"
+    
+    alt="A Little Review of Domain Adaptation in 2017"><img src="/assets/img/blog/domain-adaptation/teaser_high_res.jpg"
+    
+    alt="A Little Review of Domain Adaptation in 2017"></hy-img>
+
+
+
+      </div>
+      
+    
+
+    
+
+
+
+  
+
+
+  </header>
+
+  
+    <p class="message"><strong>Note</strong>: This post was first published as a Quora answer to the question <a href="https://www.quora.com/What-are-the-most-significant-machine-learning-advances-in-2017/answer/Arthur-Pesah">What are the most significant machine learning advances in 2017?</a></p>
+
+<p>2017 has been an amazing year for domain adaptation: awesome image-to-image and language-to-language translations have been produced, adversarial methods for DA have made huge progress and very innovative algorithms have been proposed to tackle the giant problem of adapting two domains.</p>
+
+<p>By domain adaptation, I mean any algorithm trying to transfer two domains, usually called source and target (for instance paintings and real photos), into a common domain. To do so, one can chose either to translate one domain into the other (e.g. translate paintings to photos) or to find a common embedding between the two domains. When only the source domain has labels and the goal is to predict the labels of the target domain, it’s called unsupervised domain adaptation and that’s where the advances were the most incredible. There are many benchmarks to evaluate a DA algorithm, one of the most common being to predict the labels of SVHN (a dataset of digits built with house numbers) by using MNIST (the most common handwritten digits dataset) and its labels. In a year, the results have passed from 90% (with Domain Transfer Network (DTN)<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>, which was already a great improvement on previous methods that turned around 82%, like DRCN<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>) to 99.2% (with self-ensembling DA<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>). Besides this quantitative analysis, the translations performed by some algorithms released this year are qualitatively amazing, particularly in visual DA and NLP.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png" alt=""><img src="/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png" alt=""></hy-img>
+
+Figure 1. Transfer of SVHN to MNIST by SBADA-GAN<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>, May 2017. For testing a DA algorithm, one can try to predict the labels of SVHN by only using the labels of MNIST and the unsupervised translation between SVHN and MNIST.*</p>
+
+<p>Let’s try to summarize how awesome this year has been for domain adaptation.</p>
+
+<h1 id="adversarial-domain-adaptation">Adversarial Domain Adaptation</h1>
+
+<p>If 2015 saw the birth of adversarial domain adaptation (with DANN<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup>) and 2016 the birth of GAN-based domain adaptation (with CoGAN<sup id="fnref:6"><a href="#fn:6" class="footnote">6</a></sup> and DTN<sup id="fnref:2:1"><a href="#fn:2" class="footnote">2</a></sup> ), 2017 has seen huge improvements and amazing results with these methods. The idea behind adversarial DA is to train two neural networks: a discriminator that tries to separate the target domain from the transformed source domain, and a generator that tries to fool the discriminator to make the source domain look like the target one as much as possible. It’s basically a GAN but taking the source distribution as input instead of a uniform distribution (it is usually called a conditional GAN). I’ve realized a little animation to explain the concept more visually (you can find the code <a href="https://github.com/artix41/transfer-learning-algorithms/tree/master/adda">here</a>):</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/gan-working.gif" alt=""><img src="/assets/img/blog/domain-adaptation/gan-working.gif" alt=""></hy-img>
+
+Figure 2. GAN-based adversarial domain adaptation for two Gaussian domains. 
+The discriminator (background) tries to separate the green distribution from the orange 
+distribution, and the generator modifies the green distribution to fool the discriminator. 
+You can find the code <a href="https://github.com/artix41/transfer-learning-algorithms/tree/master/adda">here</a>.</p>
+
+<p>So, what were the “significant advances” in 2017?</p>
+
+<h2 id="adda">ADDA</h2>
+
+<p>First, in February, ADDA<sup id="fnref:8"><a href="#fn:8" class="footnote">7</a></sup> released a generalized theoretical framework for adversarial domain adaptation and achieved a 76.0% score with a simple GAN loss on SVHN → MNIST (which they thought to be the best score for an adversarial network on this task, but they had probably not heard of DTN at the time they submitted their article).</p>
+
+<h2 id="cyclegan">CycleGAN</h2>
+
+<p>A month later, the most important contribution of adversarial DA occurred: the invention of the cycle-consistency loss by <strong>CycleGAN</strong><sup id="fnref:9"><a href="#fn:9" class="footnote">8</a></sup>. This paper was a real revolution. Their idea was to train two conditional GANs, one transferring source to target, and the other target to source, and to consider a new loss, called cycle-consistency, which ensures that if you connect the two networks together it will produce an identity mapping (source → target → source). Their examples of transferring horses to zebra or painting to photos have become really famous and I consider it to be one of the coolest thing of this year! Contrary to other methods like pix2pix<sup id="fnref:10"><a href="#fn:10" class="footnote">9</a></sup>, they didn’t train their algorithm on pairs of images (like a photo of cat and the sketch of this same cat, for pix2pix), but only on the two distributions separated, which makes their results even more impressive.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/cycleGAN.png" alt=""><img src="/assets/img/blog/domain-adaptation/cycleGAN.png" alt=""></hy-img>
+
+Figure 3. Examples of image-to-image translations with CycleGAN</p>
+
+<h2 id="discogan">DiscoGAN</h2>
+
+<p>What’s fun is that a bunch of other papers discovered the cycle-consistency loss simultaneously, between March and May, sometimes giving it another name (like reconstruction loss). It’s for instance the case of <strong>DiscoGAN</strong><sup id="fnref:11"><a href="#fn:11" class="footnote">10</a></sup>, whose loss was a bit different (cross-entropy for the GAN loss instead of MSE for instance) but they also achieved incredible results, by managing to transfer both texture properties (like transforming blonde-haired to brown-haired people, women to men or people with glasses to people without glasses) and geometrical properties (chairs to cars and faces to cars).</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/discoGAN-01.png" alt="discoGAN-01"><img src="/assets/img/blog/domain-adaptation/discoGAN-01.png" alt="discoGAN-01"></hy-img>
+
+<hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/discoGAN-02.png" alt="discoGAN-02"><img src="/assets/img/blog/domain-adaptation/discoGAN-02.png" alt="discoGAN-02"></hy-img>
+
+Figure 4. Examples of image-to-image translations with DiscoGAN</p>
+
+<h2 id="dualgan">DualGAN</h2>
+
+<p>It’s also the case of <strong>DualGAN</strong><sup id="fnref:12"><a href="#fn:12" class="footnote">11</a></sup>, who used the cycle loss with a WGAN and other recent tricks on how to train GANs. They applied it on day ←→ night or sketch ←→ photos translations, and here are the results:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/dualgan.png" alt="dualgan"><img src="/assets/img/blog/domain-adaptation/dualgan.png" alt="dualgan"></hy-img>
+
+Figure 5. Examples of image-to-image translations with DualGAN</p>
+
+<h2 id="sbada-gan">SBADA-GAN</h2>
+
+<p>But those 3 papers didn’t consider any dataset with a task (like classification), so didn’t give any quantitative evaluation of their method. <strong>SBADA-GAN</strong><sup id="fnref:4:1"><a href="#fn:4" class="footnote">4</a></sup> did it by adding a classifier at the end of their network in order to predict the labels of both the source and the transformed target sample. During the training, pseudo-labels are assigned to the target samples and contribute to the classification loss. The score obtained for SVHN → MNIST is not very good (~76%, same as ADDA), but they achieved new state-of-the-arts on the opposite transformation (MNIST→SVHN) and on MNIST ←→ USPS (another handwritten-digits dataset very close to MNIST).</p>
+
+<h2 id="gentoadapt">GenToAdapt</h2>
+
+<p>Other kind of adversarial architectures have been tried this year with more success on digits benchmarks, like <strong>GenToAdapt</strong><sup id="fnref:14"><a href="#fn:14" class="footnote">12</a></sup> in April who made the first real state-of-the-art of the year in SVHN → MNIST, with a score of 92.4%. Their technique was basically to use a GAN to generate source images from both source and target samples, and to discriminate both real vs fake samples and the different classes of the source samples (like AC-GAN). The learned embedding is then used to train a third network, C, to directly predict the labels of the input samples. The figure below (from the original paper) is certainly clearer than my explanation:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/gentoadapt.png" alt="gentoadapt"><img src="/assets/img/blog/domain-adaptation/gentoadapt.png" alt="gentoadapt"></hy-img>
+
+Figure 6. The architecture of GenToAdapt</p>
+
+<h2 id="unit">UNIT</h2>
+
+<p>It’s also the case of <strong>UNIT</strong><sup id="fnref:15"><a href="#fn:15" class="footnote">13</a></sup>, an adversarial method proposed by Nvidia. Like in many Nvidia papers, they performed a large bunch of amazing experiments (image-to-image translation between different outside conditions on the road, between GTA and reality, between different breeds of dogs, etc.). They have also tested their algorithm on SVHN → MNIST, and obtained 90.53%, which is very close to DTN score, but they manage to transfer much higher-resolution images. Their technique is based on CoGAN<sup id="fnref:6:1"><a href="#fn:6" class="footnote">6</a></sup>, which consists in two GANs, one for generating the source domain and one for the target domain, with weight-sharing for some layers. Nvidia’s main contribution was to replace the generator by a VAE. They indeed show that the VAE loss is equivalent to the cycle-consistency constraint described in the previous papers.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/UNIT.png" alt="UNIT"><img src="/assets/img/blog/domain-adaptation/UNIT.png" alt="UNIT"></hy-img>
+
+Figure 7. Examples of image-to-image translations with UNIT</p>
+
+<h2 id="stargan">StarGAN</h2>
+
+<p>However, those architectures are only capable of transferring one source domain to one target domain at a time. But if you have multiple domains, there should be a way to train a network to perform transfers in all the domains. In November <strong>StarGAN</strong><sup id="fnref:17"><a href="#fn:17" class="footnote">14</a></sup> adapted CycleGAN to this so-called multi-source domain adaptation problem. Their results in transferring different hair colors or emotions for the same person were pretty amazing as you can see:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/StarGAN.png" alt="StarGAN"><img src="/assets/img/blog/domain-adaptation/StarGAN.png" alt="StarGAN"></hy-img>
+
+Figure 8. Example of multi-domain image translations with StarGAN</p>
+
+<h2 id="word-translation-without-parallel-data">Word Translation Without Parallel Data</h2>
+
+<p>It might seem from the examples above that the DA community is putting all its efforts into computer vision (CV). But one of the most impressive (and shared) DA paper of the year is in natural language processing (NLP) : <strong>Word Translation Without Parallel Data</strong><sup id="fnref:18"><a href="#fn:18" class="footnote">15</a></sup>. They basically used adversarial DA to find a common embedding between samples from two languages (source and target), and managed to perform very accurate translations without having trained on any example of translation! If you read the paper, you can notice that the expression “domain adaptation” haven’t been used once… Since most DA folks are into computer vision, it seems that the NLP guys who wrote this paper were not aware that their work entered into domain adaptation. So I think NLP would benefit a great deal by testing on their data all the brand new DA methods that the CV community has invented this year.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/translation-without-pairs.png" alt="translation-without-pairs"><img src="/assets/img/blog/domain-adaptation/translation-without-pairs.png" alt="translation-without-pairs"></hy-img>
+
+Figure 9. Alignement of the embedding word spaces of the source (english) and the target (italian) domains.</p>
+
+<h2 id="pix2pix-hd">Pix2Pix HD</h2>
+
+<p>Finally, I have talked only about unpaired domain adaptation (where you don’t use any pair of corresponding source/target samples during the training), but paired DA has also known a little revolution with <strong>pix2pixHD</strong><sup id="fnref:19"><a href="#fn:19" class="footnote">16</a></sup>. It’s basically an improved version of pix2pix (a conditional GAN trained on pairs of images) with many tricks to make it scalable to bigger images. They trained their network to transform semantic maps into realistic photos of street scenes, as you can see on the animation below:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/pix2pixHD.gif" alt="pix2pixHD"><img src="/assets/img/blog/domain-adaptation/pix2pixHD.gif" alt="pix2pixHD"></hy-img>
+
+Figure 10. Translation of a semantic map (map of labels) to a real street scene with pix2pixHD</p>
+
+<h1 id="embedding-methods">Embedding methods</h1>
+
+<p>Apart from adversarial DA, many other methods have been tried this year, some of them being very successful. That’s the case of two recent methods which try to find a common embedding between the source and target domains, leading at the end to a single neural network capable of classifying both source and target samples.</p>
+
+<h2 id="associative-da">Associative DA</h2>
+
+<p>The first one is <strong>Associative DA</strong> <code class="MathJax_Preview">DA_{assoc}</code><script type="math/tex">DA_{assoc}</script><sup id="fnref:20"><a href="#fn:20" class="footnote">17</a></sup> who achieved a score of <strong>97.6%</strong> on SVHN→MNIST. In order to find the best embedding, they used the new trend of 2017… cycle-consistency loss! Yes, again, but this time without any GAN or other adversarial network: they just try to learn an embedding (last layer of a neural network) such that the probability of translating a source sample to a target sample (based on the distance between the two points in the embedding space), then converting back this target sample to another source sample will be high if the two source samples belong to the same class.</p>
+
+<h2 id="self-ensembling-da">Self-Ensembling DA</h2>
+
+<p>The second one is <strong>Self-Ensembling DA</strong><sup id="fnref:3:1"><a href="#fn:3" class="footnote">3</a></sup>, who really destroyed our benchmark SVHN→MNIST with a score of <strong>99.2%</strong> ! We’ll have to find other benchmarks next year! They did this exploit by adapting Mean Teacher − a method coming from semi-supervised learning that has achieved recent SOTA in this field − to domain adaptation. The idea is to have two networks, a student and a teacher, and to make the weights of the teacher a moving average of all the weights that the student got during training. Then, labeled source samples are used to train the student to be a good classifier, and unlabeled target samples to train the student to be like the teacher (with a consistency loss). You can find a more visual explanation <a href="https://thecuriousaicompany.com/mean-teacher/">here</a>.</p>
+
+<h1 id="optimal-transport">Optimal Transport</h1>
+
+<p>Another kind of method has been developed this year: domain adaptation based on optimal transport. Optimal transport is a huge area of applied mathematics, consisting in finding the best transport plan from one distribution to another, by minimizing the total cost of transporting a source mass to a target point. For instance, if you consider two sets of points (with the same number of points each), source and target, and take as the cost function simply the euclidean distance, optimal transport asks you to associate every source point to a target points, so that the total distance is minimized. Here is the solution for two Gaussian domains:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/simple-ot.png" alt="simple-ot"><img src="/assets/img/blog/domain-adaptation/simple-ot.png" alt="simple-ot"></hy-img>
+
+Figure 11. Best transport plan between two Gaussian domains. 
+Each source point is transported to a target point, and the total distance is minimized. 
+This graph has been produced with the library <a href="https://github.com/rflamary/POT">POT</a>.</p>
+
+<p>This <a href="https://vincentherrmann.github.io/blog/wasserstein/">blog article</a> is an excellent introduction if you want to learn more about OT.</p>
+
+<p>If you start to understand a bit domain adaptation, I think you can now clearly see the link between OT and DA. The relation between those two fields had been theorized in 2016<sup id="fnref:22"><a href="#fn:22" class="footnote">18</a></sup>, but a very interesting algorithm has come out in 2017: <strong>Joint Distribution Optimal Transportation (JDOT)</strong><sup id="fnref:23"><a href="#fn:23" class="footnote">19</a></sup>. Their method is an iterative process: at each iteration, pseudo-labels are given to every target points (at first using a classifier trained on the source samples). Then, the goal is to transport every source point to a target point, minimizing not only the total distance traveled, but also the number of change of label during the transport (between the label of the source point and the pseudo-label of the target point). I made a visual explanation here : <a href="https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md">A Visual Explanation of JDOT Algorithm</a>, summarized in this GIF (not sure if understandable without pausing at each step):</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/animation.gif" alt="animation"><img src="/assets/img/blog/domain-adaptation/animation.gif" alt="animation"></hy-img>
+
+Figure 12. Animation showing the different steps of the JDOT algorithm. 
+You can find all those images separated and associated to some explanations 
+<a href="https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md">here</a></p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>To sum it up, not only has 2017 destroyed some domain adaptation benchmarks, it has also produced the first high-quality translations from one domain to another (as you can see in all those pictures above). But we can still do much better on many more complicated benchmarks and adapt DA to other areas of machine learning (like reinforcement learning and NLP), so 2018 has all its chances to be as awesome as 2017, and I look forward to see what it gives!</p>
+
+<p>If you want to learn more about domain adaptation, I’m maintaining an updated list of great resources (papers, datasets, results, etc.) about DA and transfer learning on <a href="https://github.com/artix41/awesome-transfer-learning">this GitHub repository</a>.</p>
+
+<p><strong>Disclaimer</strong>: the description of those papers only corresponds to my current understanding of them, so take it with a grain of salt and don’t hesitate to tell me if I am incorrect or imprecise in some of my explanations. Concerning the results I give, they are only the ones given in the original papers and a more rigorous methodology should be used in order to make a real comparison.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p><a href="https://arxiv.org/pdf/1611.02200.pdf">Unsupervised Cross-domain Image Generation</a> (2016) <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p><a href="https://arxiv.org/pdf/1607.03516.pdf">Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation</a> (2016) <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:2:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:3">
+      <p><a href="https://arxiv.org/pdf/1706.05208.pdf">Self-ensembling for domain adaptation</a> (2017) <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:3:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:4">
+      <p><a href="https://arxiv.org/pdf/1705.08824.pdf">From source to target and back: symmetric bi-directional adaptive GAN</a> (2017) <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:4:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:5">
+      <p><a href="https://arxiv.org/pdf/1505.07818.pdf">Domain-Adversarial Training of Neural Networks</a> (2015) <a href="#fnref:5" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:6">
+      <p><a href="https://arxiv.org/pdf/1606.07536.pdf">Coupled Generative Adversarial Networks</a> (2016) <a href="#fnref:6" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:6:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:8">
+      <p><a href="https://arxiv.org/pdf/1702.05464.pdf">Adaptative Discriminative Domain Adaptation</a> (2017) <a href="#fnref:8" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:9">
+      <p><a href="https://arxiv.org/pdf/1703.10593">Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks</a> (2017) <a href="#fnref:9" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:10">
+      <p><a href="https://arxiv.org/pdf/1611.07004.pdf">Image-to-Image Translation with Conditional Adversarial Networks</a> (2016) <a href="#fnref:10" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:11">
+      <p><a href="https://arxiv.org/pdf/1703.05192.pdf">Learning to Discover Cross-Domain Relations with Generative Adversarial Networks</a> (2017) <a href="#fnref:11" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:12">
+      <p><a href="https://arxiv.org/pdf/1704.02510.pdf">DualGAN: Unsupervised Dual Learning for Image-to-Image Translation</a> (2017) <a href="#fnref:12" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:14">
+      <p><a href="https://arxiv.org/pdf/1704.01705.pdf">Generate To Adapt: Aligning Domains using Generative Adversarial Networks</a> (2017) <a href="#fnref:14" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:15">
+      <p><a href="https://arxiv.org/pdf/1703.00848.pdf">Unsupervised Image-to-Image Translation Networks</a> (2017) <a href="#fnref:15" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:17">
+      <p><a href="https://arxiv.org/pdf/1711.09020.pdf">StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation</a> (2017) <a href="#fnref:17" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:18">
+      <p><a href="">Word Translation without Parallel Data</a> (2017) <a href="#fnref:18" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:19">
+      <p><a href="https://arxiv.org/pdf/1711.11585.pdf">High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs</a> <a href="#fnref:19" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:20">
+      <p><a href="https://arxiv.org/pdf/1708.00938.pdf">Associative Domain Adaptation</a> (2017) <a href="#fnref:20" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:22">
+      <p><a href="https://arxiv.org/pdf/1610.04420.pdf">Theoretical Analysis of Domain Adaptation with Optimal Transport</a> (2016) <a href="#fnref:22" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:23">
+      <p><a href="https://arxiv.org/pdf/1705.08848.pdf">Joint distribution optimal transportation for domain adaptation</a> (2017) <a href="#fnref:23" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr">
+    About
+  </h2>
+
+  
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+<aside class="related mb4" role="complementary">
+  <h2 class="hr">Related Posts</h2>
+
+  <ul class="related-posts">
+    
+      
+
+
+<li>
+  <a href="/blog/2018-12-23-alfi/" class="h4 flip-title"><span>Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</span></a>
+  <time class="heading faded fine" datetime="2018-12-23T00:00:00+01:00">23 Dec 2018</time>
+</li>
+
+    
+      
+
+
+<li>
+  <a href="/blog/2018-08-19-theory-deep-learning/" class="h4 flip-title"><span>Recent Advances for a Better Understanding of Deep Learning</span></a>
+  <time class="heading faded fine" datetime="2018-08-19T00:00:00+02:00">19 Aug 2018</time>
+</li>
+
+    
+  </ul>
+</aside>
+
+  
+
+  
+  
+
+
+  
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing and machine learning. Incoming PhD student at UCL
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>

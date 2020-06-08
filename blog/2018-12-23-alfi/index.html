@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="http://localhost:4000/blog/2018-12-23-alfi/" />
+<meta property="og:url" content="http://localhost:4000/blog/2018-12-23-alfi/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/alfi/blackboard.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-23T00:00:00+01:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"http://localhost:4000/blog/2018-12-23-alfi/","headline":"Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference","dateModified":"2018-12-23T00:00:00+01:00","datePublished":"2018-12-23T00:00:00+01:00","image":"http://localhost:4000/assets/img/blog/alfi/blackboard.jpg","author":{"@type":"Person","name":"Arthur Pesah"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"description":"Research blog","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2018-12-23-alfi/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="http://localhost:4000/blog/2018-12-23-alfi/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-alfi" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2018-12-23T00:00:00+01:00">23 Dec 2018</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-machine-learning/" class="flip-title">Machine Learning</a>
+
+    </p>
+
+    
+    
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/alfi/blackboard.jpg"
+    
+    alt="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference"><img src="/assets/img/blog/alfi/blackboard.jpg"
+    
+    alt="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference"></hy-img>
+
+
+
+      </div>
+      
+    
+
+    
+
+
+
+  
+
+
+  </header>
+
+  
+    <p class="message"><strong>Note</strong>: This post was first published as a <a href="https://towardsdatascience.com/improve-your-scientific-models-with-meta-learning-and-likelihood-free-inference-2f904d0bd7fa">Medium Article</a> for Towards Data Science</p>
+<p>Introduction to likelihood-free inference and distillation of the paper <a href="https://arxiv.org/abs/1811.12932">Recurrent Machines for Likelihood-Free Inference</a>, published at the <a href="http://metalearning.ml">NeurIPS 2018 Workshop on Meta-Learning</a>.</p>
+
+<p>Article jointly written by Arthur Pesah and Antoine Wehenkel</p>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>There are usually two ways of coming up with a new scientific theory:</p>
+
+<ul>
+  <li>Starting from first principles, deducing the consequent laws, and coming up with experimental predictions in order to verify the theory</li>
+  <li>Starting from experiments and inferring the simplest laws that explain your data.</li>
+</ul>
+
+<p>The role of statistics and machine learning in science is usually related to the second kind of inference, also called <em>induction</em>.</p>
+
+<p>Imagine for instance that you want to model the evolution of two populations (let’s say foxes and rabbits) in an environment. A simple model is the <a href="https://en.wikipedia.org/wiki/Lotka–Volterra_equations">Lotka-Volterra differential equation</a>: you consider the probability that an event such as “a fox eating a rabbit”, “a rabbit being born”, “a fox being born”, etc. happens in a small time interval, deduce a set of differential equations depending on those probabilities, and predict the evolution of the two animals by solving those equations. By comparing your prediction with the evolution of a real population, you can infer the best model parameters (probabilities) in this environment.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*t9Lv2LZ6EJiutaVzKoQ3lQ.jpeg" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*t9Lv2LZ6EJiutaVzKoQ3lQ.jpeg" alt=""></hy-img>
+</p>
+<p>Modern theories require <strong>simulations</strong> in order to be linked to observations. It can be either a simple differential equation solver as in the case of the Lotka-Volterra model, or a complex Monte-Carlo simulator as they use in particle physics for instance.</p>
+
+<p>By comparing the results of a simulation, i.e. the predictions of a model, with real data, it is then possible to know the correctness of your model and adjust it accordingly. If this process of going back and forth between the model and the experimental data is usually done manually, the question that any machine learning practitioner would ask is: can we do it automatically? Can we build a machine that takes a tweakable simulator and real data as input, and returns the version of the simulator that fits best some real data?</p>
+
+<p>That’s the object of our recent work [^1], where we trained a neural network to come up with the best sequence of simulator tweaks in order to approximate experimental data, capitalizing on the recent advances in the fields of likelihood-free inference and meta-learning.</p>
+
+<h1 id="likelihood-free-inference">Likelihood-free inference</h1>
+
+<p>Let’s rephrase our problem in a more formal way. We can model a simulator (also called generative model) by a stochastic function that takes some parameters $\theta$ and returns samples $x$ drawn from a certain distribution (the so-called <em>model</em>).</p>
+
+<p>This formalism applies to any scientific theory that includes randomness, as it’s very often the case in modern science (particle collisions are governed by the law of quantum physics which are intrinsically random, biological processes or chemical reactions often occur in a noisy environment, etc.).</p>
+
+<p>Experimental data consist in a set of points living in the same space as the output of the simulator. The goal of inference is then to find the parameters $\theta$ such that the simulator generate points as close as possible to the real data.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*328OmNFA4xBuj4xgLQdK9w.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*328OmNFA4xBuj4xgLQdK9w.png" alt=""></hy-img>
+</p>
+<p>Scientific fields using such simulators include:</p>
+
+<ul>
+  <li>Population genetics. <strong>Model:</strong> <a href="https://en.wikipedia.org/wiki/Coalescent_theory">Coalescent theory</a>. <strong>Observation:</strong> the DNA of a current population. <strong>Parameters:</strong> the DNA of the common ancestor.</li>
+  <li>High-energy particle physics. <strong>Model</strong>: <a href="https://en.wikipedia.org/wiki/Standard_Model">Standard Model</a> of particle physics. <strong>Observation:</strong> output of the detector during a collision. <strong>Parameters:</strong> coupling constants of the Standard Model (like the mass of the particles or the strength of the different forces).</li>
+  <li>Computational neuroscience. <strong>Model:</strong> <a href="https://en.wikipedia.org/wiki/Hodgkin%E2%80%93Huxley_model">Hodgkin-Huxley model</a>. <strong>Observation:</strong> evolution of the voltage of a neuron after activation. <strong>Parameters</strong>: biophysical parameters of the neuron.</li>
+</ul>
+
+<p>So how can we predict the parameters of a simulator given some real observations? Let’s consider the simple example of a Gaussian simulator, that takes a vector $\theta=(\mu,\sigma)$ as parameters and returns samples from the Gaussian distribution $\mathcal{N}(\mu,\sigma)$.</p>
+
+<p>The classical way to infer the parameters of such a simulator is called <em>Maximum Likelihood Estimation (MLE)</em>. The likelihood is defined as the density of the real data under a parametric model. It means that if most data points are located in high density regions, the likelihood will be high. Hence, the best parameters of a model are often the ones that maximize the likelihood of real data. If you are unfamiliar with likelihood-based inference, you can read <a href="https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1">this excellent introduction to the subject</a>.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*16t2IyuYfARkjea8mfUDTQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*16t2IyuYfARkjea8mfUDTQ.png" alt=""></hy-img>
+</p>
+
+<p>If you have explicitly access to the underlying probability distribution of your simulator, as well as the gradient of this distribution, you can for instance perform a gradient descent in the parameters space, in order to maximize the likelihood and infer the best parameters of your model.</p>
+
+<p>However, many real-life simulators have an <strong>intractable likelihood</strong>, which means that the explicit probability distribution is too hard to compute (either analytically or numerically) . We must therefore find new ways to infer the optimal parameters without using neither the likelihood function nor its gradient.</p>
+
+<p>To sum it up, we have a black-box stochastic simulator that takes parameters and generates samples from an unknown probability distribution, as well as real data that we are able to compare to the generated ones. Our goal is to find the parameters that lead the simulator to generate data as close as possible to the real ones. This setting is called <strong>likelihood-free inference</strong>.</p>
+
+<h1 id="how-can-we-likelihood-free-infer">How can we likelihood-free infer?</h1>
+
+<p>Let’s try to come up progressively with a method to solve our problem. The first thing we can do is to start from a random parameter, and simulate the corresponding data:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*Dgh8KZYJ_aAYYI73jy8wUQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*Dgh8KZYJ_aAYYI73jy8wUQ.png" alt=""></hy-img>
+<em>Representation of the two spaces of interest. The true parameter (that we wish to infer) is the red point on the left. The real data correspond to the red cloud of points on the right. We start by choosing a random parameter θ (in gray on the left) and simulating the corresponding data points (in gray on the right)</em></p>
+
+<p>By doing so, we can see how far our generated data are from the real data, but we have no way to know where to move in the parameter-space. Instead, let’s simulate several parameters:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*a6mfrolFz-s9CicMOULgvA.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*a6mfrolFz-s9CicMOULgvA.png" alt=""></hy-img>
+</p>
+<p>To do so, we consider a distribution in the parameter-space, called <strong>proposal distribution</strong> and noted $q(\theta|\psi)$. If we choose $q$ to be a Gaussian distribution, we will have $\psi=(\mu,\sigma)$. The first step consists in initializing $\psi$ randomly. In the figure above, we considered $\psi=\mu$ for simplicity. Then, we can perform the following step until convergence:</p>
+
+<ul>
+  <li>Sampling a few parameters from the proposal distribution: 4 parameters around $\psi$ in the figure.</li>
+  <li>Generating data from them: the 4 cloud of points on right.</li>
+  <li>Choosing a good direction to move $\psi$.</li>
+</ul>
+
+<p>The third step is the hard one. Intuitively, you would like to move $\psi$ towards the orange and green parameters, since the corresponding predictions (orange and green cloud of points) are the closest to the real data. A set of methods, called <em>natural evolution strategies</em> [^3], allow you to link the performance of each $\theta$ (in terms of similarity between its predictions and the real data) to a direction in the parameter space. A recent paper [^4] use for instance the similarity measure given by a Generative Adversarial Network (GAN) to find the best direction. Even though those algorithms perform well in the general case, one can wonder if for a given simulator, it is not possible to find a better algorithm that would exploit the particular properties of this simulator. That’s where meta-learning comes into play!</p>
+
+<h1 id="meta-learning-for-optimization">Meta-learning for optimization</h1>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*Wip2SwVt4aMqBPtE2Spffw.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*Wip2SwVt4aMqBPtE2Spffw.png" alt=""></hy-img>
+</p>
+
+<p>The idea behind meta-learning is to learn how to learn, and in our case to <strong>learn the optimization process</strong>. The main idea, introduced in the paper <a href="https://arxiv.org/abs/1606.04474">Learning to learn gradient descent by gradient descent</a> [^2], is to use a recurrent neural network (RNN) to find the best descent direction at each iteration. Below is an example of sequence of points produced by a randomly initialized RNN:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*5Axutz0l_0TjxRupjEt-1Q.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*5Axutz0l_0TjxRupjEt-1Q.png" alt=""></hy-img>
+</p>
+
+<p>Each descent direction is random and the last point produced is far from the minimum. During training, it should learn to exploit the gradient information at each point in order to move toward the minimum, giving something like:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*r2Ww8UZAmL3cBRds_p35OQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*r2Ww8UZAmL3cBRds_p35OQ.png" alt=""></hy-img>
+</p>
+
+<p>So how to train it? Generate many functions whose you know the minimum, and ask the RNN to minimize the distance between the last point of the sequence and the real minimum.</p>
+
+<h1 id="learning-to-learn-scientific-models">Learning to learn scientific models</h1>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*qKC9tH01bkQ_giLs_yGJxg.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*qKC9tH01bkQ_giLs_yGJxg.png" alt=""></hy-img>
+</p>
+
+<p>In the case of likelihood-free inference, the RNN should return a sequence of proposal parameters $\psi$, given the real observations and the generated cloud of points at each step.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*La-daJwmoy6ksOpAeIrFkQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*La-daJwmoy6ksOpAeIrFkQ.png" alt=""></hy-img>
+</p>
+
+<p>Now, same question as for learning to learn by gradient descent, how do we train the RNN? Here, the trick is to generate many random parameters θ and to pretend for each one that it is the “true parameter”. We can then simulate each θ generated and obtain a set of “real observations”. The RNN can then be trained by passing it those real observations, looking at its final proposal distribution, and comparing it to the true parameter (that we know because we have generated it).</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png" alt=""></hy-img>
+</p>
+
+<p>Let’s go through an example to clarify all of that. In the figures below, the proposal distribution is represented in color (red = high density). At the beginning, the RNN is initialized randomly and we evaluate it on our first generated true parameter $\theta$ (in red).</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif" alt=""></hy-img>
+</p>
+
+<p>We can then backpropagate the loss into the RNN. After repeating this process for 200 different “true parameters”, this is what is should look like:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif" alt=""></hy-img>
+</p>
+
+<p>We can see that it has learnt to exploit the information of the observation space to move towards the good parameter.</p>
+
+<h1 id="results">Results</h1>
+
+<p>We evaluated our model on different toy simulators, some where we the likelihood is known and some where it is not.</p>
+
+<h2 id="non-likelihood-free-problem-poisson-simulator">Non-likelihood-free problem: Poisson Simulator</h2>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*204e7qk6Ml3dmQhwbjx7rw.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*204e7qk6Ml3dmQhwbjx7rw.png" alt=""></hy-img>
+<em>Example of Poisson distributions for various parameters. Source: Wikipedia</em></p>
+
+<p>The first simulator takes a parameter λ and draw samples from a Poisson distribution $P(\lambda)$. The goal of this example was to see if we obtain comparable performance as the maximum likelihood estimator. Here are the results:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*ALQZ7-7AD6RVjJqQpgXfMA.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*ALQZ7-7AD6RVjJqQpgXfMA.png" alt=""></hy-img>
+<em>Comparison of ALFI (Automatic Likelihood-Free Inference, the name of our model), to a maximum likelihood estimator (MLE). Those box-plots represent the distribution of the mean-squared errors between the true parameters and the expected value of the final proposal distributions.</em></p>
+
+<p>We can see that the performance are comparable, even though we didn’t give our model access to the likelihood.</p>
+
+<h2 class="figure" id="likelihood-free-problem-particle-physics-simulator">Likelihood-free problem: Particle Physics Simulator</h2>
+
+<p>To evaluate our model in a true likelihood-free setting, we considered a simplified particle physics model that simulate the collision of an electron and a positron turning into a muon and an antimuon.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*_Zpy-kvc2wiMW-9KzowoLw.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*_Zpy-kvc2wiMW-9KzowoLw.png" alt=""></hy-img>
+<em>Feynman diagram of the simulated process</em></p>
+
+<p>The parameters of the simulator are the energy of the incoming particles and the Fermi constant, and the output is the angle between the two muons.</p>
+
+<p>To evaluate our method, we compared the real observations with the ones generated by the last parameter found. Here are the results:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*gr7tU9hWoGt8FRkPpZKppQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*gr7tU9hWoGt8FRkPpZKppQ.png" alt=""></hy-img>
+<em>Results of our method on a simple particle physics model. Comparison of our the real observations (angles of the produced particles) with the ones generated by our predicted parameter.</em></p>
+
+<h1 id="discussion">Discussion</h1>
+
+<p>We saw what likelihood-free inference is and how meta-learning can be used to solve it by learning the best sequence of simulator tweaks to fit a model to the reality.</p>
+
+<p>As most meta-learning models, a limitation is that it is hard to train. We had trouble scaling our method to more complex simulators, since meta-training requires a lot of simulator calls, which might be very slow in real-world settings. However, as the field of meta-learning makes progress, we hope that new methods will emerge to alleviate this problem and make it more scalable.</p>
+
+<p>[1] A. Pesah, A. Wehenkel and G. Louppe, <a href="https://arxiv.org/abs/1811.12932">Recurrent Machines for Likelihood-Free Inference</a> (2018), NeurIPS 2018 Workshop on Meta-Learning</p>
+
+<p>[2] M. Andrychowicz, M. Denil, S. Gomez, M. W. Hoffman, D. Pfau, T. Schaul, B. Shillingford, N. de Freitas, <a href="https://arxiv.org/abs/1606.04474">Learning to learn gradient descent by gradient descent</a> (2016), NIPS 2016</p>
+
+<p>[3] D. Wierstra, T. Schaul, T. Glasmachers, Y. Sun, J. Peter, J. Schmidhuber, <a href="http://jmlr.org/papers/v15/wierstra14a.html">Natural Evolution Strategies</a> (2014), Journal of Machine Learning Research (JMLR).</p>
+
+<p>[4] G. Louppe, J. Hermans, K. Cranmer, <a href="https://arxiv.org/abs/1707.07113">Adversarial Variational Optimization of Non-Differentiable Simulator</a> (2017), arXiv e-prints 1707.07113</p>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr">
+    About
+  </h2>
+
+  
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+<aside class="related mb4" role="complementary">
+  <h2 class="hr">Related Posts</h2>
+
+  <ul class="related-posts">
+    
+      
+
+
+<li>
+  <a href="/blog/2018-08-19-theory-deep-learning/" class="h4 flip-title"><span>Recent Advances for a Better Understanding of Deep Learning</span></a>
+  <time class="heading faded fine" datetime="2018-08-19T00:00:00+02:00">19 Aug 2018</time>
+</li>
+
+    
+      
+
+
+<li>
+  <a href="/blog/2018-01-03-domain-adaptation-2017/" class="h4 flip-title"><span>A Little Review of Domain Adaptation in 2017</span></a>
+  <time class="heading faded fine" datetime="2018-01-03T00:00:00+01:00">03 Jan 2018</time>
+</li>
+
+    
+  </ul>
+</aside>
+
+  
+
+  
+  
+
+
+  
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing and machine learning. Incoming PhD student at UCL
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>

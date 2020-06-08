@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Recent Advances for a Better Understanding of Deep Learning | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Recent Advances for a Better Understanding of Deep Learning" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="http://localhost:4000/blog/2018-08-19-theory-deep-learning/" />
+<meta property="og:url" content="http://localhost:4000/blog/2018-08-19-theory-deep-learning/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-08-19T00:00:00+02:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"http://localhost:4000/blog/2018-08-19-theory-deep-learning/","headline":"Recent Advances for a Better Understanding of Deep Learning","dateModified":"2018-08-19T00:00:00+02:00","datePublished":"2018-08-19T00:00:00+02:00","image":"http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg","author":{"@type":"Person","name":"Arthur Pesah"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"description":"Research blog","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2018-08-19-theory-deep-learning/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="http://localhost:4000/blog/2018-08-19-theory-deep-learning/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-theory-deep-learning" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        Recent Advances for a Better Understanding of Deep Learning
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2018-08-19T00:00:00+02:00">19 Aug 2018</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-machine-learning/" class="flip-title">Machine Learning</a>
+
+    </p>
+
+    
+    
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/blackboard.jpg"
+    
+    alt="Recent Advances for a Better Understanding of Deep Learning"><img src="/assets/img/blog/theory-deep-learning/blackboard.jpg"
+    
+    alt="Recent Advances for a Better Understanding of Deep Learning"></hy-img>
+
+
+
+      </div>
+      
+    
+
+    
+
+
+
+  
+
+
+  </header>
+
+  
+    <p class="message"><strong>Note</strong>: This post was first published as a <a href="https://towardsdatascience.com/recent-advances-for-a-better-understanding-of-deep-learning-part-i-5ce34d1cc914">Medium Article</a> for Towards Data Science*</p>
+
+<blockquote class="lead">
+  <p>I would like to live in a world whose systems are built on <strong>rigorous, reliable, verifiable knowledge</strong>, and not on alchemy. […] Simple experiments and simple theorems are the <strong>building blocks</strong> that help understand complicated larger phenomena.</p>
+</blockquote>
+
+<p>This call for a better <strong>understanding</strong> of deep learning was the core of Ali Rahimi’s <a href="http://www.argmin.net/2017/12/05/kitchen-sinks/">Test-of-Time Award presentation</a> at NIPS in December 2017. By comparing deep learning with alchemy, the goal of Ali was not to dismiss the entire field, but “<a href="http://www.argmin.net/2017/12/11/alchemy-addendum/">to open a conversation</a>”. This goal <a href="https://syncedreview.com/2017/12/12/lecun-vs-rahimi-has-machine-learning-become-alchemy/">has definitely been achieved</a> and people <a href="https://twitter.com/RandomlyWalking/status/1017899452378550273">are still debating</a> whether our current practice of deep learning should be considered as alchemy, engineering or science.</p>
+
+<p>Seven months later, the machine learning community gathered again, this time in Stockholm for the International Conference on Machine Learning (ICML). With more than 5,000 participants and 629 papers published, it was one of the most important events regarding fundamental machine learning research. And <strong>deep learning theory</strong> has become one of the biggest subjects of the conference.</p>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/trends.jpg" alt="trends"><img src="/assets/img/blog/theory-deep-learning/trends.jpg" alt="trends"></hy-img>
+</p>
+
+<p>This renew interest was revealed on the first day, with one of the biggest rooms of the conference full of machine learning practitioners ready to listen to the tutorial <a href="http://unsupervised.cs.princeton.edu/deeplearningtutorial.html">Towards Theoretical Understanding of Deep Learning</a> by Sanjeev Arora. In his talk, the Professor of computer science at Princeton summarized the current areas of deep learning theory research, by dividing them into four branches:</p>
+
+<ul>
+  <li><strong>Non Convex Optimization</strong>: How can we understand the highly non-convex loss function associated with deep neural networks? Why does stochastic gradient descent even converge?</li>
+  <li><strong>Overparametrization and Generalization</strong>: In classical statistical theory, generalization depends on the number of parameters but not in deep learning. Why? Can we find another good measure of generalization?</li>
+  <li><strong>Role of Depth</strong>: How does depth help a neural network to converge? What is the link between depth and generalization?</li>
+  <li><strong>Generative Models</strong>: Why do Generative Adversarial Networks (GANs) work so well? What theoretical properties could we use to stabilize them or avoid mode collapse?</li>
+</ul>
+
+<p>In this series of articles, we will try to build intuition in those four areas based on the most recent papers, with a particular focus on ICML 2018.</p>
+
+<p>This first article will focus on the mysteries of non-convex optimization for deep networks.</p>
+
+<h1 id="non-convex-optimization">Non-Convex Optimization</h1>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/energy-landscape.png" alt="energy-landscape"><img src="/assets/img/blog/theory-deep-learning/energy-landscape.png" alt="energy-landscape"></hy-img>
+</p>
+
+<blockquote>
+  <p>I bet a lot of you have tried training a deep net of your own from scratch and walked away feeling bad about yourself because you couldn’t get it to perform. I don’t think it’s your fault. I think it’s gradient descent’s fault.</p>
+</blockquote>
+
+<p>stated Ali Rahimi with a provocative tone in his talk at NIPS. Stochastic Gradient Descent (SGD) is indeed the cornerstone of deep learning. It is supposed to find a solution of a highly non-convex optimization problem, and understanding when it works or not, and why, is one the most fundamental questions we would have to adress in a general theory of deep learning. More specifically, the study of non-convex optimization for deep neural networks can be divided into two questions:</p>
+
+<ul>
+  <li>What does the loss function look like?</li>
+  <li>Why does SGD converge?</li>
+</ul>
+
+<h1 id="what-does-the-loss-function-look-like">What does the loss function look like?</h1>
+
+<p>If I ask you to visualize a global minimum, it’s very likely that the first representation that will come to your mind will look something like this:</p>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/minimum.png" alt="minimum"><img src="/assets/img/blog/theory-deep-learning/minimum.png" alt="minimum"></hy-img>
+</p>
+
+<p>And it’s normal. In a 2D-world, it’s not rare to find problems, where around a global minimum, your function will be <strong>strictly</strong> convex (which means that the two eigenvalues of the hessian matrix at this point will be both strictly positive). But in a world with billions of parameters, as it is the case in deep learning, what are the odds that none of the directions around a global minimum are flat? Or equivalently that the hessian contains not a single zero (or almost zero) eigenvalue?</p>
+
+<p>One of the first comment of Sanjeev Arora in his tutorial was that the number of possible directions that you can take on a loss function grows exponentially with the dimension.</p>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/curse-dimensionality.png" alt="curse-dimensionality"><img src="/assets/img/blog/theory-deep-learning/curse-dimensionality.png" alt="curse-dimensionality"></hy-img>
+</p>
+
+<p>Then, intuitively, it seems likely that a global minimum will not be a point, but a <strong>connected manifold</strong>. Which means that if you’ve reached a global minimum, you should be able to walk around on a flat path where all the points are also minima. This has been experimentally proven on large networks by a team at Heidelberg University, in their paper <a href="https://icml.cc/Conferences/2018/Schedule?showEvent=2780">Essentially No Barriers in Neural Network Energy Landscape</a><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. They argue an even more general statement, namely that any two global minima can be connected through a flat path.</p>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/no-barrier.png" alt="no-barrier"><img src="/assets/img/blog/theory-deep-learning/no-barrier.png" alt="no-barrier"></hy-img>
+</p>
+
+<p>It was already known to be the case for a CNN on MNIST or an RNN on PTB<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>, but this work extended that knowledge to much bigger networks (some DenseNets and ResNets) trained on more advanced datasets (CIFAR10 and CIFAR100). To find this path, they used a heuristic coming from molecular statistical mechanics, called AutoNEB. The idea is to create an initial path (for instance linear) between your two minima, and to place pivots on that path. You then iteratively modify the positions of the pivots, such that it minimizes the loss of each pivot and make sure the distances between pivots stay about the same (by modelling the space between pivots by springs).</p>
+
+<p>If they didn’t prove that result theoretically, they gave some intuitive explanations on why such path exists:</p>
+
+<blockquote>
+  <p>If we perturb a single parameter, say by adding a small constant, but leave the others free to adapt to this change to still minimise the loss, it may be argued that by adjusting somewhat, the myriad other parameters can “make up” for the change imposed on only one of them</p>
+</blockquote>
+
+<p>Thus, the results of this paper can help us seeing minima in a different way, through the lens of overparametrization and high-dimensional spaces.</p>
+
+<p>More generally, when thinking about the loss function of neural network, you should always have in mind that the number of possible directions at a given point is huge. Another consequence of that is the fact that saddle points must be much more abundant than local minima: at a given (critical) point, among the billions of possible directions, it’s very likely to find one that goes down (if you’re not in a global minimum). This intuition was formalized rigorously and proved empirically in a paper published at NIPS 2014: <a href="https://arxiv.org/abs/1406.2572">Identifying and attacking the saddle point problem in high-dimensional non-convex optimization</a><sup id="fnref:6"><a href="#fn:6" class="footnote">3</a></sup></p>
+
+<h1 id="why-does-sgd-converge-or-not">Why does SGD converge (or not)?</h1>
+
+<p>The second important question in optimization of deep neural networks is related to the convergence properties of SGD. While this algorithm has long been seen as a faster but approximate version of gradient descent, we now have evidence that SGD actually converges to better, more general, minima<sup id="fnref:3"><a href="#fn:3" class="footnote">4</a></sup>. But can we formalize it and explain quantitatively the capacity of SGD to escape from local minima or saddle points?</p>
+
+<h2 id="sgd-modifies-the-loss-function">SGD modifies the loss function</h2>
+
+<p>The paper <a href="https://arxiv.org/abs/1802.06175">An Alternative View: When Does SGD Escape Local Minima?</a><sup id="fnref:4"><a href="#fn:4" class="footnote">5</a></sup> showed that performing SGD is equivalent to doing regular gradient descent on a convolved (thus smoothed) loss function. With that point of view and under certain assumptions (shown by the authors to be often true in practice), they prove that SGD will manage to escape local minima and converge to a small region around a global minimum.</p>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/sgd-convolution.png" alt="sgd-convolution"><img src="/assets/img/blog/theory-deep-learning/sgd-convolution.png" alt="sgd-convolution"></hy-img>
+</p>
+
+<h2 id="sgd-is-governed-by-stochastic-differential-equations">SGD is governed by stochastic differential equations</h2>
+
+<p>Another approach to SGD that has really changed my vision of this algorithm is continuous SGD. The idea was presented by Yoshua Bengio during his talk <a href="http://www.iro.umontreal.ca/~bengioy/talks/ICMLW-nonconvex-14july2018.pptx.pdf">On stochastic gradient descent, flatness and generalization</a>, given at the ICML Workshop on Non-Convex Optimization. SGD does not move a point on a loss function, but a <strong>cloud of points</strong>, or in other words, <strong>a distribution</strong>.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/bengio-01.png" alt="bengio-01"><img src="/assets/img/blog/theory-deep-learning/bengio-01.png" alt="bengio-01"></hy-img>
+
+Slide extracted from the presentation On stochastic gradient descent, flatness and generalization, 
+by Y. Bengio, at ICML 2018. He presented an alternative way to see SGD, 
+where you replace points by distributions (clouds of points)</p>
+
+<p>The size of this cloud of point (i.e. the variance of the associated distribution) is proportional to the factor <em>learning_rate / batch_size</em>. A proof of this is given in the amazing paper by Pratik Chaudhari and Stefano Soatto, <a href="https://arxiv.org/pdf/1710.11029.pdf">Stochastic gradient descent performs variational inference</a>, converges to limit cycles for deep networks<sup id="fnref:5"><a href="#fn:5" class="footnote">6</a></sup>, that they presented during the Workshop on Geometry in Machine Learning. This formula is quite intuitive: a low batch size means a very noisy gradient (because computed on a very small subset of the dataset), and a high learning rate means noisy steps.</p>
+
+<p>The consequence of seeing SGD as a distribution moving over time is that the equations governing the descent are now <a href="https://en.wikipedia.org/wiki/Stochastic_partial_differential_equation">stochastic partial differential equations</a>. More precisely, under certain assumptions, [5] showed that the governing equation is actually a <a href="https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation">Fokker-Planck equation</a>.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/continuous-sgd.jpeg" alt="continuous-sgd"><img src="/assets/img/blog/theory-deep-learning/continuous-sgd.jpeg" alt="continuous-sgd"></hy-img>
+
+Slide extracted from the presentation High-dimensional Geometry and Dynamics of 
+Stochastic Gradient Descent for Deep Networks, by P. Chaudhari and S. Soatto, at ICML 2018. 
+They showed how to pass from a discrete system to a continuous one described
+by the Fokker-Plank equation</p>
+
+<p>In statistical physics, this type of equations describes the evolution of particles exposed to a drag force (that drifts the distribution, i.e. moves its mean) and to random forces (that diffuse the distribution, i.e. increase its variance). In SGD, the drag force is modeled by the true gradient while the random forces correspond to noise inherent to the algorithm. As you can see in the slide above, the diffusion term is proportional to a temperature term T=1/β=learning_rate/(2*batch_size), which shows once again the importance of this ratio!</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/FokkerPlanck.gif" alt="FokkerPlanck"><img src="/assets/img/blog/theory-deep-learning/FokkerPlanck.gif" alt="FokkerPlanck"></hy-img>
+
+Evolution of a distribution under the Fokker-Planck equation. 
+It drifts on the left and diffuses with time. 
+Source: Wikipedia</p>
+
+<p>Using this framework, Chaudhari and Soatto proved that our distribution will monotonically converge to a certain steady distribution (in the sense of the KL-divergence):</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/theory-deep-learning/theorem-5.png" alt="theorem-5"><img src="/assets/img/blog/theory-deep-learning/theorem-5.png" alt="theorem-5"></hy-img>
+
+One of the main theorems of [5], proving monotonic convergence of the distribution to a steady state 
+(in the sense of the KL divergence). The second equation shows that minimizing F is equivalent to 
+minimizing a certain potential ϕ as well as maximizing the entropy of the distribution 
+(trade-off controlled by the temperature 1/β)*</p>
+
+<p>There are several interesting points to comment in the theorem above:</p>
+
+<ul>
+  <li>The functional that is minimized by SGD can be rewritten as a sum of two terms (Eq. 11): the expectancy of a potential Φ, and the entropy of the distribution. The temperature 1/β controls the trade-off between those two terms.</li>
+  <li>The potential Φ depends only on the data and the architecture of the network (and not the optimization process). If it is equal to the loss function, SGD will converge to a global minimum. However, the paper shows that it’s rarely the case, and knowing how far Φ is from the loss function will tell you how likely your SGD will converge.</li>
+  <li>The entropy of the final distribution depends on the ratio <em>learning_rate/batch_size</em> (the temperature). Intuitively, the entropy is related to the size of a distribution and having a high temperature often comes down to having a distribution with high variance, which usually means a flat minimum. Since flat minima are often considered to generalize better, it’s consistent with the empirical finding that high learning and low batch size often lead to better minima.</li>
+</ul>
+
+<p>Therefore, seeing SGD as a distribution moving over time showed us that <em>learning_rate/batch_size</em> is more meaningful than each hyperparameter separated regarding convergence and generalization. Moreover, it enabled the introduction of the potentiel of a network, related to convergence and that could give a good metric for architecture search.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>The quest of finding a deep learning theory can be broken down into two parts: first, building intuitions on how and why it works, through toy models and experiments, then expressing those intuitions into a mathematical form that can help us explaining our current results and making new ones.</p>
+
+<p>In this first article, we tried to convey more intuition of both the high-dimensional loss function of neural networks and the interpretations of SGD, while showing that new kinds of formalism are being built in the objective of having a real mathematical theory of deep neural networks optimization.</p>
+
+<p>However, while non-convex optimization is the cornerstone of deep learning, its success comes mostly from its ability to generalize well despite a huge number of layers and parameters. This will be the object of the next part.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Felix Draxler, Kambis Veschgini, Manfred Salmhofer, Fred Hamprecht. Essentially No Barriers in Neural Network Energy Landscape, ICML 2018. <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>C. Daniel Freeman, Joan Bruna. Topology and Geometry of Half-Rectified Network Optimization, arXiv:1611.01540, 2016. <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:6">
+      <p>Yann Dauphin, Razvan Pascanu, Caglar Gulcehre, Kyunghyun Cho, Surya Ganguli, Yoshua Bengio. Identifying and attacking the saddle point problem in high-dimensional non-convex optimization, NIPS 2014 <a href="#fnref:6" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Nitish Shirish Keskar, Dheevatsa Mudigere, Jorge Nocedal, Mikhail Smelyanskiy, Ping Tak Peter Tang. On large-batch training for deep learning: Generalization gap and sharp minima, ICLR 2017. <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>Robert Kleinberg, Yuanzhi Li, Yang Yuan. An Alternative View: When Does SGD Escape Local Minima?, ICML 2018 <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>Pratik Chaudhari, Stefano Soatto. Stochastic gradient descent performs variational inference, converges to limit cycles for deep network, ICLR 2018 <a href="#fnref:5" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr">
+    About
+  </h2>
+
+  
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+<aside class="related mb4" role="complementary">
+  <h2 class="hr">Related Posts</h2>
+
+  <ul class="related-posts">
+    
+      
+
+
+<li>
+  <a href="/blog/2018-12-23-alfi/" class="h4 flip-title"><span>Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</span></a>
+  <time class="heading faded fine" datetime="2018-12-23T00:00:00+01:00">23 Dec 2018</time>
+</li>
+
+    
+      
+
+
+<li>
+  <a href="/blog/2018-01-03-domain-adaptation-2017/" class="h4 flip-title"><span>A Little Review of Domain Adaptation in 2017</span></a>
+  <time class="heading faded fine" datetime="2018-01-03T00:00:00+01:00">03 Jan 2018</time>
+</li>
+
+    
+  </ul>
+</aside>
+
+  
+
+  
+  
+
+
+  
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing and machine learning. Incoming PhD student at UCL
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
