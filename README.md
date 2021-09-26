@@ -1,3 +1,3 @@
 # Blog of Arthur Pesah
 
-Accessible at [http://artix41.github.io](artix41.github.io).
+Accessible at [artix41.github.io](https://artix41.github.io).
