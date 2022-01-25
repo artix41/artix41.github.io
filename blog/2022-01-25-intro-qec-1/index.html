@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>A bird’s-eye view of quantum error correction and fault-tolerance | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="A bird’s-eye view of quantum error correction and fault-tolerance" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" />
+<meta property="og:url" content="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-25T00:00:00+00:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://artix41.github.io/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://artix41.github.io/blog/2022-01-25-intro-qec-1/","headline":"A bird’s-eye view of quantum error correction and fault-tolerance","dateModified":"2022-01-25T00:00:00+00:00","datePublished":"2022-01-25T00:00:00+00:00","author":{"@type":"Person","name":"Arthur Pesah"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://artix41.github.io/blog/2022-01-25-intro-qec-1/"},"description":"Research blog","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="https://artix41.github.io/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+<link rel="dns-prefetch" href="https://arthurpesah.disqus.com" id="_hrefDisqus">
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-intro-qec-1" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        A bird's-eye view of quantum error correction and fault-tolerance
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2022-01-25T00:00:00+00:00">25 Jan 2022</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+
+    
+
+
+
+  <div class="hr pb0"></div>
+
+
+  </header>
+
+  
+    <p>This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating field of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</p>
+
+<p>As I am just starting my PhD adventure, I have taken the resolution to start blogging again. And since my first task as a new PhD student is to learn as much as I can about my field, why not sharing this learning journey with you?</p>
+
+<p>In this first article, we will dive together into the basics of quantum error correction (QEC). The goal is for a reader beginning in the field to get familiar with the big picture of fault-tolerance and error correction. No previous QEC background is required, but some familiarity with the basics of quantum computing (qubits, gates, measurements, etc.) is assummed.</p>
+
+<h2 id="a-bit-of-history">A bit of history</h2>
+
+<p>When the concept of a quantum computer was first proposed and formalized in the 1980s and 1990s, many physicists were skeptical that those devices would one day see the light of day. As an example, Serge Haroche and Jean-Michel Raimond—two eminent atomic physicists—famously said in a <a href="https://physicstoday.scitation.org/doi/10.1063/1.881512">1996 article in Physics Today</a> that</p>
+<blockquote>
+  <p>The large-scale quantum machine, though it may be the computer scientist’s dream, is the experimenter’s nightmare.</p>
+</blockquote>
+
+<p>The reason for their skepticism was the inherent fragility of quantum states: any noise present in a quantum system, due for instance to unwanted interactions with the environment, can irreversibly modify your quantum state.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/qc-dream-nightmare.png" alt=""><img src="/assets/img/blog/intro-qec/qc-dream-nightmare.png" alt=""></hy-img>
+
+Article from <a href="https://physicstoday.scitation.org/doi/10.1063/1.881512">Physics Today</a> by Serge Haroche and Jean-Michel Raimond, that expressed a general skepticism towards the idea of a large-scale quantum computer.</p>
+
+<p>Fortunately, the problem of computing with noise had been known for decades in the classical computing community. In the 1940s and 1950s, most computers were built from either mechanical relays or vacuum tubes, both of which were very prone to failure. It meant that random bits could flip in the middle of your calculations, giving you rubbish at the end. It’s exactly in this context that the Bell Labs mathematician Richard Hamming invented the first practical error-correcting code, out of frustration that his calculations on <em>Model 5</em>—a relay computer only available to him on week-ends—were failing weeks after weeks<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. Modern computers can still have errors from time to time (for instance <a href="https://www.youtube.com/watch?v=AaZ_RSt0KP8&amp;ab_channel=Veritasium">due to cosmic rays</a>!) and some critical systems therefore still require some sort of error correction. But more commonly, error-correcting codes are used everywhere in wireless communication, including satellite communication and the 4G/5G protocol.</p>
+
+<p>However, generalizing those ideas from classical to quantum bits was not an easy task. The invention of the first quantum error-correcting codes, and with them of the <em>threshold theorem</em>, changed the game. This theorem states that there exist some families of quantum codes that can correct arbitrary errors by increasing the number of redundant qubits, as long as the noise level of the system is below a certain threshold. So, let’s say you found a code with a threshold of <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script>. Then, if your noise is above <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script>, adding more qubits to your code will yield more errors, while if it is below, adding more qubits will reduce the number of errors.</p>
+
+<p>While the first quantum codes served as a useful proof of concept, their threshold was estimated to be around <code class="MathJax_Preview">10^{-6}</code><script type="math/tex">10^{-6}</script>, which was far below the experimental capabilities of the time <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. The introduction of the stabilizer formalism in 1998 revolutionized quantum error-correction and led to the invention of the surface code<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>, which has a threshold over <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script> in realistic settings<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>. While subsequent years saw the development of many different quantum codes, the surface code has remained one of the most promising one, and I will probably dedicate several articles to it. But for now, let’s try to understand how quantum error correction works.</p>
+
+<h2 id="what-is-quantum-error-correction">What is quantum error correction?</h2>
+
+<h3 id="modeling-quantum-noise">Modeling quantum noise</h3>
+
+<p>Imagine that you are running a circuit on a real quantum computer. At each step of the circuit, you are expecting a certain state <code class="MathJax_Preview">\vert \psi \rangle</code><script type="math/tex">\vert \psi \rangle</script> to come out of the device. However, if you are reading this in the 2020s, chances are that your device is noisy: instead of getting <code class="MathJax_Preview">\vert \psi\rangle</code><script type="math/tex">\vert \psi\rangle</script>, you will get a different state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle</script>. This failure can be caused by multiple phenomena: unwanted interactions between qubits when applying a gate, unwanted interactions with the environment (causing decoherence), badly-controlled gates, errors in the measurement or state preperation process, etc. While the source of noise is diverse, it happens that a very general and simple noise model can be used to accurately model noise in a large range of situations: the <strong>Pauli error model</strong>. It consists in assuming that a Pauli operator <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> is randomly applied after each gate or each clock cycle of the quantum computer. The generality of this model comes from the fact that any continuous error can be decomposed in the Pauli basis, and <code class="MathJax_Preview">Y=iXZ</code><script type="math/tex">Y=iXZ</script>. For instance, if your error is an unwanted rotation by an angle <code class="MathJax_Preview">\theta</code><script type="math/tex">\theta</script> in the Bloch sphere (let’s say in the <code class="MathJax_Preview">x</code><script type="math/tex">x</script> direction), we can write:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+R_x(\theta) = \cos\left(\frac{\theta}{2}\right) I - i \sin\left(\frac{\theta}{2}\right) X
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+R_x(\theta) = \cos\left(\frac{\theta}{2}\right) I - i \sin\left(\frac{\theta}{2}\right) X
+\end{aligned}</script>
+
+<p>implying that</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\vert \widetilde{\psi} \rangle = R_x(\theta) \vert \psi\rangle = \cos\left(\frac{\theta}{2}\right) \vert \psi\rangle - i \sin\left(\frac{\theta}{2}\right) X \vert \psi\rangle
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\vert \widetilde{\psi} \rangle = R_x(\theta) \vert \psi\rangle = \cos\left(\frac{\theta}{2}\right) \vert \psi\rangle - i \sin\left(\frac{\theta}{2}\right) X \vert \psi\rangle
+\end{aligned}</script>
+
+<p>You will soon learn that quantum error correction is done by constantly applying non-destructive measurements to our state (the so-called stabilizer measurements), resulting in the above state being projected in either <code class="MathJax_Preview">\vert \psi\rangle</code><script type="math/tex">\vert \psi\rangle</script> with probability <code class="MathJax_Preview">\cos^2(\theta/2)</code><script type="math/tex">\cos^2(\theta/2)</script>, or <code class="MathJax_Preview">X \vert \psi\rangle</code><script type="math/tex">X \vert \psi\rangle</script> with probability <code class="MathJax_Preview">\sin^2(\theta/2)</code><script type="math/tex">\sin^2(\theta/2)</script>. This process of decomposing any continuous error into <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> errors is called the <strong>digitization of errors</strong>, and is key to quantum error correction, since analog errors, even on a classical computer, cannot easily be error-corrected.</p>
+
+<p>So we’ve reduced the infinite range of possible continuous errors to only two types of errors: <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>. But what is the effect of those errors? Let’s consider a general single-qubit state, given by</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle
+\end{aligned}</script>
+
+<p>Applying <code class="MathJax_Preview">X</code><script type="math/tex">X</script> to it results in the state</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+X \vert \psi \rangle = a \vert 1 \rangle + b \vert 0 \rangle
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+X \vert \psi \rangle = a \vert 1 \rangle + b \vert 0 \rangle
+\end{aligned}</script>
+
+<p>In other words, we have applied a <strong>bit-flip</strong> to our state. On the other hand, applying a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> error</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+Z \vert \psi \rangle = a \vert 0 \rangle - b \vert 1 \rangle
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+Z \vert \psi \rangle = a \vert 0 \rangle - b \vert 1 \rangle
+\end{aligned}</script>
+
+<p>results in a <strong>phase-flip</strong>. That’s a first major difference between classical and quantum error-correction: instead of having just one type of error (bit-flips), we now have two types of error (bit-flips and phase-flips). This is a key fact that makes classical error correction techniques not directly applicable to the quantum setting. So, how can we correct quantum errors?</p>
+
+<h3 id="encoding-and-decoding">Encoding and decoding</h3>
+
+<p>The idea of quantum error correction is to <strong>encode</strong> your state on a larger system, using redundant qubits. A simple example of encoding is the 3-repetition code, defined with the following dictionary:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\vert 0 \rangle \longrightarrow \vert 000 \rangle_E \\
+\vert 1 \rangle \longrightarrow \vert 111 \rangle_E
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\vert 0 \rangle \longrightarrow \vert 000 \rangle_E \\
+\vert 1 \rangle \longrightarrow \vert 111 \rangle_E
+\end{aligned}</script>
+
+<p>It means that a general qubit <code class="MathJax_Preview">\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle</code><script type="math/tex">\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle</script> will be encoded as <code class="MathJax_Preview">\vert \psi \rangle_E = a \vert 000 \rangle + b \vert 111 \rangle</code><script type="math/tex">\vert \psi \rangle_E = a \vert 000 \rangle + b \vert 111 \rangle</script>. We say that the code maps three <strong>physical qubits</strong> into one <strong>logical qubit</strong>.</p>
+
+<p>When this encoded state goes through a noisy channel, errors can happen. But this time, we have some degree of protection. For instance, let’s say that a bit-flip occurred on the first qubit, leading to the state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</script>. We can then detect and correct this error, in the so-called <strong>decoding</strong> process: we perform measurements to the state and apply some correction operators depending on the measurement results. However, here comes another specificity of the quantum setting: we cannot simply measure the whole state (and then apply a majority vote or something), as it would result in a general collapse of the state. So we need to apply non-destructive measurements, also called <strong>stabilizer measurements</strong>. An example of stabilizer measurement would be to measure the parity of each pair of qubits, i.e. whether the two qubits are equal or not. For instance, the following circuit can be used to measure the parity of qubits 1 and 2:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/stabilizer-measurement.png" alt=""><img src="/assets/img/blog/intro-qec/stabilizer-measurement.png" alt=""></hy-img>
+</p>
+
+<p>Indeed, if the first two qubits are in the state <code class="MathJax_Preview">\vert 00 \rangle</code><script type="math/tex">\vert 00 \rangle</script> or <code class="MathJax_Preview">\vert 11 \rangle</code><script type="math/tex">\vert 11 \rangle</script>, you can check that the measurement result in the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> basis will be <code class="MathJax_Preview">1</code><script type="math/tex">1</script> (i.e. the ancilla qubit is in the <code class="MathJax_Preview">\vert 0 \rangle</code><script type="math/tex">\vert 0 \rangle</script> state), while if we are in either <code class="MathJax_Preview">\vert 01 \rangle</code><script type="math/tex">\vert 01 \rangle</script> or <code class="MathJax_Preview">\vert 10 \rangle</code><script type="math/tex">\vert 10 \rangle</script>, the measurement result will be <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>. Note that by measuring the ancilla qubit, our state has not been destroyed.</p>
+
+<p>So, what happens if we apply those parity measurements to the state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</script>? We will see that qubits 2 and 3 are equal, while qubit 1 is different from the two others. Assuming that we only had one <code class="MathJax_Preview">X</code><script type="math/tex">X</script> error, we can deduce that the only possibility is that the first qubit has been subjected to a bit-flip. Therefore, we apply a Pauli <code class="MathJax_Preview">\text{X}</code><script type="math/tex">\text{X}</script> operator on the first qubit to recover our original state.</p>
+
+<p>The quantum error-correction process can be summarized by the following diagram:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\vert \psi \rangle \xrightarrow{\text{encoding}} \vert \psi \rangle_E \xrightarrow{\text{noise}} \vert \widetilde{\psi} \rangle_E \xrightarrow{\text{decoding}} \vert \psi \rangle_E
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\vert \psi \rangle \xrightarrow{\text{encoding}} \vert \psi \rangle_E \xrightarrow{\text{noise}} \vert \widetilde{\psi} \rangle_E \xrightarrow{\text{decoding}} \vert \psi \rangle_E
+\end{aligned}</script>
+
+<p>Note that our code has two major drawbacks: it cannot correctly decode more than one bit-flip errors, and cannot detect phase-flip errors at all. While the first problem could be alleviated by increasing the number of physical qubits, the second one is more fundamental and requires the design of more complex quantum codes. One of the most popular such code is the <strong>surface code</strong>, which belongs to the more general class of <strong>topological quantum codes</strong>. Describing it rigorously would require its own article, so we will just have here a very brief glance at it.</p>
+
+<h3 id="surface-code">Surface code</h3>
+
+<p>The surface code encodes one logical qubit on a grid of <code class="MathJax_Preview">L^2</code><script type="math/tex">L^2</script> physical qubits, as shown here:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/surface-code.png" alt=""><img src="/assets/img/blog/intro-qec/surface-code.png" alt=""></hy-img>
+</p>
+
+<p>In this picture, each white dot represents a qubit, orange squares represent stabilizer measurements made of <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators, and yellow squares represent stabilizer measurements made of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operators. The corresponding code is quite hard to describe explicitely: both logical states <code class="MathJax_Preview">\vert 0 \rangle</code><script type="math/tex">\vert 0 \rangle</script> and <code class="MathJax_Preview">\vert 1 \rangle</code><script type="math/tex">\vert 1 \rangle</script> map to some highly entangled states, that can be seen as ground-states of a certain Hamiltonian. However, it can be characterized implicitely by the stabilizer measurements, as it is the unique quantum code that has exactly the stabilizers described above (four Pauli <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or four Pauli <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> around each square). It means that when there is no error, those stabilizer measurements will always return <code class="MathJax_Preview">1</code><script type="math/tex">1</script>. Don’t worry if that part wasn’t clear, we will have other occasions to delve into the surface code. The most important points to retain are that it’s a 2D code that can detect both <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> errors, that only has short-range interactions (i.e. no measurement involving qubits that are far apart), and has a relatively high threshold. It makes it a promising code for superconducting chips, that are often characterized by a 2D lattice of qubits, such as IBM’s and Google’s quantum computers.</p>
+
+<p>Note that many alternatives to the 2D surface code have been proposed, such as 3D and 4D surface codes, color codes, low-density parity-check codes (also known as LDPC codes), subsystem codes, etc. Choosing a code is often a trade-off between connectivity (e.g. LDPC codes often require long-range interaction), ease of measurements (how many qubits are involved in each stabilizer), performance with a given noise model, threshold, gate design, etc.</p>
+
+<p>Once the encoding and decoding procedures are established, there is still one last step before being able to do quantum computation error-free: designing logical gates that act on the code. It happens that this task is far from trivial in general, and a whole sub-field of QEC is dedicated to it. That’s the subject of <strong>fault-tolerant quantum computing</strong>.</p>
+
+<h2 id="fault-tolerant-quantum-computing">Fault-tolerant quantum computing</h2>
+
+<h3 id="transversality-and-fault-tolerance">Transversality and fault-tolerance</h3>
+
+<p>The main challenge in designing gates is to avoid the propagation of errors: if we’re not careful, multi-qubit gates can turn one-qubit errors into correlated multi-qubit ones. This is particularly disturbing when the gate couples several physical qubits representing a single logical one (what we call a <strong>block</strong>). For instance, imagine you want to apply a logical Hadamard on the 3-repetition code considered earlier:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+H \vert 0 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle + \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 000 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle + \vert 111 \rangle \right) \\
+H \vert 1 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle - \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 111 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle - \vert 111 \rangle \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+H \vert 0 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle + \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 000 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle + \vert 111 \rangle \right) \\
+H \vert 1 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle - \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 111 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle - \vert 111 \rangle \right)
+\end{aligned}</script>
+
+<p>To implement the unitary <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script>, some entangling gates will be needed. For example, you can check that the following circuit gives the correct unitary on <code class="MathJax_Preview">\vert 000 \rangle</code><script type="math/tex">\vert 000 \rangle</script> and <code class="MathJax_Preview">\vert 111 \rangle</code><script type="math/tex">\vert 111 \rangle</script>:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/logical-hadamard-small.png" alt=""><img src="/assets/img/blog/intro-qec/logical-hadamard-small.png" alt=""></hy-img>
+</p>
+
+<p>The issue here is the presence of physical CNOTs <em>within the block</em>, as they can create correlated errors that won’t be easily correctable.</p>
+
+<p>On the other hand, if we wanted to implement a logical CNOT between two logical qubits <code class="MathJax_Preview">\vert \psi \rangle_1</code><script type="math/tex">\vert \psi \rangle_1</script> and <code class="MathJax_Preview">\vert \psi \rangle_2</code><script type="math/tex">\vert \psi \rangle_2</script>, we would simply use the following circuit</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/cnot-small.png" alt=""><img src="/assets/img/blog/intro-qec/cnot-small.png" alt=""></hy-img>
+</p>
+
+<p>which doesn’t contain any entangling gate within each block. Such gate is called <strong>transversal</strong>, while the Hadamard gate we saw previously was <strong>non-transversal</strong>. An encoded circuit composed only of transversal gates is <strong>fault-tolerant</strong>, meaning that it doesn’t propagate errors further.</p>
+
+<p>So, do we know any code such that all the gates can be built transversally? Unfortunately, the answer is no, and we even know that such code cannot exist. That’s the object of a foundational theorem in the field, called the <a href="https://arxiv.org/abs/0811.4262">Eastin-Knill theorem</a>, which states that for any QEC code, there is no universal gate set<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup> made only of transversal gates. For instance, in the surface code, only <strong>Clifford gates</strong> can be implemented transversally, i.e all the gates that can be constructed from <code class="MathJax_Preview">H</code><script type="math/tex">H</script>, <code class="MathJax_Preview">CNOT</code><script type="math/tex">CNOT</script> and <code class="MathJax_Preview">S</code><script type="math/tex">S</script> gates. It includes all Pauli gates, but not the <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate for example, which is required for universality.</p>
+
+<h3 id="magic-state-distillation">Magic state distillation</h3>
+
+<p>Many tricks have been proposed to “by-pass” this no-go theorem. One of the most common tricks is called <strong>magic state distillation</strong>. To illustrate how it works, let’s say we want to implement a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate fault-tolerantly. The first idea of magic state distillation is to implement the state <code class="MathJax_Preview">T\vert+\rangle=\vert 0 \rangle + e^{i\pi/4} \vert 1 \rangle</code><script type="math/tex">T\vert+\rangle=\vert 0 \rangle + e^{i\pi/4} \vert 1 \rangle</script> non-fault-tolerantly on an ancilla qubit (meaning that errors can occur when creating the state) and to “inject” it in the qubits of our code, thereby creating a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate on those qubits. This trick, called <strong>state injection</strong> (or <strong>gate teleportation</strong> in the measurement-based QC community) can be summarized by the following circuit:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/magic-state-distillation.png" alt=""><img src="/assets/img/blog/intro-qec/magic-state-distillation.png" alt=""></hy-img>
+</p>
+
+<p>where the <code class="MathJax_Preview">S</code><script type="math/tex">S</script> gate is applied when the measurement of the ancilla qubit leads <code class="MathJax_Preview">1</code><script type="math/tex">1</script>. It’s a little exercise the check that the circuit above indeed leads to a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate (and you can find the answer on <a href="https://quantumcomputing.stackexchange.com/questions/13629/what-are-magic states">Stack Exchange</a>). The state <code class="MathJax_Preview">T\vert + \rangle</code><script type="math/tex">T\vert + \rangle</script> is called a <strong>magic state</strong>, and as we saw, its preparation can involve some errors (it’s not fault-tolerant). The second idea of magic state distillation is therefore distillation. By preparing <code class="MathJax_Preview">N</code><script type="math/tex">N</script> copies of a noisy magic state, it’s possible to create an arbitrary clean <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate (similarly to how <a href="https://en.wikipedia.org/wiki/Entanglement_distillation">entanglement distillation</a> is done in quantum communication). The full protocol can be shown to be fault-tolerant, but it often requires a very large overhead in the number of qubits. Reducing this overhead is an important research problem.</p>
+
+<h3 id="measurement-based-gates-lattice-surgery-and-twists">Measurement-based gates: lattice surgery and twists</h3>
+
+<p>So far, we have presented transversal gates as the good guys of fault-tolerant quantum computing, as they can be implemented directly without propagating errors. However, transversal two-qubit gates, while fault-tolerant, are often far from practical. Take two logical qubits of the surface code for instance, and align them on a single 2D lattice.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/lattice-surgery.png" alt=""><img src="/assets/img/blog/intro-qec/lattice-surgery.png" alt=""></hy-img>
+</p>
+
+<p>A transversal two-qubit gate would consist in <code class="MathJax_Preview">L^2</code><script type="math/tex">L^2</script> physical gates between each pair of qubits <code class="MathJax_Preview">a</code><script type="math/tex">a</script> and <code class="MathJax_Preview">a'</code><script type="math/tex">a'</script>. However, as seen in the picture above, it would require some long-range interactions, since qubits <code class="MathJax_Preview">a</code><script type="math/tex">a</script> and <code class="MathJax_Preview">a'</code><script type="math/tex">a'</script> are always <code class="MathJax_Preview">L</code><script type="math/tex">L</script> qubits apart. A solution could consist in putting one surface code above the other (in 3D). However, 3D chips are hard to build in practice, and it happens that more conveniant solutions exist, namely <strong>lattice surgery</strong> and <strong>twist deformations</strong>.</p>
+
+<p>In both methods, gates are applied by performing some non-stabilizer measurements in the code, thereby changing the code itself. In lattice surgery, those measurements allow to merge different surface codes into a single one, and split it again when needed. It can be shown that many gates, such as the CNOT gate, can be designed by performing such a series of merge and split operations. In twist deformations, measurements create holes in the lattice, and braiding operators around those holes allow to create some gates. All those operations are local, making both techniques amenable to real devices.</p>
+
+<h3 id="measurement-errors">Measurement errors</h3>
+
+<p>Finally, in fault-tolerant quantum computing, the measurement apparatus is also crucial. To detect errors, measurements are made all the time, and those can be very noisy. It means that our stabilizer measurements can lead to the wrong answer. 
+To mitigate this effect, the basic technique simply consists in repeating the stabilizer measurements many times. However, some codes such as the 3D surface code have a property that make them amenable to <strong>single-shot quantum error correction</strong>, as set of techniques that allow to correct errors with a single noisy measurement per stabilizer. More generally, any fault-tolerant scheme must also include a method to perform measurements without propagating errors in a non-fault-tolerant way.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this first post, we set eyes on the big picture of QEC and its different subfields. We discussed a lot of notions and introduced a lot of jargon, that we will review in detail in different posts, so don’t worry if a few things are unclear for the moment. Just retain that quantum error correction comprises two main challenges: designing an encoding process that can protect qubits against noise, and building actual circuits on the code without introducing more errors (the subject of fault-tolerance). In the meantime, feel free to use the following resources if you want to learn more about any of those topics.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://arxiv.org/abs/1907.11157">Quantum Error Correction: An Introductory Guide</a>, by Joschka Roffe</li>
+  <li><a href="https://sites.google.com/site/danbrowneucl/teaching/lectures-on-topological-codes-and-quantum-computation">Lectures on Topological Codes and Quantum Computation</a>, by Dan Browne</li>
+  <li><a href="https://www.youtube.com/watch?v=ltJ1jXQeDl8&amp;ab_channel=InstituteforQuantumComputing">Video lectures on Quantum Error Correction and Fault Tolerance</a>, by Daniel Gottesman</li>
+  <li><a href="http://mmrc.amss.cas.cn/tlb/201702/W020170224608149940643.pdf">Quantum Computation and Quantum Information — Chapter 7</a>, Nielsen &amp; Chuang</li>
+</ul>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Richard Hamming, <a href="http://worrydream.com/refs/Hamming-TheArtOfDoingScienceAndEngineering.pdf">The Art of Doing Science and Engineering</a>, 1997 <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>E. Knill, R. Laflamme, W. Zurek, <a href="https://arxiv.org/abs/quant-ph/9610011">Threshold Accuracy for Quantum Computation</a>, 1996 <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Eric Dennis, Alexei Kitaev, Andrew Landahl, John Preskill, <a href="https://arxiv.org/abs/quant-ph/0110143">Topological quantum memory</a>, 2001 <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>David S. Wang, Austin G. Fowler, Lloyd C. L. Hollenberg, <a href="https://arxiv.org/abs/1009.3686">Quantum computing with nearest neighbor interactions and error rates over 1%</a>, 2010 <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>Here, a universal gate set is defined as a set that can approximate any unitary up to a precision <code class="MathJax_Preview">\epsilon</code><script type="math/tex">\epsilon</script> with <code class="MathJax_Preview">O\left(\log\left( \frac{1}{\epsilon}\right)^c\right)</code><script type="math/tex">O\left(\log\left( \frac{1}{\epsilon}\right)^c\right)</script> gates. <a href="#fnref:5" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing and machine learning. PhD student at UCL (London)
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/animations/"
+          class="sidebar-nav-item"
+          
+        >
+          Animations
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'UA-207151706-1', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementsByTagName('hy-push-state')[0];
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
