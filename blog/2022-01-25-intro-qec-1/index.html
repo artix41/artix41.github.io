@@ -44,13 +44,14 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" />
-<meta property="og:url" content="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" />
+<link rel="canonical" href="http://localhost:4000/blog/2022-01-25-intro-qec-1/" />
+<meta property="og:url" content="http://localhost:4000/blog/2022-01-25-intro-qec-1/" />
 <meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/intro-qec/surface-code.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2022-01-25T00:00:00+00:00" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://artix41.github.io/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://artix41.github.io/blog/2022-01-25-intro-qec-1/","headline":"A bird’s-eye view of quantum error correction and fault-tolerance","dateModified":"2022-01-25T00:00:00+00:00","datePublished":"2022-01-25T00:00:00+00:00","author":{"@type":"Person","name":"Arthur Pesah"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://artix41.github.io/blog/2022-01-25-intro-qec-1/"},"description":"Research blog","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2022-01-25-intro-qec-1/","headline":"A bird’s-eye view of quantum error correction and fault-tolerance","dateModified":"2022-01-25T00:00:00+00:00","datePublished":"2022-01-25T00:00:00+00:00","author":{"@type":"Person","name":"Arthur Pesah"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2022-01-25-intro-qec-1/"},"image":"http://localhost:4000/assets/img/blog/intro-qec/surface-code.png","description":"Research blog","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -76,11 +77,11 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 <meta name="generator" content="Hydejack v8.5.2" />
 
-<link type="application/atom+xml" rel="alternate" href="https://artix41.github.io/feed.xml" title="Arthur Pesah" />
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
 
 
 
-<link rel="alternate" href="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" hreflang="en">
+<link rel="alternate" href="http://localhost:4000/blog/2022-01-25-intro-qec-1/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -249,18 +250,34 @@ on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
 
     
     
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/intro-qec/surface-code.png"
+    
+    alt="A bird's-eye view of quantum error correction and fault-tolerance"><img src="/assets/img/blog/intro-qec/surface-code.png"
+    
+    alt="A bird's-eye view of quantum error correction and fault-tolerance"></hy-img>
+
+
+
+      </div>
+      
+    
 
     
 
 
 
-  <div class="hr pb0"></div>
+  
 
 
   </header>
 
   
-    <p>This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating field of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</p>
+    <p>This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</p>
 
 <p>As I am just starting my PhD adventure, I have taken the resolution to start blogging again. And since my first task as a new PhD student is to learn as much as I can about my field, why not sharing this learning journey with you?</p>
 
@@ -289,7 +306,7 @@ Article from <a href="https://physicstoday.scitation.org/doi/10.1063/1.881512">P
 
 <h3 id="modeling-quantum-noise">Modeling quantum noise</h3>
 
-<p>Imagine that you are running a circuit on a real quantum computer. At each step of the circuit, you are expecting a certain state <code class="MathJax_Preview">\vert \psi \rangle</code><script type="math/tex">\vert \psi \rangle</script> to come out of the device. However, if you are reading this in the 2020s, chances are that your device is noisy: instead of getting <code class="MathJax_Preview">\vert \psi\rangle</code><script type="math/tex">\vert \psi\rangle</script>, you will get a different state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle</script>. This failure can be caused by multiple phenomena: unwanted interactions between qubits when applying a gate, unwanted interactions with the environment (causing decoherence), badly-controlled gates, errors in the measurement or state preperation process, etc. While the source of noise is diverse, it happens that a very general and simple noise model can be used to accurately model noise in a large range of situations: the <strong>Pauli error model</strong>. It consists in assuming that a Pauli operator <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> is randomly applied after each gate or each clock cycle of the quantum computer. The generality of this model comes from the fact that any continuous error can be decomposed in the Pauli basis, and <code class="MathJax_Preview">Y=iXZ</code><script type="math/tex">Y=iXZ</script>. For instance, if your error is an unwanted rotation by an angle <code class="MathJax_Preview">\theta</code><script type="math/tex">\theta</script> in the Bloch sphere (let’s say in the <code class="MathJax_Preview">x</code><script type="math/tex">x</script> direction), we can write:</p>
+<p>Imagine that you are running a circuit on a real quantum computer. At each step of the circuit, you are expecting a certain state <code class="MathJax_Preview">\vert \psi \rangle</code><script type="math/tex">\vert \psi \rangle</script> to come out of the device. However, if you are reading this in the 2020s, chances are that your device is noisy: instead of getting <code class="MathJax_Preview">\vert \psi\rangle</code><script type="math/tex">\vert \psi\rangle</script>, you will get a different state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle</script>. This failure can be caused by multiple phenomena: unwanted interactions between qubits when applying a gate, unwanted interactions with the environment (causing decoherence), badly-controlled gates, errors in the measurement or state preparation process, etc. While the source of noise is diverse, it happens that a very general and simple noise model can be used to accurately model noise in a large range of situations: the <strong>Pauli error model</strong>. It consists in assuming that a Pauli operator <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> is randomly applied after each gate or each clock cycle of the quantum computer. The generality of this model comes from the fact that any continuous error can be decomposed in the Pauli basis, and <code class="MathJax_Preview">Y=iXZ</code><script type="math/tex">Y=iXZ</script>. For instance, if your error is an unwanted rotation by an angle <code class="MathJax_Preview">\theta</code><script type="math/tex">\theta</script> in the Bloch sphere (let’s say in the <code class="MathJax_Preview">x</code><script type="math/tex">x</script> direction), we can write:</p>
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
 R_x(\theta) = \cos\left(\frac{\theta}{2}\right) I - i \sin\left(\frac{\theta}{2}\right) X
