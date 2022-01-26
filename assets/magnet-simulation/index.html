@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Curie Pendulum</title>
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/main.css" />
+    </head>
+    <body>
+        <div id="panel">
+            <div class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                <div class="dropdown-menu">
+                    <h1>Ising Model</h1>
+                    <p>
+                        The model used to explain this phenomenon is called the <strong>Ising Model</strong>:
+                        all the micro-magnets represent the spin of the atoms and increasing the temperature
+                        also increases the entropy − or disorder − of the system.
+                        On the contrary, when you decrease the temperature, atoms are less agitated and
+                        tend to align their spin with their neighborhood.
+                    </p>
+                    <p>
+                        More mathematically, we can prove that any system at a fixed temperature $T$ tends to
+                        minimize his free energy, given by $F = U - TS$, where $U$ is the energy of
+                        the system and S its entropy. When the temperature is low, minimizing $F$ essentially
+                        means minimizing $U$, while a high temperature increases the role of entropy,
+                        and the negative signs means $F$ will be minimized for a high entropy.
+                        The Ising model consists in having an expression for the enthalpy only taking into
+                        account interactions between each atom and its direct neighborhood (long-range interactions are neglected).
+                        This expression has to be minimum when all the spins are aligned, and maximum in the most disordered case.
+                        The simplest expression respecting those conditions is given by :
+                        \[
+                        U = - J \sum_{i,j \: neighbors} S_i S_j
+                        \]
+                        where $S_i$ is the spin of atom $i$ (-1 for blue spin and 1 for red spin) and $J$ a couping constant.
+                    </p>
+                    <h1>Curie Temperature</h1>
+                    If we call $M$ the average spin value (a number between -1 and 1, equal to -1 if all spins are blue and 1 if they are all red),
+                    it is shown experimentally that $M$ evolves as a function of temperature according to this graph:
+                    <img src="images/explanations/curie-temperature.png" width="300px"/>
+
+                    The temperature at which the magnetism becomes 0 is called Curie temperature, and defines a phase transition.
+
+                    <h1>Simulation</h1>
+                    <p>
+                        This program simulates the Ising model using a Monte Carlo algorithm called
+                        <a href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm">Metropolis Algorithm</a>,
+                        consisting essentially in mixing randomly the spins at each iteration, and accepting the new situation
+                        either if $U$ has decreased or, with a certain probability growing with the temperature, if $U$ has increased.
+                        Thus, if $T$ is high, new situations will be essentially random, while a low $T$ will make situations with low $U$
+                        (which means aligned spins) more likely.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <script src="node_modules/three/build/three.min.js"></script>
+        <script src="node_modules/three/examples/js/controls/OrbitControls.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.5/dat.gui.min.js"></script>
+        <script src="node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+            $('.dropdown').on('show.bs.dropdown', function() {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+            });
+            $('.dropdown').on('hide.bs.dropdown', function() {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+            });
+
+            $(document).keypress(function(e) {
+                if(e.which == 13) { /* If we press Enter */
+                    $(this).find('.dropdown-menu').first().stop(true, true).slideToggle();
+                }
+            });
+        </script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                showMathMenu: false,
+                extensions: ["tex2jax.js"],
+                jax: ["input/TeX", "output/HTML-CSS"],
+                tex2jax: {
+                  inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                  displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                  processEscapes: true
+                },
+                "HTML-CSS": { availableFonts: ["TeX"] }
+            });
+        </script>
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script src="build/index.js"></script>
+    </body>
+</html>
