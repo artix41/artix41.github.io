@@ -1,5 +1,953 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://artix41.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://artix41.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2022-05-02T11:49:17+01:00</updated><id>https://artix41.github.io/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
-</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">A bird’s-eye view of quantum error correction and fault tolerance</title><link href="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" rel="alternate" type="text/html" title="A bird's-eye view of quantum error correction and fault tolerance" /><published>2022-01-25T00:00:00+00:00</published><updated>2022-01-25T00:00:00+00:00</updated><id>https://artix41.github.io/blog/intro-qec-1</id><content type="html" xml:base="https://artix41.github.io/blog/2022-01-25-intro-qec-1/">&lt;p&gt;This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://artix41.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://artix41.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2022-05-21T18:44:12+01:00</updated><id>https://artix41.github.io/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">All you need to know about classical error correction</title><link href="https://artix41.github.io/blog/2022-05-21-classical-error-correction/" rel="alternate" type="text/html" title="All you need to know about classical error correction" /><published>2022-05-21T00:00:00+01:00</published><updated>2022-05-21T00:00:00+01:00</updated><id>https://artix41.github.io/blog/classical-error-correction</id><content type="html" xml:base="https://artix41.github.io/blog/2022-05-21-classical-error-correction/">&lt;p&gt;When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job introducing all those concepts in a self-contained way, without assuming any knowledge in error correction.
+So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, LDPC codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!&lt;/p&gt;
+
+&lt;p&gt;So what exactly are we gonna study today? The central notion in this post is that of &lt;strong&gt;linear code&lt;/strong&gt;. Linear codes form one of the most important families of error-correcting codes. It includes for instance Hamming codes (some of the earliest codes, invented in 1950), Reed-Solomon codes (used in CDs and QR codes), Turbo codes (used in 3G/4G communication) and LDPC codes (used in 5G communication). While we won’t try to cover the whole zoo of linear codes here, we will introduce some crucial tools to understand them. In particular, the goal of this post is to give you a good grasp of the parity-check matrix, and its graphical representation, the Tanner graph. As we will see when going quantum, the stabilizer formalism (the dominant paradigm to construct quantum codes) can be understood as a direct generalization of linear coding theory, and the quantum parity-check matrix happens to be an essential tool to simulate quantum codes in practice. This post will also be the occasion to introduce some more general coding terminology (encoding, decoding, distance, &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,k,d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,k,d]&lt;/script&gt;-code, codewords, etc.), which will be handy when delving into QEC.&lt;/p&gt;
+
+&lt;p&gt;As a final motivating factor before starting, it happens that this field contains some of the most beautiful ideas in computer science. To get a sense of this beauty, I recommend watching the &lt;a href=&quot;https://youtu.be/X8jsijhllIA&quot;&gt;3Blue1Brown videos on the Hamming code&lt;/a&gt; as a complement to this post. It will give you a very visual picture of some of the techniques introduced here. However, it’s not a prerequisite, so feel free to continue reading this post and watch the video at a later time. On that note, let’s start!&lt;/p&gt;
+
+&lt;h2 id=&quot;general-setting&quot;&gt;General setting&lt;/h2&gt;
+
+&lt;p&gt;Let us consider the following setting: we would like to send a &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;-bit message &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; across a noisy channel, for instance between your phone and a satellite. If we choose to send &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; directly without any pre-processing, a different result &lt;code class=&quot;MathJax_Preview&quot;&gt;\widetilde{\bm{x}}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\widetilde{\bm{x}}&lt;/script&gt; will arrive with a certain number of errors. Here, we will assume that all errors are bit-flip errors, meaning that they can turn a &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; into &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; or a &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; into &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; (potentially with a different probability).&lt;/p&gt;
+
+&lt;p&gt;To protect the message against bit-flip errors, we can choose to add redundancy to it. For instance, let’s send all the bits three times: each &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; becomes &lt;code class=&quot;MathJax_Preview&quot;&gt;000&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;000&lt;/script&gt; and each &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; becomes &lt;code class=&quot;MathJax_Preview&quot;&gt;111&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;111&lt;/script&gt;. For example, if we want to send the message &lt;code class=&quot;MathJax_Preview&quot;&gt;10100&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;10100&lt;/script&gt;, we should send instead&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    111,000,111,000,000
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    111,000,111,000,000
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;Now, imagine some errors have occurred, and the satellite receives the following message instead:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    101,000,111,000,100
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    101,000,111,000,100
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;Assuming that at most one error has occurred on each triplet, the original message can be decoded by taking a majority vote: &lt;code class=&quot;MathJax_Preview&quot;&gt;101&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;101&lt;/script&gt; is decoded as &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;100&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;100&lt;/script&gt; is decoded as &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;. The message &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}=\bm{x} \bm{x} \bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}=\bm{x} \bm{x} \bm{x}&lt;/script&gt; that we send across the channel is called an &lt;strong&gt;encoding&lt;/strong&gt; of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt;, while trying to infer the original message &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; from the noisy encoding &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{\tilde{y}}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{\tilde{y}}&lt;/script&gt; is called &lt;strong&gt;decoding&lt;/strong&gt;. A particular encoding is often called a &lt;strong&gt;code&lt;/strong&gt; as well, and the example we have seen is called the &lt;strong&gt;3-repetition code&lt;/strong&gt;. More generally, an error-correction process can be summarized with the following diagram:&lt;/p&gt;
+
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/classical-error-correction/error-correction-diagram.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s now introduce some important jargon. In general, an encoder &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}&lt;/script&gt; divides a message into chunks of &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; bits, and encodes them into &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; bits. We write &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}(\bm{x})=\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}(\bm{x})=\bm{y}&lt;/script&gt;, where &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; is a &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;-bit message and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt; is an &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;-bit encoding.
+For example, in the 3-repetition code, we are encoding one bit at a time into three bits, so &lt;code class=&quot;MathJax_Preview&quot;&gt;k=1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=1&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;n=3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n=3&lt;/script&gt;, and &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}(x)=xxx&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}(x)=xxx&lt;/script&gt; for each bit &lt;code class=&quot;MathJax_Preview&quot;&gt;x&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;A &lt;strong&gt;codeword&lt;/strong&gt; is an element of the image of &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}&lt;/script&gt;. We denote the set of all codewords as &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}=\text{Im}(\mathcal{E})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}=\text{Im}(\mathcal{E})&lt;/script&gt;. For instance, in the &lt;strong&gt;3-repetition code&lt;/strong&gt;, we have two codewords: &lt;code class=&quot;MathJax_Preview&quot;&gt;000&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;000&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;111&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;111&lt;/script&gt;, respectively given by &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}(0)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}(0)&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}(1)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}(1)&lt;/script&gt;. In this example, we see that if one or two errors occur on a given codeword, the resulting bit-string won’t be a codeword anymore, making the error &lt;strong&gt;detectable&lt;/strong&gt;. For instance, if you see &lt;code class=&quot;MathJax_Preview&quot;&gt;110&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;110&lt;/script&gt; in your message, you know that an error has occurred, since &lt;code class=&quot;MathJax_Preview&quot;&gt;110&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;110&lt;/script&gt; is not a codeword. On the other hands, the error will only be &lt;strong&gt;correctable&lt;/strong&gt; by our majority vote procedure if at most one error occurs. Finally, if three bit-flips occur—going from &lt;code class=&quot;MathJax_Preview&quot;&gt;000&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;000&lt;/script&gt; to &lt;code class=&quot;MathJax_Preview&quot;&gt;111&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;111&lt;/script&gt; or the reverse—, the errors will be &lt;strong&gt;undetectable&lt;/strong&gt;, resulting in what we call a &lt;strong&gt;logical error&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;This argument can be generalized using the notion of &lt;strong&gt;distance&lt;/strong&gt;. The distance &lt;code class=&quot;MathJax_Preview&quot;&gt;d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; of a code is the minimum number of bit-flips required to pass from one codeword to another, or in other words, the minimum number of errors that would be undetectable with our code. To define the distance more formally, we need to introduce two important notions. The &lt;strong&gt;Hamming weight&lt;/strong&gt; &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert\bm{x}\vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert\bm{x}\vert&lt;/script&gt; of a binary vector &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; is the number of &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; of this vector. The &lt;strong&gt;Hamming distance&lt;/strong&gt; &lt;code class=&quot;MathJax_Preview&quot;&gt;D_H(\bm{x},\bm{y})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;D_H(\bm{x},\bm{y})&lt;/script&gt; between two binary vectors &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt; is the number of components that differ between &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt;, i.e.&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    D_H(\bm{x},\bm{y})=\vert \bm{x} - \bm{y} \vert
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    D_H(\bm{x},\bm{y})=\vert \bm{x} - \bm{y} \vert
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;We can then define the distance as the minimum Hamming distance between two vectors:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    d=\min_{\bm{x},\bm{y} \in \mathcal{C}} D_H(\bm{x},\bm{y})
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    d=\min_{\bm{x},\bm{y} \in \mathcal{C}} D_H(\bm{x},\bm{y})
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;For instance, the distance of the 3-repetition code is 3 (we need to flip all 3 bits to have an undetectable error).
+A code that encodes &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; bits with &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; bits and has a distance &lt;code class=&quot;MathJax_Preview&quot;&gt;d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; is called an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,k,d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,k,d]&lt;/script&gt;&lt;strong&gt;-code&lt;/strong&gt;. The 3-repetition code is an example of &lt;code class=&quot;MathJax_Preview&quot;&gt;[3,1,3]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[3,1,3]&lt;/script&gt;-code.&lt;/p&gt;
+
+&lt;p&gt;Finally, the &lt;strong&gt;rate&lt;/strong&gt; of an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n, k, d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n, k, d]&lt;/script&gt;-code is defined as &lt;code class=&quot;MathJax_Preview&quot;&gt;R=k/n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R=k/n&lt;/script&gt; (so &lt;code class=&quot;MathJax_Preview&quot;&gt;R=1/3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R=1/3&lt;/script&gt; in our case).&lt;/p&gt;
+
+&lt;p&gt;The difficulty in designing good error-correcting codes lies in the trade-off between rate and distance. Indeed, we would ideally like both quantities to be high: a high rate means that there is a low overhead in the encoding process (we only need a few redundancy bits), and a high distance means that we can correct many errors. So can we maximize both quantities? Unfortunately, many bounds have been established on this trade-off, telling us that high-rate codes must have low distance, and high-distance codes must have low rate. The easiest bound to understand is the &lt;strong&gt;Singleton bound&lt;/strong&gt;, which states that for any linear &lt;code class=&quot;MathJax_Preview&quot;&gt;[n, k, d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n, k, d]&lt;/script&gt;-code (we will see the definition of a linear code shortly), we have&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    k \leq n - d + 1
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    k \leq n - d + 1
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;or in terms of rate&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    R \leq 1 - \frac{d - 1}{n}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    R \leq 1 - \frac{d - 1}{n}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;This shows that we cannot arbitrarily increase the rate without decreasing the distance. We will see an interesting illustration of this trade-off in this post by introducing two codes with opposite characteristics: the Hamming code and the simplex code. While the first one is an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n, n - \log(n+1), 3]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n, n - \log(n+1), 3]&lt;/script&gt;-code (high rate, low distance), the second one is an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n, \log(n), n/2]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n, \log(n), n/2]&lt;/script&gt;-code (low rate, high distance).&lt;/p&gt;
+
+&lt;p&gt;We have introduced a lot of notations and jargon in this section, which can be overwhelming when seen for the first time. That’s what happens when you decide to learn a new field! But don’t get discouraged, those notations will keep appearing all the time during your (quantum) error correction learning trip, so they will soon be very familiar to you. In the meantime, I encourage you to do the following three (short) exercises to consolidate what you’ve just learned (the solutions are at the end of the post).&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 1&lt;/strong&gt;: We define the &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;&lt;strong&gt;-repetition code&lt;/strong&gt; as the repetition of each bit of the message &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; times. Work out the encoding function &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}&lt;/script&gt; and the different codewords, as well the parameters &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; of the code. How many errors per codeword are detectable? Correctable? What is the rate of the code, and its limit when &lt;code class=&quot;MathJax_Preview&quot;&gt;n \rightarrow \infty&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n \rightarrow \infty&lt;/script&gt;?&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 2&lt;/strong&gt;: Show that an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,k,d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,k,d]&lt;/script&gt;-code can &lt;strong&gt;detect&lt;/strong&gt; up to &lt;code class=&quot;MathJax_Preview&quot;&gt;d-1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d-1&lt;/script&gt; errors and &lt;strong&gt;correct&lt;/strong&gt; up to &lt;code class=&quot;MathJax_Preview&quot;&gt;\frac{d-1}{2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\frac{d-1}{2}&lt;/script&gt; errors.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 3&lt;/strong&gt;: Show that for an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,k,d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,k,d]&lt;/script&gt;-code defined by the set of codewords &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}&lt;/script&gt;, we have &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert\mathcal{C}\vert=2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert\mathcal{C}\vert=2^k&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;parity-checks-and-hamming-codes&quot;&gt;Parity-checks and Hamming codes&lt;/h2&gt;
+
+&lt;p&gt;In 1950, Richard Hamming discovered a more intelligent way to introduce redundancy in a message than having to repeat it several times. As a warm-up to understand his method, let’s consider the following code, called &lt;strong&gt;simple parity-check code&lt;/strong&gt;, that encodes &lt;code class=&quot;MathJax_Preview&quot;&gt;k=3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=3&lt;/script&gt; bits into &lt;code class=&quot;MathJax_Preview&quot;&gt;n=4&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n=4&lt;/script&gt; bits&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \mathcal{E}(abc) = a b c z
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \mathcal{E}(abc) = a b c z
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;where &lt;code class=&quot;MathJax_Preview&quot;&gt;z = a + b + c \; (\text{mod} \; 2)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z = a + b + c \; (\text{mod} \; 2)&lt;/script&gt;. We call &lt;code class=&quot;MathJax_Preview&quot;&gt;z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; a &lt;strong&gt;parity-check bit&lt;/strong&gt;, as it indicates whether there is an even or an odd number of &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;s in the sum (&lt;code class=&quot;MathJax_Preview&quot;&gt;z=0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z=0&lt;/script&gt; for even and &lt;code class=&quot;MathJax_Preview&quot;&gt;z=1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z=1&lt;/script&gt; for odd). As an exercise, try to write the different codewords corresponding to this encoding map!&lt;/p&gt;
+
+&lt;p&gt;Now, we can show that any single error can be detected by this code. Indeed, if one of the bits &lt;code class=&quot;MathJax_Preview&quot;&gt;a, b, c&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a, b, c&lt;/script&gt; gets flipped, the parity of the three bits will be reversed, and we won’t have &lt;code class=&quot;MathJax_Preview&quot;&gt;z=a + b + c \; (\text{mod} \; 2)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z=a + b + c \; (\text{mod} \; 2)&lt;/script&gt; anymore, indicating that an error have occurred. Similarly, if &lt;code class=&quot;MathJax_Preview&quot;&gt;z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; gets flipped, it won’t correspond to the parity of &lt;code class=&quot;MathJax_Preview&quot;&gt;a,b,c&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a,b,c&lt;/script&gt; anymore and we will detect an error.&lt;/p&gt;
+
+&lt;p&gt;However, there is no way to know &lt;em&gt;where&lt;/em&gt; the error has occurred using this code, or in other words, errors are not correctable. The genius of Hamming was to find a way to use parity checks to actually know the position of the error!&lt;/p&gt;
+
+&lt;p&gt;To illustrate his method, let us consider a 4-bit message &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}=abcd&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}=abcd&lt;/script&gt;, as well as the three variables &lt;code class=&quot;MathJax_Preview&quot;&gt;z_1, z_2, z_3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_1, z_2, z_3&lt;/script&gt; given by&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    z_1 &amp;amp;= a + b + d \\
+    z_2 &amp;amp;= a + c + d \\
+    z_3 &amp;amp;= b + c + d \\
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    z_1 &amp;= a + b + d \\
+    z_2 &amp;= a + c + d \\
+    z_3 &amp;= b + c + d \\
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;where the sum is taken modulo 2 (we will consider all the sums of bits to be modulo 2 from now on, without explicitely writing &lt;code class=&quot;MathJax_Preview&quot;&gt;\mod 2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mod 2&lt;/script&gt;). Those variables indicate the parity of different chunks of our message, as illustrated here:&lt;/p&gt;
+
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/classical-error-correction/hamming-code.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this diagram, each circle represents a parity-check bit &lt;code class=&quot;MathJax_Preview&quot;&gt;z_i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_i&lt;/script&gt;, and each intersection represents a message bit &lt;code class=&quot;MathJax_Preview&quot;&gt;a,b,c,d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a,b,c,d&lt;/script&gt;. By construction, each parity-check bit only involves the three message bits contained in its corresponding circle.&lt;/p&gt;
+
+&lt;p&gt;If we now send the 7-bit message &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}=\mathcal{E}(abcd)=abcdz_1z_2z_3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}=\mathcal{E}(abcd)=abcdz_1z_2z_3&lt;/script&gt;, we can show that any single-bit error will be correctable. Indeed, let’s see what happens if an error occurs on bit &lt;code class=&quot;MathJax_Preview&quot;&gt;a&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;. In this case, we can read in the diagram above that both &lt;code class=&quot;MathJax_Preview&quot;&gt;z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_1&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;z_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_2&lt;/script&gt; parity checks will be violated, while &lt;code class=&quot;MathJax_Preview&quot;&gt;z_3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_3&lt;/script&gt; will remain equal to &lt;code class=&quot;MathJax_Preview&quot;&gt;b+c+d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;b+c+d&lt;/script&gt;. This can only happen if &lt;code class=&quot;MathJax_Preview&quot;&gt;a&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; is flipped, which allows us to correct the error. A similar reasoning can be performed for the other bits. This code, called the &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-&lt;strong&gt;Hamming code&lt;/strong&gt;, is a  &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4,3]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4,3]&lt;/script&gt;-code with a rate &lt;code class=&quot;MathJax_Preview&quot;&gt;R=4/7 \approx 0.57&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R=4/7 \approx 0.57&lt;/script&gt;, which is already better than the rate &lt;code class=&quot;MathJax_Preview&quot;&gt;R \approx 0.33&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R \approx 0.33&lt;/script&gt; of the &lt;code class=&quot;MathJax_Preview&quot;&gt;3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;-repetition code, for the same distance.&lt;/p&gt;
+
+&lt;p&gt;The construction presented here can be generalized, leading to a whole family of Hamming codes defined for any &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; of the form &lt;code class=&quot;MathJax_Preview&quot;&gt;n=2^r-1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n=2^r-1&lt;/script&gt;. We won’t go into the details of this construction here, but if you’re interested, I encourage you to watch &lt;a href=&quot;(https://youtu.be/X8jsijhllIA)&quot;&gt;this 3Blue1Brown video&lt;/a&gt; on the topic. The main takeaway from the general Hamming code construction is that we only need a logarithmic number of parity checks to correct all single-bit errors! More precisely, Hamming codes are &lt;code class=&quot;MathJax_Preview&quot;&gt;[2^r-1, 2^r-r-1, 3]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[2^r-1, 2^r-r-1, 3]&lt;/script&gt;-codes, with a rate &lt;code class=&quot;MathJax_Preview&quot;&gt;R=\frac{2^r-r-1}{2^r-1}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R=\frac{2^r-r-1}{2^r-1}&lt;/script&gt; that converges to &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; when &lt;code class=&quot;MathJax_Preview&quot;&gt;r \rightarrow \infty&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;r \rightarrow \infty&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, Hamming codes have a low distance that doesn’t increase with the codeword length, and they would therefore be impractical in very noisy systems. So we need a more general framework that would allow us to find new codes with better characteristics. That framework is the one of linear codes.&lt;/p&gt;
+
+&lt;h2 id=&quot;linear-codes&quot;&gt;Linear codes&lt;/h2&gt;
+
+&lt;p&gt;This idea of transmitting both the message and some parity-check bits can be generalized with the notion of linear code. A linear code consists in using a matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt;—called &lt;strong&gt;generator matrix&lt;/strong&gt;—as our code, i.e.&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{y} = \bm{G} \bm{x}.
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \bm{y} = \bm{G} \bm{x}.
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;If our message &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; has length &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; and is complemented by &lt;code class=&quot;MathJax_Preview&quot;&gt;m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; parity checks, such that &lt;code class=&quot;MathJax_Preview&quot;&gt;n=k+m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n=k+m&lt;/script&gt; is the size of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt;, we can write &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt; as&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;with &lt;code class=&quot;MathJax_Preview&quot;&gt;I_k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;I_k&lt;/script&gt; the &lt;code class=&quot;MathJax_Preview&quot;&gt;k \times k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k \times k&lt;/script&gt; identity matrix (used to reproduce the message in the code) and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{A}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{A}&lt;/script&gt; an &lt;code class=&quot;MathJax_Preview&quot;&gt;m \times k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m \times k&lt;/script&gt; matrix that performs the parity checks. In this notation, all the matrix operations are performed modulo 2. For instance, the generator matrix of the Hamming code can be written&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{G} = \left( \begin{matrix}
+    1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+    0 &amp;amp; 1 &amp;amp; 0&amp;amp; 0 \\
+    0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+    0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+    \hline
+    1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 \\
+    1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 \\
+    0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1
+    \end{matrix} \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{G} = \left( \begin{matrix}
+    1 &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 0&amp; 0 \\
+    0 &amp; 0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1 \\
+    \hline
+    1 &amp; 1 &amp; 0 &amp; 1 \\
+    1 &amp; 0 &amp; 1 &amp; 1 \\
+    0 &amp; 1 &amp; 1 &amp; 1
+    \end{matrix} \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;since&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{G} \bm{x} =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+            0 &amp;amp; 1 &amp;amp; 0&amp;amp; 0 \\
+            0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+            0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+            \hline
+            1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 \\
+            1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 \\
+            0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1
+        \end{matrix}
+    \right)
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            a + b + d \\
+            a + c + d \\
+            b + c + d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            z_1 \\
+            z_2 \\
+            z_3
+        \end{matrix}
+    \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{G} \bm{x} =
+    \left(
+        \begin{matrix}
+            1 &amp; 0 &amp; 0 &amp; 0 \\
+            0 &amp; 1 &amp; 0&amp; 0 \\
+            0 &amp; 0 &amp; 1 &amp; 0 \\
+            0 &amp; 0 &amp; 0 &amp; 1 \\
+            \hline
+            1 &amp; 1 &amp; 0 &amp; 1 \\
+            1 &amp; 0 &amp; 1 &amp; 1 \\
+            0 &amp; 1 &amp; 1 &amp; 1
+        \end{matrix}
+    \right)
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            a + b + d \\
+            a + c + d \\
+            b + c + d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            z_1 \\
+            z_2 \\
+            z_3
+        \end{matrix}
+    \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Two important remarks about generator matrices:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Elementary operations on the rows and columns of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt; don’t change the code. Indeed, the code is defined as the image of &lt;code class=&quot;MathJax_Preview&quot;&gt;G&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt;, which is invariant under similarity transformations. Using Gaussian reduction, it is therefore always possible to transform &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt; to have the form &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/script&gt;. In other words, any linear code can be seen as a message supplemented with parity checks!&lt;/li&gt;
+  &lt;li&gt;The codewords of a code described by &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt; can be found by taking all the linear combinations of the columns of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt; (the vector &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; in the definition indicates which columns you select or not). Therefore, to find all the codewords, just calculate all the &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt; of the form &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}=a_1 \bm{c_1} + ... a_k \bm{c_k}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}=a_1 \bm{c_1} + ... a_k \bm{c_k}&lt;/script&gt; where &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{c_i}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{c_i}&lt;/script&gt; is the &lt;code class=&quot;MathJax_Preview&quot;&gt;i^{\th}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;i^{\th}&lt;/script&gt; column of &lt;code class=&quot;MathJax_Preview&quot;&gt;G&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;a_1,...a_k \in \{0,1\}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a_1,...a_k \in \{0,1\}&lt;/script&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;An equivalent picture to describe linear codes is through the &lt;strong&gt;parity-check matrix&lt;/strong&gt;, defined as an &lt;code class=&quot;MathJax_Preview&quot;&gt;m \times n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m \times n&lt;/script&gt; matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt; such that&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{H} \bm{y} = 0
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \bm{H} \bm{y} = 0
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;if and only if &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt; is a codeword. In other words, the space of codewords can be defined as the kernel of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt;. The intuition is that linear codes can always be defined as a set of codewords obeying a certain system of linear equations, defined by the parity checks. For instance, the codewords of the Hamming code obey the following system:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    a + b + d + z_1 = 0 \\
+    a + b + c + z_2 = 0 \\
+    b + c + d + z_3 = 0
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    a + b + d + z_1 = 0 \\
+    a + b + c + z_2 = 0 \\
+    b + c + d + z_3 = 0
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;(since &lt;code class=&quot;MathJax_Preview&quot;&gt;a+b+d=z_1 \Leftrightarrow a+b+d+z_1=0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a+b+d=z_1 \Leftrightarrow a+b+d+z_1=0&lt;/script&gt; when working modulo &lt;code class=&quot;MathJax_Preview&quot;&gt;2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;)&lt;/p&gt;
+
+&lt;p&gt;Therefore, the parity-check matrix of the Hamming code can be written&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+            1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+            0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\
+            1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\
+            0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;For a generator matrix of the form &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/script&gt;, the corresponding parity-check matrix can be written&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{H}=\left(\begin{matrix} \bm{A} &amp;amp; I_m  \end{matrix} \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m  \end{matrix} \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Indeed, if &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt; is a codeword, it can be written &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}=\bm{G}\bm{x}=\left(\begin{matrix} \bm{x} \\ \hline \bm{A} \bm{x} \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}=\bm{G}\bm{x}=\left(\begin{matrix} \bm{x} \\ \hline \bm{A} \bm{x} \end{matrix} \right)&lt;/script&gt;. Applying &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt;, we get&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{H} \bm{y} = \bm{A}\bm{x} + \bm{A}\bm{x} = 2\bm{A}\bm{x} = \bm{0}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \bm{H} \bm{y} = \bm{A}\bm{x} + \bm{A}\bm{x} = 2\bm{A}\bm{x} = \bm{0}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;since all operations are performed modulo 2, and &lt;code class=&quot;MathJax_Preview&quot;&gt;2=0 \mod 2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2=0 \mod 2&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Similarly to how all generator matrices can be chosen to have the form &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/script&gt;, we can always apply a Gaussian reduction on &lt;code class=&quot;MathJax_Preview&quot;&gt;H&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt; such that is has the form &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}=\left(\begin{matrix} \bm{A} &amp;amp; I_m  \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m  \end{matrix} \right) %]]&gt;&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;At that point of the post, you might be wondering why we should use the parity-check matrix, when the generator matrix seems much more natural. There are many reasons to prefer the parity-check matrix over the generator matrix. The simplest one is that it gives a convenient method to detect and correct errors. Indeed, if &lt;code class=&quot;MathJax_Preview&quot;&gt;\widetilde{\bm{y}}=\bm{y} + \bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\widetilde{\bm{y}}=\bm{y} + \bm{e}&lt;/script&gt; is the received message disturbed by an error vector &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt;, applying the parity-check matrix to &lt;code class=&quot;MathJax_Preview&quot;&gt;\widetilde{\bm{y}}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\widetilde{\bm{y}}&lt;/script&gt; gives&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{H} \widetilde{\bm{y}} &amp;amp;= \bm{H} \left( \bm{y} + \bm{e} \right) \\
+    &amp;amp;= \bm{H} \bm{e}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{H} \widetilde{\bm{y}} &amp;= \bm{H} \left( \bm{y} + \bm{e} \right) \\
+    &amp;= \bm{H} \bm{e}
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The new vector &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{s} = \bm{H} \bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{s} = \bm{H} \bm{e}&lt;/script&gt; has dimension &lt;code class=&quot;MathJax_Preview&quot;&gt;m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; and is called the &lt;strong&gt;syndrome&lt;/strong&gt;. Each component &lt;code class=&quot;MathJax_Preview&quot;&gt;s_i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;s_i&lt;/script&gt; of the syndrome is equal to &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; if the parity-check equation &lt;code class=&quot;MathJax_Preview&quot;&gt;i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; is violated. Decoding a message then consists in finding the most probable error &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt; that has yielded to the syndrome &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{s}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{s}&lt;/script&gt;. Let’s illustrate this syndrome decoding technique with the &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-Hamming code. The components of the syndrome are given by the following system of equations:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    a + b + d + z_1 = s_1 \\
+    a + b + c + z_2 = s_2 \\
+    b + c + d + z_3 = s_3
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    a + b + d + z_1 = s_1 \\
+    a + b + c + z_2 = s_2 \\
+    b + c + d + z_3 = s_3
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;When &lt;code class=&quot;MathJax_Preview&quot;&gt;s_i=1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;s_i=1&lt;/script&gt;, it therefore means that the parity-check bit &lt;code class=&quot;MathJax_Preview&quot;&gt;z_i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_i&lt;/script&gt; is violated (it doesn’t correspond to the parity of its block anymore). 
+The following table shows the bit we choose to correct for each of the 8 possible syndromes (we can obtain it by looking at the Venn diagram of the Hamming code):&lt;/p&gt;
+
+&lt;table class=&quot;stretch-table&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Syndrome&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;000&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;001&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;010&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;011&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;100&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;101&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;110&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;strong&gt;111&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Correction&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;\emptyset&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\emptyset&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;z_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;c&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;z_3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_3&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;b&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;a&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;A visual way to construct the parity-check matrix is through the &lt;strong&gt;Tanner graph&lt;/strong&gt; of the code. The Tanner graph is a bipartite graph containing two types of nodes, the data nodes (one for each bit of the codeword) and the check nodes (one for each bit of the syndrome). A check node &lt;code class=&quot;MathJax_Preview&quot;&gt;i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; and a data node &lt;code class=&quot;MathJax_Preview&quot;&gt;j&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; are connected if the syndrome bit &lt;code class=&quot;MathJax_Preview&quot;&gt;s_i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;s_i&lt;/script&gt; depends on &lt;code class=&quot;MathJax_Preview&quot;&gt;x_j&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;x_j&lt;/script&gt;. The figure below represents the Tanner graph of the Hamming code. The parity-check matrix is then simply the adjacency matrix of the Tanner graph, i.e. it has a &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; at row &lt;code class=&quot;MathJax_Preview&quot;&gt;i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; and column &lt;code class=&quot;MathJax_Preview&quot;&gt;j&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; if the check node &lt;code class=&quot;MathJax_Preview&quot;&gt;i&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; is connected to the data node &lt;code class=&quot;MathJax_Preview&quot;&gt;j&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt;, and &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; otherwise.&lt;/p&gt;
+
+&lt;p class=&quot;figure&quot;&gt;&lt;img src=&quot;/assets/img/blog/classical-error-correction/tanner-graph.png&quot; alt=&quot;&quot; /&gt;
+Tanner graph of the Hamming code. The top nodes represent the codeword bits and the bottom nodes the syndrome bits, with an edge whenever a codeword bit is involved in the definition of a syndrome bit.&lt;/p&gt;
+
+&lt;p&gt;In quantum error correction, the syndrome can be measured without disturbing the state (through the so-called stabilizer measurements), which makes the theory of linear codes easily transferable to the quantum domain. While quantum codewords can be complicated superpositions in the Hilbert space, errors are simple vectors of size &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; (the number of qubits), making the calculation of the syndrome &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{s}=\bm{H} \bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{s}=\bm{H} \bm{e}&lt;/script&gt; straightforward using the the parity-check matrix, and it is indeed used extensively in simulations.&lt;/p&gt;
+
+&lt;p&gt;In the next section, we will study the problem of decoding linear codes in general, i.e. correcting the errors using the syndrome information. But before that, you can try to solve the following exercises to make sure you understand the basics of linear codes.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 4&lt;/strong&gt;: Find the generator and the parity-check matrix of the code defined by &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}(abc) = a b c z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}(abc) = a b c z&lt;/script&gt; where &lt;code class=&quot;MathJax_Preview&quot;&gt;z=a+b+c&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z=a+b+c&lt;/script&gt;, and draw its Tanner graph.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 5&lt;/strong&gt;: Find the generator and the parity-check matrix of the 3-repetition code, and draw its Tanner graph.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 6&lt;/strong&gt;: Show that the set of codewords is a vector space, i.e. if two vectors &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1}&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_2}&lt;/script&gt; are codewords, &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1} + \bm{y_2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1} + \bm{y_2}&lt;/script&gt; is also a codeword. This property is sometimes taken as the definition of linear codes.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 7&lt;/strong&gt;: &lt;strong&gt;(a)&lt;/strong&gt; Show that if &lt;code class=&quot;MathJax_Preview&quot;&gt;V&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; is a vector space over binary numbers, then &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert V\vert  = 2^{\dim(V)}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert V\vert  = 2^{\dim(V)}&lt;/script&gt;, where &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert V\vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert V\vert&lt;/script&gt; is the the number of elements in the vector space. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(b)&lt;/strong&gt; Deduce that the parity-check matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt; of an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,k,d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,k,d]&lt;/script&gt;-code obeys the relation &lt;code class=&quot;MathJax_Preview&quot;&gt;\text{rank}(H)=n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\text{rank}(H)=n-k&lt;/script&gt;.&lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(c)&lt;/strong&gt; Deduce that if a code has &lt;code class=&quot;MathJax_Preview&quot;&gt;m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; independent parity checks, we have &lt;code class=&quot;MathJax_Preview&quot;&gt;m=n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m=n-k&lt;/script&gt;. This relation is often used to find the parameter &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; of a code given the parity checks.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 8&lt;/strong&gt;:
+&lt;strong&gt;(a)&lt;/strong&gt; Show that the distance of a linear code is the minimum Hamming weight of all the non-zero codewords, i.e. &lt;code class=&quot;MathJax_Preview&quot;&gt;d=\min_{\bm{y}\in \mathcal{C}, \bm{y} \neq \bm{0}} \vert \bm{y} \vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d=\min_{\bm{y}\in \mathcal{C}, \bm{y} \neq \bm{0}} \vert \bm{y} \vert&lt;/script&gt;, where &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}&lt;/script&gt; is the space of codewords and &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert\cdot\vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert\cdot\vert&lt;/script&gt; denotes the Hamming weight (&lt;em&gt;Hint: first prove that the Hamming distance between two codewords is translation-invariant, i.e. &lt;code class=&quot;MathJax_Preview&quot;&gt;D_H(\bm{x},\bm{y})=D_H(\bm{x}+\bm{z},\bm{y}+\bm{z})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;D_H(\bm{x},\bm{y})=D_H(\bm{x}+\bm{z},\bm{y}+\bm{z})&lt;/script&gt;&lt;/em&gt;)&lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(b)&lt;/strong&gt; Use this property to compute the distance of the Hamming code.&lt;/p&gt;
+
+&lt;h2 id=&quot;decoding-linear-codes&quot;&gt;Decoding linear codes&lt;/h2&gt;
+
+&lt;p&gt;Designing a code with good characteristics, such as a high rate and a high distance, is not enough to make it practical: you need to show how to decode it efficiently. As discussed before, decoding consists in finding the original message given its noisy encoded version. We then define an &lt;strong&gt;efficient decoder&lt;/strong&gt; as an algorithm able to accomplish this task in polynomial time, i.e. with a time complexity that grows polynomially with the size &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; of the code.&lt;/p&gt;
+
+&lt;p&gt;To see why decoding can be a difficult problem, let’s consider the general task of decoding a linear code, when errors follow a certain distribution &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{e})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{e})&lt;/script&gt;. As we’ve seen in the previous section, decoding a linear code can be reduced to finding the most likely error given a received syndrome.
+Let &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt; denotes the parity-check matrix of our code and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{s}=\bm{H}\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{s}=\bm{H}\bm{e}&lt;/script&gt; the received syndrome . The goal of an ideal decoder would be to find the vector &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt; that maximizes the probability &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{e} \vert \bm{s})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{e} \vert \bm{s})&lt;/script&gt;. Using Bayes rule, we can write this probability as:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    P(\bm{e} \vert \bm{s}) = \frac{P(\bm{s} \vert \bm{e}) P(\bm{e})}{P(\bm{s})}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    P(\bm{e} \vert \bm{s}) = \frac{P(\bm{s} \vert \bm{e}) P(\bm{e})}{P(\bm{s})}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;Since &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{s})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{s})&lt;/script&gt; doesn’t depend explicitely on &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt;, we can ignore it when solving the maximization problem over &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt;. Next, we notice that any valid predicted error will have to obey &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}\bm{e}=\bm{s}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}\bm{e}=\bm{s}&lt;/script&gt;, so &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{s} \vert \bm{e})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{s} \vert \bm{e})&lt;/script&gt; is either &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; or &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;, depending on whether this equation is satisfied or not. In other words:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    P(\bm{s} \vert \bm{e}) = \bm{1}_{\{\bm{H}\bm{e}=\bm{s}\}}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    P(\bm{s} \vert \bm{e}) = \bm{1}_{\{\bm{H}\bm{e}=\bm{s}\}}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;Therefore, we can rewrite our optimization problem as:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \max_{\bm{e}\in \{0,1\}^n} P(\bm{e}) \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \max_{\bm{e}\in \{0,1\}^n} P(\bm{e}) \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;An important special case is when errors are independent and identically distributed, such that&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    P(\bm{e}) = \prod_{i=1}^n P(e_i)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    P(\bm{e}) = \prod_{i=1}^n P(e_i)
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;Writing &lt;code class=&quot;MathJax_Preview&quot;&gt;P(e_i=1)=p&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(e_i=1)=p&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;P(e_i=0) = (1-p)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(e_i=0) = (1-p)&lt;/script&gt;, and denoting &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert \bm{e} \vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert \bm{e} \vert&lt;/script&gt; the Hamming weight of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt; (i.e. the number of 1 in &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt;), we can rewrite the equation above as&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    P(\bm{e}) = p^{\vert \bm{e} \vert} (1-p)^{n-\vert \bm{e} \vert}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    P(\bm{e}) = p^{\vert \bm{e} \vert} (1-p)^{n-\vert \bm{e} \vert}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;This expression only depends on the weight of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{e}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{e}&lt;/script&gt;, and if the probability of error &lt;code class=&quot;MathJax_Preview&quot;&gt;p &amp;lt; 0.5&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+p &lt; 0.5 %]]&gt;&lt;/script&gt;, it increases when lowering the weight. In other words, our optimization problem reduces to finding the error of minimum weight that satisfies &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}\bm{e}=\bm{s}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}\bm{e}=\bm{s}&lt;/script&gt;:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \min_{\bm{e}\in \{0,1\}^n} \vert \bm{e} \vert \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \min_{\bm{e}\in \{0,1\}^n} \vert \bm{e} \vert \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;Any decoder that explicitely solves this optimization problem is called a &lt;strong&gt;Maximum A Posteriori (MAP) decoder&lt;/strong&gt;, as we are maximizing the posterior distribution &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{e} \vert \bm{s})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{e} \vert \bm{s})&lt;/script&gt;, and is considered to be an ideal decoder.&lt;/p&gt;
+
+&lt;p&gt;So how do we solve the MAP decoding problem? A naive idea would be to simply search through all error vectors and find one that has minimum weight and obeys the constraint. Since there are &lt;code class=&quot;MathJax_Preview&quot;&gt;2^n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2^n&lt;/script&gt; possible error vectors, the time complexity of this algorithm would scale exponentially with &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; and definitely not be efficient. So can we do better? Unfortunately, the answer is no in general: this constrained optimization problem can be shown to be NP-complete, meaning that, most likely, no polynomial-time algorithm will ever solve it.&lt;/p&gt;
+
+&lt;p&gt;What we do from there really depends on the code that is being decoded. Some parity-check matrices have a particular structure that allows the construction of polynomial-time algorithms that solve the MAP decoding problem. It’s for instance the case with Hamming codes and repetition codes. More generally, certain heuristics can be used as approximations to MAP decoding, and lead to high performance in practice. The main example of high-performance heuristic is the &lt;strong&gt;belief propagation algorithm&lt;/strong&gt;, a linear-time iterative algorithm that exploits the fact that the probability &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{e} \vert \bm{s})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{e} \vert \bm{s})&lt;/script&gt; can often be factorized over a graph (in our case the Tanner graph). This algorithm is used extensively by the classical error-correction community, and has recently started to become popular in the quantum community as well, so I will try to dedicate a blog post to it.&lt;/p&gt;
+
+&lt;p&gt;Before ending this post, there is one last important notion I want you to know, as it is frequently used in quantum error correction: code duality.&lt;/p&gt;
+
+&lt;h2 id=&quot;code-duality&quot;&gt;Code duality&lt;/h2&gt;
+
+&lt;p&gt;Let’s consider a code &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}&lt;/script&gt; with generator matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}&lt;/script&gt; and parity-check matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt;. We define the &lt;strong&gt;dual code&lt;/strong&gt; &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}^\perp&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}^\perp&lt;/script&gt; as the code with generator matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}^\perp=\bm{H}^T&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}^\perp=\bm{H}^T&lt;/script&gt; and parity-check matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}^\perp=\bm{G}^T&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}^\perp=\bm{G}^T&lt;/script&gt;. It means that the codewords in &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}^\perp&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}^\perp&lt;/script&gt; now span the rows of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt;, and are orthogonal to all the codewords of &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}&lt;/script&gt;. Duality is an extremely useful notion in coding theory, as it allows to construct new codes from known ones. It is also widely used in quantum error correction, where many constructions make use of the dual code. Let’s try to understand this notion more precisely by looking at some examples.&lt;/p&gt;
+
+&lt;p&gt;First, what is the dual of the 3-repetition code? If you’ve attempted Exercise 5, you know that the repetition code is associated to the following matrices:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{G} =
+    \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            1 \\
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 1 &amp;amp; 0 \\
+            1 &amp;amp; 0 &amp;amp; 1
+        \end{matrix}
+    \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{G} =
+    \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            1 \\
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 \\
+            1 &amp; 0 &amp; 1
+        \end{matrix}
+    \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Therefore, the dual of the 3-repetition code corresponds to&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 1 \\
+            1 &amp;amp; 0 \\
+            0 &amp;amp; 1
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 1 &amp;amp; 1\\
+        \end{matrix}
+    \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 \\
+            1 &amp; 0 \\
+            0 &amp; 1
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 1\\
+        \end{matrix}
+    \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;From this new parity-check matrix, we can deduce that the codewords of &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{C}^\perp&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{C}^\perp&lt;/script&gt; are all the vectors
+&lt;code class=&quot;MathJax_Preview&quot;&gt;\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)&lt;/script&gt;
+such that
+&lt;code class=&quot;MathJax_Preview&quot;&gt;\left(
+    \begin{matrix}
+        1 &amp;amp; 1 &amp;amp; 1
+    \end{matrix}
+\right)
+\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)
+= a+b+c=0 = 0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\left(
+    \begin{matrix}
+        1 &amp; 1 &amp; 1
+    \end{matrix}
+\right)
+\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)
+= a+b+c=0 = 0 %]]&gt;&lt;/script&gt;. In other words, the first two bits can be seen as a message and the last bit as a parity check. That’s the &lt;code class=&quot;MathJax_Preview&quot;&gt;3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;-bit version of the simple parity-check code that we’ve studied in the second section and in Exercise 4! It has four codewords, that we can read from the span of the columns of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}^\perp&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}^\perp&lt;/script&gt;:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \mathcal{C}^\perp = \left\{
+        \left(
+        \begin{matrix}
+            0 \\
+            0 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            0 \\
+            1
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            0 \\
+            1 \\
+            1
+        \end{matrix}
+        \right)
+    \right\}
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \mathcal{C}^\perp = \left\{
+        \left(
+        \begin{matrix}
+            0 \\
+            0 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            0 \\
+            1
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            0 \\
+            1 \\
+            1
+        \end{matrix}
+        \right)
+    \right\}
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;A second, even simpler example, is the 2-repetition code, whose matrices are
+&lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}=
+\left(
+    \begin{matrix}
+        1 \\
+        1 \\
+    \end{matrix}
+\right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}=
+\left(
+    \begin{matrix}
+        1 \\
+        1 \\
+    \end{matrix}
+\right)&lt;/script&gt;
+and
+&lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}=
+\left(
+    \begin{matrix}
+        1 &amp;amp; 1
+    \end{matrix}
+\right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\bm{H}=
+\left(
+    \begin{matrix}
+        1 &amp; 1
+    \end{matrix}
+\right) %]]&gt;&lt;/script&gt;.
+Indeed, this code is the simplest example of a &lt;strong&gt;self-dual code&lt;/strong&gt;: its dual is equal to the original code. A more interesting example of self-dual code is given in Exercise 9.&lt;/p&gt;
+
+&lt;p&gt;Finally, what about our good old &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-Hamming code? The generator of its dual is given by&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 1 &amp;amp; 0 \\
+            1 &amp;amp; 0 &amp;amp; 1 \\
+            0 &amp;amp; 1 &amp;amp; 1 \\
+            1 &amp;amp; 1 &amp;amp; 1 \\
+            1 &amp;amp; 0 &amp;amp; 0 \\
+            0 &amp;amp; 1 &amp;amp; 0 \\
+            0 &amp;amp; 0 &amp;amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 \\
+            1 &amp; 0 &amp; 1 \\
+            0 &amp; 1 &amp; 1 \\
+            1 &amp; 1 &amp; 1 \\
+            1 &amp; 0 &amp; 0 \\
+            0 &amp; 1 &amp; 0 \\
+            0 &amp; 0 &amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;from which we can deduce the list of codewords (by calculating the span of the columns of &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}^\perp&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}^\perp&lt;/script&gt;):&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \mathcal{C}^\perp =
+    \left\{
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{matrix}
+        \right),
+    \right\}
+
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \mathcal{C}^\perp =
+    \left\{
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{matrix}
+        \right),
+    \right\}
+
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;An interesting fact about those 8 codewords is that they all belong to the 16 codewords of the Hamming codes! You can check that by showing either that the three last components of each codewords correspond to the parity checks &lt;code class=&quot;MathJax_Preview&quot;&gt;z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_1&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;z_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_2&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;z_3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_3&lt;/script&gt; of the Hamming code, or that all the vectors are orthogonal to each others (meaning that that &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}\bm{y}=\bm{0}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}\bm{y}=\bm{0}&lt;/script&gt; for all of them). For this reason, we say the the &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-Hamming code is &lt;strong&gt;self-orthogonal&lt;/strong&gt;, meaning that its dual is included in the original code. Are self-orthogonal codes interesting, given that they just seem to be diminished version of known codes? It happens that they’re interesting if the included codewords all have a large Hamming weight, meaning that the distance will be higher than the original code (as shown in Exercise 8)! In our case, all the codewords have weight 4. The distance of the dual code is therefore 4, instead of 3 for the &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-Hamming code.&lt;/p&gt;
+
+&lt;p&gt;The resulting code is therefore a &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,3,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,3,4]&lt;/script&gt;-code, called a &lt;strong&gt;simplex code&lt;/strong&gt;. The general family of simplex codes, defined as dual of Hamming codes, are &lt;code class=&quot;MathJax_Preview&quot;&gt;[2^r-1, r, 2^{r-1}]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[2^r-1, r, 2^{r-1}]&lt;/script&gt;-codes, meaning that they have a very large distance but a very low rate. That’s one of the advantages of the duality construction, it allows us to find new codes with different properties!&lt;/p&gt;
+
+&lt;p&gt;Let’s now take a step back and see what we can say about the general characteristics of dual codes:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;The codeword length is the same for a code and its dual: &lt;code class=&quot;MathJax_Preview&quot;&gt;n^\perp=n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n^\perp=n&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;The message length is given by &lt;code class=&quot;MathJax_Preview&quot;&gt;k^\perp=n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k^\perp=n-k&lt;/script&gt;. Indeed, taking &lt;code class=&quot;MathJax_Preview&quot;&gt;H&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt; to be full-rank and of dimension &lt;code class=&quot;MathJax_Preview&quot;&gt;m \times n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m \times n&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;G^\perp=H^T&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;G^\perp=H^T&lt;/script&gt; is also full rank and has dimension &lt;code class=&quot;MathJax_Preview&quot;&gt;n \times m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n \times m&lt;/script&gt;. By Exercise 7, &lt;code class=&quot;MathJax_Preview&quot;&gt;m=n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m=n-k&lt;/script&gt; (since H is full-rank), and &lt;code class=&quot;MathJax_Preview&quot;&gt;G^\perp&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;G^\perp&lt;/script&gt; therefore has &lt;code class=&quot;MathJax_Preview&quot;&gt;n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n-k&lt;/script&gt; (independent) columns, meaning that it has &lt;code class=&quot;MathJax_Preview&quot;&gt;n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n-k&lt;/script&gt; message bits.&lt;/li&gt;
+  &lt;li&gt;As a consequence of 2, self-dual codes have rate &lt;code class=&quot;MathJax_Preview&quot;&gt;R=\frac{1}{2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R=\frac{1}{2}&lt;/script&gt;, since &lt;code class=&quot;MathJax_Preview&quot;&gt;k=n-k \Rightarrow k=\frac{n}{2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=n-k \Rightarrow k=\frac{n}{2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;We have the following inequality on distances: &lt;code class=&quot;MathJax_Preview&quot;&gt;d+d^\perp -2 \leq n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d+d^\perp -2 \leq n&lt;/script&gt; (you can show it by adding together the Singleton bounds for a code and its dual). It can be interpreted as a tradeoff between the two distances: increasing the distance of a code often results in a decrease of its dual distance.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Hence, the dual construction can often allow us to find codes with opposite characteristics, just like the Hamming and the simplex codes. Moreover, showing that a code is self-dual, or simply deriving the dual of a code, is often a powerful tool in coding theory to prove certain theorems.&lt;/p&gt;
+
+&lt;p&gt;Before concluding this post, here is one last exercise to consolidate your knowledge of duality.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 9&lt;/strong&gt;: We can extend the Hamming code by adding a last parity-check bit, that checks the total parity of the message, i.e. &lt;code class=&quot;MathJax_Preview&quot;&gt;z_4=a+b+c+d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;z_4=a+b+c+d&lt;/script&gt;. We call this code the &lt;strong&gt;extended Hamming code&lt;/strong&gt;. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(a)&lt;/strong&gt; Write the parity-check matrix of the extended Hamming code. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(b)&lt;/strong&gt; Show the extended Hamming code is a &lt;code class=&quot;MathJax_Preview&quot;&gt;[8,4,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[8,4,4]&lt;/script&gt;-code. It means that it can now detect (but not correct) all the &lt;code class=&quot;MathJax_Preview&quot;&gt;2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;-bit errors.&lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(c)&lt;/strong&gt; Show that this code is self-dual. It is the smallest non-trivial self-dual code, after the &lt;code class=&quot;MathJax_Preview&quot;&gt;2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;-repetition code introduced earlier.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;So what have learned in this post? We have defined error-correcting codes and shown that they are characterized by three important parameters: the number of bits &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; of the message we want to send, the number of bits &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; of the encoding, and the distance &lt;code class=&quot;MathJax_Preview&quot;&gt;d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; of the code. We have introduced linear codes, an important family of codes characterized by a generator and a parity-check matrix. We have seen that decoding can be performed by applying the parity-check matrix to the received message (getting what we called the syndrome), but that finding efficient algorithms to solve this problem can be challenging in general. Finally, we have shown that new codes can be obtained from known ones using duality.&lt;/p&gt;
+
+&lt;p&gt;Now is time to confess that I have lied in the title: there is so much more to know about classical error correction, we’ve only barely scratched the surface!
+Soon after Richard Hamming invented linear codes in the early 1950s, David Muller, Irving Reed and Gustave Solomon discovered a more algebraic way to come up with new linear codes, based on generator polynomials instead of generator matrices. This framework led to the invention of the most important codes of the 20th century, such as Reed-Muller codes, convolutional codes, Turbo codes, etc. More recently, low-density parity-check (LDPC) codes, which use graph theory methods to obtain Tanner graphs with good properties, have gained popularity due to improvements of belief propagation decoders, and have for instance been used in the 5G protocol. Apart from coming up with new codes, classical error correction is also concerned with establishing bonds on code performance, often using information theory and probabilities. And decoding is central notion in the field that we have only barely touch.&lt;/p&gt;
+
+&lt;p&gt;However, what we have learned in this post will allow us to start quantum error correction from solid foundations. In the next post, we will introduce the main framework of quantum error correction: the stabilizer formalism. We will see how stabilizers are a direct generalization of parity checks when we have both &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; Pauli errors instead of just bit-flips. We will introduce the Shor code, a generalization of the repetition code, and the Steane code, a generalization of the &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-Hamming code. We will see how we can write a quantum version of the parity-check matrix, and how decoding works in this context. Moving forward in our quantum error correction journey, new classical error correction techniques will be needed, and we will introduce them in due time. But for the moment, you should have all you need to start quantum error correction on good feet!&lt;/p&gt;
+
+&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
+
+&lt;p&gt;Popular science videos to build some intuition:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=X8jsijhllIA&quot;&gt;How to send a self-correcting message&lt;/a&gt;, by 3Blue1Brown&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=-15nx57tbfc&amp;amp;list=PLp_s0welk1_cQkK6GxYsfE_SFQTRjXuB&quot;&gt;Error correcting codes&lt;/a&gt;, by Computerphile&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lecture series to actually delve into the subject:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://youtube.com/watch?v=vfjN7MmSB6g&amp;amp;list=PLkvhuSoxwjI_UudECvFYArvG0cLbFlzSr&quot;&gt;Algebraic coding theory&lt;/a&gt;, by Mary Wootters&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=eixCGqdlGxQ&amp;amp;list=PLJHszsWbB6hqkOyFCQOAlQtfzC1G9sf2&quot;&gt;Error Correcting codes&lt;/a&gt;, by Eigenchris&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Textbooks if you prefer written supports:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.inference.org.uk/itprnn/book.pdf&quot;&gt;Information Theory, Inference, and Learning Algorithms&lt;/a&gt;, by David McKay&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/web-coding-book.pdf&quot;&gt;Essential coding theory&lt;/a&gt;, by V. Guruswami, A. Rudra and M. Sudan&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;h2 id=&quot;solution-to-the-exercises&quot;&gt;Solution to the exercises&lt;/h2&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 1&lt;/strong&gt;: The encoding function of the &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;-repetition code is given by &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{E}(x) = x...x&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{E}(x) = x...x&lt;/script&gt; where &lt;code class=&quot;MathJax_Preview&quot;&gt;x&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is repeated &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; times.
+There are two codewords, made of all &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; or all &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;: &lt;code class=&quot;MathJax_Preview&quot;&gt;0...0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0...0&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;1...1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1...1&lt;/script&gt;. It is an &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,1,n]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,1,n]&lt;/script&gt;-code, since we are encoding &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; bit into &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; bits, and the distance (number of bit-flips to go from one codeword to another) is &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. It means that &lt;code class=&quot;MathJax_Preview&quot;&gt;n-1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n-1&lt;/script&gt; errors would be detectable, and &lt;code class=&quot;MathJax_Preview&quot;&gt;(n-1)/2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(n-1)/2&lt;/script&gt; would be correctable (using majority vote). The rate of the code is &lt;code class=&quot;MathJax_Preview&quot;&gt;R=\frac{k}{n}=\frac{1}{n}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;R=\frac{k}{n}=\frac{1}{n}&lt;/script&gt;, which asymptotically goes to &lt;code class=&quot;MathJax_Preview&quot;&gt;0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; when &lt;code class=&quot;MathJax_Preview&quot;&gt;n\rightarrow \infty&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n\rightarrow \infty&lt;/script&gt;, making those codes impractical as they require a high number of redundant bits to encode a single bit.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 2&lt;/strong&gt;: The distance &lt;code class=&quot;MathJax_Preview&quot;&gt;d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; is the minimum number of errors that can make the message switch from one codeword to another. Therefore, any error of weight &lt;code class=&quot;MathJax_Preview&quot;&gt;d-1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d-1&lt;/script&gt; or lower will make the message leave the space of codewords, and will therefore be detectable. To correct an error, we need to find the closest codeword to the received message (in terms of Hamming distance). If the error weight is lower than &lt;code class=&quot;MathJax_Preview&quot;&gt;\frac{d-1}{2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\frac{d-1}{2}&lt;/script&gt;, we will be &lt;code class=&quot;MathJax_Preview&quot;&gt;\frac{d-1}{2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\frac{d-1}{2}&lt;/script&gt; errors apart from the correct codeword, but &lt;code class=&quot;MathJax_Preview&quot;&gt;\frac{d+1}{2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\frac{d+1}{2}&lt;/script&gt; errors apart from the next closest codeword. We will therefore output the correct codeword. On the other hand, if the errors has weight &lt;code class=&quot;MathJax_Preview&quot;&gt;d/2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d/2&lt;/script&gt; or larger, we might be closer to another codeword and output the wrong correction.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 3&lt;/strong&gt;: By definition, we’re encoding a message of length &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; using &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert \mathcal{C} \vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert \mathcal{C} \vert&lt;/script&gt; codewords. Since there are &lt;code class=&quot;MathJax_Preview&quot;&gt;2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2^k&lt;/script&gt; binary messages of lengths of &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;, we need &lt;code class=&quot;MathJax_Preview&quot;&gt;2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2^k&lt;/script&gt; codewords to encode them all.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 4&lt;/strong&gt;: Using the form &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)&lt;/script&gt; of the generator matrix, we find the following generator matrix for the simple parity-check code:
+&lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G}=
+\left(
+    \begin{matrix}
+    1 &amp;amp; 0 &amp;amp; 0 \\
+    0 &amp;amp; 1 &amp;amp; 0 \\
+    0 &amp;amp; 0 &amp;amp; 1 \\\hline
+    1 &amp;amp; 1 &amp;amp; 1
+    \end{matrix}
+\right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\bm{G}=
+\left(
+    \begin{matrix}
+    1 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 1 \\\hline
+    1 &amp; 1 &amp; 1
+    \end{matrix}
+\right) %]]&gt;&lt;/script&gt;. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+Similarly, using &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}=\left(\begin{matrix} \bm{A} &amp;amp; I_m \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m \end{matrix} \right) %]]&gt;&lt;/script&gt;, we find &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}=\left(\begin{matrix} 1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\bm{H}=\left(\begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 \end{matrix} \right) %]]&gt;&lt;/script&gt;. The Tanner graph can be constructed using four message nodes, and one check node connected to all the message nodes.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 5&lt;/strong&gt;: The repetition code has two codewords, &lt;code class=&quot;MathJax_Preview&quot;&gt;\left( \begin{matrix} 0 \\ 0 \\ 0 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\left( \begin{matrix} 0 \\ 0 \\ 0 \end{matrix} \right)&lt;/script&gt;
+and &lt;code class=&quot;MathJax_Preview&quot;&gt;\left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)&lt;/script&gt;. It is therefore generated by &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{G} = \left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{G} = \left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)&lt;/script&gt;. The first component can be interpreted as the identity matrix in dimension &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, and we can define &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{A}=\left( \begin{matrix} 1 \\ 1 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{A}=\left( \begin{matrix} 1 \\ 1 \end{matrix} \right)&lt;/script&gt;. From there, we get the parity-check matrix &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}= \left( \begin{matrix} 1 &amp;amp; 1 &amp;amp; 0 \\ 1 &amp;amp; 0 &amp;amp; 1 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\bm{H}= \left( \begin{matrix} 1 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 \end{matrix} \right) %]]&gt;&lt;/script&gt;. It can be interpreted as checking that the parity of each pair of bits is even. The corresponding Tanner graph is drawn below.&lt;/p&gt;
+
+&lt;p class=&quot;figure message&quot;&gt;&lt;img src=&quot;/assets/img/blog/classical-error-correction/repetition-code-tanner-graph.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 6&lt;/strong&gt;: We can show this using either the parity-check or the generator picture. In the generator picture, it comes down to showing that &lt;code class=&quot;MathJax_Preview&quot;&gt;\text{Im}(\bm{G})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\text{Im}(\bm{G})&lt;/script&gt; is a vector space. You might already know this fact from linear algebra, but if not, take two codewords &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1}, \bm{y_2} \in \text{Im}(\bm{G})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1}, \bm{y_2} \in \text{Im}(\bm{G})&lt;/script&gt;. By definition, they can be written as &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1}=\bm{G} \bm{x_1}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1}=\bm{G} \bm{x_1}&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_2}=\bm{G} \bm{x_2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_2}=\bm{G} \bm{x_2}&lt;/script&gt;. Therefore, &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1} + \bm{y_2} = \bm{G} \bm{x_1} + \bm{G} \bm{x_2} = \bm{G}(\bm{x_1} + \bm{x_2}) \in \text{Im}(\bm{G})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1} + \bm{y_2} = \bm{G} \bm{x_1} + \bm{G} \bm{x_2} = \bm{G}(\bm{x_1} + \bm{x_2}) \in \text{Im}(\bm{G})&lt;/script&gt;, and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1} + \bm{y_2}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1} + \bm{y_2}&lt;/script&gt; is a codeword.
+In the parity-check picture, it comes down to showing that &lt;code class=&quot;MathJax_Preview&quot;&gt;\text{Ker}(\bm{H})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\text{Ker}(\bm{H})&lt;/script&gt; is a vector space, which you might also already know from linear algebra. It can be shown by taking two codewords &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1}, \bm{y_2} \in \text{Ker}(\bm{H})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1}, \bm{y_2} \in \text{Ker}(\bm{H})&lt;/script&gt;. Then &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H} (\bm{y_1} + \bm{y_2}) = \bm{H} \bm{y_1} + \bm{H} \bm{y_2} = \bm{0} + \bm{0} = \bm{0}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H} (\bm{y_1} + \bm{y_2}) = \bm{H} \bm{y_1} + \bm{H} \bm{y_2} = \bm{0} + \bm{0} = \bm{0}&lt;/script&gt;, so &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y_1}+\bm{y_2} \in \text{Ker}(\bm{H})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y_1}+\bm{y_2} \in \text{Ker}(\bm{H})&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 7&lt;/strong&gt;:
+&lt;strong&gt;(a)&lt;/strong&gt; If &lt;code class=&quot;MathJax_Preview&quot;&gt;k=\dim V&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=\dim V&lt;/script&gt;, we can find a basis &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}_1,...,\bm{y}_k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}_1,...,\bm{y}_k&lt;/script&gt; of &lt;code class=&quot;MathJax_Preview&quot;&gt;V&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; s.t. any element &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y} \in V&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y} \in V&lt;/script&gt; can be written &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}=a_1 \bm{y}_1 + ... + a_k \bm{y}_k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}=a_1 \bm{y}_1 + ... + a_k \bm{y}_k&lt;/script&gt; with &lt;code class=&quot;MathJax_Preview&quot;&gt;a_1,...,a_k \in \{0,1\}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a_1,...,a_k \in \{0,1\}&lt;/script&gt;. Since there are &lt;code class=&quot;MathJax_Preview&quot;&gt;2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2^k&lt;/script&gt; possible values of &lt;code class=&quot;MathJax_Preview&quot;&gt;a_1,...,a_k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a_1,...,a_k&lt;/script&gt;, we can deduce that there are &lt;code class=&quot;MathJax_Preview&quot;&gt;2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2^k&lt;/script&gt; elements in &lt;code class=&quot;MathJax_Preview&quot;&gt;V&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;. It can also be seen as a consequence of Exercise 3, where we showed that for any code, the number of codewords is &lt;code class=&quot;MathJax_Preview&quot;&gt;2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;2^k&lt;/script&gt;. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(b)&lt;/strong&gt; From the &lt;a href=&quot;https://en.wikipedia.org/wiki/Rank%E2%80%93nullity_theorem&quot;&gt;rank-nullity theorem&lt;/a&gt;, we know that &lt;code class=&quot;MathJax_Preview&quot;&gt;\text{rank}(H) + \text{dim}(\text{Ker}(H)) = n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\text{rank}(H) + \text{dim}(\text{Ker}(H)) = n&lt;/script&gt;. Using (a), we get &lt;code class=&quot;MathJax_Preview&quot;&gt;\dim(\text{Ker}(H))=\log \vert \text{Ker}(H) \vert&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\dim(\text{Ker}(H))=\log \vert \text{Ker}(H) \vert&lt;/script&gt;. But we know from Exercise 3 that &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert\text{Ker}(H)\vert=2^k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert\text{Ker}(H)\vert=2^k&lt;/script&gt;, from which we can deduce that &lt;code class=&quot;MathJax_Preview&quot;&gt;\dim(\text{Ker}(H))=k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\dim(\text{Ker}(H))=k&lt;/script&gt;. Therefore, &lt;code class=&quot;MathJax_Preview&quot;&gt;\text{rank}(H) = n - k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\text{rank}(H) = n - k&lt;/script&gt;.&lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(c)&lt;/strong&gt;: If there &lt;code class=&quot;MathJax_Preview&quot;&gt;m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; independent parity checks, we can write &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt; as a full-rank matrix where each row is one of the parity checks. Since &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{H}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{H}&lt;/script&gt; has dimension &lt;code class=&quot;MathJax_Preview&quot;&gt;m \times n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m \times n&lt;/script&gt;, and &lt;code class=&quot;MathJax_Preview&quot;&gt;m &amp;lt; n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+m &lt; n %]]&gt;&lt;/script&gt; (a fair assumption if we want &lt;code class=&quot;MathJax_Preview&quot;&gt;k &amp;gt; 0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k &gt; 0&lt;/script&gt;), we have &lt;code class=&quot;MathJax_Preview&quot;&gt;\text{rank}(\bm{H})=m&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\text{rank}(\bm{H})=m&lt;/script&gt;, and by the previous question, &lt;code class=&quot;MathJax_Preview&quot;&gt;m=n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m=n-k&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 8&lt;/strong&gt;: &lt;strong&gt;(a)&lt;/strong&gt; Let’s first show that the Hamming distance is translation-invariant: &lt;code class=&quot;MathJax_Preview&quot;&gt;D_H(\bm{x}+\bm{z}, \bm{y}+\bm{z})=\vert \bm{x} + \bm{z} - (\bm{y}+\bm{z})\vert=\vert \bm{x} - \bm{y} \vert=D_H(\bm{x},\bm{y})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;D_H(\bm{x}+\bm{z}, \bm{y}+\bm{z})=\vert \bm{x} + \bm{z} - (\bm{y}+\bm{z})\vert=\vert \bm{x} - \bm{y} \vert=D_H(\bm{x},\bm{y})&lt;/script&gt;. Therefore, it means that &lt;code class=&quot;MathJax_Preview&quot;&gt;D_H(\bm{x},\bm{y})=D_H(\bm{x}-\bm{x}, \bm{y}-\bm{x})=D_H(0,\bm{y}-\bm{x})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;D_H(\bm{x},\bm{y})=D_H(\bm{x}-\bm{x}, \bm{y}-\bm{x})=D_H(0,\bm{y}-\bm{x})&lt;/script&gt;. If &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{x}&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}&lt;/script&gt; are two codewords, &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{y}-\bm{x}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{y}-\bm{x}&lt;/script&gt; is also a codeword by linearity of our code (see Exercise 6 for a proof). Therefore, &lt;code class=&quot;MathJax_Preview&quot;&gt;d=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{x},\bm{y})=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{0},\bm{x}-\bm{y})=\min_{\bm{x}\in \mathcal{C}, \bm{x} \neq \bm{0}} D_H(\bm{0},\bm{x})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{x},\bm{y})=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{0},\bm{x}-\bm{y})=\min_{\bm{x}\in \mathcal{C}, \bm{x} \neq \bm{0}} D_H(\bm{0},\bm{x})&lt;/script&gt;. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(b)&lt;/strong&gt; Let’s show that the &lt;code class=&quot;MathJax_Preview&quot;&gt;[7,4]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[7,4]&lt;/script&gt;-Hamming code has distance &lt;code class=&quot;MathJax_Preview&quot;&gt;3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;. Any codeword of the Hamming code is of the form &lt;code class=&quot;MathJax_Preview&quot;&gt;(a, b, c, d, z_1, z_2, z_3)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(a, b, c, d, z_1, z_2, z_3)&lt;/script&gt;. If &lt;code class=&quot;MathJax_Preview&quot;&gt;a=b=c=d=0&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a=b=c=d=0&lt;/script&gt;, then we will have the zero codeword (which is not included in our optimization). If one of &lt;code class=&quot;MathJax_Preview&quot;&gt;a,b,c,d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a,b,c,d&lt;/script&gt; is &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, two of the parity checks will be &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, giving a weight of &lt;code class=&quot;MathJax_Preview&quot;&gt;3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; for those codewords. If two of &lt;code class=&quot;MathJax_Preview&quot;&gt;a,b,c,d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;a,b,c,d&lt;/script&gt; are &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, then one parity-check will be &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, giving also a weight of &lt;code class=&quot;MathJax_Preview&quot;&gt;3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;. And if three or more variables are &lt;code class=&quot;MathJax_Preview&quot;&gt;1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, the weight will be at least three. Therefore, the minimum weight of a non-zero codeword is &lt;code class=&quot;MathJax_Preview&quot;&gt;3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;, and we have &lt;code class=&quot;MathJax_Preview&quot;&gt;d=3&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d=3&lt;/script&gt; by the previous question.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 9&lt;/strong&gt;: &lt;strong&gt;(a)&lt;/strong&gt; We obtain the parity-check matrix of the extended Hamming code by adding a new column (for our new parity-check bit) and appending the row &lt;code class=&quot;MathJax_Preview&quot;&gt;\left( \begin{matrix} 1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \end{matrix} \right)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\left( \begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \end{matrix} \right) %]]&gt;&lt;/script&gt;, giving 
+&lt;code class=&quot;MathJax_Preview&quot;&gt;\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0\\
+            1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0\\
+            0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+            1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\
+            1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\
+            0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+            1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned} %]]&gt;&lt;/script&gt; &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(b)&lt;/strong&gt; We now have &lt;code class=&quot;MathJax_Preview&quot;&gt;n=8&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n=8&lt;/script&gt; since we have added a new check bit to the original Hamming code. The new parity-check matrix is full-rank, and therefore it has a number of columns &lt;code class=&quot;MathJax_Preview&quot;&gt;m=n-k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m=n-k&lt;/script&gt; (by Exercise 7). Since &lt;code class=&quot;MathJax_Preview&quot;&gt;m=4&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;m=4&lt;/script&gt;, we can deduce that &lt;code class=&quot;MathJax_Preview&quot;&gt;k=4&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=4&lt;/script&gt;. To calculate the distance, we can find the lowest weight of its codewords (by Exercise 8a). A very similar reasoning to the proof of Exercise 8b can be used to prove that &lt;code class=&quot;MathJax_Preview&quot;&gt;d=4&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d=4&lt;/script&gt;. &lt;code class=&quot;MathJax_Preview&quot;&gt;\newline&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\newline&lt;/script&gt;
+&lt;strong&gt;(c)&lt;/strong&gt; The non-identity part &lt;code class=&quot;MathJax_Preview&quot;&gt;A&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; of the parity-check matrix computed above is a symmetric matrix. Therefore, &lt;code class=&quot;MathJax_Preview&quot;&gt;A^T=A&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;A^T=A&lt;/script&gt; and the transpose of the parity-check matrix will be equal to the generator matrix, meaning that the code is self-dual.&lt;/p&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="quantum-computing" /><summary type="html">When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job introducing all those concepts in a self-contained way, without assuming any knowledge in error correction. So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, LDPC codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!</summary></entry><entry><title type="html">A bird’s-eye view of quantum error correction and fault tolerance</title><link href="https://artix41.github.io/blog/2022-01-25-intro-qec-1/" rel="alternate" type="text/html" title="A bird's-eye view of quantum error correction and fault tolerance" /><published>2022-01-25T00:00:00+00:00</published><updated>2022-01-25T00:00:00+00:00</updated><id>https://artix41.github.io/blog/intro-qec-1</id><content type="html" xml:base="https://artix41.github.io/blog/2022-01-25-intro-qec-1/">&lt;p&gt;This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.&lt;/p&gt;
 
 &lt;p&gt;As I am just starting my PhD adventure, I have taken the resolution to start blogging again. And since my first task as a new PhD student is to learn as much as I can about my field, why not sharing this learning journey with you?&lt;/p&gt;
 

@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>All you need to know about classical error correction | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="All you need to know about classical error correction" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="https://artix41.github.io/blog/2022-05-21-classical-error-correction/" />
+<meta property="og:url" content="https://artix41.github.io/blog/2022-05-21-classical-error-correction/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-05-21T00:00:00+01:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://artix41.github.io/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://artix41.github.io/blog/2022-05-21-classical-error-correction/","headline":"All you need to know about classical error correction","dateModified":"2022-05-21T00:00:00+01:00","datePublished":"2022-05-21T00:00:00+01:00","author":{"@type":"Person","name":"Arthur Pesah"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://artix41.github.io/blog/2022-05-21-classical-error-correction/"},"description":"Research blog","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="https://artix41.github.io/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="https://artix41.github.io/blog/2022-05-21-classical-error-correction/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+<link rel="dns-prefetch" href="https://arthurpesah.disqus.com" id="_hrefDisqus">
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-classical-error-correction" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        All you need to know about classical error correction
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2022-05-21T00:00:00+01:00">21 May 2022</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+
+    
+
+
+
+  <div class="hr pb0"></div>
+
+
+  </header>
+
+  
+    <p>When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job introducing all those concepts in a self-contained way, without assuming any knowledge in error correction.
+So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, LDPC codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!</p>
+
+<p>So what exactly are we gonna study today? The central notion in this post is that of <strong>linear code</strong>. Linear codes form one of the most important families of error-correcting codes. It includes for instance Hamming codes (some of the earliest codes, invented in 1950), Reed-Solomon codes (used in CDs and QR codes), Turbo codes (used in 3G/4G communication) and LDPC codes (used in 5G communication). While we won’t try to cover the whole zoo of linear codes here, we will introduce some crucial tools to understand them. In particular, the goal of this post is to give you a good grasp of the parity-check matrix, and its graphical representation, the Tanner graph. As we will see when going quantum, the stabilizer formalism (the dominant paradigm to construct quantum codes) can be understood as a direct generalization of linear coding theory, and the quantum parity-check matrix happens to be an essential tool to simulate quantum codes in practice. This post will also be the occasion to introduce some more general coding terminology (encoding, decoding, distance, <code class="MathJax_Preview">[n,k,d]</code><script type="math/tex">[n,k,d]</script>-code, codewords, etc.), which will be handy when delving into QEC.</p>
+
+<p>As a final motivating factor before starting, it happens that this field contains some of the most beautiful ideas in computer science. To get a sense of this beauty, I recommend watching the <a href="https://youtu.be/X8jsijhllIA">3Blue1Brown videos on the Hamming code</a> as a complement to this post. It will give you a very visual picture of some of the techniques introduced here. However, it’s not a prerequisite, so feel free to continue reading this post and watch the video at a later time. On that note, let’s start!</p>
+
+<h2 id="general-setting">General setting</h2>
+
+<p>Let us consider the following setting: we would like to send a <code class="MathJax_Preview">k</code><script type="math/tex">k</script>-bit message <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> across a noisy channel, for instance between your phone and a satellite. If we choose to send <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> directly without any pre-processing, a different result <code class="MathJax_Preview">\widetilde{\bm{x}}</code><script type="math/tex">\widetilde{\bm{x}}</script> will arrive with a certain number of errors. Here, we will assume that all errors are bit-flip errors, meaning that they can turn a <code class="MathJax_Preview">1</code><script type="math/tex">1</script> into <code class="MathJax_Preview">0</code><script type="math/tex">0</script> or a <code class="MathJax_Preview">0</code><script type="math/tex">0</script> into <code class="MathJax_Preview">1</code><script type="math/tex">1</script> (potentially with a different probability).</p>
+
+<p>To protect the message against bit-flip errors, we can choose to add redundancy to it. For instance, let’s send all the bits three times: each <code class="MathJax_Preview">0</code><script type="math/tex">0</script> becomes <code class="MathJax_Preview">000</code><script type="math/tex">000</script> and each <code class="MathJax_Preview">1</code><script type="math/tex">1</script> becomes <code class="MathJax_Preview">111</code><script type="math/tex">111</script>. For example, if we want to send the message <code class="MathJax_Preview">10100</code><script type="math/tex">10100</script>, we should send instead</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    111,000,111,000,000
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    111,000,111,000,000
+\end{aligned}</script>
+
+<p>Now, imagine some errors have occurred, and the satellite receives the following message instead:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    101,000,111,000,100
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    101,000,111,000,100
+\end{aligned}</script>
+
+<p>Assuming that at most one error has occurred on each triplet, the original message can be decoded by taking a majority vote: <code class="MathJax_Preview">101</code><script type="math/tex">101</script> is decoded as <code class="MathJax_Preview">1</code><script type="math/tex">1</script> and <code class="MathJax_Preview">100</code><script type="math/tex">100</script> is decoded as <code class="MathJax_Preview">0</code><script type="math/tex">0</script>. The message <code class="MathJax_Preview">\bm{y}=\bm{x} \bm{x} \bm{x}</code><script type="math/tex">\bm{y}=\bm{x} \bm{x} \bm{x}</script> that we send across the channel is called an <strong>encoding</strong> of <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script>, while trying to infer the original message <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> from the noisy encoding <code class="MathJax_Preview">\bm{\tilde{y}}</code><script type="math/tex">\bm{\tilde{y}}</script> is called <strong>decoding</strong>. A particular encoding is often called a <strong>code</strong> as well, and the example we have seen is called the <strong>3-repetition code</strong>. More generally, an error-correction process can be summarized with the following diagram:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/classical-error-correction/error-correction-diagram.png" alt=""><img src="/assets/img/blog/classical-error-correction/error-correction-diagram.png" alt=""></hy-img>
+</p>
+
+<p>Let’s now introduce some important jargon. In general, an encoder <code class="MathJax_Preview">\mathcal{E}</code><script type="math/tex">\mathcal{E}</script> divides a message into chunks of <code class="MathJax_Preview">k</code><script type="math/tex">k</script> bits, and encodes them into <code class="MathJax_Preview">n</code><script type="math/tex">n</script> bits. We write <code class="MathJax_Preview">\mathcal{E}(\bm{x})=\bm{y}</code><script type="math/tex">\mathcal{E}(\bm{x})=\bm{y}</script>, where <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> is a <code class="MathJax_Preview">k</code><script type="math/tex">k</script>-bit message and <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script> is an <code class="MathJax_Preview">n</code><script type="math/tex">n</script>-bit encoding.
+For example, in the 3-repetition code, we are encoding one bit at a time into three bits, so <code class="MathJax_Preview">k=1</code><script type="math/tex">k=1</script>, <code class="MathJax_Preview">n=3</code><script type="math/tex">n=3</script>, and <code class="MathJax_Preview">\mathcal{E}(x)=xxx</code><script type="math/tex">\mathcal{E}(x)=xxx</script> for each bit <code class="MathJax_Preview">x</code><script type="math/tex">x</script>.</p>
+
+<p>A <strong>codeword</strong> is an element of the image of <code class="MathJax_Preview">\mathcal{E}</code><script type="math/tex">\mathcal{E}</script>. We denote the set of all codewords as <code class="MathJax_Preview">\mathcal{C}=\text{Im}(\mathcal{E})</code><script type="math/tex">\mathcal{C}=\text{Im}(\mathcal{E})</script>. For instance, in the <strong>3-repetition code</strong>, we have two codewords: <code class="MathJax_Preview">000</code><script type="math/tex">000</script> and <code class="MathJax_Preview">111</code><script type="math/tex">111</script>, respectively given by <code class="MathJax_Preview">\mathcal{E}(0)</code><script type="math/tex">\mathcal{E}(0)</script> and <code class="MathJax_Preview">\mathcal{E}(1)</code><script type="math/tex">\mathcal{E}(1)</script>. In this example, we see that if one or two errors occur on a given codeword, the resulting bit-string won’t be a codeword anymore, making the error <strong>detectable</strong>. For instance, if you see <code class="MathJax_Preview">110</code><script type="math/tex">110</script> in your message, you know that an error has occurred, since <code class="MathJax_Preview">110</code><script type="math/tex">110</script> is not a codeword. On the other hands, the error will only be <strong>correctable</strong> by our majority vote procedure if at most one error occurs. Finally, if three bit-flips occur—going from <code class="MathJax_Preview">000</code><script type="math/tex">000</script> to <code class="MathJax_Preview">111</code><script type="math/tex">111</script> or the reverse—, the errors will be <strong>undetectable</strong>, resulting in what we call a <strong>logical error</strong>.</p>
+
+<p>This argument can be generalized using the notion of <strong>distance</strong>. The distance <code class="MathJax_Preview">d</code><script type="math/tex">d</script> of a code is the minimum number of bit-flips required to pass from one codeword to another, or in other words, the minimum number of errors that would be undetectable with our code. To define the distance more formally, we need to introduce two important notions. The <strong>Hamming weight</strong> <code class="MathJax_Preview">\vert\bm{x}\vert</code><script type="math/tex">\vert\bm{x}\vert</script> of a binary vector <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> is the number of <code class="MathJax_Preview">1</code><script type="math/tex">1</script> of this vector. The <strong>Hamming distance</strong> <code class="MathJax_Preview">D_H(\bm{x},\bm{y})</code><script type="math/tex">D_H(\bm{x},\bm{y})</script> between two binary vectors <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> and <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script> is the number of components that differ between <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> and <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script>, i.e.</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    D_H(\bm{x},\bm{y})=\vert \bm{x} - \bm{y} \vert
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    D_H(\bm{x},\bm{y})=\vert \bm{x} - \bm{y} \vert
+\end{aligned}</script>
+
+<p>We can then define the distance as the minimum Hamming distance between two vectors:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    d=\min_{\bm{x},\bm{y} \in \mathcal{C}} D_H(\bm{x},\bm{y})
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    d=\min_{\bm{x},\bm{y} \in \mathcal{C}} D_H(\bm{x},\bm{y})
+\end{aligned}</script>
+
+<p>For instance, the distance of the 3-repetition code is 3 (we need to flip all 3 bits to have an undetectable error).
+A code that encodes <code class="MathJax_Preview">k</code><script type="math/tex">k</script> bits with <code class="MathJax_Preview">n</code><script type="math/tex">n</script> bits and has a distance <code class="MathJax_Preview">d</code><script type="math/tex">d</script> is called an <code class="MathJax_Preview">[n,k,d]</code><script type="math/tex">[n,k,d]</script><strong>-code</strong>. The 3-repetition code is an example of <code class="MathJax_Preview">[3,1,3]</code><script type="math/tex">[3,1,3]</script>-code.</p>
+
+<p>Finally, the <strong>rate</strong> of an <code class="MathJax_Preview">[n, k, d]</code><script type="math/tex">[n, k, d]</script>-code is defined as <code class="MathJax_Preview">R=k/n</code><script type="math/tex">R=k/n</script> (so <code class="MathJax_Preview">R=1/3</code><script type="math/tex">R=1/3</script> in our case).</p>
+
+<p>The difficulty in designing good error-correcting codes lies in the trade-off between rate and distance. Indeed, we would ideally like both quantities to be high: a high rate means that there is a low overhead in the encoding process (we only need a few redundancy bits), and a high distance means that we can correct many errors. So can we maximize both quantities? Unfortunately, many bounds have been established on this trade-off, telling us that high-rate codes must have low distance, and high-distance codes must have low rate. The easiest bound to understand is the <strong>Singleton bound</strong>, which states that for any linear <code class="MathJax_Preview">[n, k, d]</code><script type="math/tex">[n, k, d]</script>-code (we will see the definition of a linear code shortly), we have</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    k \leq n - d + 1
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    k \leq n - d + 1
+\end{aligned}</script>
+
+<p>or in terms of rate</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    R \leq 1 - \frac{d - 1}{n}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    R \leq 1 - \frac{d - 1}{n}
+\end{aligned}</script>
+
+<p>This shows that we cannot arbitrarily increase the rate without decreasing the distance. We will see an interesting illustration of this trade-off in this post by introducing two codes with opposite characteristics: the Hamming code and the simplex code. While the first one is an <code class="MathJax_Preview">[n, n - \log(n+1), 3]</code><script type="math/tex">[n, n - \log(n+1), 3]</script>-code (high rate, low distance), the second one is an <code class="MathJax_Preview">[n, \log(n), n/2]</code><script type="math/tex">[n, \log(n), n/2]</script>-code (low rate, high distance).</p>
+
+<p>We have introduced a lot of notations and jargon in this section, which can be overwhelming when seen for the first time. That’s what happens when you decide to learn a new field! But don’t get discouraged, those notations will keep appearing all the time during your (quantum) error correction learning trip, so they will soon be very familiar to you. In the meantime, I encourage you to do the following three (short) exercises to consolidate what you’ve just learned (the solutions are at the end of the post).</p>
+
+<p class="message"><strong>Exercise 1</strong>: We define the <code class="MathJax_Preview">n</code><script type="math/tex">n</script><strong>-repetition code</strong> as the repetition of each bit of the message <code class="MathJax_Preview">n</code><script type="math/tex">n</script> times. Work out the encoding function <code class="MathJax_Preview">\mathcal{E}</code><script type="math/tex">\mathcal{E}</script> and the different codewords, as well the parameters <code class="MathJax_Preview">n</code><script type="math/tex">n</script>, <code class="MathJax_Preview">k</code><script type="math/tex">k</script> and <code class="MathJax_Preview">d</code><script type="math/tex">d</script> of the code. How many errors per codeword are detectable? Correctable? What is the rate of the code, and its limit when <code class="MathJax_Preview">n \rightarrow \infty</code><script type="math/tex">n \rightarrow \infty</script>?</p>
+
+<p class="message"><strong>Exercise 2</strong>: Show that an <code class="MathJax_Preview">[n,k,d]</code><script type="math/tex">[n,k,d]</script>-code can <strong>detect</strong> up to <code class="MathJax_Preview">d-1</code><script type="math/tex">d-1</script> errors and <strong>correct</strong> up to <code class="MathJax_Preview">\frac{d-1}{2}</code><script type="math/tex">\frac{d-1}{2}</script> errors.</p>
+
+<p class="message"><strong>Exercise 3</strong>: Show that for an <code class="MathJax_Preview">[n,k,d]</code><script type="math/tex">[n,k,d]</script>-code defined by the set of codewords <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script>, we have <code class="MathJax_Preview">\vert\mathcal{C}\vert=2^k</code><script type="math/tex">\vert\mathcal{C}\vert=2^k</script>.</p>
+
+<h2 id="parity-checks-and-hamming-codes">Parity-checks and Hamming codes</h2>
+
+<p>In 1950, Richard Hamming discovered a more intelligent way to introduce redundancy in a message than having to repeat it several times. As a warm-up to understand his method, let’s consider the following code, called <strong>simple parity-check code</strong>, that encodes <code class="MathJax_Preview">k=3</code><script type="math/tex">k=3</script> bits into <code class="MathJax_Preview">n=4</code><script type="math/tex">n=4</script> bits</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \mathcal{E}(abc) = a b c z
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \mathcal{E}(abc) = a b c z
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">z = a + b + c \; (\text{mod} \; 2)</code><script type="math/tex">z = a + b + c \; (\text{mod} \; 2)</script>. We call <code class="MathJax_Preview">z</code><script type="math/tex">z</script> a <strong>parity-check bit</strong>, as it indicates whether there is an even or an odd number of <code class="MathJax_Preview">1</code><script type="math/tex">1</script>s in the sum (<code class="MathJax_Preview">z=0</code><script type="math/tex">z=0</script> for even and <code class="MathJax_Preview">z=1</code><script type="math/tex">z=1</script> for odd). As an exercise, try to write the different codewords corresponding to this encoding map!</p>
+
+<p>Now, we can show that any single error can be detected by this code. Indeed, if one of the bits <code class="MathJax_Preview">a, b, c</code><script type="math/tex">a, b, c</script> gets flipped, the parity of the three bits will be reversed, and we won’t have <code class="MathJax_Preview">z=a + b + c \; (\text{mod} \; 2)</code><script type="math/tex">z=a + b + c \; (\text{mod} \; 2)</script> anymore, indicating that an error have occurred. Similarly, if <code class="MathJax_Preview">z</code><script type="math/tex">z</script> gets flipped, it won’t correspond to the parity of <code class="MathJax_Preview">a,b,c</code><script type="math/tex">a,b,c</script> anymore and we will detect an error.</p>
+
+<p>However, there is no way to know <em>where</em> the error has occurred using this code, or in other words, errors are not correctable. The genius of Hamming was to find a way to use parity checks to actually know the position of the error!</p>
+
+<p>To illustrate his method, let us consider a 4-bit message <code class="MathJax_Preview">\bm{x}=abcd</code><script type="math/tex">\bm{x}=abcd</script>, as well as the three variables <code class="MathJax_Preview">z_1, z_2, z_3</code><script type="math/tex">z_1, z_2, z_3</script> given by</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    z_1 &amp;= a + b + d \\
+    z_2 &amp;= a + c + d \\
+    z_3 &amp;= b + c + d \\
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    z_1 &= a + b + d \\
+    z_2 &= a + c + d \\
+    z_3 &= b + c + d \\
+\end{aligned} %]]></script>
+
+<p>where the sum is taken modulo 2 (we will consider all the sums of bits to be modulo 2 from now on, without explicitely writing <code class="MathJax_Preview">\mod 2</code><script type="math/tex">\mod 2</script>). Those variables indicate the parity of different chunks of our message, as illustrated here:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/classical-error-correction/hamming-code.png" alt=""><img src="/assets/img/blog/classical-error-correction/hamming-code.png" alt=""></hy-img>
+</p>
+
+<p>In this diagram, each circle represents a parity-check bit <code class="MathJax_Preview">z_i</code><script type="math/tex">z_i</script>, and each intersection represents a message bit <code class="MathJax_Preview">a,b,c,d</code><script type="math/tex">a,b,c,d</script>. By construction, each parity-check bit only involves the three message bits contained in its corresponding circle.</p>
+
+<p>If we now send the 7-bit message <code class="MathJax_Preview">\bm{y}=\mathcal{E}(abcd)=abcdz_1z_2z_3</code><script type="math/tex">\bm{y}=\mathcal{E}(abcd)=abcdz_1z_2z_3</script>, we can show that any single-bit error will be correctable. Indeed, let’s see what happens if an error occurs on bit <code class="MathJax_Preview">a</code><script type="math/tex">a</script>. In this case, we can read in the diagram above that both <code class="MathJax_Preview">z_1</code><script type="math/tex">z_1</script> and <code class="MathJax_Preview">z_2</code><script type="math/tex">z_2</script> parity checks will be violated, while <code class="MathJax_Preview">z_3</code><script type="math/tex">z_3</script> will remain equal to <code class="MathJax_Preview">b+c+d</code><script type="math/tex">b+c+d</script>. This can only happen if <code class="MathJax_Preview">a</code><script type="math/tex">a</script> is flipped, which allows us to correct the error. A similar reasoning can be performed for the other bits. This code, called the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-<strong>Hamming code</strong>, is a  <code class="MathJax_Preview">[7,4,3]</code><script type="math/tex">[7,4,3]</script>-code with a rate <code class="MathJax_Preview">R=4/7 \approx 0.57</code><script type="math/tex">R=4/7 \approx 0.57</script>, which is already better than the rate <code class="MathJax_Preview">R \approx 0.33</code><script type="math/tex">R \approx 0.33</script> of the <code class="MathJax_Preview">3</code><script type="math/tex">3</script>-repetition code, for the same distance.</p>
+
+<p>The construction presented here can be generalized, leading to a whole family of Hamming codes defined for any <code class="MathJax_Preview">n</code><script type="math/tex">n</script> of the form <code class="MathJax_Preview">n=2^r-1</code><script type="math/tex">n=2^r-1</script>. We won’t go into the details of this construction here, but if you’re interested, I encourage you to watch <a href="(https://youtu.be/X8jsijhllIA)">this 3Blue1Brown video</a> on the topic. The main takeaway from the general Hamming code construction is that we only need a logarithmic number of parity checks to correct all single-bit errors! More precisely, Hamming codes are <code class="MathJax_Preview">[2^r-1, 2^r-r-1, 3]</code><script type="math/tex">[2^r-1, 2^r-r-1, 3]</script>-codes, with a rate <code class="MathJax_Preview">R=\frac{2^r-r-1}{2^r-1}</code><script type="math/tex">R=\frac{2^r-r-1}{2^r-1}</script> that converges to <code class="MathJax_Preview">1</code><script type="math/tex">1</script> when <code class="MathJax_Preview">r \rightarrow \infty</code><script type="math/tex">r \rightarrow \infty</script>.</p>
+
+<p>However, Hamming codes have a low distance that doesn’t increase with the codeword length, and they would therefore be impractical in very noisy systems. So we need a more general framework that would allow us to find new codes with better characteristics. That framework is the one of linear codes.</p>
+
+<h2 id="linear-codes">Linear codes</h2>
+
+<p>This idea of transmitting both the message and some parity-check bits can be generalized with the notion of linear code. A linear code consists in using a matrix <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script>—called <strong>generator matrix</strong>—as our code, i.e.</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{y} = \bm{G} \bm{x}.
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \bm{y} = \bm{G} \bm{x}.
+\end{aligned}</script>
+
+<p>If our message <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> has length <code class="MathJax_Preview">k</code><script type="math/tex">k</script> and is complemented by <code class="MathJax_Preview">m</code><script type="math/tex">m</script> parity checks, such that <code class="MathJax_Preview">n=k+m</code><script type="math/tex">n=k+m</script> is the size of <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script>, we can write <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script> as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)
+\end{aligned}</script>
+
+<p>with <code class="MathJax_Preview">I_k</code><script type="math/tex">I_k</script> the <code class="MathJax_Preview">k \times k</code><script type="math/tex">k \times k</script> identity matrix (used to reproduce the message in the code) and <code class="MathJax_Preview">\bm{A}</code><script type="math/tex">\bm{A}</script> an <code class="MathJax_Preview">m \times k</code><script type="math/tex">m \times k</script> matrix that performs the parity checks. In this notation, all the matrix operations are performed modulo 2. For instance, the generator matrix of the Hamming code can be written</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{G} = \left( \begin{matrix}
+    1 &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 0&amp; 0 \\
+    0 &amp; 0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1 \\
+    \hline
+    1 &amp; 1 &amp; 0 &amp; 1 \\
+    1 &amp; 0 &amp; 1 &amp; 1 \\
+    0 &amp; 1 &amp; 1 &amp; 1
+    \end{matrix} \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{G} = \left( \begin{matrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0& 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1 \\
+    \hline
+    1 & 1 & 0 & 1 \\
+    1 & 0 & 1 & 1 \\
+    0 & 1 & 1 & 1
+    \end{matrix} \right)
+\end{aligned} %]]></script>
+
+<p>since</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{G} \bm{x} =
+    \left(
+        \begin{matrix}
+            1 &amp; 0 &amp; 0 &amp; 0 \\
+            0 &amp; 1 &amp; 0&amp; 0 \\
+            0 &amp; 0 &amp; 1 &amp; 0 \\
+            0 &amp; 0 &amp; 0 &amp; 1 \\
+            \hline
+            1 &amp; 1 &amp; 0 &amp; 1 \\
+            1 &amp; 0 &amp; 1 &amp; 1 \\
+            0 &amp; 1 &amp; 1 &amp; 1
+        \end{matrix}
+    \right)
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            a + b + d \\
+            a + c + d \\
+            b + c + d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            z_1 \\
+            z_2 \\
+            z_3
+        \end{matrix}
+    \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{G} \bm{x} =
+    \left(
+        \begin{matrix}
+            1 & 0 & 0 & 0 \\
+            0 & 1 & 0& 0 \\
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 1 \\
+            \hline
+            1 & 1 & 0 & 1 \\
+            1 & 0 & 1 & 1 \\
+            0 & 1 & 1 & 1
+        \end{matrix}
+    \right)
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            a + b + d \\
+            a + c + d \\
+            b + c + d
+        \end{matrix}
+    \right)
+    =
+    \left(
+        \begin{matrix}
+            a \\
+            b \\
+            c \\
+            d \\
+            z_1 \\
+            z_2 \\
+            z_3
+        \end{matrix}
+    \right)
+\end{aligned} %]]></script>
+
+<p>Two important remarks about generator matrices:</p>
+
+<ol>
+  <li>Elementary operations on the rows and columns of <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script> don’t change the code. Indeed, the code is defined as the image of <code class="MathJax_Preview">G</code><script type="math/tex">G</script>, which is invariant under similarity transformations. Using Gaussian reduction, it is therefore always possible to transform <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script> to have the form <code class="MathJax_Preview">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</code><script type="math/tex">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</script>. In other words, any linear code can be seen as a message supplemented with parity checks!</li>
+  <li>The codewords of a code described by <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script> can be found by taking all the linear combinations of the columns of <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script> (the vector <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> in the definition indicates which columns you select or not). Therefore, to find all the codewords, just calculate all the <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script> of the form <code class="MathJax_Preview">\bm{y}=a_1 \bm{c_1} + ... a_k \bm{c_k}</code><script type="math/tex">\bm{y}=a_1 \bm{c_1} + ... a_k \bm{c_k}</script> where <code class="MathJax_Preview">\bm{c_i}</code><script type="math/tex">\bm{c_i}</script> is the <code class="MathJax_Preview">i^{\th}</code><script type="math/tex">i^{\th}</script> column of <code class="MathJax_Preview">G</code><script type="math/tex">G</script> and <code class="MathJax_Preview">a_1,...a_k \in \{0,1\}</code><script type="math/tex">a_1,...a_k \in \{0,1\}</script>.</li>
+</ol>
+
+<p>An equivalent picture to describe linear codes is through the <strong>parity-check matrix</strong>, defined as an <code class="MathJax_Preview">m \times n</code><script type="math/tex">m \times n</script> matrix <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> such that</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{H} \bm{y} = 0
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \bm{H} \bm{y} = 0
+\end{aligned}</script>
+
+<p>if and only if <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script> is a codeword. In other words, the space of codewords can be defined as the kernel of <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>. The intuition is that linear codes can always be defined as a set of codewords obeying a certain system of linear equations, defined by the parity checks. For instance, the codewords of the Hamming code obey the following system:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    a + b + d + z_1 = 0 \\
+    a + b + c + z_2 = 0 \\
+    b + c + d + z_3 = 0
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    a + b + d + z_1 = 0 \\
+    a + b + c + z_2 = 0 \\
+    b + c + d + z_3 = 0
+\end{aligned}</script>
+
+<p>(since <code class="MathJax_Preview">a+b+d=z_1 \Leftrightarrow a+b+d+z_1=0</code><script type="math/tex">a+b+d=z_1 \Leftrightarrow a+b+d+z_1=0</script> when working modulo <code class="MathJax_Preview">2</code><script type="math/tex">2</script>)</p>
+
+<p>Therefore, the parity-check matrix of the Hamming code can be written</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\
+            1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\
+            0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 & 1 & 0 & 1 & 1 & 0 & 0 \\
+            1 & 0 & 1 & 1 & 0 & 1 & 0 \\
+            0 & 1 & 1 & 1 & 0 & 0 & 1 \\
+        \end{matrix}
+    \right)
+\end{aligned} %]]></script>
+
+<p>For a generator matrix of the form <code class="MathJax_Preview">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</code><script type="math/tex">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</script>, the corresponding parity-check matrix can be written</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m  \end{matrix} \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{H}=\left(\begin{matrix} \bm{A} & I_m  \end{matrix} \right)
+\end{aligned} %]]></script>
+
+<p>Indeed, if <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script> is a codeword, it can be written <code class="MathJax_Preview">\bm{y}=\bm{G}\bm{x}=\left(\begin{matrix} \bm{x} \\ \hline \bm{A} \bm{x} \end{matrix} \right)</code><script type="math/tex">\bm{y}=\bm{G}\bm{x}=\left(\begin{matrix} \bm{x} \\ \hline \bm{A} \bm{x} \end{matrix} \right)</script>. Applying <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>, we get</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{H} \bm{y} = \bm{A}\bm{x} + \bm{A}\bm{x} = 2\bm{A}\bm{x} = \bm{0}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \bm{H} \bm{y} = \bm{A}\bm{x} + \bm{A}\bm{x} = 2\bm{A}\bm{x} = \bm{0}
+\end{aligned}</script>
+
+<p>since all operations are performed modulo 2, and <code class="MathJax_Preview">2=0 \mod 2</code><script type="math/tex">2=0 \mod 2</script>.</p>
+
+<p>Similarly to how all generator matrices can be chosen to have the form <code class="MathJax_Preview">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</code><script type="math/tex">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</script>, we can always apply a Gaussian reduction on <code class="MathJax_Preview">H</code><script type="math/tex">H</script> such that is has the form <code class="MathJax_Preview">\bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m  \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
+\bm{H}=\left(\begin{matrix} \bm{A} & I_m  \end{matrix} \right) %]]></script>.</p>
+
+<p>At that point of the post, you might be wondering why we should use the parity-check matrix, when the generator matrix seems much more natural. There are many reasons to prefer the parity-check matrix over the generator matrix. The simplest one is that it gives a convenient method to detect and correct errors. Indeed, if <code class="MathJax_Preview">\widetilde{\bm{y}}=\bm{y} + \bm{e}</code><script type="math/tex">\widetilde{\bm{y}}=\bm{y} + \bm{e}</script> is the received message disturbed by an error vector <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>, applying the parity-check matrix to <code class="MathJax_Preview">\widetilde{\bm{y}}</code><script type="math/tex">\widetilde{\bm{y}}</script> gives</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{H} \widetilde{\bm{y}} &amp;= \bm{H} \left( \bm{y} + \bm{e} \right) \\
+    &amp;= \bm{H} \bm{e}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{H} \widetilde{\bm{y}} &= \bm{H} \left( \bm{y} + \bm{e} \right) \\
+    &= \bm{H} \bm{e}
+\end{aligned} %]]></script>
+
+<p>The new vector <code class="MathJax_Preview">\bm{s} = \bm{H} \bm{e}</code><script type="math/tex">\bm{s} = \bm{H} \bm{e}</script> has dimension <code class="MathJax_Preview">m</code><script type="math/tex">m</script> and is called the <strong>syndrome</strong>. Each component <code class="MathJax_Preview">s_i</code><script type="math/tex">s_i</script> of the syndrome is equal to <code class="MathJax_Preview">1</code><script type="math/tex">1</script> if the parity-check equation <code class="MathJax_Preview">i</code><script type="math/tex">i</script> is violated. Decoding a message then consists in finding the most probable error <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> that has yielded to the syndrome <code class="MathJax_Preview">\bm{s}</code><script type="math/tex">\bm{s}</script>. Let’s illustrate this syndrome decoding technique with the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code. The components of the syndrome are given by the following system of equations:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    a + b + d + z_1 = s_1 \\
+    a + b + c + z_2 = s_2 \\
+    b + c + d + z_3 = s_3
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    a + b + d + z_1 = s_1 \\
+    a + b + c + z_2 = s_2 \\
+    b + c + d + z_3 = s_3
+\end{aligned}</script>
+
+<p>When <code class="MathJax_Preview">s_i=1</code><script type="math/tex">s_i=1</script>, it therefore means that the parity-check bit <code class="MathJax_Preview">z_i</code><script type="math/tex">z_i</script> is violated (it doesn’t correspond to the parity of its block anymore). 
+The following table shows the bit we choose to correct for each of the 8 possible syndromes (we can obtain it by looking at the Venn diagram of the Hamming code):</p>
+
+<table class="stretch-table">
+  <thead>
+    <tr>
+      <th style="text-align: center">Syndrome</th>
+      <th style="text-align: center"><strong>000</strong></th>
+      <th style="text-align: center"><strong>001</strong></th>
+      <th style="text-align: center"><strong>010</strong></th>
+      <th style="text-align: center"><strong>011</strong></th>
+      <th style="text-align: center"><strong>100</strong></th>
+      <th style="text-align: center"><strong>101</strong></th>
+      <th style="text-align: center"><strong>110</strong></th>
+      <th style="text-align: center"><strong>111</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Correction</td>
+      <td style="text-align: center"><code class="MathJax_Preview">\emptyset</code><script type="math/tex">\emptyset</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">z_1</code><script type="math/tex">z_1</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">z_2</code><script type="math/tex">z_2</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">c</code><script type="math/tex">c</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">z_3</code><script type="math/tex">z_3</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">b</code><script type="math/tex">b</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">a</code><script type="math/tex">a</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">d</code><script type="math/tex">d</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A visual way to construct the parity-check matrix is through the <strong>Tanner graph</strong> of the code. The Tanner graph is a bipartite graph containing two types of nodes, the data nodes (one for each bit of the codeword) and the check nodes (one for each bit of the syndrome). A check node <code class="MathJax_Preview">i</code><script type="math/tex">i</script> and a data node <code class="MathJax_Preview">j</code><script type="math/tex">j</script> are connected if the syndrome bit <code class="MathJax_Preview">s_i</code><script type="math/tex">s_i</script> depends on <code class="MathJax_Preview">x_j</code><script type="math/tex">x_j</script>. The figure below represents the Tanner graph of the Hamming code. The parity-check matrix is then simply the adjacency matrix of the Tanner graph, i.e. it has a <code class="MathJax_Preview">1</code><script type="math/tex">1</script> at row <code class="MathJax_Preview">i</code><script type="math/tex">i</script> and column <code class="MathJax_Preview">j</code><script type="math/tex">j</script> if the check node <code class="MathJax_Preview">i</code><script type="math/tex">i</script> is connected to the data node <code class="MathJax_Preview">j</code><script type="math/tex">j</script>, and <code class="MathJax_Preview">0</code><script type="math/tex">0</script> otherwise.</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/classical-error-correction/tanner-graph.png" alt=""><img src="/assets/img/blog/classical-error-correction/tanner-graph.png" alt=""></hy-img>
+
+Tanner graph of the Hamming code. The top nodes represent the codeword bits and the bottom nodes the syndrome bits, with an edge whenever a codeword bit is involved in the definition of a syndrome bit.</p>
+
+<p>In quantum error correction, the syndrome can be measured without disturbing the state (through the so-called stabilizer measurements), which makes the theory of linear codes easily transferable to the quantum domain. While quantum codewords can be complicated superpositions in the Hilbert space, errors are simple vectors of size <code class="MathJax_Preview">n</code><script type="math/tex">n</script> (the number of qubits), making the calculation of the syndrome <code class="MathJax_Preview">\bm{s}=\bm{H} \bm{e}</code><script type="math/tex">\bm{s}=\bm{H} \bm{e}</script> straightforward using the the parity-check matrix, and it is indeed used extensively in simulations.</p>
+
+<p>In the next section, we will study the problem of decoding linear codes in general, i.e. correcting the errors using the syndrome information. But before that, you can try to solve the following exercises to make sure you understand the basics of linear codes.</p>
+
+<p class="message"><strong>Exercise 4</strong>: Find the generator and the parity-check matrix of the code defined by <code class="MathJax_Preview">\mathcal{E}(abc) = a b c z</code><script type="math/tex">\mathcal{E}(abc) = a b c z</script> where <code class="MathJax_Preview">z=a+b+c</code><script type="math/tex">z=a+b+c</script>, and draw its Tanner graph.</p>
+
+<p class="message"><strong>Exercise 5</strong>: Find the generator and the parity-check matrix of the 3-repetition code, and draw its Tanner graph.</p>
+
+<p class="message"><strong>Exercise 6</strong>: Show that the set of codewords is a vector space, i.e. if two vectors <code class="MathJax_Preview">\bm{y_1}</code><script type="math/tex">\bm{y_1}</script> and <code class="MathJax_Preview">\bm{y_2}</code><script type="math/tex">\bm{y_2}</script> are codewords, <code class="MathJax_Preview">\bm{y_1} + \bm{y_2}</code><script type="math/tex">\bm{y_1} + \bm{y_2}</script> is also a codeword. This property is sometimes taken as the definition of linear codes.</p>
+
+<p class="message"><strong>Exercise 7</strong>: <strong>(a)</strong> Show that if <code class="MathJax_Preview">V</code><script type="math/tex">V</script> is a vector space over binary numbers, then <code class="MathJax_Preview">\vert V\vert  = 2^{\dim(V)}</code><script type="math/tex">\vert V\vert  = 2^{\dim(V)}</script>, where <code class="MathJax_Preview">\vert V\vert</code><script type="math/tex">\vert V\vert</script> is the the number of elements in the vector space. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> Deduce that the parity-check matrix <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> of an <code class="MathJax_Preview">[n,k,d]</code><script type="math/tex">[n,k,d]</script>-code obeys the relation <code class="MathJax_Preview">\text{rank}(H)=n-k</code><script type="math/tex">\text{rank}(H)=n-k</script>.<code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(c)</strong> Deduce that if a code has <code class="MathJax_Preview">m</code><script type="math/tex">m</script> independent parity checks, we have <code class="MathJax_Preview">m=n-k</code><script type="math/tex">m=n-k</script>. This relation is often used to find the parameter <code class="MathJax_Preview">k</code><script type="math/tex">k</script> of a code given the parity checks.</p>
+
+<p class="message"><strong>Exercise 8</strong>:
+<strong>(a)</strong> Show that the distance of a linear code is the minimum Hamming weight of all the non-zero codewords, i.e. <code class="MathJax_Preview">d=\min_{\bm{y}\in \mathcal{C}, \bm{y} \neq \bm{0}} \vert \bm{y} \vert</code><script type="math/tex">d=\min_{\bm{y}\in \mathcal{C}, \bm{y} \neq \bm{0}} \vert \bm{y} \vert</script>, where <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script> is the space of codewords and <code class="MathJax_Preview">\vert\cdot\vert</code><script type="math/tex">\vert\cdot\vert</script> denotes the Hamming weight (<em>Hint: first prove that the Hamming distance between two codewords is translation-invariant, i.e. <code class="MathJax_Preview">D_H(\bm{x},\bm{y})=D_H(\bm{x}+\bm{z},\bm{y}+\bm{z})</code><script type="math/tex">D_H(\bm{x},\bm{y})=D_H(\bm{x}+\bm{z},\bm{y}+\bm{z})</script></em>)<code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> Use this property to compute the distance of the Hamming code.</p>
+
+<h2 id="decoding-linear-codes">Decoding linear codes</h2>
+
+<p>Designing a code with good characteristics, such as a high rate and a high distance, is not enough to make it practical: you need to show how to decode it efficiently. As discussed before, decoding consists in finding the original message given its noisy encoded version. We then define an <strong>efficient decoder</strong> as an algorithm able to accomplish this task in polynomial time, i.e. with a time complexity that grows polynomially with the size <code class="MathJax_Preview">n</code><script type="math/tex">n</script> of the code.</p>
+
+<p>To see why decoding can be a difficult problem, let’s consider the general task of decoding a linear code, when errors follow a certain distribution <code class="MathJax_Preview">P(\bm{e})</code><script type="math/tex">P(\bm{e})</script>. As we’ve seen in the previous section, decoding a linear code can be reduced to finding the most likely error given a received syndrome.
+Let <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> denotes the parity-check matrix of our code and <code class="MathJax_Preview">\bm{s}=\bm{H}\bm{e}</code><script type="math/tex">\bm{s}=\bm{H}\bm{e}</script> the received syndrome . The goal of an ideal decoder would be to find the vector <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> that maximizes the probability <code class="MathJax_Preview">P(\bm{e} \vert \bm{s})</code><script type="math/tex">P(\bm{e} \vert \bm{s})</script>. Using Bayes rule, we can write this probability as:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    P(\bm{e} \vert \bm{s}) = \frac{P(\bm{s} \vert \bm{e}) P(\bm{e})}{P(\bm{s})}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    P(\bm{e} \vert \bm{s}) = \frac{P(\bm{s} \vert \bm{e}) P(\bm{e})}{P(\bm{s})}
+\end{aligned}</script>
+
+<p>Since <code class="MathJax_Preview">P(\bm{s})</code><script type="math/tex">P(\bm{s})</script> doesn’t depend explicitely on <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>, we can ignore it when solving the maximization problem over <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>. Next, we notice that any valid predicted error will have to obey <code class="MathJax_Preview">\bm{H}\bm{e}=\bm{s}</code><script type="math/tex">\bm{H}\bm{e}=\bm{s}</script>, so <code class="MathJax_Preview">P(\bm{s} \vert \bm{e})</code><script type="math/tex">P(\bm{s} \vert \bm{e})</script> is either <code class="MathJax_Preview">1</code><script type="math/tex">1</script> or <code class="MathJax_Preview">0</code><script type="math/tex">0</script>, depending on whether this equation is satisfied or not. In other words:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    P(\bm{s} \vert \bm{e}) = \bm{1}_{\{\bm{H}\bm{e}=\bm{s}\}}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    P(\bm{s} \vert \bm{e}) = \bm{1}_{\{\bm{H}\bm{e}=\bm{s}\}}
+\end{aligned}</script>
+
+<p>Therefore, we can rewrite our optimization problem as:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \max_{\bm{e}\in \{0,1\}^n} P(\bm{e}) \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \max_{\bm{e}\in \{0,1\}^n} P(\bm{e}) \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}</script>
+
+<p>An important special case is when errors are independent and identically distributed, such that</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    P(\bm{e}) = \prod_{i=1}^n P(e_i)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    P(\bm{e}) = \prod_{i=1}^n P(e_i)
+\end{aligned}</script>
+
+<p>Writing <code class="MathJax_Preview">P(e_i=1)=p</code><script type="math/tex">P(e_i=1)=p</script>, <code class="MathJax_Preview">P(e_i=0) = (1-p)</code><script type="math/tex">P(e_i=0) = (1-p)</script>, and denoting <code class="MathJax_Preview">\vert \bm{e} \vert</code><script type="math/tex">\vert \bm{e} \vert</script> the Hamming weight of <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> (i.e. the number of 1 in <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>), we can rewrite the equation above as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    P(\bm{e}) = p^{\vert \bm{e} \vert} (1-p)^{n-\vert \bm{e} \vert}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    P(\bm{e}) = p^{\vert \bm{e} \vert} (1-p)^{n-\vert \bm{e} \vert}
+\end{aligned}</script>
+
+<p>This expression only depends on the weight of <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>, and if the probability of error <code class="MathJax_Preview">p &lt; 0.5</code><script type="math/tex">% <![CDATA[
+p < 0.5 %]]></script>, it increases when lowering the weight. In other words, our optimization problem reduces to finding the error of minimum weight that satisfies <code class="MathJax_Preview">\bm{H}\bm{e}=\bm{s}</code><script type="math/tex">\bm{H}\bm{e}=\bm{s}</script>:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \min_{\bm{e}\in \{0,1\}^n} \vert \bm{e} \vert \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \min_{\bm{e}\in \{0,1\}^n} \vert \bm{e} \vert \; \text{ s.t. } \; \bm{H}\bm{e}=\bm{s}
+\end{aligned}</script>
+
+<p>Any decoder that explicitely solves this optimization problem is called a <strong>Maximum A Posteriori (MAP) decoder</strong>, as we are maximizing the posterior distribution <code class="MathJax_Preview">P(\bm{e} \vert \bm{s})</code><script type="math/tex">P(\bm{e} \vert \bm{s})</script>, and is considered to be an ideal decoder.</p>
+
+<p>So how do we solve the MAP decoding problem? A naive idea would be to simply search through all error vectors and find one that has minimum weight and obeys the constraint. Since there are <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script> possible error vectors, the time complexity of this algorithm would scale exponentially with <code class="MathJax_Preview">n</code><script type="math/tex">n</script> and definitely not be efficient. So can we do better? Unfortunately, the answer is no in general: this constrained optimization problem can be shown to be NP-complete, meaning that, most likely, no polynomial-time algorithm will ever solve it.</p>
+
+<p>What we do from there really depends on the code that is being decoded. Some parity-check matrices have a particular structure that allows the construction of polynomial-time algorithms that solve the MAP decoding problem. It’s for instance the case with Hamming codes and repetition codes. More generally, certain heuristics can be used as approximations to MAP decoding, and lead to high performance in practice. The main example of high-performance heuristic is the <strong>belief propagation algorithm</strong>, a linear-time iterative algorithm that exploits the fact that the probability <code class="MathJax_Preview">P(\bm{e} \vert \bm{s})</code><script type="math/tex">P(\bm{e} \vert \bm{s})</script> can often be factorized over a graph (in our case the Tanner graph). This algorithm is used extensively by the classical error-correction community, and has recently started to become popular in the quantum community as well, so I will try to dedicate a blog post to it.</p>
+
+<p>Before ending this post, there is one last important notion I want you to know, as it is frequently used in quantum error correction: code duality.</p>
+
+<h2 id="code-duality">Code duality</h2>
+
+<p>Let’s consider a code <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script> with generator matrix <code class="MathJax_Preview">\bm{G}</code><script type="math/tex">\bm{G}</script> and parity-check matrix <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>. We define the <strong>dual code</strong> <code class="MathJax_Preview">\mathcal{C}^\perp</code><script type="math/tex">\mathcal{C}^\perp</script> as the code with generator matrix <code class="MathJax_Preview">\bm{G}^\perp=\bm{H}^T</code><script type="math/tex">\bm{G}^\perp=\bm{H}^T</script> and parity-check matrix <code class="MathJax_Preview">\bm{H}^\perp=\bm{G}^T</code><script type="math/tex">\bm{H}^\perp=\bm{G}^T</script>. It means that the codewords in <code class="MathJax_Preview">\mathcal{C}^\perp</code><script type="math/tex">\mathcal{C}^\perp</script> now span the rows of <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>, and are orthogonal to all the codewords of <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script>. Duality is an extremely useful notion in coding theory, as it allows to construct new codes from known ones. It is also widely used in quantum error correction, where many constructions make use of the dual code. Let’s try to understand this notion more precisely by looking at some examples.</p>
+
+<p>First, what is the dual of the 3-repetition code? If you’ve attempted Exercise 5, you know that the repetition code is associated to the following matrices:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{G} =
+    \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            1 \\
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 \\
+            1 &amp; 0 &amp; 1
+        \end{matrix}
+    \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{G} =
+    \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            1 \\
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 & 1 & 0 \\
+            1 & 0 & 1
+        \end{matrix}
+    \right)
+\end{aligned} %]]></script>
+
+<p>Therefore, the dual of the 3-repetition code corresponds to</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 \\
+            1 &amp; 0 \\
+            0 &amp; 1
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 1\\
+        \end{matrix}
+    \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 & 1 \\
+            1 & 0 \\
+            0 & 1
+        \end{matrix}
+    \right)
+    , \; \;
+    \bm{H}^\perp =
+    \left(
+        \begin{matrix}
+            1 & 1 & 1\\
+        \end{matrix}
+    \right)
+\end{aligned} %]]></script>
+
+<p>From this new parity-check matrix, we can deduce that the codewords of <code class="MathJax_Preview">\mathcal{C}^\perp</code><script type="math/tex">\mathcal{C}^\perp</script> are all the vectors
+<code class="MathJax_Preview">\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)</code><script type="math/tex">\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)</script>
+such that
+<code class="MathJax_Preview">\left(
+    \begin{matrix}
+        1 &amp; 1 &amp; 1
+    \end{matrix}
+\right)
+\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)
+= a+b+c=0 = 0</code><script type="math/tex">% <![CDATA[
+\left(
+    \begin{matrix}
+        1 & 1 & 1
+    \end{matrix}
+\right)
+\left(
+    \begin{matrix}
+        a \\
+        b \\
+        c
+    \end{matrix}
+\right)
+= a+b+c=0 = 0 %]]></script>. In other words, the first two bits can be seen as a message and the last bit as a parity check. That’s the <code class="MathJax_Preview">3</code><script type="math/tex">3</script>-bit version of the simple parity-check code that we’ve studied in the second section and in Exercise 4! It has four codewords, that we can read from the span of the columns of <code class="MathJax_Preview">\bm{G}^\perp</code><script type="math/tex">\bm{G}^\perp</script>:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \mathcal{C}^\perp = \left\{
+        \left(
+        \begin{matrix}
+            0 \\
+            0 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            0 \\
+            1
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            0 \\
+            1 \\
+            1
+        \end{matrix}
+        \right)
+    \right\}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \mathcal{C}^\perp = \left\{
+        \left(
+        \begin{matrix}
+            0 \\
+            0 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            1 \\
+            0
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            1 \\
+            0 \\
+            1
+        \end{matrix}
+        \right),
+        \left(
+        \begin{matrix}
+            0 \\
+            1 \\
+            1
+        \end{matrix}
+        \right)
+    \right\}
+\end{aligned}</script>
+
+<p>A second, even simpler example, is the 2-repetition code, whose matrices are
+<code class="MathJax_Preview">\bm{G}=
+\left(
+    \begin{matrix}
+        1 \\
+        1 \\
+    \end{matrix}
+\right)</code><script type="math/tex">\bm{G}=
+\left(
+    \begin{matrix}
+        1 \\
+        1 \\
+    \end{matrix}
+\right)</script>
+and
+<code class="MathJax_Preview">\bm{H}=
+\left(
+    \begin{matrix}
+        1 &amp; 1
+    \end{matrix}
+\right)</code><script type="math/tex">% <![CDATA[
+\bm{H}=
+\left(
+    \begin{matrix}
+        1 & 1
+    \end{matrix}
+\right) %]]></script>.
+Indeed, this code is the simplest example of a <strong>self-dual code</strong>: its dual is equal to the original code. A more interesting example of self-dual code is given in Exercise 9.</p>
+
+<p>Finally, what about our good old <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code? The generator of its dual is given by</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 \\
+            1 &amp; 0 &amp; 1 \\
+            0 &amp; 1 &amp; 1 \\
+            1 &amp; 1 &amp; 1 \\
+            1 &amp; 0 &amp; 0 \\
+            0 &amp; 1 &amp; 0 \\
+            0 &amp; 0 &amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    \bm{G}^\perp =
+    \left(
+        \begin{matrix}
+            1 & 1 & 0 \\
+            1 & 0 & 1 \\
+            0 & 1 & 1 \\
+            1 & 1 & 1 \\
+            1 & 0 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 1 \\
+        \end{matrix}
+    \right)
+\end{aligned} %]]></script>
+
+<p>from which we can deduce the list of codewords (by calculating the span of the columns of <code class="MathJax_Preview">\bm{G}^\perp</code><script type="math/tex">\bm{G}^\perp</script>):</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \mathcal{C}^\perp =
+    \left\{
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{matrix}
+        \right),
+    \right\}
+
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \mathcal{C}^\perp =
+    \left\{
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 0 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 1 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{matrix}
+        \right),
+        \left(
+            \begin{matrix} 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{matrix}
+        \right),
+    \right\}
+
+\end{aligned}</script>
+
+<p>An interesting fact about those 8 codewords is that they all belong to the 16 codewords of the Hamming codes! You can check that by showing either that the three last components of each codewords correspond to the parity checks <code class="MathJax_Preview">z_1</code><script type="math/tex">z_1</script>, <code class="MathJax_Preview">z_2</code><script type="math/tex">z_2</script>, <code class="MathJax_Preview">z_3</code><script type="math/tex">z_3</script> of the Hamming code, or that all the vectors are orthogonal to each others (meaning that that <code class="MathJax_Preview">\bm{H}\bm{y}=\bm{0}</code><script type="math/tex">\bm{H}\bm{y}=\bm{0}</script> for all of them). For this reason, we say the the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code is <strong>self-orthogonal</strong>, meaning that its dual is included in the original code. Are self-orthogonal codes interesting, given that they just seem to be diminished version of known codes? It happens that they’re interesting if the included codewords all have a large Hamming weight, meaning that the distance will be higher than the original code (as shown in Exercise 8)! In our case, all the codewords have weight 4. The distance of the dual code is therefore 4, instead of 3 for the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code.</p>
+
+<p>The resulting code is therefore a <code class="MathJax_Preview">[7,3,4]</code><script type="math/tex">[7,3,4]</script>-code, called a <strong>simplex code</strong>. The general family of simplex codes, defined as dual of Hamming codes, are <code class="MathJax_Preview">[2^r-1, r, 2^{r-1}]</code><script type="math/tex">[2^r-1, r, 2^{r-1}]</script>-codes, meaning that they have a very large distance but a very low rate. That’s one of the advantages of the duality construction, it allows us to find new codes with different properties!</p>
+
+<p>Let’s now take a step back and see what we can say about the general characteristics of dual codes:</p>
+<ol>
+  <li>The codeword length is the same for a code and its dual: <code class="MathJax_Preview">n^\perp=n</code><script type="math/tex">n^\perp=n</script></li>
+  <li>The message length is given by <code class="MathJax_Preview">k^\perp=n-k</code><script type="math/tex">k^\perp=n-k</script>. Indeed, taking <code class="MathJax_Preview">H</code><script type="math/tex">H</script> to be full-rank and of dimension <code class="MathJax_Preview">m \times n</code><script type="math/tex">m \times n</script>, <code class="MathJax_Preview">G^\perp=H^T</code><script type="math/tex">G^\perp=H^T</script> is also full rank and has dimension <code class="MathJax_Preview">n \times m</code><script type="math/tex">n \times m</script>. By Exercise 7, <code class="MathJax_Preview">m=n-k</code><script type="math/tex">m=n-k</script> (since H is full-rank), and <code class="MathJax_Preview">G^\perp</code><script type="math/tex">G^\perp</script> therefore has <code class="MathJax_Preview">n-k</code><script type="math/tex">n-k</script> (independent) columns, meaning that it has <code class="MathJax_Preview">n-k</code><script type="math/tex">n-k</script> message bits.</li>
+  <li>As a consequence of 2, self-dual codes have rate <code class="MathJax_Preview">R=\frac{1}{2}</code><script type="math/tex">R=\frac{1}{2}</script>, since <code class="MathJax_Preview">k=n-k \Rightarrow k=\frac{n}{2}</code><script type="math/tex">k=n-k \Rightarrow k=\frac{n}{2}</script></li>
+  <li>We have the following inequality on distances: <code class="MathJax_Preview">d+d^\perp -2 \leq n</code><script type="math/tex">d+d^\perp -2 \leq n</script> (you can show it by adding together the Singleton bounds for a code and its dual). It can be interpreted as a tradeoff between the two distances: increasing the distance of a code often results in a decrease of its dual distance.</li>
+</ol>
+
+<p>Hence, the dual construction can often allow us to find codes with opposite characteristics, just like the Hamming and the simplex codes. Moreover, showing that a code is self-dual, or simply deriving the dual of a code, is often a powerful tool in coding theory to prove certain theorems.</p>
+
+<p>Before concluding this post, here is one last exercise to consolidate your knowledge of duality.</p>
+
+<p class="message"><strong>Exercise 9</strong>: We can extend the Hamming code by adding a last parity-check bit, that checks the total parity of the message, i.e. <code class="MathJax_Preview">z_4=a+b+c+d</code><script type="math/tex">z_4=a+b+c+d</script>. We call this code the <strong>extended Hamming code</strong>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(a)</strong> Write the parity-check matrix of the extended Hamming code. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> Show the extended Hamming code is a <code class="MathJax_Preview">[8,4,4]</code><script type="math/tex">[8,4,4]</script>-code. It means that it can now detect (but not correct) all the <code class="MathJax_Preview">2</code><script type="math/tex">2</script>-bit errors.<code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(c)</strong> Show that this code is self-dual. It is the smallest non-trivial self-dual code, after the <code class="MathJax_Preview">2</code><script type="math/tex">2</script>-repetition code introduced earlier.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So what have learned in this post? We have defined error-correcting codes and shown that they are characterized by three important parameters: the number of bits <code class="MathJax_Preview">k</code><script type="math/tex">k</script> of the message we want to send, the number of bits <code class="MathJax_Preview">n</code><script type="math/tex">n</script> of the encoding, and the distance <code class="MathJax_Preview">d</code><script type="math/tex">d</script> of the code. We have introduced linear codes, an important family of codes characterized by a generator and a parity-check matrix. We have seen that decoding can be performed by applying the parity-check matrix to the received message (getting what we called the syndrome), but that finding efficient algorithms to solve this problem can be challenging in general. Finally, we have shown that new codes can be obtained from known ones using duality.</p>
+
+<p>Now is time to confess that I have lied in the title: there is so much more to know about classical error correction, we’ve only barely scratched the surface!
+Soon after Richard Hamming invented linear codes in the early 1950s, David Muller, Irving Reed and Gustave Solomon discovered a more algebraic way to come up with new linear codes, based on generator polynomials instead of generator matrices. This framework led to the invention of the most important codes of the 20th century, such as Reed-Muller codes, convolutional codes, Turbo codes, etc. More recently, low-density parity-check (LDPC) codes, which use graph theory methods to obtain Tanner graphs with good properties, have gained popularity due to improvements of belief propagation decoders, and have for instance been used in the 5G protocol. Apart from coming up with new codes, classical error correction is also concerned with establishing bonds on code performance, often using information theory and probabilities. And decoding is central notion in the field that we have only barely touch.</p>
+
+<p>However, what we have learned in this post will allow us to start quantum error correction from solid foundations. In the next post, we will introduce the main framework of quantum error correction: the stabilizer formalism. We will see how stabilizers are a direct generalization of parity checks when we have both <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> Pauli errors instead of just bit-flips. We will introduce the Shor code, a generalization of the repetition code, and the Steane code, a generalization of the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code. We will see how we can write a quantum version of the parity-check matrix, and how decoding works in this context. Moving forward in our quantum error correction journey, new classical error correction techniques will be needed, and we will introduce them in due time. But for the moment, you should have all you need to start quantum error correction on good feet!</p>
+
+<h2 id="resources">Resources</h2>
+
+<p>Popular science videos to build some intuition:</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=X8jsijhllIA">How to send a self-correcting message</a>, by 3Blue1Brown</li>
+  <li><a href="https://www.youtube.com/watch?v=-15nx57tbfc&amp;list=PLp_s0welk1_cQkK6GxYsfE_SFQTRjXuB">Error correcting codes</a>, by Computerphile</li>
+</ul>
+
+<p>Lecture series to actually delve into the subject:</p>
+
+<ul>
+  <li><a href="https://youtube.com/watch?v=vfjN7MmSB6g&amp;list=PLkvhuSoxwjI_UudECvFYArvG0cLbFlzSr">Algebraic coding theory</a>, by Mary Wootters</li>
+  <li><a href="https://www.youtube.com/watch?v=eixCGqdlGxQ&amp;list=PLJHszsWbB6hqkOyFCQOAlQtfzC1G9sf2">Error Correcting codes</a>, by Eigenchris</li>
+</ul>
+
+<p>Textbooks if you prefer written supports:</p>
+
+<ul>
+  <li><a href="https://www.inference.org.uk/itprnn/book.pdf">Information Theory, Inference, and Learning Algorithms</a>, by David McKay</li>
+  <li><a href="https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/web-coding-book.pdf">Essential coding theory</a>, by V. Guruswami, A. Rudra and M. Sudan</li>
+</ul>
+
+<h2 id="references">References</h2>
+
+<h2 id="solution-to-the-exercises">Solution to the exercises</h2>
+
+<p class="message"><strong>Exercise 1</strong>: The encoding function of the <code class="MathJax_Preview">n</code><script type="math/tex">n</script>-repetition code is given by <code class="MathJax_Preview">\mathcal{E}(x) = x...x</code><script type="math/tex">\mathcal{E}(x) = x...x</script> where <code class="MathJax_Preview">x</code><script type="math/tex">x</script> is repeated <code class="MathJax_Preview">n</code><script type="math/tex">n</script> times.
+There are two codewords, made of all <code class="MathJax_Preview">0</code><script type="math/tex">0</script> or all <code class="MathJax_Preview">1</code><script type="math/tex">1</script>: <code class="MathJax_Preview">0...0</code><script type="math/tex">0...0</script> and <code class="MathJax_Preview">1...1</code><script type="math/tex">1...1</script>. It is an <code class="MathJax_Preview">[n,1,n]</code><script type="math/tex">[n,1,n]</script>-code, since we are encoding <code class="MathJax_Preview">1</code><script type="math/tex">1</script> bit into <code class="MathJax_Preview">n</code><script type="math/tex">n</script> bits, and the distance (number of bit-flips to go from one codeword to another) is <code class="MathJax_Preview">n</code><script type="math/tex">n</script>. It means that <code class="MathJax_Preview">n-1</code><script type="math/tex">n-1</script> errors would be detectable, and <code class="MathJax_Preview">(n-1)/2</code><script type="math/tex">(n-1)/2</script> would be correctable (using majority vote). The rate of the code is <code class="MathJax_Preview">R=\frac{k}{n}=\frac{1}{n}</code><script type="math/tex">R=\frac{k}{n}=\frac{1}{n}</script>, which asymptotically goes to <code class="MathJax_Preview">0</code><script type="math/tex">0</script> when <code class="MathJax_Preview">n\rightarrow \infty</code><script type="math/tex">n\rightarrow \infty</script>, making those codes impractical as they require a high number of redundant bits to encode a single bit.</p>
+
+<p class="message"><strong>Exercise 2</strong>: The distance <code class="MathJax_Preview">d</code><script type="math/tex">d</script> is the minimum number of errors that can make the message switch from one codeword to another. Therefore, any error of weight <code class="MathJax_Preview">d-1</code><script type="math/tex">d-1</script> or lower will make the message leave the space of codewords, and will therefore be detectable. To correct an error, we need to find the closest codeword to the received message (in terms of Hamming distance). If the error weight is lower than <code class="MathJax_Preview">\frac{d-1}{2}</code><script type="math/tex">\frac{d-1}{2}</script>, we will be <code class="MathJax_Preview">\frac{d-1}{2}</code><script type="math/tex">\frac{d-1}{2}</script> errors apart from the correct codeword, but <code class="MathJax_Preview">\frac{d+1}{2}</code><script type="math/tex">\frac{d+1}{2}</script> errors apart from the next closest codeword. We will therefore output the correct codeword. On the other hand, if the errors has weight <code class="MathJax_Preview">d/2</code><script type="math/tex">d/2</script> or larger, we might be closer to another codeword and output the wrong correction.</p>
+
+<p class="message"><strong>Exercise 3</strong>: By definition, we’re encoding a message of length <code class="MathJax_Preview">k</code><script type="math/tex">k</script> using <code class="MathJax_Preview">\vert \mathcal{C} \vert</code><script type="math/tex">\vert \mathcal{C} \vert</script> codewords. Since there are <code class="MathJax_Preview">2^k</code><script type="math/tex">2^k</script> binary messages of lengths of <code class="MathJax_Preview">k</code><script type="math/tex">k</script>, we need <code class="MathJax_Preview">2^k</code><script type="math/tex">2^k</script> codewords to encode them all.</p>
+
+<p class="message"><strong>Exercise 4</strong>: Using the form <code class="MathJax_Preview">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</code><script type="math/tex">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</script> of the generator matrix, we find the following generator matrix for the simple parity-check code:
+<code class="MathJax_Preview">\bm{G}=
+\left(
+    \begin{matrix}
+    1 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 1 \\\hline
+    1 &amp; 1 &amp; 1
+    \end{matrix}
+\right)</code><script type="math/tex">% <![CDATA[
+\bm{G}=
+\left(
+    \begin{matrix}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1 \\\hline
+    1 & 1 & 1
+    \end{matrix}
+\right) %]]></script>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+Similarly, using <code class="MathJax_Preview">\bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
+\bm{H}=\left(\begin{matrix} \bm{A} & I_m \end{matrix} \right) %]]></script>, we find <code class="MathJax_Preview">\bm{H}=\left(\begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
+\bm{H}=\left(\begin{matrix} 1 & 1 & 1 & 1 \end{matrix} \right) %]]></script>. The Tanner graph can be constructed using four message nodes, and one check node connected to all the message nodes.</p>
+
+<p class="message"><strong>Exercise 5</strong>: The repetition code has two codewords, <code class="MathJax_Preview">\left( \begin{matrix} 0 \\ 0 \\ 0 \end{matrix} \right)</code><script type="math/tex">\left( \begin{matrix} 0 \\ 0 \\ 0 \end{matrix} \right)</script>
+and <code class="MathJax_Preview">\left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)</code><script type="math/tex">\left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)</script>. It is therefore generated by <code class="MathJax_Preview">\bm{G} = \left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)</code><script type="math/tex">\bm{G} = \left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)</script>. The first component can be interpreted as the identity matrix in dimension <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, and we can define <code class="MathJax_Preview">\bm{A}=\left( \begin{matrix} 1 \\ 1 \end{matrix} \right)</code><script type="math/tex">\bm{A}=\left( \begin{matrix} 1 \\ 1 \end{matrix} \right)</script>. From there, we get the parity-check matrix <code class="MathJax_Preview">\bm{H}= \left( \begin{matrix} 1 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
+\bm{H}= \left( \begin{matrix} 1 & 1 & 0 \\ 1 & 0 & 1 \end{matrix} \right) %]]></script>. It can be interpreted as checking that the parity of each pair of bits is even. The corresponding Tanner graph is drawn below.</p>
+
+<p class="figure message"><hy-img root-margin="511px" src="/assets/img/blog/classical-error-correction/repetition-code-tanner-graph.png" alt=""><img src="/assets/img/blog/classical-error-correction/repetition-code-tanner-graph.png" alt=""></hy-img>
+</p>
+
+<p class="message"><strong>Exercise 6</strong>: We can show this using either the parity-check or the generator picture. In the generator picture, it comes down to showing that <code class="MathJax_Preview">\text{Im}(\bm{G})</code><script type="math/tex">\text{Im}(\bm{G})</script> is a vector space. You might already know this fact from linear algebra, but if not, take two codewords <code class="MathJax_Preview">\bm{y_1}, \bm{y_2} \in \text{Im}(\bm{G})</code><script type="math/tex">\bm{y_1}, \bm{y_2} \in \text{Im}(\bm{G})</script>. By definition, they can be written as <code class="MathJax_Preview">\bm{y_1}=\bm{G} \bm{x_1}</code><script type="math/tex">\bm{y_1}=\bm{G} \bm{x_1}</script> and <code class="MathJax_Preview">\bm{y_2}=\bm{G} \bm{x_2}</code><script type="math/tex">\bm{y_2}=\bm{G} \bm{x_2}</script>. Therefore, <code class="MathJax_Preview">\bm{y_1} + \bm{y_2} = \bm{G} \bm{x_1} + \bm{G} \bm{x_2} = \bm{G}(\bm{x_1} + \bm{x_2}) \in \text{Im}(\bm{G})</code><script type="math/tex">\bm{y_1} + \bm{y_2} = \bm{G} \bm{x_1} + \bm{G} \bm{x_2} = \bm{G}(\bm{x_1} + \bm{x_2}) \in \text{Im}(\bm{G})</script>, and <code class="MathJax_Preview">\bm{y_1} + \bm{y_2}</code><script type="math/tex">\bm{y_1} + \bm{y_2}</script> is a codeword.
+In the parity-check picture, it comes down to showing that <code class="MathJax_Preview">\text{Ker}(\bm{H})</code><script type="math/tex">\text{Ker}(\bm{H})</script> is a vector space, which you might also already know from linear algebra. It can be shown by taking two codewords <code class="MathJax_Preview">\bm{y_1}, \bm{y_2} \in \text{Ker}(\bm{H})</code><script type="math/tex">\bm{y_1}, \bm{y_2} \in \text{Ker}(\bm{H})</script>. Then <code class="MathJax_Preview">\bm{H} (\bm{y_1} + \bm{y_2}) = \bm{H} \bm{y_1} + \bm{H} \bm{y_2} = \bm{0} + \bm{0} = \bm{0}</code><script type="math/tex">\bm{H} (\bm{y_1} + \bm{y_2}) = \bm{H} \bm{y_1} + \bm{H} \bm{y_2} = \bm{0} + \bm{0} = \bm{0}</script>, so <code class="MathJax_Preview">\bm{y_1}+\bm{y_2} \in \text{Ker}(\bm{H})</code><script type="math/tex">\bm{y_1}+\bm{y_2} \in \text{Ker}(\bm{H})</script>.</p>
+
+<p class="message"><strong>Exercise 7</strong>:
+<strong>(a)</strong> If <code class="MathJax_Preview">k=\dim V</code><script type="math/tex">k=\dim V</script>, we can find a basis <code class="MathJax_Preview">\bm{y}_1,...,\bm{y}_k</code><script type="math/tex">\bm{y}_1,...,\bm{y}_k</script> of <code class="MathJax_Preview">V</code><script type="math/tex">V</script> s.t. any element <code class="MathJax_Preview">\bm{y} \in V</code><script type="math/tex">\bm{y} \in V</script> can be written <code class="MathJax_Preview">\bm{y}=a_1 \bm{y}_1 + ... + a_k \bm{y}_k</code><script type="math/tex">\bm{y}=a_1 \bm{y}_1 + ... + a_k \bm{y}_k</script> with <code class="MathJax_Preview">a_1,...,a_k \in \{0,1\}</code><script type="math/tex">a_1,...,a_k \in \{0,1\}</script>. Since there are <code class="MathJax_Preview">2^k</code><script type="math/tex">2^k</script> possible values of <code class="MathJax_Preview">a_1,...,a_k</code><script type="math/tex">a_1,...,a_k</script>, we can deduce that there are <code class="MathJax_Preview">2^k</code><script type="math/tex">2^k</script> elements in <code class="MathJax_Preview">V</code><script type="math/tex">V</script>. It can also be seen as a consequence of Exercise 3, where we showed that for any code, the number of codewords is <code class="MathJax_Preview">2^k</code><script type="math/tex">2^k</script>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> From the <a href="https://en.wikipedia.org/wiki/Rank%E2%80%93nullity_theorem">rank-nullity theorem</a>, we know that <code class="MathJax_Preview">\text{rank}(H) + \text{dim}(\text{Ker}(H)) = n</code><script type="math/tex">\text{rank}(H) + \text{dim}(\text{Ker}(H)) = n</script>. Using (a), we get <code class="MathJax_Preview">\dim(\text{Ker}(H))=\log \vert \text{Ker}(H) \vert</code><script type="math/tex">\dim(\text{Ker}(H))=\log \vert \text{Ker}(H) \vert</script>. But we know from Exercise 3 that <code class="MathJax_Preview">\vert\text{Ker}(H)\vert=2^k</code><script type="math/tex">\vert\text{Ker}(H)\vert=2^k</script>, from which we can deduce that <code class="MathJax_Preview">\dim(\text{Ker}(H))=k</code><script type="math/tex">\dim(\text{Ker}(H))=k</script>. Therefore, <code class="MathJax_Preview">\text{rank}(H) = n - k</code><script type="math/tex">\text{rank}(H) = n - k</script>.<code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(c)</strong>: If there <code class="MathJax_Preview">m</code><script type="math/tex">m</script> independent parity checks, we can write <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> as a full-rank matrix where each row is one of the parity checks. Since <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> has dimension <code class="MathJax_Preview">m \times n</code><script type="math/tex">m \times n</script>, and <code class="MathJax_Preview">m &lt; n</code><script type="math/tex">% <![CDATA[
+m < n %]]></script> (a fair assumption if we want <code class="MathJax_Preview">k &gt; 0</code><script type="math/tex">k > 0</script>), we have <code class="MathJax_Preview">\text{rank}(\bm{H})=m</code><script type="math/tex">\text{rank}(\bm{H})=m</script>, and by the previous question, <code class="MathJax_Preview">m=n-k</code><script type="math/tex">m=n-k</script>.</p>
+
+<p class="message"><strong>Exercise 8</strong>: <strong>(a)</strong> Let’s first show that the Hamming distance is translation-invariant: <code class="MathJax_Preview">D_H(\bm{x}+\bm{z}, \bm{y}+\bm{z})=\vert \bm{x} + \bm{z} - (\bm{y}+\bm{z})\vert=\vert \bm{x} - \bm{y} \vert=D_H(\bm{x},\bm{y})</code><script type="math/tex">D_H(\bm{x}+\bm{z}, \bm{y}+\bm{z})=\vert \bm{x} + \bm{z} - (\bm{y}+\bm{z})\vert=\vert \bm{x} - \bm{y} \vert=D_H(\bm{x},\bm{y})</script>. Therefore, it means that <code class="MathJax_Preview">D_H(\bm{x},\bm{y})=D_H(\bm{x}-\bm{x}, \bm{y}-\bm{x})=D_H(0,\bm{y}-\bm{x})</code><script type="math/tex">D_H(\bm{x},\bm{y})=D_H(\bm{x}-\bm{x}, \bm{y}-\bm{x})=D_H(0,\bm{y}-\bm{x})</script>. If <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> and <code class="MathJax_Preview">\bm{y}</code><script type="math/tex">\bm{y}</script> are two codewords, <code class="MathJax_Preview">\bm{y}-\bm{x}</code><script type="math/tex">\bm{y}-\bm{x}</script> is also a codeword by linearity of our code (see Exercise 6 for a proof). Therefore, <code class="MathJax_Preview">d=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{x},\bm{y})=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{0},\bm{x}-\bm{y})=\min_{\bm{x}\in \mathcal{C}, \bm{x} \neq \bm{0}} D_H(\bm{0},\bm{x})</code><script type="math/tex">d=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{x},\bm{y})=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{0},\bm{x}-\bm{y})=\min_{\bm{x}\in \mathcal{C}, \bm{x} \neq \bm{0}} D_H(\bm{0},\bm{x})</script>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> Let’s show that the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code has distance <code class="MathJax_Preview">3</code><script type="math/tex">3</script>. Any codeword of the Hamming code is of the form <code class="MathJax_Preview">(a, b, c, d, z_1, z_2, z_3)</code><script type="math/tex">(a, b, c, d, z_1, z_2, z_3)</script>. If <code class="MathJax_Preview">a=b=c=d=0</code><script type="math/tex">a=b=c=d=0</script>, then we will have the zero codeword (which is not included in our optimization). If one of <code class="MathJax_Preview">a,b,c,d</code><script type="math/tex">a,b,c,d</script> is <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, two of the parity checks will be <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, giving a weight of <code class="MathJax_Preview">3</code><script type="math/tex">3</script> for those codewords. If two of <code class="MathJax_Preview">a,b,c,d</code><script type="math/tex">a,b,c,d</script> are <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, then one parity-check will be <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, giving also a weight of <code class="MathJax_Preview">3</code><script type="math/tex">3</script>. And if three or more variables are <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, the weight will be at least three. Therefore, the minimum weight of a non-zero codeword is <code class="MathJax_Preview">3</code><script type="math/tex">3</script>, and we have <code class="MathJax_Preview">d=3</code><script type="math/tex">d=3</script> by the previous question.</p>
+
+<p class="message"><strong>Exercise 9</strong>: <strong>(a)</strong> We obtain the parity-check matrix of the extended Hamming code by adding a new column (for our new parity-check bit) and appending the row <code class="MathJax_Preview">\left( \begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
+\left( \begin{matrix} 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \end{matrix} \right) %]]></script>, giving 
+<code class="MathJax_Preview">\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\
+            1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\
+            0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+            1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+        \end{matrix}
+    \right)
+\end{aligned}</code><script type="math/tex">% <![CDATA[
+\begin{aligned}
+    \bm{H} =
+    \left(
+        \begin{matrix}
+            1 & 1 & 0 & 1 & 1 & 0 & 0 & 0\\
+            1 & 0 & 1 & 1 & 0 & 1 & 0 & 0\\
+            0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 \\
+            1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\
+        \end{matrix}
+    \right)
+\end{aligned} %]]></script> <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> We now have <code class="MathJax_Preview">n=8</code><script type="math/tex">n=8</script> since we have added a new check bit to the original Hamming code. The new parity-check matrix is full-rank, and therefore it has a number of columns <code class="MathJax_Preview">m=n-k</code><script type="math/tex">m=n-k</script> (by Exercise 7). Since <code class="MathJax_Preview">m=4</code><script type="math/tex">m=4</script>, we can deduce that <code class="MathJax_Preview">k=4</code><script type="math/tex">k=4</script>. To calculate the distance, we can find the lowest weight of its codewords (by Exercise 8a). A very similar reasoning to the proof of Exercise 8b can be used to prove that <code class="MathJax_Preview">d=4</code><script type="math/tex">d=4</script>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(c)</strong> The non-identity part <code class="MathJax_Preview">A</code><script type="math/tex">A</script> of the parity-check matrix computed above is a symmetric matrix. Therefore, <code class="MathJax_Preview">A^T=A</code><script type="math/tex">A^T=A</script> and the transpose of the parity-check matrix will be equal to the generator matrix, meaning that the code is self-dual.</p>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing. PhD student at UCL (London)
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/animations/"
+          class="sidebar-nav-item"
+          
+        >
+          Animations
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'UA-207151706-1', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementsByTagName('hy-push-state')[0];
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
