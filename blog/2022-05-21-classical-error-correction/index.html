@@ -644,7 +644,7 @@ A code that encodes <code class="MathJax_Preview">k</code><script type="math/tex
     b + c + d + z_3 = s_3
 \end{aligned}</script>
 
-<p>When <code class="MathJax_Preview">s_i=1</code><script type="math/tex">s_i=1</script>, it therefore means that the parity-check bit <code class="MathJax_Preview">z_i</code><script type="math/tex">z_i</script> is violated (it doesn’t correspond to the parity of its block anymore). 
+<p>When <code class="MathJax_Preview">s_i=1</code><script type="math/tex">s_i=1</script>, it therefore means that the parity-check bit <code class="MathJax_Preview">z_i</code><script type="math/tex">z_i</script> is violated (it doesn’t correspond to the parity of its block anymore).
 The following table shows the bit we choose to correct for each of the 8 possible syndromes (we can obtain it by looking at the Venn diagram of the Hamming code):</p>
 
 <table class="stretch-table">
@@ -762,9 +762,9 @@ p < 0.5 %]]></script>, it increases when lowering the weight. In other words, ou
 
 <p>Any decoder that explicitely solves this optimization problem is called a <strong>Maximum A Posteriori (MAP) decoder</strong>, as we are maximizing the posterior distribution <code class="MathJax_Preview">P(\bm{e} \vert \bm{s})</code><script type="math/tex">P(\bm{e} \vert \bm{s})</script>, and is considered to be an ideal decoder.</p>
 
-<p>So how do we solve the MAP decoding problem? A naive idea would be to simply search through all error vectors and find one that has minimum weight and obeys the constraint. Since there are <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script> possible error vectors, the time complexity of this algorithm would scale exponentially with <code class="MathJax_Preview">n</code><script type="math/tex">n</script> and definitely not be efficient. So can we do better? Unfortunately, the answer is no in general: this constrained optimization problem can be shown to be NP-complete, meaning that, most likely, no polynomial-time algorithm will ever solve it.</p>
+<p>So how do we solve the MAP decoding problem? A naive idea would be to simply search through all error vectors and find one that has minimum weight and obeys the constraint. Since there are <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script> possible error vectors, the time complexity of this algorithm would scale exponentially with <code class="MathJax_Preview">n</code><script type="math/tex">n</script> and definitely not be efficient. So can we do better? Unfortunately, the answer is no in general: this constrained optimization problem can be shown to be NP-complete<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>, meaning that, most likely, no polynomial-time algorithm will ever solve it.</p>
 
-<p>What we do from there really depends on the code that is being decoded. Some parity-check matrices have a particular structure that allows the construction of polynomial-time algorithms that solve the MAP decoding problem. It’s for instance the case with Hamming codes and repetition codes. More generally, certain heuristics can be used as approximations to MAP decoding, and lead to high performance in practice. The main example of high-performance heuristic is the <strong>belief propagation algorithm</strong>, a linear-time iterative algorithm that exploits the fact that the probability <code class="MathJax_Preview">P(\bm{e} \vert \bm{s})</code><script type="math/tex">P(\bm{e} \vert \bm{s})</script> can often be factorized over a graph (in our case the Tanner graph). This algorithm is used extensively by the classical error-correction community, and has recently started to become popular in the quantum community as well, so I will try to dedicate a blog post to it.</p>
+<p>What we do from there really depends on the code that is being decoded. Some parity-check matrices have a particular structure that allows the construction of polynomial-time algorithms that solve the MAP decoding problem. It’s for instance the case with Hamming codes and repetition codes. More generally, certain heuristics can be used as approximations to MAP decoding, and lead to high performance in practice. The main example of high-performance heuristic is the <strong>belief propagation algorithm</strong>, a linear-time iterative algorithm that exploits the fact that the probability <code class="MathJax_Preview">P(\bm{e} \vert \bm{s})</code><script type="math/tex">P(\bm{e} \vert \bm{s})</script> can often be factorized over a graph (in our case the Tanner graph)<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. This algorithm is used extensively by the classical error-correction community, and has recently started to become popular in the quantum community as well, so I will try to dedicate a blog post to it.</p>
 
 <p>Before ending this post, there is one last important notion I want you to know, as it is frequently used in quantum error correction: code duality.</p>
 
@@ -1099,7 +1099,7 @@ Indeed, this code is the simplest example of a <strong>self-dual code</strong>: 
 
 <p class="message"><strong>Exercise 9</strong>: We can extend the Hamming code by adding a last parity-check bit, that checks the total parity of the message, i.e. <code class="MathJax_Preview">z_4=a+b+c+d</code><script type="math/tex">z_4=a+b+c+d</script>. We call this code the <strong>extended Hamming code</strong>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
 <strong>(a)</strong> Write the parity-check matrix of the extended Hamming code. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
-<strong>(b)</strong> Show the extended Hamming code is a <code class="MathJax_Preview">[8,4,4]</code><script type="math/tex">[8,4,4]</script>-code. It means that it can now detect (but not correct) all the <code class="MathJax_Preview">2</code><script type="math/tex">2</script>-bit errors.<code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
+<strong>(b)</strong> Show that the extended Hamming code is a <code class="MathJax_Preview">[8,4,4]</code><script type="math/tex">[8,4,4]</script>-code. It means that it can now detect (but not correct) all the <code class="MathJax_Preview">2</code><script type="math/tex">2</script>-bit errors.<code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
 <strong>(c)</strong> Show that this code is self-dual. It is the smallest non-trivial self-dual code, after the <code class="MathJax_Preview">2</code><script type="math/tex">2</script>-repetition code introduced earlier.</p>
 
 <h2 id="conclusion">Conclusion</h2>
@@ -1127,14 +1127,11 @@ Soon after Richard Hamming invented linear codes in the early 1950s, David Mulle
   <li><a href="https://www.youtube.com/watch?v=eixCGqdlGxQ&amp;list=PLJHszsWbB6hqkOyFCQOAlQtfzC1G9sf2">Error Correcting codes</a>, by Eigenchris</li>
 </ul>
 
-<p>Textbooks if you prefer written supports:</p>
+<p>Textbook from which I learned most of the content of this post:</p>
 
 <ul>
   <li><a href="https://www.inference.org.uk/itprnn/book.pdf">Information Theory, Inference, and Learning Algorithms</a>, by David McKay</li>
-  <li><a href="https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/web-coding-book.pdf">Essential coding theory</a>, by V. Guruswami, A. Rudra and M. Sudan</li>
 </ul>
-
-<h2 id="references">References</h2>
 
 <h2 id="solution-to-the-exercises">Solution to the exercises</h2>
 
@@ -1188,7 +1185,7 @@ m < n %]]></script> (a fair assumption if we want <code class="MathJax_Preview">
 <strong>(b)</strong> Let’s show that the <code class="MathJax_Preview">[7,4]</code><script type="math/tex">[7,4]</script>-Hamming code has distance <code class="MathJax_Preview">3</code><script type="math/tex">3</script>. Any codeword of the Hamming code is of the form <code class="MathJax_Preview">(a, b, c, d, z_1, z_2, z_3)</code><script type="math/tex">(a, b, c, d, z_1, z_2, z_3)</script>. If <code class="MathJax_Preview">a=b=c=d=0</code><script type="math/tex">a=b=c=d=0</script>, then we will have the zero codeword (which is not included in our optimization). If one of <code class="MathJax_Preview">a,b,c,d</code><script type="math/tex">a,b,c,d</script> is <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, two of the parity checks will be <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, giving a weight of <code class="MathJax_Preview">3</code><script type="math/tex">3</script> for those codewords. If two of <code class="MathJax_Preview">a,b,c,d</code><script type="math/tex">a,b,c,d</script> are <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, then one parity-check will be <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, giving also a weight of <code class="MathJax_Preview">3</code><script type="math/tex">3</script>. And if three or more variables are <code class="MathJax_Preview">1</code><script type="math/tex">1</script>, the weight will be at least three. Therefore, the minimum weight of a non-zero codeword is <code class="MathJax_Preview">3</code><script type="math/tex">3</script>, and we have <code class="MathJax_Preview">d=3</code><script type="math/tex">d=3</script> by the previous question.</p>
 
 <p class="message"><strong>Exercise 9</strong>: <strong>(a)</strong> We obtain the parity-check matrix of the extended Hamming code by adding a new column (for our new parity-check bit) and appending the row <code class="MathJax_Preview">\left( \begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
-\left( \begin{matrix} 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \end{matrix} \right) %]]></script>, giving 
+\left( \begin{matrix} 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \end{matrix} \right) %]]></script>, giving
 <code class="MathJax_Preview">\begin{aligned}
     \bm{H} =
     \left(
@@ -1213,6 +1210,19 @@ m < n %]]></script> (a fair assumption if we want <code class="MathJax_Preview">
 \end{aligned} %]]></script> <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
 <strong>(b)</strong> We now have <code class="MathJax_Preview">n=8</code><script type="math/tex">n=8</script> since we have added a new check bit to the original Hamming code. The new parity-check matrix is full-rank, and therefore it has a number of columns <code class="MathJax_Preview">m=n-k</code><script type="math/tex">m=n-k</script> (by Exercise 7). Since <code class="MathJax_Preview">m=4</code><script type="math/tex">m=4</script>, we can deduce that <code class="MathJax_Preview">k=4</code><script type="math/tex">k=4</script>. To calculate the distance, we can find the lowest weight of its codewords (by Exercise 8a). A very similar reasoning to the proof of Exercise 8b can be used to prove that <code class="MathJax_Preview">d=4</code><script type="math/tex">d=4</script>. <code class="MathJax_Preview">\newline</code><script type="math/tex">\newline</script>
 <strong>(c)</strong> The non-identity part <code class="MathJax_Preview">A</code><script type="math/tex">A</script> of the parity-check matrix computed above is a symmetric matrix. Therefore, <code class="MathJax_Preview">A^T=A</code><script type="math/tex">A^T=A</script> and the transpose of the parity-check matrix will be equal to the generator matrix, meaning that the code is self-dual.</p>
+
+<!-- ---------------------------------------------------------------- -->
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Berlekamp et al, <a href="https://authors.library.caltech.edu/5607/1/BERieeetit78.pdf">On the Inherent Intractability of Certain Coding Problems</a>, 1978 <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>See McKay, <a href="https://www.inference.org.uk/itprnn/book.pdf">Information Theory, Inference, and Learning Algorithms</a>¸ for a great introduction to belief propagation algorithms for decoding <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
 
   
 </article>
