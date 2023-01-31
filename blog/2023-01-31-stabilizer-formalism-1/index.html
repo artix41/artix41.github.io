@@ -451,7 +451,7 @@ Z_3 Z_4 \vert \psi \rangle_{L_2} = \vert \psi \rangle_{L_2}
 <p>So our code is able to detect and correct any single-qubit error. But what about errors of higher weight? Or in other words, what is the distance of Shor’s code (i.e. the smallest undetectable errors)? Since this is a perfect exercise to see if you’ve understood this code, I leave this question as an exercise!</p>
 
 <p class="message"><strong>Exercise</strong>: show that Shor’s code has a distance of <code class="MathJax_Preview">d=3</code><script type="math/tex">d=3</script>. <br />
-<em>(<strong>Hint</strong>: find a weight-3 error, made of either <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> elements, that preserves the codespace)</em></p>
+<em>(<strong>Hint</strong>: find a weight-3 error, made of either <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> elements, that applies a bit-flip or phase-flip to the logical state of the code)</em></p>
 
 <p>In summary, we have found a <code class="MathJax_Preview">[[9,1,3]]</code><script type="math/tex">[[9,1,3]]</script> quantum code that can detect both <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> errors by measuring a set of operators <code class="MathJax_Preview">\{ Z_i Z_j \}</code><script type="math/tex">\{ Z_i Z_j \}</script> and <code class="MathJax_Preview">\{\overline{X_i} \overline{X_j} \}</code><script type="math/tex">\{\overline{X_i} \overline{X_j} \}</script>. This means that error-free states (i.e. codewords) are a common <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> eigenstate of those operators, while states subjected to weight-1 and weight-2 errors are <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script> eigenstates of some of those operators, allowing us to detect those errors. With this example in mind, we are now finally ready to delve into the stabilizer formalism!</p>
 
@@ -618,6 +618,8 @@ Therefore, the Steane code can correct any single-qubit error.</p>
 
 <p>In the next post, we will go further in our study of stabilizer codes: we will learn how to find the logical operators, the distance and the number of encoded qubits of a code. We will see how the stabilizer formalism can be expressed in a matrix form, by generalizing parity-check matrices to the quantum realm. This matrix formulation will help us to define the decoding problem for quantum codes. We will finish our theoretical study of stabilizer codes by introducing the Clifford group and stabilizer states, concepts which will become very handy when learning about logical gates and the simulation of error-correcting codes. The Steane code will continue to serve as our main example throughout the next post.</p>
 
+<p class="message"><strong>Acknowledgment</strong>: Big thanks to Dominik Kufel for his feedback on this blog post!</p>
+
 <h2 id="appendix-useful-tricks-to-manipulate-pauli-operators">Appendix: useful tricks to manipulate Pauli operators</h2>
 
 <p>For the discussion that follows, let’s define a Pauli operator as an operator of the form <code class="MathJax_Preview">P_1 \otimes \ldots \otimes P_n</code><script type="math/tex">P_1 \otimes \ldots \otimes P_n</script> with <code class="MathJax_Preview">P_i \in \{I, X, Y, Z\}</code><script type="math/tex">P_i \in \{I, X, Y, Z\}</script> for all <code class="MathJax_Preview">i</code><script type="math/tex">i</script>. As a reminder, here is the definitions of the Pauli matrices <code class="MathJax_Preview">X,Y,Z</code><script type="math/tex">X,Y,Z</script>:</p>
@@ -695,6 +697,12 @@ PP'=-P'_i P_1 \ldots P_n P'_1 \ldots P'_{i-1} P'_{i+1} \ldots P_n
 \end{aligned}</script>
 
 <p>Therefore, each intersection with a different Pauli element introduces a minus sign, and the overall sign will be <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> if and only if there is an even number of such intersections, which proves our propositions.</p>
+
+<h2 id="correction-of-the-exercise">Correction of the exercise</h2>
+
+<p class="message"><strong>Exercise</strong>: show that Shor’s code has a distance of <code class="MathJax_Preview">d=3</code><script type="math/tex">d=3</script>. <br />
+<em>(<strong>Hint</strong>: find a weight-3 error, made of either <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> elements, that applies a bit-flip or phase-flip to the logical state of the code)</em><br /><br />
+<strong>Correction</strong>: the operator <code class="MathJax_Preview">Z_1 Z_4 Z_7</code><script type="math/tex">Z_1 Z_4 Z_7</script> turns <code class="MathJax_Preview">\vert 0 \rangle_{L_2}</code><script type="math/tex">\vert 0 \rangle_{L_2}</script> into <code class="MathJax_Preview">\vert 1 \rangle_{L_2}</code><script type="math/tex">\vert 1 \rangle_{L_2}</script>, and is therefore a logical bit-flip operator. The operator <code class="MathJax_Preview">X_1 X_2 X_3</code><script type="math/tex">X_1 X_2 X_3</script> turns <code class="MathJax_Preview">\vert 1 \rangle_{L_2}</code><script type="math/tex">\vert 1 \rangle_{L_2}</script> into <code class="MathJax_Preview">-\vert 1 \rangle_{L_2}</code><script type="math/tex">-\vert 1 \rangle_{L_2}</script>, and is therefore a logical phase-flip operator. Note that those errors preserve the codespace (they turn a logical state into another logical state), and therefore cannot be detected by measuring our parity-check operators.</p>
 
 <div class="footnotes">
   <ol>
