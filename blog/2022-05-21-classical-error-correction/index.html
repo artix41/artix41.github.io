@@ -44,17 +44,17 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/" />
-<meta property="og:url" content="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/" />
+<link rel="canonical" href="http://localhost:4000/blog/2022-05-21-classical-error-correction/" />
+<meta property="og:url" content="http://localhost:4000/blog/2022-05-21-classical-error-correction/" />
 <meta property="og:site_name" content="Arthur Pesah" />
-<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/classical-error-correction/thumbnail.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-05-21T00:00:00+02:00" />
+<meta property="article:published_time" content="2022-05-21T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" />
+<meta property="twitter:image" content="http://localhost:4000/assets/img/blog/classical-error-correction/thumbnail.png" />
 <meta property="twitter:title" content="All you need to know about classical error correction" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2022-05-21T00:00:00+02:00","datePublished":"2022-05-21T00:00:00+02:00","description":"Research blog","headline":"All you need to know about classical error correction","image":"https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2022-05-21T00:00:00+01:00","datePublished":"2022-05-21T00:00:00+01:00","description":"Research blog","headline":"All you need to know about classical error correction","image":"http://localhost:4000/assets/img/blog/classical-error-correction/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2022-05-21-classical-error-correction/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2022-05-21-classical-error-correction/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -80,11 +80,11 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 <meta name="generator" content="Hydejack v8.5.2" />
 
-<link type="application/atom+xml" rel="alternate" href="https://arthurpesah.me/feed.xml" title="Arthur Pesah" />
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
 
 
 
-<link rel="alternate" href="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/" hreflang="en">
+<link rel="alternate" href="http://localhost:4000/blog/2022-05-21-classical-error-correction/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -220,7 +220,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
     <p class="post-date heading">
       
-      <time datetime="2022-05-21T00:00:00+02:00">21 May 2022</time>
+      <time datetime="2022-05-21T00:00:00+01:00">21 May 2022</time>
       
       
       
@@ -639,7 +639,7 @@ A code that encodes <code class="MathJax_Preview">k</code><script type="math/tex
 <p>Similarly to how all generator matrices can be chosen to have the form <code class="MathJax_Preview">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</code><script type="math/tex">\bm{G}=\left(\begin{matrix} I_k \\ \hline \bm{A}  \end{matrix} \right)</script>, we can always apply a Gaussian reduction on <code class="MathJax_Preview">H</code><script type="math/tex">H</script> such that is has the form <code class="MathJax_Preview">\bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m  \end{matrix} \right)</code><script type="math/tex">% <![CDATA[
 \bm{H}=\left(\begin{matrix} \bm{A} & I_m  \end{matrix} \right) %]]></script>.</p>
 
-<p>At that point of the post, you might be wondering why we should use the parity-check matrix, when the generator matrix seems much more natural. There are many reasons to prefer the parity-check matrix over the generator matrix. The simplest one is that it gives a convenient method to detect and correct errors. Indeed, if <code class="MathJax_Preview">\widetilde{\bm{y}}=\bm{y} + \bm{e}</code><script type="math/tex">\widetilde{\bm{y}}=\bm{y} + \bm{e}</script> is the received message disturbed by an error vector <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>, applying the parity-check matrix to <code class="MathJax_Preview">\widetilde{\bm{y}}</code><script type="math/tex">\widetilde{\bm{y}}</script> gives</p>
+<p>At this point of the post, you might be wondering why we should use the parity-check matrix, when the generator matrix seems much more natural. There are many reasons to prefer the parity-check matrix over the generator matrix. The simplest one is that it gives a convenient method to detect and correct errors. Indeed, if <code class="MathJax_Preview">\widetilde{\bm{y}}=\bm{y} + \bm{e}</code><script type="math/tex">\widetilde{\bm{y}}=\bm{y} + \bm{e}</script> is the received message disturbed by an error vector <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>, applying the parity-check matrix to <code class="MathJax_Preview">\widetilde{\bm{y}}</code><script type="math/tex">\widetilde{\bm{y}}</script> gives</p>
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
     \bm{H} \widetilde{\bm{y}} &amp;= \bm{H} \left( \bm{y} + \bm{e} \right) \\

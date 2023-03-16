@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>The stabilizer trilogy II — Logical operators | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="The stabilizer trilogy II — Logical operators" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="http://localhost:4000/blog/2023-02-04-stabilizer-formalism-2/" />
+<meta property="og:url" content="http://localhost:4000/blog/2023-02-04-stabilizer-formalism-2/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-02-04T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png" />
+<meta property="twitter:title" content="The stabilizer trilogy II — Logical operators" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-02-04T00:00:00+00:00","datePublished":"2023-02-04T00:00:00+00:00","description":"Research blog","headline":"The stabilizer trilogy II — Logical operators","image":"http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023-02-04-stabilizer-formalism-2/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2023-02-04-stabilizer-formalism-2/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="http://localhost:4000/blog/2023-02-04-stabilizer-formalism-2/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+<link rel="dns-prefetch" href="https://arthurpesah.disqus.com" id="_hrefDisqus">
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-stabilizer-formalism-2" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        The stabilizer trilogy II — Logical operators
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2023-02-04T00:00:00+00:00">04 Feb 2023</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-2/thumbnail.png"
+    
+    alt="The stabilizer trilogy II — Logical operators"><img src="/assets/img/blog/stabilizer-formalism-2/thumbnail.png"
+    
+    alt="The stabilizer trilogy II — Logical operators"></hy-img>
+
+
+
+      </div>
+      
+    
+
+    
+
+
+
+  
+
+
+  </header>
+
+  
+    <p>Happy to see you back for the second part of the stabilizer trilogy! In the <a href="2023-01-21-stabilizer-formalism-1.md">previous post</a>, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What logical operations can we apply to this code? How does the decoding process work?</p>
+
+<p>In this post, we will get down to the nitty-gritty of logical operations. Those are unitary operators acting on the physical qubits, which allow you to go from one part of the codespace to another. For instance, a logical Hadamard lets you go from the logical zero state <code class="MathJax_Preview">\vert 0 \rangle_L</code><script type="math/tex">\vert 0 \rangle_L</script> to the logical plus state <code class="MathJax_Preview">\vert + \rangle_L</code><script type="math/tex">\vert + \rangle_L</script>. An important class of logical operations are the Pauli logicals, whose properties form a crucial component of stabilizer codes, as they allow to derive the distance of the code, the number of logical qubits, and the main formulation of decoding. Formalizing all those ideas rigorously relies on a fair bit of abstraction, using notions such as centralizers, normalizers, equivalence classes, etc. While we won’t shy away from the abstraction, we will also make every notion as concrete as possible using the Steane code as our running example.</p>
+
+<p>We will start by showing how to count the number of logical qubits encoded in a stabilizer code. We will then formalize the notion of logical gates in a stabilizer code, and specialize the definition to the case of Pauli operators. Finally, we will see how to understand logical operators in terms of equivalent classes, which will become very handy when trying to understand decoding and topological constructions.</p>
+
+<h2 id="logical-qubits">Logical qubits</h2>
+
+<p>Before exploring logical operations, let’s first understand how to count the logical qubits of a stabilizer code.
+Remember that the number of logical qubits is given by the logarithm of the dimension of the codespace. Indeed, if the codespace has dimension four, any logical state can be written as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\vert \psi \rangle_L = a_1 \vert a_1\rangle + a_2 \vert a_2\rangle + a_3 \vert a_3\rangle + a_4 \vert a_4\rangle
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\vert \psi \rangle_L = a_1 \vert a_1\rangle + a_2 \vert a_2\rangle + a_3 \vert a_3\rangle + a_4 \vert a_4\rangle
+\end{aligned}</script>
+
+<p>Relabelling <code class="MathJax_Preview">\vert a_1\rangle</code><script type="math/tex">\vert a_1\rangle</script> as <code class="MathJax_Preview">\vert 00\rangle_L</code><script type="math/tex">\vert 00\rangle_L</script>, <code class="MathJax_Preview">\vert a_2\rangle</code><script type="math/tex">\vert a_2\rangle</script> as <code class="MathJax_Preview">\vert 01\rangle_L</code><script type="math/tex">\vert 01\rangle_L</script>, etc. shows that the space corresponds to a two-qubit space.</p>
+
+<p>So what we really need to compute is the dimension of <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script> for a stabilizer code.
+Let <code class="MathJax_Preview">n</code><script type="math/tex">n</script> denote the number of physical qubits of our code, and <code class="MathJax_Preview">m</code><script type="math/tex">m</script> the number of generators of the stabilizer group (i.e. there are <code class="MathJax_Preview">m</code><script type="math/tex">m</script> independent elements whose products generate the whole group).
+The dimension of the physical Hilbert space is <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script>, and each constraint <code class="MathJax_Preview">S_i \vert \psi \rangle = \vert \psi \rangle</code><script type="math/tex">S_i \vert \psi \rangle = \vert \psi \rangle</script> divides this dimension by two. Indeed, each <code class="MathJax_Preview">S_i</code><script type="math/tex">S_i</script> has two eigenvalues with the same multiplicity, <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> and <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>, dividing the physical Hilbert space into two eigenspaces of equal dimension. Therefore, we have</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\text{dim}(\mathcal{C})=2^{n-m}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\text{dim}(\mathcal{C})=2^{n-m}
+\end{aligned}</script>
+
+<p>and the number of logical qubits is <code class="MathJax_Preview">k=n-m</code><script type="math/tex">k=n-m</script>.
+This should remind you of classical codes, where the same formula applies when <code class="MathJax_Preview">m</code><script type="math/tex">m</script> is the number of independent parity checks.</p>
+
+<p>Let’s apply this formula to the Steane code. As a reminder, the Steane code is a <code class="MathJax_Preview">7</code><script type="math/tex">7</script>-qubit code defined on the following lattice, such that each face (also called <em>plaquette</em>) supports an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizer generator:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-1/steane-code-lattice.png" height="300"><img src="/assets/img/blog/stabilizer-formalism-1/steane-code-lattice.png" height="300"></hy-img>
+
+</p>
+
+<p>Therefore, the Steane code has six independent stabilizer generators, three <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquettes and three <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquettes, such that <code class="MathJax_Preview">m=6</code><script type="math/tex">m=6</script>. Hence we can see that it encodes <code class="MathJax_Preview">k=7-6=1</code><script type="math/tex">k=7-6=1</script> logical qubits.</p>
+
+<h2 id="logical-gates">Logical gates</h2>
+
+<p>Now that we know the number of encoded qubits, what about the distance?
+To describe it, we need to introduce the notion of Pauli logical operator, which is a special case of logical gate. A <strong>logical gate</strong> is a unitary operator <code class="MathJax_Preview">L</code><script type="math/tex">L</script> that maps the codespace to itself,
+i.e. such that <code class="MathJax_Preview">L \vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">L \vert \psi \rangle \in \mathcal{C}</script> for all <code class="MathJax_Preview">\vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">\vert \psi \rangle \in \mathcal{C}</script>.
+Logical gates therefore include stabilizers, but also operators that map one part of the codespace to another part.
+For instance, a logical Hadamard maps the logical zero state <code class="MathJax_Preview">\vert \overline{0} \rangle</code><script type="math/tex">\vert \overline{0} \rangle</script> to the logical plus state <code class="MathJax_Preview">\vert \overline{+} \rangle=\frac{1}{\sqrt{2}} \left(\vert \overline{0} \rangle + \vert \overline{1} \rangle\right)</code><script type="math/tex">\vert \overline{+} \rangle=\frac{1}{\sqrt{2}} \left(\vert \overline{0} \rangle + \vert \overline{1} \rangle\right)</script>.</p>
+
+<p>Another way to understand logical gates is through their actions on the stabilizer group. Indeed, we can prove the following proposition:</p>
+
+<p class="message"><strong>Proposition 1</strong>: a unitary <code class="MathJax_Preview">L</code><script type="math/tex">L</script> is a logical gate if and only if it maps the stabilizer group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> to itself, i.e.
+<code class="MathJax_Preview">L^{\dagger} SL \in \mathcal{S}</code><script type="math/tex">L^{\dagger} SL \in \mathcal{S}</script> for all <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script>.</p>
+
+<p>Note that this is precisely the definition of the <strong>normalizer</strong> of the group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>, denoted <code class="MathJax_Preview">\mathcal{N}(\mathcal{S})</code><script type="math/tex">\mathcal{N}(\mathcal{S})</script>, and you will often find logical gates defined in the literature as elements of the normalizer of the stabilizer group. This proposition explains why those two definitions are equivalent, and proving it is a cute little exercise that I encourage you to try on your own before reading the solution at the end of this post.</p>
+
+<p class="message"><strong>Exercise 1</strong>: Prove Proposition 1 <a href="#solution-of-the-exercises">(solution)</a></p>
+
+<p>Let’s apply this to the Steane code. For instance, let’s consider the operator <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> consisting of applying a Hadamard gate on all the physical qubits:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-2/steane-code-hadamard.png" height="300"><img src="/assets/img/blog/stabilizer-formalism-2/steane-code-hadamard.png" height="300"></hy-img>
+
+</p>
+
+<p>I claim that <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> is a logical gate. To show this, let’s use Proposition 1 and show that it maps stabilizers to stabilizers. Let’s pick an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette, for instance the red one supported on qubits <code class="MathJax_Preview">1,2,3,4</code><script type="math/tex">1,2,3,4</script>, that we will call <code class="MathJax_Preview">S^X_r</code><script type="math/tex">S^X_r</script>. Remember that <code class="MathJax_Preview">H</code><script type="math/tex">H</script> turns <code class="MathJax_Preview">X</code><script type="math/tex">X</script> into <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> into <code class="MathJax_Preview">X</code><script type="math/tex">X</script>, that is <code class="MathJax_Preview">HXH=Z</code><script type="math/tex">HXH=Z</script> and <code class="MathJax_Preview">HZH=X</code><script type="math/tex">HZH=X</script>. Therefore:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+H_L S^X_r H_L
+&amp;= (H_1 \ldots H_7) X_1 X_2 X_3 X_4 (H_1 \ldots H_7) \\
+&amp;= (H_1 X_1 H_1) \ldots (H_4 X_4 H_4) H_5^2 H_6^2 H_7^2 \\
+&amp;= Z_1 Z_2 Z_3 Z_4 \\
+&amp; = S^Z_r
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+H_L S^X_r H_L
+&= (H_1 \ldots H_7) X_1 X_2 X_3 X_4 (H_1 \ldots H_7) \\
+&= (H_1 X_1 H_1) \ldots (H_4 X_4 H_4) H_5^2 H_6^2 H_7^2 \\
+&= Z_1 Z_2 Z_3 Z_4 \\
+& = S^Z_r
+\end{aligned} %]]></script>
+
+<p>where <code class="MathJax_Preview">S^Z_r</code><script type="math/tex">S^Z_r</script> is the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> red plaquette. Therefore, <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> maps the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> red plaquette to the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> red plaquette. The same reasoning can be applied to all the other <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquettes, showing that <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> maps stabilizers to stabilizers and is therefore a logical gate.</p>
+
+<p>Note that we haven’t shown that <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> actually corresponds to a logical Hadamard, i.e. that it maps <code class="MathJax_Preview">\vert \overline{0} \rangle</code><script type="math/tex">\vert \overline{0} \rangle</script> to <code class="MathJax_Preview">\vert \overline{+} \rangle</code><script type="math/tex">\vert \overline{+} \rangle</script> and <code class="MathJax_Preview">\vert \overline{1} \rangle</code><script type="math/tex">\vert \overline{1} \rangle</script> to <code class="MathJax_Preview">\vert \overline{-} \rangle</code><script type="math/tex">\vert \overline{-} \rangle</script>. The easiest way to show that is by proving that <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> maps the logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operator to the logical <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operator, and vice-versa.
+The next step is therefore to get a grasp of the Pauli logical operators. But before that, feel free to try the following exercise to check your understanding of logical gates:</p>
+
+<p class="message"><strong>Exercise 2</strong>: Show that <code class="MathJax_Preview">S_L=S^{\otimes 7}</code><script type="math/tex">S_L=S^{\otimes 7}</script> is a logical gate <a href="#solution-of-the-exercises">(solution)</a></p>
+
+<h2 id="pauli-logicals">Pauli logicals</h2>
+
+<p>An important family of logical gates are the <strong>Pauli logical operators</strong> (often abbreviated <em>logical operators</em> if the context is clear, or even just <em>logicals</em>).
+As expected, those are the logical gates that belong to the Pauli group.
+As two given Pauli operators can either commute or anticommute, Pauli logicals could either commute or anticommute with stabilizers.
+However, if a Pauli logical anticommute with a stabilizer, that is <code class="MathJax_Preview">SL=-LS</code><script type="math/tex">SL=-LS</script>, it means that <code class="MathJax_Preview">L^{\dagger} S L = -S \notin \mathcal{S}</code><script type="math/tex">L^{\dagger} S L = -S \notin \mathcal{S}</script>, which contradicts the characterization of logical gates that we saw above. Therefore, Pauli logicals can be characterized by the following proposition:</p>
+
+<p class="message"><strong>Proposition 2</strong>: a Pauli operator <code class="MathJax_Preview">P</code><script type="math/tex">P</script> is a logical operator if and only if it commutes with all the stabilizers</p>
+
+<p>Note that this is precisely the definition of the <strong>centralizer</strong> of the group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> in the Pauli group, denoted <code class="MathJax_Preview">\mathcal{C}(\mathcal{S})</code><script type="math/tex">\mathcal{C}(\mathcal{S})</script>. The difference between the normalizer and the centralizer is that if <code class="MathJax_Preview">L \in \mathcal{N}(\mathcal{S})</code><script type="math/tex">L \in \mathcal{N}(\mathcal{S})</script>, <code class="MathJax_Preview">LS=S'L</code><script type="math/tex">LS=S'L</script> for <code class="MathJax_Preview">S, S'</code><script type="math/tex">S, S'</script> two stabilizers, while if <code class="MathJax_Preview">L \in \mathcal{C}(\mathcal{S})</code><script type="math/tex">L \in \mathcal{C}(\mathcal{S})</script>, <code class="MathJax_Preview">LS=SL</code><script type="math/tex">LS=SL</script>. For Pauli operators, <code class="MathJax_Preview">\mathcal{N}(\mathcal{S}) = \mathcal{C}(\mathcal{S})</code><script type="math/tex">\mathcal{N}(\mathcal{S}) = \mathcal{C}(\mathcal{S})</script> and you will often find Pauli logicals defined with either normalizers or centralizers in the literature. Using either this characterization or the original definition, it is easy to show that the set <code class="MathJax_Preview">\mathcal{L}</code><script type="math/tex">\mathcal{L}</script> of all Pauli logicals from a group, that is, the product of two logicals is itself a logical.</p>
+
+<p>Finally, let’s define <strong>non-trivial logical operators</strong> (also known as <strong>logical errors</strong>) as elements of <code class="MathJax_Preview">\mathcal{C}(\mathcal{S}) \backslash \mathcal{S}</code><script type="math/tex">\mathcal{C}(\mathcal{S}) \backslash \mathcal{S}</script>, or in other words, Pauli operators that commute with all the stabilizers but are not stabilizers themselves. We can now characterize the <strong>distance</strong> of a stabilizer code as the weight of the smallest logical error:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+d = \min_{L \in \mathcal{C}(\mathcal{S}) \backslash \mathcal{S}} |L|
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+d = \min_{L \in \mathcal{C}(\mathcal{S}) \backslash \mathcal{S}} |L|
+\end{aligned}</script>
+
+<p>As usual, let’s apply what we’ve seen to the Steane code. I claim that the following operators, that we will call <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script>, are non-trivial logical operators of the code:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-2/steane-code-logicals.png" height="300"><img src="/assets/img/blog/stabilizer-formalism-2/steane-code-logicals.png" height="300"></hy-img>
+
+</p>
+
+<p>Indeed, it is easy to check that they commute with all the stabilizers, as they share either zero or two qubits with every plaquette. Moreover, by trying all the combinations of stabilizers, you can show that they don’t belong the stabilizer group, and are therefore non-trivial. By using a similar brute-force search, you can also show that they are the smallest non-trivial logical operators, thereby proving that the distance of the Steane code is <code class="MathJax_Preview">d=3</code><script type="math/tex">d=3</script>. This achieves the proof that the Steane code is a <code class="MathJax_Preview">[[7,1,3]]</code><script type="math/tex">[[7,1,3]]</script> code, as claimed in the previous post.</p>
+
+<p>However, as discussed in the context of the Hadamard gate, we still haven’t shown that <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> actually act as logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators on the codespace. For that, we would need to show that <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> corresponds to a logical bit-flip and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> to a logical phase-flip, i.e. that they map respectively <code class="MathJax_Preview">\vert 0 \rangle_L</code><script type="math/tex">\vert 0 \rangle_L</script> into <code class="MathJax_Preview">\vert 1 \rangle_L</code><script type="math/tex">\vert 1 \rangle_L</script> and <code class="MathJax_Preview">\vert + \rangle_L</code><script type="math/tex">\vert + \rangle_L</script> into <code class="MathJax_Preview">\vert - \rangle_L</code><script type="math/tex">\vert - \rangle_L</script>. Alternatively, we could show that <code class="MathJax_Preview">\vert 0 \rangle_L</code><script type="math/tex">\vert 0 \rangle_L</script> and <code class="MathJax_Preview">\vert 1 \rangle_L</code><script type="math/tex">\vert 1 \rangle_L</script> are eigenstates of <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> while <code class="MathJax_Preview">\vert + \rangle_L</code><script type="math/tex">\vert + \rangle_L</script> and <code class="MathJax_Preview">\vert - \rangle_L</code><script type="math/tex">\vert - \rangle_L</script> are eigenstates of <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script>.</p>
+
+<p>As it happens, this is just a matter of convention. There is no preferred <code class="MathJax_Preview">\vert 0 \rangle_L</code><script type="math/tex">\vert 0 \rangle_L</script> state in the codespace, we have the freedom to pick any of the states and decide that it is going to be the zero state. For instance, for the repetition code, we decided that <code class="MathJax_Preview">\vert 0 \rangle_L=\vert 000 \rangle</code><script type="math/tex">\vert 0 \rangle_L=\vert 000 \rangle</script>, but we could have very much taken <code class="MathJax_Preview">\vert 0 \rangle_L=\vert 111 \rangle</code><script type="math/tex">\vert 0 \rangle_L=\vert 111 \rangle</script> or even <code class="MathJax_Preview">\vert 0 \rangle_L=\frac{1}{\sqrt{2}} \left(\vert 000 \rangle+\vert 111 \rangle\right)</code><script type="math/tex">\vert 0 \rangle_L=\frac{1}{\sqrt{2}} \left(\vert 000 \rangle+\vert 111 \rangle\right)</script>, as long as we keep track of it during the computation and when analyzing the measurements.</p>
+
+<p>Therefore, as it is usually done with stabilizer codes, let’s <strong>define</strong> <code class="MathJax_Preview">\vert 0 \rangle_L</code><script type="math/tex">\vert 0 \rangle_L</script> and <code class="MathJax_Preview">\vert 1 \rangle_L</code><script type="math/tex">\vert 1 \rangle_L</script> as the two eigenstates of <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script>, and <code class="MathJax_Preview">\vert + \rangle_L</code><script type="math/tex">\vert + \rangle_L</script> and <code class="MathJax_Preview">\vert - \rangle_L</code><script type="math/tex">\vert - \rangle_L</script> as the two eigenstates of <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script>. This is a valid choice since <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> anticommute, and this also fixes the logical <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> operator as <code class="MathJax_Preview">Y_L=X_LZ_L</code><script type="math/tex">Y_L=X_LZ_L</script>. All the other logical gates are also fixed by how they transform those Pauli operators. For instance, you are now ready to prove that the logical gate <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> actually acts as a logical Hadamard gate.</p>
+
+<p class="message"><strong>Exercise 3</strong>: Show that <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> acts as a logical Hadamard gate <a href="#solution-of-exercises">(solution)</a><br />
+<em>(<strong>Hint</strong>:  show that <code class="MathJax_Preview">H_L X_L H_L=Z_L</code><script type="math/tex">H_L X_L H_L=Z_L</script> and <code class="MathJax_Preview">H_L Z_L H_L=X_L</code><script type="math/tex">H_L Z_L H_L=X_L</script>)</em></p>
+
+<h2 id="logical-cosets">Logical cosets</h2>
+
+<p>In the previous example, we saw one instance of logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators.
+However, there will often be multiple logical operators that act as a given Pauli.
+Indeed, take a logical operator <code class="MathJax_Preview">L \in \mathcal{L}</code><script type="math/tex">L \in \mathcal{L}</script> and a stabilizer <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script>. Then <code class="MathJax_Preview">SL=LS</code><script type="math/tex">SL=LS</script> is also a logical operator acting in the same way on the codespace:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+L S \vert \psi \rangle = L \vert \psi \rangle
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+L S \vert \psi \rangle = L \vert \psi \rangle
+\end{aligned}</script>
+
+<p>In other words, applying a stabilizer to a logical doesn’t change the way it acts on the codespace. We say that two logicals <code class="MathJax_Preview">L</code><script type="math/tex">L</script> and <code class="MathJax_Preview">L'</code><script type="math/tex">L'</script> are <strong>equivalent</strong> if they only differ by a stabilizer, that is, if there exists <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script> such that <code class="MathJax_Preview">SL=L'</code><script type="math/tex">SL=L'</script>. For instance, we have the following three equivalent logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operators in the Steane code:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-2/steane-code-logical-cosets.png" height="200"><img src="/assets/img/blog/stabilizer-formalism-2/steane-code-logical-cosets.png" height="200"></hy-img>
+
+</p>
+
+<p>To go from the first one to the second one, we apply a green <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette. To go from the second one to the last one, we apply a red <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette.</p>
+
+<p>Since all the equivalent logicals act in the same way on the codespace, it makes sense to group them together in some ways. The notion of equivalence classes is exactly what we need to formalize this idea.</p>
+
+<p>An <strong>equivalence class</strong>, or <strong>coset</strong>, is a set of the form</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bar{L}=L\mathcal{S}=\{ LS : S \in \mathcal{S} \}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bar{L}=L\mathcal{S}=\{ LS : S \in \mathcal{S} \}
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">L \in \mathcal{L}</code><script type="math/tex">L \in \mathcal{L}</script> is any logical operator.
+In other words, a coset is a set of equivalent logicals.
+Any element <code class="MathJax_Preview">P \in \bar{L}</code><script type="math/tex">P \in \bar{L}</script> is called a <strong>representative</strong> of the coset <code class="MathJax_Preview">\bar{L}</code><script type="math/tex">\bar{L}</script>.
+For instance, any of the three <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals of the figure above are representative of the coset <code class="MathJax_Preview">\bar{X}</code><script type="math/tex">\bar{X}</script> of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals. Note that since the Steane code has only one qubit, all the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals are equivalent and there is only one coset of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals.</p>
+
+<p>Let’s remember a few important properties of equivalence classes. First of all, they <strong>partition</strong> the set of logical operators, that is, they are all disjoint (i.e. have an empty intersection) and their union is the whole set. In the case of the Steane code, this can be written<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\mathcal{L}=\bar{I} \cup \bar{X} \cup \bar{Y} \cup \bar{Z}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\mathcal{L}=\bar{I} \cup \bar{X} \cup \bar{Y} \cup \bar{Z}
+\end{aligned}</script>
+
+<p>If we had multiple logical qubits, we would have three different cosets <code class="MathJax_Preview">\bar{X_i}</code><script type="math/tex">\bar{X_i}</script>, <code class="MathJax_Preview">\bar{Y_i}</code><script type="math/tex">\bar{Y_i}</script>, <code class="MathJax_Preview">\bar{Z_i}</code><script type="math/tex">\bar{Z_i}</script> for each logical qubit.</p>
+
+<p>Secondly, the set of all the cosets form a group, which is called the <strong>quotient group</strong> of <code class="MathJax_Preview">\mathcal{L}</code><script type="math/tex">\mathcal{L}</script> by <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>, and denoted <code class="MathJax_Preview">\mathcal{L} / \mathcal{S}</code><script type="math/tex">\mathcal{L} / \mathcal{S}</script>. In this group, the multiplication between two cosets <code class="MathJax_Preview">\bar{L}_1=L_1 \mathcal{S}</code><script type="math/tex">\bar{L}_1=L_1 \mathcal{S}</script> and <code class="MathJax_Preview">\bar{L}_2=L_2 \mathcal{S}</code><script type="math/tex">\bar{L}_2=L_2 \mathcal{S}</script> is defined as <code class="MathJax_Preview">L_1 L_2 \mathcal{S}</code><script type="math/tex">L_1 L_2 \mathcal{S}</script>, where <code class="MathJax_Preview">L_1</code><script type="math/tex">L_1</script> and <code class="MathJax_Preview">L_2</code><script type="math/tex">L_2</script> are two arbitrary representatives of <code class="MathJax_Preview">\bar{L}_1</code><script type="math/tex">\bar{L}_1</script> and <code class="MathJax_Preview">\bar{L}_2</code><script type="math/tex">\bar{L}_2</script>. It is a nice exercise to check that the result does not depend on the choice of the two representatives. Moreover, you can check that the identity element of the group is <code class="MathJax_Preview">\bar{I}=\mathcal{S}</code><script type="math/tex">\bar{I}=\mathcal{S}</script>.</p>
+
+<p>Finally, the quotient group can be generated by all the <code class="MathJax_Preview">\bar{X}_i, \bar{Z}_i</code><script type="math/tex">\bar{X}_i, \bar{Z}_i</script>. This means that the number of logical qubits is exactly half the number of generators of <code class="MathJax_Preview">\mathcal{L}/\mathcal{S}</code><script type="math/tex">\mathcal{L}/\mathcal{S}</script>. This simple fact gives us a different way to count the number of logical qubits of a given stabilizer code, which will become extremely important when discussing topological quantum error correction in future posts.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post, we have introduced many crucial concepts to understand stabilizer codes. We have defined logical gates as operators that preserve the codespace, or equivalently, the stabilizer space. Those corresponds to elements of the normalizer of <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>. In the specialize case of Pauli operators, we have seen that they correspond to elements of the centralizer, that is, elements that commute with all the stabilizers. We have seen that logical operations are highly degenerate in stabilizer codes, as multiplying a logical operator by a stabilizer gives the same operation on the codespace. We have therefore shown how to group equivalent logicals together within equivalent classes. We have learned how to compute the number of logical qubits in two different ways: either by counting the number <code class="MathJax_Preview">m</code><script type="math/tex">m</script> of generators of <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> and using <code class="MathJax_Preview">k=n-m</code><script type="math/tex">k=n-m</script>, or by counting the number of generators of <code class="MathJax_Preview">\mathcal{L} / \mathcal{S}</code><script type="math/tex">\mathcal{L} / \mathcal{S}</script> and dividing by two. Finally, we have seen that the distance can be obtained by finding the minimum-weight logical operator. All those ideas have been illustrated using the Steane code, which we have proven to be a <code class="MathJax_Preview">[[7,1,3]]</code><script type="math/tex">[[7,1,3]]</script>-code.</p>
+
+<p>In the next and last part of this trilogy, we will see how to formulate the stabilizer formalism in a more concrete way, using parity-check matrices in the binary symplectic format. This format, widely used in numerical implementations of quantum codes, will allow us to switch from group theory to linear algebra. We will express stabilizers and logicals as binary vectors, with commutation relations corresponding to a linear operation on those vectors. Using the notion of logical cosets that we have learned in this post, we will finally be able to formalize the decoding problem for quantum codes.</p>
+
+<h2 id="solution-of-the-exercises">Solution of the exercises</h2>
+
+<p class="message"><strong>Exercise 1</strong>: Prove that a unitary <code class="MathJax_Preview">L</code><script type="math/tex">L</script> is a logical gate if and only if it maps the stabilizer group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> to itself, i.e.
+<code class="MathJax_Preview">L^{\dagger} SL \in \mathcal{S}</code><script type="math/tex">L^{\dagger} SL \in \mathcal{S}</script> for all <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script>.
+<br /><br />
+<strong>Correction</strong>: For the first direction, let’s suppose that <code class="MathJax_Preview">L</code><script type="math/tex">L</script> is a logical gate, i.e. <code class="MathJax_Preview">L</code><script type="math/tex">L</script> maps the codespace to itself.
+For <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script>, let’s show that <code class="MathJax_Preview">LSL^{\dagger} \in \mathcal{S}</code><script type="math/tex">LSL^{\dagger} \in \mathcal{S}</script>, that is, <code class="MathJax_Preview">LSL^{\dagger} \vert \psi \rangle = \vert \psi \rangle</code><script type="math/tex">LSL^{\dagger} \vert \psi \rangle = \vert \psi \rangle</script> for all <code class="MathJax_Preview">\vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">\vert \psi \rangle \in \mathcal{C}</script>. For <code class="MathJax_Preview">\vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">\vert \psi \rangle \in \mathcal{C}</script>, <code class="MathJax_Preview">L\vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">L\vert \psi \rangle \in \mathcal{C}</script> by assumption, so <code class="MathJax_Preview">SL\vert \psi \rangle = L \vert \psi \rangle</code><script type="math/tex">SL\vert \psi \rangle = L \vert \psi \rangle</script> and <code class="MathJax_Preview">L^{\dagger} S L \vert \psi \rangle = L^{\dagger} L \vert \psi \rangle = \vert \psi \rangle</code><script type="math/tex">L^{\dagger} S L \vert \psi \rangle = L^{\dagger} L \vert \psi \rangle = \vert \psi \rangle</script>.
+For the other direction, let’s suppose that <code class="MathJax_Preview">L \in \mathcal{N}(\mathcal{S})</code><script type="math/tex">L \in \mathcal{N}(\mathcal{S})</script>, and let’s show that for a state <code class="MathJax_Preview">\vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">\vert \psi \rangle \in \mathcal{C}</script>, <code class="MathJax_Preview">L \vert \psi \rangle \in \mathcal{C}</code><script type="math/tex">L \vert \psi \rangle \in \mathcal{C}</script>. It comes down to showing <code class="MathJax_Preview">SL \vert \psi \rangle = L \vert \psi \rangle</code><script type="math/tex">SL \vert \psi \rangle = L \vert \psi \rangle</script> for <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script>. Since <code class="MathJax_Preview">L^{\dagger} S L \in \mathcal{S}</code><script type="math/tex">L^{\dagger} S L \in \mathcal{S}</script> by assumption, there exists <code class="MathJax_Preview">S' \in \mathcal{S}</code><script type="math/tex">S' \in \mathcal{S}</script> such that <code class="MathJax_Preview">L^{\dagger} S L = S'</code><script type="math/tex">L^{\dagger} S L = S'</script>, or equivalently, <code class="MathJax_Preview">SL = LS'</code><script type="math/tex">SL = LS'</script>. Therefore, <code class="MathJax_Preview">SL\vert \psi \rangle = LS'\vert \psi \rangle = L \vert \psi \rangle</code><script type="math/tex">SL\vert \psi \rangle = LS'\vert \psi \rangle = L \vert \psi \rangle</script>.
+<br />
+<a href="#logical-gates">(Back to section)</a></p>
+
+<p class="message"><strong>Exercise 2</strong>: Show that <code class="MathJax_Preview">S_L=S^{\otimes 7}</code><script type="math/tex">S_L=S^{\otimes 7}</script> is a logical gate
+<br /><br />
+<strong>Correction</strong>: Remember that the <code class="MathJax_Preview">S</code><script type="math/tex">S</script> gate turns <code class="MathJax_Preview">X</code><script type="math/tex">X</script> into <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> into itself.
+Let’s pick any <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette. Applying <code class="MathJax_Preview">S_L</code><script type="math/tex">S_L</script> turns <code class="MathJax_Preview">X^{\otimes 4}</code><script type="math/tex">X^{\otimes 4}</script> into <code class="MathJax_Preview">Y^{\otimes 4}</code><script type="math/tex">Y^{\otimes 4}</script>.
+Since <code class="MathJax_Preview">Y^{\otimes 4}=X^{\otimes 4} Z^{\otimes 4}</code><script type="math/tex">Y^{\otimes 4}=X^{\otimes 4} Z^{\otimes 4}</script> (up to a phase), it is a product of stabilizers and therefore a stabilizer itself.
+Moreover, <code class="MathJax_Preview">S_L</code><script type="math/tex">S_L</script> leaves <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquettes unchanged.
+Thus, <code class="MathJax_Preview">S_L</code><script type="math/tex">S_L</script> maps stabilizers to stabilizers and forms a logical gate.
+<br />
+<a href="#logical-gates">(Back to section)</a></p>
+
+<p class="message"><strong>Exercise 3</strong>: Show that <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> acts as a logical Hadamard gate<br />
+<em>(<strong>Hint</strong>:  show that <code class="MathJax_Preview">H_L X_L H_L=Z_L</code><script type="math/tex">H_L X_L H_L=Z_L</script> and <code class="MathJax_Preview">H_L Z_L H_L=X_L</code><script type="math/tex">H_L Z_L H_L=X_L</script>)</em>
+<br /><br />
+<strong>Correction</strong>: Consider the logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operator <code class="MathJax_Preview">X_L=X^{\otimes 3}</code><script type="math/tex">X_L=X^{\otimes 3}</script> acting on qubits <code class="MathJax_Preview">5,6,7</code><script type="math/tex">5,6,7</script>.
+We get <code class="MathJax_Preview">H_L X_L H_L = Z^{\otimes 3}=Z_L</code><script type="math/tex">H_L X_L H_L = Z^{\otimes 3}=Z_L</script>.
+Using a similar reasoning, we can show that <code class="MathJax_Preview">H_L Z_L H_L =X_L</code><script type="math/tex">H_L Z_L H_L =X_L</script>.
+Thus, <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> acts as a logical Hadamard on the codespace.
+<br />
+<a href="#logical-gates">(Back to section)</a></p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>For simplicity, I have chosen to ignore phases here. A more exact decomposition would need to include the cosets <code class="MathJax_Preview">-\bar{X}</code><script type="math/tex">-\bar{X}</script>, <code class="MathJax_Preview">i\bar{X}</code><script type="math/tex">i\bar{X}</script>, <code class="MathJax_Preview">-i\bar{X}</code><script type="math/tex">-i\bar{X}</script>, etc. <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing. PhD student at UCL (London)
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/animations/"
+          class="sidebar-nav-item"
+          
+        >
+          Animations
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'UA-207151706-1', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementsByTagName('hy-push-state')[0];
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
