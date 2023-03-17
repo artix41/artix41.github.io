@@ -2,19 +2,19 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://arthurpesah.me/blog/</loc>
-<lastmod>2023-03-16T23:52:22+00:00</lastmod>
+<lastmod>2023-03-17T00:11:28+00:00</lastmod>
 </url>
 <url>
 <loc>https://arthurpesah.me/tag-machine-learning/</loc>
-<lastmod>2023-03-16T23:52:22+00:00</lastmod>
+<lastmod>2023-03-17T00:11:28+00:00</lastmod>
 </url>
 <url>
 <loc>https://arthurpesah.me/tag-mathematics/</loc>
-<lastmod>2023-03-16T23:52:22+00:00</lastmod>
+<lastmod>2023-03-17T00:11:28+00:00</lastmod>
 </url>
 <url>
 <loc>https://arthurpesah.me/tag-quantum-computing/</loc>
-<lastmod>2023-03-16T23:52:22+00:00</lastmod>
+<lastmod>2023-03-17T00:11:28+00:00</lastmod>
 </url>
 <url>
 <loc>https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/</loc>
@@ -61,6 +61,9 @@
 </url>
 <url>
 <loc>https://arthurpesah.me/talks/</loc>
+</url>
+<url>
+<loc>https://arthurpesah.me/writing/</loc>
 </url>
 <url>
 <loc>https://arthurpesah.me/CHANGELOG/</loc>
@@ -131,5 +134,9 @@
 <url>
 <loc>https://arthurpesah.me/assets/pdf/qml-talk-vannes-2020.pdf</loc>
 <lastmod>2022-11-25T18:58:25+00:00</lastmod>
+</url>
+<url>
+<loc>https://arthurpesah.me/assets/pdf/talk-fu-berlin-biased-noise.pdf</loc>
+<lastmod>2023-03-17T00:08:19+00:00</lastmod>
 </url>
 </urlset>
