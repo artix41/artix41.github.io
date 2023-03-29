@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>The stabilizer trilogy III — Parity-check matrices and decoding | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="The stabilizer trilogy III — Parity-check matrices and decoding" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/" />
+<meta property="og:url" content="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-03-28T00:00:00-07:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" />
+<meta property="twitter:title" content="The stabilizer trilogy III — Parity-check matrices and decoding" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-28T00:00:00-07:00","datePublished":"2023-03-28T00:00:00-07:00","description":"Research blog","headline":"The stabilizer trilogy III — Parity-check matrices and decoding","image":"https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="https://arthurpesah.me/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+<link rel="dns-prefetch" href="https://arthurpesah.disqus.com" id="_hrefDisqus">
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-stabilizer-formalism-3" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        The stabilizer trilogy III — Parity-check matrices and decoding
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2023-03-28T00:00:00-07:00">28 Mar 2023</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-3/thumbnail.png"
+    
+    alt="The stabilizer trilogy III — Parity-check matrices and decoding"><img src="/assets/img/blog/stabilizer-formalism-3/thumbnail.png"
+    
+    alt="The stabilizer trilogy III — Parity-check matrices and decoding"></hy-img>
+
+
+
+      </div>
+      
+    
+
+    
+
+
+
+  
+
+
+  </header>
+
+  
+    <p>Welcome to the third and last post of the stabilizer trilogy! In <a href="">Parts I</a> and <a href="">II</a>, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to
+simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tools to prove theorems about them, to classify them, to decode them, and more!</p>
+
+<p>In this post, we will see how to define the parity-check matrix of a stabilizer code in the binary symplectic format, and how to express the decoding problem using it. After a short motivation section to remind you about classical parity-check matrices, we will delve into the binary symplectic format, a way to express Pauli operators using vectors. We will then define quantum parity-check matrices in this format and see how syndromes and logical operators can be expressed using them. With those tools in our hand, we will finally be able to define the decoding problem for quantum codes, and in particular see how to decode the Steane code. We will finish this post by defining quantum Tanner graphs, a graphical representation of parity-check matrices, often used in the literature to study the properties of codes and decoders.</p>
+
+<h2 id="motivation">Motivation</h2>
+
+<p>When studying classical coding theory, we saw that a code can be defined as a binary matrix <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>, called the parity-check matrix, such that any codeword <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> satisfies</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} \bm{x} = \bm{0}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bm{H} \bm{x} = \bm{0}
+\end{aligned}</script>
+
+<p>Thus, a codeword <code class="MathJax_Preview">x</code><script type="math/tex">x</script> corrupted by an error <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script>, denoted <code class="MathJax_Preview">\widetilde{\bm{x}}=\bm{x} + \bm{e}</code><script type="math/tex">\widetilde{\bm{x}}=\bm{x} + \bm{e}</script>, obeys</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} \widetilde{\bm{x}} = \bm{H} \bm{e} = \bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bm{H} \widetilde{\bm{x}} = \bm{H} \bm{e} = \bm{s}
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">\bm{s}</code><script type="math/tex">\bm{s}</script> is the syndrome. This formulation of linear coding theory was useful for many reasons:</p>
+
+<ul>
+  <li>It allows to express the decoding problem as a constrained optimization problem</li>
+</ul>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\max_{\bm{e} \in \mathbb{Z}_2^n} P(\bm{e}) \; \text{ s.t. } \; \bm{H} \bm{e} = \bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\max_{\bm{e} \in \mathbb{Z}_2^n} P(\bm{e}) \; \text{ s.t. } \; \bm{H} \bm{e} = \bm{s}
+\end{aligned}</script>
+
+<ul>
+  <li>It makes syndrome calculations straightforward, as a simple matrix multiplication</li>
+  <li>Many properties of a code can be deduced directly from its parity-check (such as the weight of its checks via the sparsity of the matrix, the number of encoded qubits via its rank, etc.)</li>
+  <li>The parity-check matrix can be seen as the adjacency matrix of a graph, the Tanner graph, which is used for instance when solving the decoding problem with belief propagation.</li>
+</ul>
+
+<p>We will now see that such a formulation is possible in the stabilizer formalism.
+There are two different methods to arrive at a definition of a quantum parity-check matrix:</p>
+<ol>
+  <li>The <code class="MathJax_Preview">GF(4)</code><script type="math/tex">GF(4)</script> format, where the elements of the parity-check matrix belong to a Galois field with four elements (instead of the binary field in the classical case).</li>
+  <li>The binary symplectic format, where the parity-check matrix remains binary, but doubles in size compared to the classical one.</li>
+</ol>
+
+<p>Even though the <code class="MathJax_Preview">GF(4)</code><script type="math/tex">GF(4)</script> format has some useful applications<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>, the binary symplectic one is simpler, more popular, and used in most quantum error correction libraries<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>.
+This is therefore the one I will present in this post.
+Until I do a separate post on <code class="MathJax_Preview">GF(4)</code><script type="math/tex">GF(4)</script>, feel free to take a look at Section 3.2 of Daniel Gottesman’s lecture notes in the meantime.</p>
+
+<h2 id="binary-symplectic-format">Binary symplectic format</h2>
+
+<p>The core idea behind the binary symplectic format is the observation that Paulis can be mapped to two-bit words using the following dictionary:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+(0\vert0) &amp; \rightarrow I \\
+(1\vert0) &amp; \rightarrow X \\
+(0\vert1) &amp; \rightarrow Z \\
+(1\vert1) &amp; \rightarrow Y
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+(0\vert0) & \rightarrow I \\
+(1\vert0) & \rightarrow X \\
+(0\vert1) & \rightarrow Z \\
+(1\vert1) & \rightarrow Y
+\end{aligned} %]]></script>
+
+<p>In this representation, the first bit indicates the presence of an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and the second bit the presence of a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>.
+So <code class="MathJax_Preview">(0\vert0)</code><script type="math/tex">(0\vert0)</script> is the identity operator (no <code class="MathJax_Preview">X</code><script type="math/tex">X</script>, no <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>) and <code class="MathJax_Preview">(1\vert1)</code><script type="math/tex">(1\vert1)</script> is the <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> operator (as it can be written <code class="MathJax_Preview">XZ</code><script type="math/tex">XZ</script>).
+We can also write this more formally as <code class="MathJax_Preview">(x \vert z) \leftrightarrow X^{x} Z^{z}</code><script type="math/tex">(x \vert z) \leftrightarrow X^{x} Z^{z}</script>.
+Note that from now on, we will ignore the phases arising when multiplying Pauli operators, as they don’t play any role in our formalism. For instance, we will write <code class="MathJax_Preview">Y=XZ</code><script type="math/tex">Y=XZ</script> instead of <code class="MathJax_Preview">Y=iXZ</code><script type="math/tex">Y=iXZ</script>.</p>
+
+<p>What’s nice with this representation is that the multiplication of Pauli elements maps to the addition (modulo 2) of two-bit words <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>. Indeed,</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+(x \vert z) + (x' \vert z') = (x+x' \vert z+z') \leftrightarrow \left( X^{x} Z^{z} \right) \left( X^{x'} Z^{z'} \right) = X^{x+x'} Z^{z+z'}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+(x \vert z) + (x' \vert z') = (x+x' \vert z+z') \leftrightarrow \left( X^{x} Z^{z} \right) \left( X^{x'} Z^{z'} \right) = X^{x+x'} Z^{z+z'}
+\end{aligned}</script>
+
+<p>We were able to commute things through in the last equality as Pauli operators commute up to a phase, which we can safely ignore.</p>
+
+<p>For instance, <code class="MathJax_Preview">(1\vert0) + (0\vert1) = (1\vert1) \leftrightarrow XZ = Y</code><script type="math/tex">(1\vert0) + (0\vert1) = (1\vert1) \leftrightarrow XZ = Y</script>, or <code class="MathJax_Preview">(1\vert0) + (1\vert0) = (0\vert0) \leftrightarrow X^2 = I</code><script type="math/tex">(1\vert0) + (1\vert0) = (0\vert0) \leftrightarrow X^2 = I</script>.</p>
+
+<p>This representation can be generalized to many-qubit Pauli operators as well. A Pauli vector <code class="MathJax_Preview">P=P_1 \otimes \ldots \otimes P_n</code><script type="math/tex">P=P_1 \otimes \ldots \otimes P_n</script> is mapped to the following vector in the binary symplectic format:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+(x_1 \ldots x_n \vert z_1 \ldots z_n)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+(x_1 \ldots x_n \vert z_1 \ldots z_n)
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">(x_i \vert z_i)</code><script type="math/tex">(x_i \vert z_i)</script> is the representation of <code class="MathJax_Preview">P_i</code><script type="math/tex">P_i</script>. For example, the operator <code class="MathJax_Preview">Z \otimes Y</code><script type="math/tex">Z \otimes Y</script> can be written <code class="MathJax_Preview">(01 \vert 11)</code><script type="math/tex">(01 \vert 11)</script>.</p>
+
+<p>The next step is to express commutation relations in this format. Indeed, remember that the syndrome depends entirely on the commutation relations between stabilizers and errors (the syndrome is <code class="MathJax_Preview">0</code><script type="math/tex">0</script> if they commute and <code class="MathJax_Preview">1</code><script type="math/tex">1</script> if they anticommute). This is where the “symplectic” part of the binary symplectic format kicks in.</p>
+
+<p>Let’s define the <strong>symplectic product</strong> <code class="MathJax_Preview">\odot</code><script type="math/tex">\odot</script> between two binary symplectic vectors <code class="MathJax_Preview">(\bm{x} \vert \bm{z})</code><script type="math/tex">(\bm{x} \vert \bm{z})</script> and <code class="MathJax_Preview">(\bm{x'} \vert \bm{z'})</code><script type="math/tex">(\bm{x'} \vert \bm{z'})</script> as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+(\bm{x} \vert \bm{z}) \odot (\bm{x'} \vert \bm{z'}) = (\bm{x} \vert \bm{z}) \Omega (\bm{x'} \vert \bm{z'})^T = \bm{x} \cdot \bm{z'} + \bm{z} \cdot \bm{x'}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+(\bm{x} \vert \bm{z}) \odot (\bm{x'} \vert \bm{z'}) = (\bm{x} \vert \bm{z}) \Omega (\bm{x'} \vert \bm{z'})^T = \bm{x} \cdot \bm{z'} + \bm{z} \cdot \bm{x'}
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">\Omega</code><script type="math/tex">\Omega</script> is the <strong>symplectic matrix</strong>, defined as:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\Omega = \left(
+\begin{matrix}
+0 &amp; I_n \\
+I_n &amp; 0
+\end{matrix}
+\right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\Omega = \left(
+\begin{matrix}
+0 & I_n \\
+I_n & 0
+\end{matrix}
+\right)
+\end{aligned} %]]></script>
+
+<p>and <code class="MathJax_Preview">\cdot</code><script type="math/tex">\cdot</script> is the usual dot product modulo <code class="MathJax_Preview">2</code><script type="math/tex">2</script>. The interpretation of this product is that two Pauli operators commute if their binary symplectic product is <code class="MathJax_Preview">0</code><script type="math/tex">0</script>, and anticommute if it is <code class="MathJax_Preview">1</code><script type="math/tex">1</script>.
+To see this, notice that <code class="MathJax_Preview">x_i z'_i + z_i x'_i</code><script type="math/tex">x_i z'_i + z_i x'_i</script> is equal to <code class="MathJax_Preview">1</code><script type="math/tex">1</script> if and only if there is an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> intersecting on qubit <code class="MathJax_Preview">i</code><script type="math/tex">i</script>, but not a <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> on both (which would give <code class="MathJax_Preview">2</code><script type="math/tex">2</script>, or <code class="MathJax_Preview">0</code><script type="math/tex">0</script> modulo <code class="MathJax_Preview">2</code><script type="math/tex">2</script>). In other words, it is <code class="MathJax_Preview">1</code><script type="math/tex">1</script> if and only if the two Pauli elements acting on qubit <code class="MathJax_Preview">i</code><script type="math/tex">i</script> anticommute. Summing over all <code class="MathJax_Preview">i</code><script type="math/tex">i</script>, it means that the symplectic product <code class="MathJax_Preview">\bm{x} \cdot \bm{z'} + \bm{z} \cdot \bm{x'}</code><script type="math/tex">\bm{x} \cdot \bm{z'} + \bm{z} \cdot \bm{x'}</script> is equal to <code class="MathJax_Preview">1</code><script type="math/tex">1</script> if and only if there is an odd number of Pauli elements that anticommute, or equivalently, if the two Pauli operators anticommute.</p>
+
+<h2 id="the-quantum-parity-check-matrix">The quantum parity-check matrix</h2>
+
+<p>We are now ready to talk about parity-check matrices. Let <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> a stabilizer group on <code class="MathJax_Preview">n</code><script type="math/tex">n</script> qubits, generated by a set of <code class="MathJax_Preview">m</code><script type="math/tex">m</script> stabilizers <code class="MathJax_Preview">\{S_i\}</code><script type="math/tex">\{S_i\}</script>. The <strong>quantum parity-check matrix</strong> of the code, associated to those generators, is the <code class="MathJax_Preview">m \times 2n</code><script type="math/tex">m \times 2n</script> matrix where each row is a stabilizer written in the binary symplectic format. For example, here is the parity-check matrix of the Steane code, with the plaquette stabilizers as generators:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} = \left(
+\begin{matrix}
+\color{OrangeRed} 1 &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \vert &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 \\
+\color{RoyalBlue} 0 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 0 &amp; \vert &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 \\
+\color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 1 &amp; \color{ForestGreen} 1 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 1 &amp; \color{ForestGreen} 1 &amp; \vert &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 \\
+
+\color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \vert &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 1 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 &amp; \color{OrangeRed} 0 \\
+\color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 0 &amp; \vert &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 0 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 1 &amp; \color{RoyalBlue} 0 \\
+\color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \vert &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 1 &amp; \color{ForestGreen} 1 &amp; \color{ForestGreen} 0 &amp; \color{ForestGreen} 1 &amp; \color{ForestGreen} 1 \\
+\end{matrix}
+\right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\bm{H} = \left(
+\begin{matrix}
+\color{OrangeRed} 1 & \color{OrangeRed} 1 & \color{OrangeRed} 1 & \color{OrangeRed} 1 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \vert & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 \\
+\color{RoyalBlue} 0 & \color{RoyalBlue} 1 & \color{RoyalBlue} 1 & \color{RoyalBlue} 0 & \color{RoyalBlue} 1 & \color{RoyalBlue} 1 & \color{RoyalBlue} 0 & \vert & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 \\
+\color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 1 & \color{ForestGreen} 1 & \color{ForestGreen} 0 & \color{ForestGreen} 1 & \color{ForestGreen} 1 & \vert & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 \\
+
+\color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \vert & \color{OrangeRed} 1 & \color{OrangeRed} 1 & \color{OrangeRed} 1 & \color{OrangeRed} 1 & \color{OrangeRed} 0 & \color{OrangeRed} 0 & \color{OrangeRed} 0 \\
+\color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \color{RoyalBlue} 0 & \vert & \color{RoyalBlue} 0 & \color{RoyalBlue} 1 & \color{RoyalBlue} 1 & \color{RoyalBlue} 0 & \color{RoyalBlue} 1 & \color{RoyalBlue} 1 & \color{RoyalBlue} 0 \\
+\color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \vert & \color{ForestGreen} 0 & \color{ForestGreen} 0 & \color{ForestGreen} 1 & \color{ForestGreen} 1 & \color{ForestGreen} 0 & \color{ForestGreen} 1 & \color{ForestGreen} 1 \\
+\end{matrix}
+\right)
+\end{aligned} %]]></script>
+
+<p>I have colored each row in accordance to the plaquette it corresponds to. For convenience, here are the plaquette stabilizers of the Steane code again:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-1/steane-code-stabilizers.png" alt=""><img src="/assets/img/blog/stabilizer-formalism-1/steane-code-stabilizers.png" alt=""></hy-img>
+</p>
+
+<p class="message"><strong>Exercise</strong>: Write the parity-check matrix of Shor’s code</p>
+
+<p>One important thing to notice in the matrix above is that it can be written:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} = \left(
+\begin{matrix}
+H_{\text{Hamming}} &amp; \vert &amp; \bm{0} \\
+\bm{0} &amp; \vert &amp; H_{\text{Hamming}}
+\end{matrix}
+\right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\bm{H} = \left(
+\begin{matrix}
+H_{\text{Hamming}} & \vert & \bm{0} \\
+\bm{0} & \vert & H_{\text{Hamming}}
+\end{matrix}
+\right)
+\end{aligned} %]]></script>
+
+<p>where <code class="MathJax_Preview">H_{\text{Hamming}}</code><script type="math/tex">H_{\text{Hamming}}</script> is the parity-check matrix of the classical Hamming code.</p>
+
+<p>More generally, the parity-check matrix of any CSS code can be decomposed as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} = \left(
+\begin{matrix}
+H_X &amp; \vert &amp; \bm{0} \\
+\bm{0} &amp; \vert &amp; H_Z
+\end{matrix}
+\right)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\bm{H} = \left(
+\begin{matrix}
+H_X & \vert & \bm{0} \\
+\bm{0} & \vert & H_Z
+\end{matrix}
+\right)
+\end{aligned} %]]></script>
+
+<p>where <code class="MathJax_Preview">H_X</code><script type="math/tex">H_X</script> and <code class="MathJax_Preview">H_Z</code><script type="math/tex">H_Z</script> are the parity-check matrices of the two classical codes <code class="MathJax_Preview">C_X</code><script type="math/tex">C_X</script> and <code class="MathJax_Preview">C_Z</code><script type="math/tex">C_Z</script>.
+The condition that all the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> stabilizers should commute with all the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizers can be written as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+H_X H_Z^T = \bm{0}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+H_X H_Z^T = \bm{0}
+\end{aligned}</script>
+
+<p>Indeed, each component <code class="MathJax_Preview">i,j</code><script type="math/tex">i,j</script> of the product <code class="MathJax_Preview">H_X H_Z^T</code><script type="math/tex">H_X H_Z^T</script> is equal to the dot product (modulo <code class="MathJax_Preview">2</code><script type="math/tex">2</script>) between the <code class="MathJax_Preview">X</code><script type="math/tex">X</script>-check <code class="MathJax_Preview">i</code><script type="math/tex">i</script> and the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>-check <code class="MathJax_Preview">j</code><script type="math/tex">j</script>. This dot product will be <code class="MathJax_Preview">0</code><script type="math/tex">0</script> if and only if the two checks intersect on an even number of bits, or in other words, if the corresponding stabilizers commute.</p>
+
+<p>Even more generally, the parity-check matrix <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> of any stabilizer code must satisfy:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} \odot \bm{H} = \bm{0}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bm{H} \odot \bm{H} = \bm{0}
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">\odot</code><script type="math/tex">\odot</script> is the matrix version of the binary symplectic product, defined such that each component <code class="MathJax_Preview">i,j</code><script type="math/tex">i,j</script> is the binary symplectic product between row <code class="MathJax_Preview">i</code><script type="math/tex">i</script> of the first matrix and row <code class="MathJax_Preview">j</code><script type="math/tex">j</script> of the second matrix. This constraint is what makes it hard to design quantum codes by using classical constructions: most classical codes don’t satisfy this property. But that’s also what makes quantum error correction so unique and interesting, as very specific tools have been introduced in the field in order to come up with new quantum codes. For instance, the topological interpretation of this constraint (as a chain complex) explains the wide intersection between topology and quantum error correction, which doesn’t arise classically. We will start studying topological quantum error correction in the next post, but for now, let’s continue studying the properties of those parity-check matrices.</p>
+
+<h2 id="syndrome-and-logical-operators">Syndrome and logical operators</h2>
+
+<p>Given an error <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> written in the binary symplectic format, we can obtain the syndrome <code class="MathJax_Preview">\bm{s}</code><script type="math/tex">\bm{s}</script> using</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} \odot \bm{e} = \bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bm{H} \odot \bm{e} = \bm{s}
+\end{aligned}</script>
+
+<p>Indeed, each component of the syndrome tells us whether a given stabilizer commutes with the error.
+Note that this is the same equation as the classical one, with the matrix product replaced by the symplectic product.
+Now, we saw that for classical parity-check matrices, we had <code class="MathJax_Preview">\bm{H} \bm{x} = \bm{0}</code><script type="math/tex">\bm{H} \bm{x} = \bm{0}</script> for every codeword <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script>. However, we don’t really have “codewords” in quantum error correction. So what would be the equivalent of <code class="MathJax_Preview">\bm{x}</code><script type="math/tex">\bm{x}</script> in this equation, or in other words, what is the kernel of <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>? Any guess?</p>
+
+<p>The kernel of <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script> is the set of logical operators! Indeed, as we saw in the first section of this post, we can define logical operators as elements of <code class="MathJax_Preview">\mathcal{C}(\mathcal{S})</code><script type="math/tex">\mathcal{C}(\mathcal{S})</script>, which by definition is the set of all the elements that commute with the stabilizers. And if you remember, this set includes both stabilizers and non-trivial logical operators.</p>
+
+<p>This fact is actually very useful in practice: it gives us a systematic method to find the non-trivial logicals of a given a code. Find a basis for the kernel of <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>, and keep all the elements that cannot be written as linear combinations of rows of <code class="MathJax_Preview">\bm{H}</code><script type="math/tex">\bm{H}</script>, that is, which are not stabilizers.</p>
+
+<h2 id="decoding">Decoding</h2>
+
+<p>As for classical error correction, the decoding problem for quantum codes can be expressed using parity-check matrices.
+However, there is an important subtlety compared to the classical case.
+Instinctively, we would like to express the decoding problem as follow:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\max_{\bm{c} \in \mathbb{Z}_2^{2n}} P(\bm{c}) \; \text{ s.t. } \; \bm{H} \odot \bm{c} = \bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\max_{\bm{c} \in \mathbb{Z}_2^{2n}} P(\bm{c}) \; \text{ s.t. } \; \bm{H} \odot \bm{c} = \bm{s}
+\end{aligned}</script>
+
+<p>This corresponds to finding the error <code class="MathJax_Preview">c</code><script type="math/tex">c</script> that fits the syndrome and has the highest probability of happening.
+However, the actual goal is not quite exactly that.</p>
+
+<p>To see why, let’s first slightly reformulate the syndrome equation constraint from above. If <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> is the actual error and we choose to apply a correction operator <code class="MathJax_Preview">\bm{c}</code><script type="math/tex">\bm{c}</script>, the total operator <code class="MathJax_Preview">\bm{e}+\bm{c}</code><script type="math/tex">\bm{e}+\bm{c}</script> applied to the code satisfies:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} \odot (\bm{e} + \bm{c}) = \bm{s} + \bm{s} = \bm{0}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bm{H} \odot (\bm{e} + \bm{c}) = \bm{s} + \bm{s} = \bm{0}
+\end{aligned}</script>
+
+<p>Therefore <code class="MathJax_Preview">\bm{e}+\bm{c} \in \text{Ker}(\bm{H})</code><script type="math/tex">\bm{e}+\bm{c} \in \text{Ker}(\bm{H})</script> is either a stabilizer or a non-trivial logical operator.
+If it is a stabilizer, it doesn’t have any effect on the codespace, and mission accomplished.
+If it is a non-trivial logical operator, we have failed the decoding process and applied a logical error to the state.</p>
+
+<p>Now, let’s notice that if a given correction satisfies the syndrome equation, any stabilizer <code class="MathJax_Preview">\bm{x} \in \mathcal{S}</code><script type="math/tex">\bm{x} \in \mathcal{S}</script> applied on top of this correction will also satisfy the syndrome equation:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+\bm{H} \odot (\bm{c} + \bm{x}) = \bm{s} + \bm{0} = \bm{s}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+\bm{H} \odot (\bm{c} + \bm{x}) = \bm{s} + \bm{0} = \bm{s}
+\end{aligned}</script>
+
+<p>And not only that, but <code class="MathJax_Preview">\bm{e}+(\bm{c}+\bm{x})=(\bm{e}+\bm{c})+\bm{x}</code><script type="math/tex">\bm{e}+(\bm{c}+\bm{x})=(\bm{e}+\bm{c})+\bm{x}</script>, so the final operators will be the same up to a stabilizer.
+Therefore, it’s tempting to do as in the previous post and create an equivalence relation between correction operators that fit the syndrome.
+We say that two operators <code class="MathJax_Preview">\bm{c}</code><script type="math/tex">\bm{c}</script> and <code class="MathJax_Preview">\bm{c'}</code><script type="math/tex">\bm{c'}</script> are equivalent if there exists a stabilizer <code class="MathJax_Preview">\bm{x} \in \mathcal{S}</code><script type="math/tex">\bm{x} \in \mathcal{S}</script> such that <code class="MathJax_Preview">\bm{c}=\bm{c'}+\bm{x}</code><script type="math/tex">\bm{c}=\bm{c'}+\bm{x}</script>. Equipped with this equivalence relation, we can now partition all the correction operators into cosets: two operators belong to the same coset if they are equivalent. And here is the key of the quantum decoding problem: we only need to find a correction operator that belongs to the same coset as the error. Indeed, if <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> and <code class="MathJax_Preview">\bm{c}</code><script type="math/tex">\bm{c}</script> belong to the same coset, it means that there exists <code class="MathJax_Preview">\bm{x} \in \mathcal{S}</code><script type="math/tex">\bm{x} \in \mathcal{S}</script> such that <code class="MathJax_Preview">\bm{c}=\bm{e}+\bm{x}</code><script type="math/tex">\bm{c}=\bm{e}+\bm{x}</script>. Therefore, the total operator <code class="MathJax_Preview">\bm{e}+\bm{c}=\bm{e}+\bm{e}+\bm{x}=\bm{x}</code><script type="math/tex">\bm{e}+\bm{c}=\bm{e}+\bm{e}+\bm{x}=\bm{x}</script> is a stabilizer. On the other hand, if they belong to a different coset, the sum can’t be a stabilizer, since <code class="MathJax_Preview">\bm{e}+\bm{c} = \bm{x}</code><script type="math/tex">\bm{e}+\bm{c} = \bm{x}</script> for <code class="MathJax_Preview">\bm{x} \in \mathcal{S}</code><script type="math/tex">\bm{x} \in \mathcal{S}</script> implies that <code class="MathJax_Preview">\bm{c}=\bm{e}+\bm{x}</code><script type="math/tex">\bm{c}=\bm{e}+\bm{x}</script> and <code class="MathJax_Preview">\bm{e} \sim \bm{c}</code><script type="math/tex">\bm{e} \sim \bm{c}</script>. This means that <code class="MathJax_Preview">\bm{e}+\bm{c}</code><script type="math/tex">\bm{e}+\bm{c}</script> is a non-trivial logical operator (i.e. a logical error).</p>
+
+<p>Denoting <code class="MathJax_Preview">\mathcal{E}_{\bm{s}}</code><script type="math/tex">\mathcal{E}_{\bm{s}}</script> the set of operators that fit the syndrome <code class="MathJax_Preview">\bm{s}</code><script type="math/tex">\bm{s}</script>, and <code class="MathJax_Preview">\mathcal{E}_{\bm{s}} / \mathcal{S}</code><script type="math/tex">\mathcal{E}_{\bm{s}} / \mathcal{S}</script> the set of all cosets (called a quotient space), we can express the real objective of the quantum decoding problem as finding the coset <code class="MathJax_Preview">\bm{\bar{c}} \in \mathcal{E}_{\bm{s}} / \mathcal{S}</code><script type="math/tex">\bm{\bar{c}} \in \mathcal{E}_{\bm{s}} / \mathcal{S}</script> with the highest probability:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    \max_{\bm{\bar{c}} \in \mathcal{E}_{\bm{s}} / \mathcal{S}} P(\bm{\bar{c}})
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    \max_{\bm{\bar{c}} \in \mathcal{E}_{\bm{s}} / \mathcal{S}} P(\bm{\bar{c}})
+\end{aligned}</script>
+
+<p>where <code class="MathJax_Preview">P(\bm{\bar{c}})</code><script type="math/tex">P(\bm{\bar{c}})</script> can be calculated as <code class="MathJax_Preview">P(\bm{\bar{c}}) = \sum_{\bm{c} \in \bm{\bar{c}}} P(\bm{c})</code><script type="math/tex">P(\bm{\bar{c}}) = \sum_{\bm{c} \in \bm{\bar{c}}} P(\bm{c})</script>.</p>
+
+<p>For many codes, it’s possible to find syndromes where those two versions of the decoding problem give a different solution. This will be the case when the coset containing the most likely error have much less elements than another coset which contain slightly less likely errors. However, in practice, the two decoding problems often have the same solution, and many practical decoders only seek to solve the first optimization problem. This often results in a small decrease of performance, for a high gain in speed (this is for instance the case of the matching decoder for the surface code, that you might have heard of).</p>
+
+<p>As always, let’s apply what we’ve just learned to the Steane code.
+As an example, let’s see how to decode a syndrome consisting of a single blue <code class="MathJax_Preview">X</code><script type="math/tex">X</script>-plaquette.
+Here are the two cosets of <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators that fit this syndrome:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-3/steane-coset-1.png" height="300"><img src="/assets/img/blog/stabilizer-formalism-3/steane-coset-1.png" height="300"></hy-img>
+
+</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-3/steane-coset-2.png" height="300"><img src="/assets/img/blog/stabilizer-formalism-3/steane-coset-2.png" height="300"></hy-img>
+
+</p>
+
+<p>The first coset is constructed by taking the only single-qubit error that fits the syndrome, shown in the top-left triangle, and applying the seven <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizers to it (blue, red, green, blue-red, blue-green, red-green, red-blue-green). The second coset is obtained in a similar way, starting with the two-qubit operator shown in the top-left triangle.</p>
+
+<p>Assuming an i.i.d noise, we can immediately solve the first decoding problem: the most likely error is the one of minimum weight, that is, the first error of coset 1. We can therefore choose any correction operator in this coset as our decoding solution.</p>
+
+<p>Solving the second decoding problem requires a bit more work. Let <code class="MathJax_Preview">p</code><script type="math/tex">p</script> the probability that an error occurs on a given qubit, that is, the error rate of the noise channel. Each weight-<code class="MathJax_Preview">k</code><script type="math/tex">k</script> error has a probability <code class="MathJax_Preview">\pi_k = p^k (1-p)^{7-k}</code><script type="math/tex">\pi_k = p^k (1-p)^{7-k}</script>. Summing the probabilities of all the elements, we get</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    P(\text{coset 1}) &amp;= \pi_1 + 4 \pi_3 + 3 \pi_5 \\
+    P(\text{coset 2}) &amp;= 3 \pi_2 + 4 \pi_4 + \pi_6
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+    P(\text{coset 1}) &= \pi_1 + 4 \pi_3 + 3 \pi_5 \\
+    P(\text{coset 2}) &= 3 \pi_2 + 4 \pi_4 + \pi_6
+\end{aligned} %]]></script>
+
+<p>Plotting those two probabilities as a function of the error rate, we can see that the first coset always has a higher probability than the second one<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-3/coset-probabilities.png" height="350"><img src="/assets/img/blog/stabilizer-formalism-3/coset-probabilities.png" height="350"></hy-img>
+
+</p>
+
+<p>Therefore, both decoding formulations give the first coset as our decoding solution.</p>
+
+<h2 id="tanner-graph">Tanner graph</h2>
+
+<p>Many methods to design quantum codes and decoders work by representing stabilizer codes using their so-called Tanner graph.
+The <strong>Tanner graph</strong> of a code associated to an <code class="MathJax_Preview">m \times 2n</code><script type="math/tex">m \times 2n</script> parity-check matrix <code class="MathJax_Preview">H</code><script type="math/tex">H</script> is built by creating <code class="MathJax_Preview">2n+m</code><script type="math/tex">2n+m</script> nodes: two nodes per qubit (one for <code class="MathJax_Preview">X</code><script type="math/tex">X</script> errors and one for <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> errors), and one node per stabilizer.
+By convention, qubit nodes are often represented by circles and stabilizer nodes by squares.
+Each stabilizer node is then connected to the qubits in its support (with the right Pauli operators). In other words, <code class="MathJax_Preview">H</code><script type="math/tex">H</script> is the biadjacency matrix of the Tanner graph.</p>
+
+<p>As an example, here is the Tanner graph of the Steane code, where I colored the stabilizer nodes to indicate to which plaquette operators they correspond.</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-3/tanner-graph-steane.png" height="350"><img src="/assets/img/blog/stabilizer-formalism-3/tanner-graph-steane.png" height="350"></hy-img>
+
+</p>
+
+<p>The fact that this graph contains two separate components (the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> part and the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> part) is due to the CSS nature of the Steane code. In general, a stabilizer node can be connected to both <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> qubit nodes.</p>
+
+<p>Many properties of codes and decoders can be interpreted in terms of Tanner graphs. For instance, a low-density parity-check (LDPC) code can be defined as a code whose Tanner graph has constant degree (each qubit is connected to <code class="MathJax_Preview">O(1)</code><script type="math/tex">O(1)</script> stabilizers and each stabilizer to <code class="MathJax_Preview">O(1)</code><script type="math/tex">O(1)</script> qubits). Similarly, a hypergraph-product code is best interpreted as a certain product of Tanner graphs. Finally, the performance of the belief propagation decoder on a certain code strongly depends on the size of the shortest cycle (also called the girth) of its Tanner graph.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Let’s summarize what we have learned in this post. Pauli operators acting on <code class="MathJax_Preview">n</code><script type="math/tex">n</script> qubits can be expressed as binary vectors with <code class="MathJax_Preview">2n</code><script type="math/tex">2n</script> components: this is the binary symplectic format. The symplectic product on such vectors indicates whether two Pauli operators commute or not. Writing the generators of a stabilizer code in the binary symplectic format gives a parity-check matrix representing the code, and multiplying this parity-check matrix with an error vector gives the syndrome. As a result, logical operators (including stabilizers) are elements of the kernel of the parity-check matrix. To perform decoding, an optimal algorithm should choose a correction operator that belongs to the most likely coset of errors fitting the syndrome. However, decoders that simply output the most likely error often have acceptable performance in practice. Finally, the Tanner graph of a code is the the graph which has the parity-check matrix as its biadjacency matrix.</p>
+
+<p>This is it for the stabilizer trilogy, well done for having read this far! You should now be equipped with all the foundations to start delving into the quantum error correction literature and understand the most popular codes and decoders out there!</p>
+
+<p>While the formalism that we have developed so far is helpful to analyze any code you will encounter, you probably still have no idea how to come up with a new code on your own. The next series of posts will be dedicated to a quite general code construction that builds on top of the stabilizer formalism: topological quantum error correction. So be ready for a new journey towards the surface code and its generalizations!</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>See for instance belief propagation defined over GF(4) <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>qecsim, PanQEC, PyMatching, ldpc, etc. <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>If you know a bit of abstract algebra, you will notice that our map defines an isomorphism from the Pauli group (modulo the phase) to the group <code class="MathJax_Preview">(\mathbb{Z}_2^2, +)</code><script type="math/tex">(\mathbb{Z}_2^2, +)</script> <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>I have spent a few hours trying to prove this analytically without much success, but if you find a way, please reach out! <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing. PhD student at UCL (London)
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/writing/"
+          class="sidebar-nav-item"
+          
+        >
+          Other writings
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/animations/"
+          class="sidebar-nav-item"
+          
+        >
+          Animations
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'UA-207151706-1', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementsByTagName('hy-push-state')[0];
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
