@@ -49,12 +49,12 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:site_name" content="Arthur Pesah" />
 <meta property="og:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2023-03-28T00:00:00-07:00" />
+<meta property="article:published_time" content="2023-03-28T00:00:00-06:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" />
 <meta property="twitter:title" content="The stabilizer trilogy III — Parity-check matrices and decoding" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-28T00:00:00-07:00","datePublished":"2023-03-28T00:00:00-07:00","description":"Research blog","headline":"The stabilizer trilogy III — Parity-check matrices and decoding","image":"https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-28T00:00:00-06:00","datePublished":"2023-03-28T00:00:00-06:00","description":"Research blog","headline":"The stabilizer trilogy III — Parity-check matrices and decoding","image":"https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -220,7 +220,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
     <p class="post-date heading">
       
-      <time datetime="2023-03-28T00:00:00-07:00">28 Mar 2023</time>
+      <time datetime="2023-03-28T00:00:00-06:00">28 Mar 2023</time>
       
       
       
@@ -624,12 +624,24 @@ Here are the two cosets of <code class="MathJax_Preview">Z</code><script type="m
     P(\text{coset 2}) &= 3 \pi_2 + 4 \pi_4 + \pi_6
 \end{aligned} %]]></script>
 
-<p>Plotting those two probabilities as a function of the error rate, we can see that the first coset always has a higher probability than the second one<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>:</p>
+<p>Plotting those two probabilities as a function of the error rate, we can see that the first coset always has a higher probability than the second one:</p>
 
 <p style="text-align:center;" class="figure">
     <hy-img root-margin="511px" src="/assets/img/blog/stabilizer-formalism-3/coset-probabilities.png" height="350"><img src="/assets/img/blog/stabilizer-formalism-3/coset-probabilities.png" height="350"></hy-img>
 
 </p>
+
+<p>This can also be shown analytically by noticing that<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup></p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    P(\text{coset 1}) - P(\text{coset 2}) = p (1-p) (1-2p)^3 (2p^2 - 2p + 1)
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    P(\text{coset 1}) - P(\text{coset 2}) = p (1-p) (1-2p)^3 (2p^2 - 2p + 1)
+\end{aligned}</script>
+
+<p>from which we can deduce that <code class="MathJax_Preview">P(\text{coset 1}) &gt; P(\text{coset 2})</code><script type="math/tex">P(\text{coset 1}) > P(\text{coset 2})</script> for <code class="MathJax_Preview">0 &lt; p &lt; \frac{1}{2}</code><script type="math/tex">% <![CDATA[
+0 < p < \frac{1}{2} %]]></script>.</p>
 
 <p>Therefore, both decoding formulations give the first coset as our decoding solution.</p>
 
@@ -708,7 +720,7 @@ Each stabilizer node is then connected to the qubits in its support (with the ri
       <p>If you know a bit of abstract algebra, you will notice that our map defines an isomorphism from the Pauli group (modulo the phase) to the group <code class="MathJax_Preview">(\mathbb{Z}_2^2, +)</code><script type="math/tex">(\mathbb{Z}_2^2, +)</script> <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:4">
-      <p>I have spent a few hours trying to prove this analytically without much success, but if you find a way, please reach out! <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>Thanks Alex Cliffe for suggesting this proof! <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
 </div>
