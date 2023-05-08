@@ -44,15 +44,15 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://arthurpesah.me/blog/2023-04-08-surface-code/" />
-<meta property="og:url" content="https://arthurpesah.me/blog/2023-04-08-surface-code/" />
+<link rel="canonical" href="https://arthurpesah.me/blog/2023-05-08-surface-code/" />
+<meta property="og:url" content="https://arthurpesah.me/blog/2023-05-08-surface-code/" />
 <meta property="og:site_name" content="Arthur Pesah" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2023-04-08T00:00:00-07:00" />
+<meta property="article:published_time" content="2023-05-08T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="An interactive introduction to the surface code" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-04-08T00:00:00-07:00","datePublished":"2023-04-08T00:00:00-07:00","description":"Research blog","headline":"An interactive introduction to the surface code","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-04-08-surface-code/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-04-08-surface-code/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-05-08T00:00:00-07:00","datePublished":"2023-05-08T00:00:00-07:00","description":"Research blog","headline":"An interactive introduction to the surface code","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-05-08-surface-code/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-05-08-surface-code/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -82,7 +82,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 
 
-<link rel="alternate" href="https://arthurpesah.me/blog/2023-04-08-surface-code/" hreflang="en">
+<link rel="alternate" href="https://arthurpesah.me/blog/2023-05-08-surface-code/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -218,7 +218,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
     <p class="post-date heading">
       
-      <time datetime="2023-04-08T00:00:00-07:00">08 Apr 2023</time>
+      <time datetime="2023-05-08T00:00:00-07:00">08 May 2023</time>
       
       
       
@@ -1014,7 +1014,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
         rotated: false
     };
 
-    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', id);
 
     let button = document.getElementById('button-surface-code-plaquette-two-loops-reset');
     button.onclick = () => gui.removeAllErrors();
@@ -1658,7 +1658,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: false
     };
 
-    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', 'planar-code-lattice');
+    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'planar-code-lattice');
 
     let button1 = document.getElementById('button-planar-code-random');
     button1.onclick = () => gui.addRandomErrors();
@@ -1760,7 +1760,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: true
     };
 
-    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', id);
 
     let button1 = document.getElementById('button-rectified-code-random');
     button1.onclick = () => gui.addRandomErrors();
@@ -1833,7 +1833,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: true
     };
 
-    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', 'rotated-surface-code');
+    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'rotated-surface-code');
 
     let button1 = document.getElementById('button-rotated-code-random');
     button1.onclick = () => gui.addRandomErrors();
