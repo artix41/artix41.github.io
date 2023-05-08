@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-05-08T13:34:53-07:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-05-08T14:03:13-07:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
 </subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">An interactive introduction to the surface code</title><link href="https://arthurpesah.me/blog/2023-05-08-surface-code/" rel="alternate" type="text/html" title="An interactive introduction to the surface code" /><published>2023-05-08T00:00:00-07:00</published><updated>2023-05-08T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/surface-code</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-05-08-surface-code/">&lt;script&gt;
     // Repair modulo bug with negative numbers
     Number.prototype.mod = function (n) {
@@ -548,8 +548,8 @@ To do this code the honor it deserves, I’ve decided to make use of the &lt;a h
     drawImage(gui, id, true);
 &lt;/script&gt; --&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-equivalent-loops-1.png&quot; style=&quot;display: block; float: left&quot; /&gt;
-&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-equivalent-loops-2.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-equivalent-loops-1.png&quot; style=&quot;display: block; float: left;&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-equivalent-loops-2.png&quot; style=&quot;display: block; float: right;&quot; /&gt;&lt;/p&gt;
 
 &lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
 
@@ -709,12 +709,14 @@ To do this code the honor it deserves, I’ve decided to make use of the &lt;a h
         &lt;button id=&quot;button-surface-code-plaquette-two-loops-reset&quot;&gt;Remove all plaquettes&lt;/button&gt;
     &lt;/div&gt;
 &lt;/div&gt;
+
+&lt;!-- Hidden text for positioning--&gt;
 &lt;div style=&quot;float: right&quot;&gt;
     &lt;div style=&quot;text-align: center; margin-bottom: 10px; visibility: hidden; font-size: 15px&quot;&gt;
         Click on faces to add plaquette stabilizers
     &lt;/div&gt;
-    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-two-loops.png&quot; /&gt;
 &lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-two-loops.png&quot; style=&quot;float: right&quot; /&gt;&lt;/p&gt;
 
 &lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
 
@@ -1082,7 +1084,7 @@ So the error must be a string that links those two excitations. However, the num
 &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-decoding-2.png&quot; style=&quot;display: block; float: right&quot; /&gt;
 &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-decoding-3.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
 
-&lt;!-- &lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt; --&gt;
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;Let’s suppose that the leftmost pattern was our actual error, but we chose the middle pattern instead as our correction operator. This is what the final pattern, corresponding to the error (red) plus the correction operator (yellow), would look like:&lt;/p&gt;
 
@@ -1341,7 +1343,7 @@ So the error must be a string that links those two excitations. However, the num
     &lt;/select&gt;
 &lt;/div&gt;
 
-&lt;div id=&quot;planar-code-lattice&quot; style=&quot;margin: auto; display: block; width: 450px; height: 450px&quot;&gt;
+&lt;div id=&quot;planar-code-lattice&quot; style=&quot;margin: auto; display: block; max-width: 450px; height: 450px&quot;&gt;
 &lt;/div&gt;
 
 &lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
