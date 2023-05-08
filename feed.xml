@@ -1,5 +1,1649 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-04-02T12:36:12-06:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
-</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">The stabilizer trilogy III — Parity-check matrices and decoding</title><link href="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/" rel="alternate" type="text/html" title="The stabilizer trilogy III — Parity-check matrices and decoding" /><published>2023-03-28T00:00:00-06:00</published><updated>2023-03-28T00:00:00-06:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-3</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/">&lt;p&gt;Welcome to the third and last post of the stabilizer trilogy! In &lt;a href=&quot;/blog/2023-01-31-stabilizer-formalism-1/&quot;&gt;Parts I&lt;/a&gt; and &lt;a href=&quot;/blog/2023-03-16-stabilizer-formalism-2/&quot;&gt;II&lt;/a&gt;, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-05-08T11:57:01-07:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">An interactive introduction to the surface code</title><link href="https://arthurpesah.me/blog/2023-04-08-surface-code/" rel="alternate" type="text/html" title="An interactive introduction to the surface code" /><published>2023-04-08T00:00:00-07:00</published><updated>2023-04-08T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/surface-code</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-04-08-surface-code/">&lt;script&gt;
+    // Repair modulo bug with negative numbers
+    Number.prototype.mod = function (n) {
+        &quot;use strict&quot;;
+        return ((this % n) + n) % n;
+    };
+
+    // Turn GUI into png
+    function drawImage(gui, id, download) {
+        gui.animate();
+
+        let dataURL = gui.renderer.domElement.toDataURL();
+        let img = new Image();
+        img.src = dataURL;
+
+        // Draw the Image object onto a new canvas
+
+        requestAnimationFrame(function() {
+            let newCanvas = document.createElement('canvas');
+            let oldCanvas = document.getElementById(id).children[0];
+
+            newCanvas.width = oldCanvas.offsetWidth;
+            newCanvas.height = oldCanvas.offsetHeight;
+
+            let ctx = newCanvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, newCanvas.width, newCanvas.height);
+
+            oldCanvas.remove();
+
+            let parent = document.getElementById(id);
+            parent.appendChild(newCanvas);
+
+            if (download) {
+                let savedDataURL = newCanvas.toDataURL();
+                let link = document.createElement('a');
+                link.download = id + '.png';
+                link.href = savedDataURL;
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    }
+
+    const keycode = {
+        'decode': -1, 'random': -1, 'remove': -1, 'opacity': -1,
+        'x-logical': -1, 'z-logical': -1, 'x-error': 0, 'z-error': -1
+    };
+&lt;/script&gt;
+
+&lt;p&gt;Last July, the quantum team at Google released a &lt;a href=&quot;https://arxiv.org/abs/2207.06431&quot;&gt;milestone paper&lt;/a&gt;, in which they show the first experimental demonstration of quantum error correction below threshold. What this means is that their experiment reached noise levels that are low enough such that by increasing the size of their code, they progressively reduced the number of errors in the encoded qubit. And how did they achieve such a milestone? You guessed it, by using the surface code to protect their qubits! The reasons they chose this code are plentiful: it can be layed down on a 2D lattice, it has a very high threshold compared to other codes, it doesn’t require too many qubits in its smallest instances, etc. And Google is far from the only company considering the surface code (or some of its variants) as part of their their fault-tolerant architecture!&lt;/p&gt;
+
+&lt;p&gt;Apart from its experimental relevance, the surface code is also one of the most beautiful ideas of quantum computing, and if you ask me, of all physics. Inspired by the condensed matter concepts of topological order and anyonic particle, it was discovered by Alexei Kitaev in 1997, in a &lt;a href=&quot;https://arxiv.org/abs/quant-ph/9707021&quot;&gt;paper&lt;/a&gt; in which he also introduces the idea of topological quantum computing. And indeed, the surface code has deep connections to many areas of maths and physics. For instance, in condensed matter theory, the surface code (more often called &lt;em&gt;toric code&lt;/em&gt; in this context&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;) is used as a prime example of topological phase of matter and is related to the more general family of spin liquids. While this post will be mainly concerned with the quantum error correction properties of the surface code, my friend Dominik Kufel wrote an excellent &lt;a href=&quot;https://dom-kufel.github.io/blog/2023-04-15-toric_code-intro/&quot;&gt;complementary post&lt;/a&gt; which describes the condensed matter perspective.&lt;/p&gt;
+
+&lt;p&gt;Finally, the surface code is the simplest example to illustrate the more general concept of topological quantum error-correction. While we will only consider surface codes defined on a 2D square lattice here, they can actually be generalized to the cellulation of any manifold in any dimension (including hyperbolic!). Concepts from algebraic topology (such as homology and cohomology groups, chain complexes, etc.) can then be used to understand and analyze those codes. While we will take a brief glance at topology here, I am planning to write a separate blog post fully dedicated to the maths behind topological quantum error-correction. The goal of this post is to gain a first intuitive understanding of the surface code.&lt;/p&gt;
+
+&lt;p&gt;You got it, I love the surface code, and I’m super excited to talk about it in this post!
+To do this code the honor it deserves, I’ve decided to make use of the &lt;a href=&quot;gui.quantumcodes.io&quot;&gt;interactive code visualizer&lt;/a&gt; I have been developing for some time with my collaborator Eric Huang. I’ve embedded it in this post&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;, and you will therefore be able to play with some of the lattices presented here (e.g. by inserting errors and stabilizers, visualizing decoding, etc.). I hope you’ll enjoy!&lt;/p&gt;
+
+&lt;h2 id=&quot;definition-of-the-surface-code&quot;&gt;Definition of the surface code&lt;/h2&gt;
+
+&lt;p&gt;The surface code can be defined on a square grid of size &lt;code class=&quot;MathJax_Preview&quot;&gt;L \times L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L \times L&lt;/script&gt;, where qubits sit on the edges, as shown here for &lt;code class=&quot;MathJax_Preview&quot;&gt;L=4&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L=4&lt;/script&gt;:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-lattice&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-lattice';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init();
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-lattice.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The code is easier to analyze at first when considering periodic boundary conditions. Therefore, in the picture above, we identify the left-most and right-most qubits, as well as the top-most and bottom-most qubits. The grid is therefore equivalent to a pac-man grid, or in topological terms, a &lt;strong&gt;torus&lt;/strong&gt;. A torus as you might imagine it can be obtained from the grid by wrapping it around top to bottom (gluing the top and bottom edges together), making a cylinder, then left to right (gluing the left and right edges together) to finish the torus:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/torus-grid.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The next step is then to describe the &lt;strong&gt;stabilizers&lt;/strong&gt; of the code. The surface code is indeed an example of stabilizer codes and can therefore be completely specified by its stabilizer group (if you need a reminder, don’t hesitate to read my &lt;a href=&quot;&quot;&gt;blog series&lt;/a&gt; on the stabilizer formalism). In our case, we have two types of stabilizer generators: the &lt;strong&gt;vertex stabilizers&lt;/strong&gt;, defined on every vertex of the lattice as a cross of four &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; operators, and the &lt;strong&gt;plaquette stabilizers&lt;/strong&gt;, defined on every face as a square of four &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; operators. Examples of vertex and plaquette stabilizers are shown below, where &lt;em&gt;red&lt;/em&gt; means &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;em&gt;blue&lt;/em&gt; mean &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt;.&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-stabilizers&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-stabilizers';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([1, 4], 'X');
+    gui.code.insertError([0, 5], 'X');
+    gui.code.insertError([1, 6], 'X');
+    gui.code.insertError([2, 5], 'X');
+
+    gui.code.insertError([3, 2], 'Z');
+    gui.code.insertError([4, 3], 'Z');
+    gui.code.insertError([4, 1], 'Z');
+    gui.code.insertError([5, 2], 'Z');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-stabilizers.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;To define a valid code, &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; stabilizers must commute. Since they are Pauli operators, it means that they must always intersect on an even number of qubits. You can check that this is the case here: vertex and plaquette operators always intersect on either zero or two qubits.&lt;/p&gt;
+
+&lt;p&gt;Since the stabilizer group is a group, it means that the product of stabilizers is also a stabilizer. Therefore, any product of plaquettes is also a stabilizer. Here is an example of product of three plaquettes:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-x-loops&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-x-loops'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([0, 3], 'X');
+    gui.code.insertError([0, 5], 'X');
+    gui.code.insertError([1, 6], 'X');
+    gui.code.insertError([2, 5], 'X');
+    gui.code.insertError([3, 4], 'X');
+    gui.code.insertError([4, 3], 'X');
+    gui.code.insertError([3, 2], 'X');
+    gui.code.insertError([1, 2], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-x-loops.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;You can notice that this forms a loop! The reason is that when multiplying the plaquette operators, there are always two &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; operators applied on each qubit of the bulk, which cancel each other. This observation is true in general: all the &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; stabilizers are loops in the lattice! To convince yourself of that fact, try inserting plaquette stabilizers in the following panel:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 10px; color: gray; font-size: 15px&quot;&gt;
+    Click on faces to add plaquette stabilizers
+&lt;/div&gt;
+
+&lt;div id=&quot;surface-code-insert-plaquettes&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-surface-code-plaquette-reset&quot;&gt;Remove all plaquettes&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    let id = 'surface-code-insert-plaquettes'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+
+    let button = document.getElementById('button-surface-code-plaquette-reset');
+    button.onclick = () =&gt; gui.removeAllErrors();
+
+    gui.onDocumentMouseDown = function(event) {
+        let canvasBound = gui.renderer.getContext().canvas.getBoundingClientRect();
+
+        gui.mouse.x = ( (event.clientX  - canvasBound.left) / gui.width ) * 2 - 1;
+        gui.mouse.y = - ( (event.clientY - canvasBound.top) / gui.height ) * 2 + 1;
+
+        gui.raycaster.setFromCamera(gui.mouse, gui.camera);
+
+        gui.intersects = gui.raycaster.intersectObjects(gui.code.stabilizers);
+        if (this.intersects.length == 0) return;
+
+        let selectedStabilizer = this.intersects[0].object;
+
+        if (selectedStabilizer.type == 'face' &amp;&amp; event.button == 0) {
+            let x = selectedStabilizer.location[0];
+            let y = selectedStabilizer.location[1];
+            let z = selectedStabilizer.location[2];
+
+            gui.code.insertError([(x+1).mod(8), y], 'X');
+            gui.code.insertError([(x-1).mod(8), y], 'X');
+            gui.code.insertError([x, (y+1).mod(8)], 'X');
+            gui.code.insertError([x, (y-1).mod(8)], 'X');
+        }
+    }
+
+    await gui.init()
+&lt;/script&gt;
+
+&lt;p&gt;What about &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; stabilizers? They also form loops… if we look at them the right way! Try to understand why by inserting vertex stabilizers in the following panel:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 10px; color: gray; font-size: 15px&quot;&gt;
+    Click on vertices to add vertex stabilizers
+&lt;/div&gt;
+
+&lt;div id=&quot;surface-code-insert-vertex&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-surface-code-vertex-reset&quot;&gt;Remove all vertex stabilizers&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    let id = 'surface-code-insert-vertex'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+
+    let button = document.getElementById('button-surface-code-vertex-reset');
+    button.onclick = () =&gt; gui.removeAllErrors();
+
+    gui.onDocumentMouseDown = function(event) {
+        let canvasBound = gui.renderer.getContext().canvas.getBoundingClientRect();
+
+        gui.mouse.x = ( (event.clientX  - canvasBound.left) / gui.width ) * 2 - 1;
+        gui.mouse.y = - ( (event.clientY - canvasBound.top) / gui.height ) * 2 + 1;
+
+        gui.raycaster.setFromCamera(gui.mouse, gui.camera);
+
+        gui.intersects = gui.raycaster.intersectObjects(gui.code.stabilizers);
+        if (this.intersects.length == 0) return;
+
+        let selectedStabilizer = this.intersects[0].object;
+
+        if (selectedStabilizer.type == 'vertex' &amp;&amp; event.button == 0) {
+            let x = selectedStabilizer.location[0];
+            let y = selectedStabilizer.location[1];
+            let z = selectedStabilizer.location[2];
+
+            gui.code.insertError([(x+1).mod(8), y], 'Z');
+            gui.code.insertError([(x-1).mod(8), y], 'Z');
+            gui.code.insertError([x, (y+1).mod(8)], 'Z');
+            gui.code.insertError([x, (y-1).mod(8)], 'Z');
+        }
+    }
+
+    await gui.init()
+&lt;/script&gt;
+
+&lt;p&gt;For instance, here is the product of three vertex operators:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-z-loops&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-z-loops'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([4, 5], 'Z');
+    gui.code.insertError([5, 4], 'Z');
+    gui.code.insertError([5, 2], 'Z');
+    gui.code.insertError([4, 1], 'Z');
+    gui.code.insertError([2, 1], 'Z');
+    gui.code.insertError([1, 2], 'Z');
+    gui.code.insertError([2, 3], 'Z');
+    gui.code.insertError([3, 4], 'Z');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-z-loops.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Can you see the loop? If no, this picture should make it clearer:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-z-loops-dual.png&quot; height=&quot;320&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The trick was to draw an edge orthogonal to every blue edge (dashed purple lines on the figure). Formally, this corresponds to representing the operator in the so-called &lt;strong&gt;dual lattice&lt;/strong&gt;, a lattice formed by rotating each edge by 90° (dashed grey lattice in the figure). In this lattice, vertex stabilizers have a square-like shape, similar to the plaquette stabilizers of the primal lattice. Therefore, all the properties we can derive for &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; stabilizers, errors and logicals can be directly translated to &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; operators by simply considering the dual lattice, where &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; operators behave exactly like &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; operators.&lt;/p&gt;
+
+&lt;p&gt;So we’ve seen that all the &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; stabilizers are loops in the lattice. But is the converse true, that is, do all the loops define stabilizers? Try to think about this question, we will come back to it later.&lt;/p&gt;
+
+&lt;h2 id=&quot;detecting-errors&quot;&gt;Detecting errors&lt;/h2&gt;
+
+&lt;p&gt;So what happens when errors start occurring on our code? Use the panel below to insert &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; errors in the code:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 10px; color: gray; font-size: 15px&quot;&gt;
+    Click on edges to add
+    &lt;select id=&quot;select-surface-code-error-type&quot;&gt;
+        &lt;option value=&quot;x&quot;&gt;X errors&lt;/option&gt;
+        &lt;option value=&quot;z&quot;&gt;Z errors&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;surface-code-insert-errors&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-surface-code-random&quot;&gt;Insert random errors&lt;/button&gt;
+    &lt;button id=&quot;button-surface-code-reset&quot;&gt;Remove all errors&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        errorModel: 'Pure X',
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'surface-code-insert-errors');
+
+    await gui.init()
+    gui.addRandomErrors();
+
+    let button1 = document.getElementById('button-surface-code-random');
+    button1.onclick = () =&gt; gui.addRandomErrors();
+
+    let button2 = document.getElementById('button-surface-code-reset');
+    button2.onclick = () =&gt; gui.removeAllErrors();
+
+    let selectErrorType = document.getElementById('select-surface-code-error-type');
+    selectErrorType.onchange = function() {
+        if (selectErrorType.value == 'x') {
+            gui.keycode['x-error'] = 0;
+            gui.keycode['z-error'] = -1;
+            gui.params.errorModel = 'Pure X';
+        }
+        else {
+            gui.keycode['x-error'] = -1;
+            gui.keycode['z-error'] = 0;
+            gui.params.errorModel = 'Pure Z';
+        }
+    }
+&lt;/script&gt;
+
+&lt;p&gt;Vertices lighted up in yellow are the ones which anticommute with the error and are equal to &lt;code class=&quot;MathJax_Preview&quot;&gt;-1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;-1&lt;/script&gt;. They are part of the &lt;strong&gt;syndrome&lt;/strong&gt; (set of measured stabilizer values) and are often called &lt;strong&gt;excitations&lt;/strong&gt; or &lt;strong&gt;defects&lt;/strong&gt;. Can you spot a pattern in the way excitations relates to errors? Let me help you. Start by removing all the errors. Then, draw a path of errors. Can you see what happens?&lt;/p&gt;
+
+&lt;p&gt;Excitations only appear at the boundary of error paths! Here is an example of pattern that should make that clear:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-z-paths&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-z-paths';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 3], 'Z');
+    gui.code.insertError([4, 3], 'Z');
+    gui.code.insertError([5, 4], 'Z');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-x-paths.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;We can see that excitations are always created in pairs, and move through the lattice when increasing the size of the error string. What about &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; errors? The same phenomenon occurs if errors paths are created by adding errors on parallel edges:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot; class=&quot;figure&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-z-paths.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As expected, when seen in the dual lattice (i.e. when rotating each edge by 90°), those &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; paths correspond to regular strings of errors.&lt;/p&gt;
+
+&lt;p&gt;The fact that excitations live at the boundary of error paths also means that when a path forms a loop, the excitations disappear. In other words, loops always commute with all the stabilizers. And what is an operator that commutes with all the stabilizers? A &lt;a href=&quot;/blog/2023-03-16-stabilizer-formalism-2/&quot;&gt;logical operator&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h2 id=&quot;logical-operators-loops-and-topology&quot;&gt;Logical operators, loops and topology&lt;/h2&gt;
+
+&lt;p&gt;A logical operator can either be trivial, in which case it is a stabilizer, or non-trivial, in which case it performs an &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;Y&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; or &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; logical operation on any of the &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; qubits encoded in the code. For the surface code, the distinction between all those different operators depends on the types of loop they form. And this where the connection with topology really begins. Let’s first study the structure of loops on a general smooth manifold, before applying it to the surface code.&lt;/p&gt;
+
+&lt;h3 id=&quot;loops-on-a-smooth-manifold&quot;&gt;Loops on a smooth manifold&lt;/h3&gt;
+
+&lt;p&gt;Let’s consider a smooth manifold &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{M}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{M}&lt;/script&gt; (e.g. a torus). We say that two loops on &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{M}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{M}&lt;/script&gt; are &lt;strong&gt;equivalent&lt;/strong&gt; if there exists a smooth deformation of one loop to the other, meaning that we can smoothly move the first loop to the other loop without cutting it&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;. For instance, the following four loops (green) on the torus are equivalent:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/torus-trivial-loops.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Moreover, we say that a loop is &lt;strong&gt;contractible&lt;/strong&gt;, or &lt;strong&gt;trivial&lt;/strong&gt;, if it is equivalent to a point, that is, we can smoothly reduce it until it becomes a single point. All the loops in the figure above are examples of contractible loops on the torus. So what do non-contractible loops look like? Here are examples of non-contractible loops:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/torus-non-trivial-loops.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;One loop (blue) goes around the middle hole, while two loops (red) goes around the hole formed by the inside of the donut. Note that those types of loop (red and blue) are not equivalent to each other, and cannot be deformed to obtain any of the green loops of the first figure neither.&lt;/p&gt;
+
+&lt;p&gt;As always when we define a notion of equivalence, it can be interesting to look at all the different equivalence classes that they lead to. As a reminder, an &lt;strong&gt;equivalence class&lt;/strong&gt;, or &lt;strong&gt;coset&lt;/strong&gt;, is a set containing all the objects equivalent to a reference object. So let’s enumerate all the equivalence classes of loops on the torus. First, we have the contractible loops. They are all equivalent, since each of them can be reduced to a point, and two points can always be smoothly moved to each other. So that’s our first equivalent class, that we can call the &lt;strong&gt;trivial class&lt;/strong&gt;. Then, we have the red and blue loops of the figure above: one that goes around the middle hole and the other that goes around the hole formed by the inside of the donut. That’s two other equivalent classes. Note that a pair of loops is also technically a loop itself, so taking the red and blue loops together forms its own loop, which is not equivalent to either one of them separately. This “double loop” can also be understood as (and is equivalent to) a single loop that goes around both holes, like the orange line in the picture below:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/torus-double-cycle.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;So that’s a fourth equivalence class. Do we have more?&lt;/p&gt;
+
+&lt;p&gt;Yes! Loops going around a hole twice are not equivalent to loops going around the hole once. Therefore, for each &lt;code class=&quot;MathJax_Preview&quot;&gt;k \in \mathbb{N}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k \in \mathbb{N}&lt;/script&gt;, we have a new class of loops going around one of the holes &lt;code class=&quot;MathJax_Preview&quot;&gt;k&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; times. Since in general loops are given a direction, we can also consider loops going around each hole in the opposite direction and take &lt;code class=&quot;MathJax_Preview&quot;&gt;k \in \mathbb{Z}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k \in \mathbb{Z}&lt;/script&gt;. Overall, there are infinitely-many equivalence classes which can be labeled by two integers &lt;code class=&quot;MathJax_Preview&quot;&gt;(k_1,k_2) \in \mathbb{Z}^2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(k_1,k_2) \in \mathbb{Z}^2&lt;/script&gt;, where each integer indicates how many times the loops go around the corresponding hole. In this notation, the trivial class corresponds to &lt;code class=&quot;MathJax_Preview&quot;&gt;(0,0)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(0,0)&lt;/script&gt;, the blue and red non-trivial loops correspond to &lt;code class=&quot;MathJax_Preview&quot;&gt;(0,1)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(0,1)&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;(1,0)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(1,0)&lt;/script&gt;, and the orange loop corresponds to &lt;code class=&quot;MathJax_Preview&quot;&gt;(1,1)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(1,1)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 1&lt;/strong&gt;: What is the equivalence class of the following (purple) loop?&lt;/p&gt;
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/torus-exercise.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&quot;loops-on-the-surface-code&quot;&gt;Loops on the surface code&lt;/h3&gt;
+
+&lt;p&gt;How can we apply what we have learned to the surface code? Compared to general smooth manifolds, the surface code has a more discrete structure, and the notion of &lt;em&gt;smoothly deforming a loop&lt;/em&gt; does not directly apply here. We need a slightly different notion of equivalence. We say that two loops &lt;code class=&quot;MathJax_Preview&quot;&gt;\ell_1,\ell_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\ell_1,\ell_2&lt;/script&gt; on the surface code are equivalent if there exists a stabilizer &lt;code class=&quot;MathJax_Preview&quot;&gt;S \in \mathcal{S}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;S \in \mathcal{S}&lt;/script&gt; such that &lt;code class=&quot;MathJax_Preview&quot;&gt;\ell_1 = S \ell_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\ell_1 = S \ell_2&lt;/script&gt;. For instance, if we consider &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; errors and &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; stabilizers, two loops of errors are equivalent if we can apply a series of plaquettes to go from one to the other. As an exercise, show that the following two loops are equivalent, by finding some plaquettes that move one loop to the other:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-equivalent-loops-1&quot; style=&quot;display: block;float: left; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+&lt;div id=&quot;surface-code-equivalent-loops-2&quot; style=&quot;display: block;float: right; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-equivalent-loops-1';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 7], 'X');
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([3, 2], 'X');
+    gui.code.insertError([4, 1], 'X');
+    gui.code.insertError([4, 7], 'X');
+    gui.code.insertError([3, 6], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-equivalent-loops-2'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([1, 4], 'X');
+    gui.code.insertError([0, 3], 'X');
+    gui.code.insertError([0, 1], 'X');
+    gui.code.insertError([1, 0], 'X');
+    gui.code.insertError([3, 0], 'X');
+    gui.code.insertError([4, 1], 'X');
+    gui.code.insertError([3, 2], 'X');
+    gui.code.insertError([2, 3], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-equivalent-loops-1.png&quot; style=&quot;display: block; float: left&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-equivalent-loops-2.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that this notion of equivalence is exactly the same as the notion of logical equivalence defined in &lt;a href=&quot;/blog/2023-03-16-stabilizer-formalism-2/&quot;&gt;Part II of the stabilizer formalism series&lt;/a&gt;: applying a stabilizer to a logical gives another representation of the same logical. So operationally, two loops are equivalent if they correspond to the same logical operator. Therefore, by looking at all the equivalence classes of loops, we will be able to classify the different logical operators of the code.&lt;/p&gt;
+
+&lt;p&gt;Now, we say that a loop is &lt;strong&gt;contractible&lt;/strong&gt;, or &lt;strong&gt;trivial&lt;/strong&gt;, if it is equivalent to the empty loop (no error). In other words, a loop is trivial if it is a stabilizer. In the case of &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; errors, a trivial loop corresponds to the boundary of a set of faces (the plaquettes that form the stabilizer).&lt;/p&gt;
+
+&lt;p&gt;We are now ready to answer our main question. What are the non-trivial loops of the surface code, or in other words, the non-trivial logical operators? For &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; errors, they look like this:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-x-logical-1&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-x-logical-1';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 7], 'X');
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([2, 5], 'X');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-x-logical-2&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-x-logical-2';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([7, 2], 'X');
+    gui.code.insertError([1, 2], 'X');
+    gui.code.insertError([5, 2], 'X');
+    gui.code.insertError([3, 2], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-x-logical-1.png&quot; style=&quot;display: block; float: left&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-x-logical-2.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;And since applying plaquette stabilizers does not change the logical operator, the following strings give other valid representatives of the same logicals:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-x-logical-1-other&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-x-logical-1-other';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([4, 7], 'X');
+    gui.code.insertError([4, 5], 'X');
+    gui.code.insertError([3, 4], 'X');
+    gui.code.insertError([1, 4], 'X');
+    gui.code.insertError([0, 3], 'X');
+    gui.code.insertError([1, 2], 'X');
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([3, 0], 'X');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt;
+
+&lt;div id=&quot;surface-code-x-logical-2-other&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-x-logical-2-other';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([7, 2], 'X');
+    gui.code.insertError([1, 2], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([3, 4], 'X');
+    gui.code.insertError([4, 3], 'X');
+    gui.code.insertError([4, 1], 'X');
+    gui.code.insertError([5, 0], 'X');
+    gui.code.insertError([6, 1], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-x-logical-1-other.png&quot; style=&quot;display: block; float: left&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-x-logical-2-other.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;As in the smooth case, what matters is that the non-trivial loops go around the torus. Indeed, you will not be able to write those operators as products of plaquette stabilizers. Operationally, each of those two loops (the “horizontal” and the “vertical” ones) correspond to applying a logical &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; operator to the code, and since they are not equivalent, they are applying it to different logical qubits. Therefore, we have at least two logical qubits, one for the horizontal loop and one for the vertical loop. Do we have more?&lt;/p&gt;
+
+&lt;p&gt;This time, we only have four different cosets of loops. Indeed, contrary to the smooth case, looping around the lattice twice always gives a trivial loop. This can be seen in two ways. The first way consists in observing that a loop going around the lattice twice is always equivalent to two disjoint loops (this was also true in the smooth case).&lt;/p&gt;
+
+&lt;p&gt;The next step is then to show that such a two-loop pattern is always a stabilizer. For instance, try to find the plaquette stabilizers that give rise to the two loops on the right picture:&lt;/p&gt;
+
+&lt;div style=&quot;float: left&quot;&gt;
+    &lt;div style=&quot;text-align: center; margin-bottom: 10px; color: gray; font-size: 15px&quot;&gt;
+        Click on faces to add plaquette stabilizers
+    &lt;/div&gt;
+
+    &lt;div id=&quot;surface-code-insert-plaquettes-two-loops&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+        &lt;button id=&quot;button-surface-code-plaquette-two-loops-reset&quot;&gt;Remove all plaquettes&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div style=&quot;float: right&quot;&gt;
+    &lt;div style=&quot;text-align: center; margin-bottom: 10px; visibility: hidden; font-size: 15px&quot;&gt;
+        Click on faces to add plaquette stabilizers
+    &lt;/div&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-two-loops.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    let id = 'surface-code-insert-plaquettes-two-loops'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+
+    let button = document.getElementById('button-surface-code-plaquette-two-loops-reset');
+    button.onclick = () =&gt; gui.removeAllErrors();
+
+    gui.onDocumentMouseDown = function(event) {
+        let canvasBound = gui.renderer.getContext().canvas.getBoundingClientRect();
+
+        gui.mouse.x = ( (event.clientX  - canvasBound.left) / gui.width ) * 2 - 1;
+        gui.mouse.y = - ( (event.clientY - canvasBound.top) / gui.height ) * 2 + 1;
+
+        gui.raycaster.setFromCamera(gui.mouse, gui.camera);
+
+        gui.intersects = gui.raycaster.intersectObjects(gui.code.stabilizers);
+        if (this.intersects.length == 0) return;
+
+        let selectedStabilizer = this.intersects[0].object;
+
+        if (selectedStabilizer.type == 'face' &amp;&amp; event.button == 0) {
+            let x = selectedStabilizer.location[0];
+            let y = selectedStabilizer.location[1];
+            let z = selectedStabilizer.location[2];
+
+            gui.code.insertError([(x+1).mod(8), y], 'X');
+            gui.code.insertError([(x-1).mod(8), y], 'X');
+            gui.code.insertError([x, (y+1).mod(8)], 'X');
+            gui.code.insertError([x, (y-1).mod(8)], 'X');
+        }
+    }
+
+    await gui.init()
+&lt;/script&gt;
+
+&lt;!-- &lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-two-loops';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 7], 'X');
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([2, 5], 'X');
+    gui.code.insertError([4, 7], 'X');
+    gui.code.insertError([4, 1], 'X');
+    gui.code.insertError([4, 3], 'X');
+    gui.code.insertError([4, 5], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-two-loops-solution&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-two-loops-solution';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 7], 'X');
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([2, 5], 'X');
+    gui.code.insertError([4, 7], 'X');
+    gui.code.insertError([4, 1], 'X');
+    gui.code.insertError([4, 3], 'X');
+    gui.code.insertError([4, 5], 'X');
+
+    gui.code.stabilizerMap[[3, 1]].material.color.setHex('0xf9690e');
+    gui.code.stabilizerMap[[3, 1]].material.opacity = 1;
+    gui.code.stabilizerMap[[3, 1]].visible = true;
+
+    gui.code.stabilizerMap[[3, 3]].material.color.setHex('0xf9690e');
+    gui.code.stabilizerMap[[3, 3]].material.opacity = 1;
+    gui.code.stabilizerMap[[3, 3]].visible = true;
+
+    gui.code.stabilizerMap[[3, 5]].material.color.setHex('0xf9690e');
+    gui.code.stabilizerMap[[3, 5]].material.opacity = 1;
+    gui.code.stabilizerMap[[3, 5]].visible = true;
+
+    gui.code.stabilizerMap[[3, 7]].material.color.setHex('0xf9690e');
+    gui.code.stabilizerMap[[3, 7]].material.opacity = 1;
+    gui.code.stabilizerMap[[3, 7]].visible = true;
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p&gt;The second way to see this is to remember that a loop applies a logical operator &lt;code class=&quot;MathJax_Preview&quot;&gt;P&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt;, and applying this logical operator twice gives &lt;code class=&quot;MathJax_Preview&quot;&gt;P^2=I&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P^2=I&lt;/script&gt;. It means that any double loop lives in the identity coset, and is therefore a stabilizer.&lt;/p&gt;
+
+&lt;p&gt;Thus, our equivalence classes for &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; errors can be labeled by two bits &lt;code class=&quot;MathJax_Preview&quot;&gt;(k_1,k_2) \in \mathbb{Z}_2 \times \mathbb{Z}_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;(k_1,k_2) \in \mathbb{Z}_2 \times \mathbb{Z}_2&lt;/script&gt;. The corresponding logical operators are &lt;code class=&quot;MathJax_Preview&quot;&gt;I&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;I&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;X_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;X_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_2&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;X_1 X_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1 X_2&lt;/script&gt;. The fact that our sets are &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathbb{Z}_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbb{Z}_2&lt;/script&gt; instead of &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathbb{Z}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbb{Z}&lt;/script&gt; can also be interpreted as a consequence of the fact that we have qubits. For qudits, the generalization of Pauli operators obey &lt;code class=&quot;MathJax_Preview&quot;&gt;P^d=I&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P^d=I&lt;/script&gt;, and &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathbb{Z}_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbb{Z}_2&lt;/script&gt; is replaced by &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathbb{Z}_d&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbb{Z}_d&lt;/script&gt;. For error-correcting codes on continuous-variable systems (roughly, qudits with &lt;code class=&quot;MathJax_Preview&quot;&gt;d=\infty&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d=\infty&lt;/script&gt;), we recover &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathbb{Z}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbb{Z}&lt;/script&gt; as our space of equivalence classes&lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s summarize what we have learned. Loops of the surface code define logical operators. There are four non-equivalent types of loops: the trivial ones (stabilizers), the horizontal ones (&lt;code class=&quot;MathJax_Preview&quot;&gt;X_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1&lt;/script&gt; operator), the vertical ones (&lt;code class=&quot;MathJax_Preview&quot;&gt;X_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_2&lt;/script&gt; operator), and those two at the same time (&lt;code class=&quot;MathJax_Preview&quot;&gt;X_1 X_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1 X_2&lt;/script&gt; operator). Therefore, the surface code encodes &lt;code class=&quot;MathJax_Preview&quot;&gt;k=2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=2&lt;/script&gt; logical qubits.&lt;/p&gt;
+
+&lt;p&gt;Note that in general, the surface code can be defined on any smooth manifold &lt;code class=&quot;MathJax_Preview&quot;&gt;\mathcal{M}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathcal{M}&lt;/script&gt; by discretizing it. The number of logical qubits of the code is then directly connected to the topological properties of the manifold, and in particular, to the number of holes. For instance, for the torus, the fact that &lt;code class=&quot;MathJax_Preview&quot;&gt;k=2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=2&lt;/script&gt; is a consequence of the presence of two holes.&lt;/p&gt;
+
+&lt;p&gt;So far, we have mainly discussed loops of &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; errors, but what about &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; errors? As expected, the &lt;code class=&quot;MathJax_Preview&quot;&gt;Z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z_1&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z_2&lt;/script&gt; logicals correspond to loops going around the torus when considered in the dual lattice:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-z-logical-1&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-z-logical-1';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([3, 0], 'Z');
+    gui.code.insertError([3, 2], 'Z');
+    gui.code.insertError([3, 4], 'Z');
+    gui.code.insertError([3, 6], 'Z');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt;
+
+&lt;div id=&quot;surface-code-z-logical-2&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-z-logical-2';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+
+    gui.code.insertError([0, 3], 'Z');
+    gui.code.insertError([2, 3], 'Z');
+    gui.code.insertError([4, 3], 'Z');
+    gui.code.insertError([6, 3], 'Z');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-z-logical-1.png&quot; style=&quot;display: block; float: left&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-z-logical-2.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;On the left is the &lt;code class=&quot;MathJax_Preview&quot;&gt;Z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z_1&lt;/script&gt; logical (which anticommute with &lt;code class=&quot;MathJax_Preview&quot;&gt;X_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1&lt;/script&gt;) and on the right is the &lt;code class=&quot;MathJax_Preview&quot;&gt;Z_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z_2&lt;/script&gt; logical (which anticommute with &lt;code class=&quot;MathJax_Preview&quot;&gt;X_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_2&lt;/script&gt;). Those anticommutation relation between &lt;code class=&quot;MathJax_Preview&quot;&gt;X_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z_1&lt;/script&gt; can be seen in this picture:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-anticommutation&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-anticommutation';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 7], 'X');
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([2, 5], 'X');
+
+    gui.code.insertError([0, 3], 'Z');
+    gui.code.insertError([2, 3], 'Z');
+    gui.code.insertError([4, 3], 'Z');
+    gui.code.insertError([6, 3], 'Z');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-anticommutation.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Indeed, we can see that the &lt;code class=&quot;MathJax_Preview&quot;&gt;X_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X_1&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z_1&lt;/script&gt; logicals intersect on exactly one qubit (green), meaning that they anticommute. This property is independent on the specific logical representatives you choose: a “horizontal” &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; loop will always intersect with a “vertical” &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; loop on a single qubit.&lt;/p&gt;
+
+&lt;p&gt;You now have all you need to determine the parameters of the surface code!&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise 2&lt;/strong&gt;: What are the &lt;code class=&quot;MathJax_Preview&quot;&gt;[[n,k,d]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[n,k,d]]&lt;/script&gt; parameters of a surface code with lattice size &lt;code class=&quot;MathJax_Preview&quot;&gt;L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;? &lt;a href=&quot;#solution-of-the-exercise&quot;&gt;(solution)&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;decoding-the-surface-code&quot;&gt;Decoding the surface code&lt;/h2&gt;
+
+&lt;p&gt;Let’s imagine that you observe the following syndrome, and want to find a good correction operator.&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-syndrome&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-syndrome';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.toggleStabilizer(gui.code.stabilizerMap[[4, 4]], true);
+    gui.code.toggleStabilizer(gui.code.stabilizerMap[[2, 2]], true);
+
+    drawImage(gui, id, false);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-syndrome.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;We know that excitations always appear in pairs, and correspond to the boundary of strings of errors.
+So the error must be a string that links those two excitations. However, the number of strings that could have given this syndrome is very large! Here are three examples of errors leading to the syndrome shown above:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-decoding-1&quot; style=&quot;display: block; float: left; width: 250px; height: 250px&quot;&gt;
+&lt;/div&gt;
+&lt;div id=&quot;surface-code-decoding-3&quot; style=&quot;display: block; float: right; width: 250px; height: 250px&quot;&gt;
+&lt;/div&gt;
+&lt;div id=&quot;surface-code-decoding-2&quot; style=&quot;display: block; float: right; width: 250px; height: 250px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js';
+
+    let id = 'surface-code-decoding-1';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([3, 4], 'X');
+    gui.code.insertError([2, 3], 'X');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js';
+
+    let id = 'surface-code-decoding-2';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([4, 3], 'X');
+    gui.code.insertError([3, 2], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js';
+
+    let id = 'surface-code-decoding-3';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([5, 4], 'X');
+    gui.code.insertError([6, 3], 'X');
+    gui.code.insertError([7, 2], 'X');
+    gui.code.insertError([0, 1], 'X');
+    gui.code.insertError([1, 0], 'X');
+    gui.code.insertError([2, 1], 'X');
+
+    // drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-decoding-1.png&quot; style=&quot;display: block; float: left&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-decoding-2.png&quot; style=&quot;display: block; float: right&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/surface-code/surface-code-decoding-3.png&quot; style=&quot;display: block; float: right&quot; /&gt;&lt;/p&gt;
+
+&lt;!-- &lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt; --&gt;
+
+&lt;p&gt;Let’s suppose that the leftmost pattern was our actual error, but we chose the middle pattern instead as our correction operator. This is what the final pattern, corresponding to the error (red) plus the correction operator (yellow), would look like:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-correction-1&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-correction-1';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([3, 4], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([4, 3], 'X');
+    gui.code.insertError([3, 2], 'X');
+
+    gui.code.qubitMap[[4, 3]].material.color.setHex('0xffdf00');
+    gui.code.qubitMap[[3, 2]].material.color.setHex('0xffdf00');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-correction-1.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;And as you can see, this is a stabilizer! So applying this correction operator puts us back in the original state and the correction is a success. On the other hand, here is what would happen if we had applied the rightmost correction instead:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-correction-2&quot; style=&quot;display: block; margin: auto; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-correction-2'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([3, 4], 'X');
+    gui.code.insertError([2, 3], 'X');
+
+    gui.code.insertError([5, 4], 'X');
+    gui.code.insertError([6, 3], 'X');
+    gui.code.insertError([7, 2], 'X');
+    gui.code.insertError([0, 1], 'X');
+    gui.code.insertError([1, 0], 'X');
+    gui.code.insertError([2, 1], 'X');
+
+    gui.code.qubitMap[[5, 4]].material.color.setHex('0xffdf00');
+    gui.code.qubitMap[[6, 3]].material.color.setHex('0xffdf00');
+    gui.code.qubitMap[[7, 2]].material.color.setHex('0xffdf00');
+    gui.code.qubitMap[[0, 1]].material.color.setHex('0xffdf00');
+    gui.code.qubitMap[[1, 0]].material.color.setHex('0xffdf00');
+    gui.code.qubitMap[[2, 1]].material.color.setHex('0xffdf00');
+
+    drawImage(gui, id, false);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-correction-2.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As you can see, this is a logical operator! So this is an example of correction failure, where we have changed the logical state of our code when applying the correction.&lt;/p&gt;
+
+&lt;p&gt;What lessons can we draw from this example? The goal of the surface code decoding problem is to match the excitations such that the final operator is a stabilizer. Let’s try to formalize this a little bit. I described the general decoding problem for stabilizer codes in a &lt;a href=&quot;/blog/2023-03-28-stabilizer-formalism-3/&quot;&gt;previous post&lt;/a&gt;, but a short reminder is probably warranted.&lt;/p&gt;
+
+&lt;p&gt;Similarly to how logical operators can be partitioned into cosets, we can also enumerate equivalent classes for errors fitting a given syndrome. For instance, the leftmost and middle patterns in our example above are part of the same equivalent class, as they can be related by a plaquette stabilizer. On the other hand, the rightmost plaquette belongs to a different class. The goal of decoding is to find a correction operator that belongs to the same coset as the actual error. Indeed, the product &lt;code class=&quot;MathJax_Preview&quot;&gt;CE&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;CE&lt;/script&gt; of the correction operator with the error is equal to a stabilizer if and only if there is a stabilizer &lt;code class=&quot;MathJax_Preview&quot;&gt;S&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; such that &lt;code class=&quot;MathJax_Preview&quot;&gt;C=ES&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;C=ES&lt;/script&gt;, that is, if &lt;code class=&quot;MathJax_Preview&quot;&gt;C&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;E&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt; belong to the same class. To solve this problem with the information we have, that is, only the syndrome and the error probabilities, the optimal decoding problem, also called &lt;strong&gt;maximum-likelihood decoding&lt;/strong&gt;, can be formulated as finding the coset &lt;code class=&quot;MathJax_Preview&quot;&gt;\bm{\bar{C}}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\bm{\bar{C}}&lt;/script&gt; with the highest probability:&lt;/p&gt;
+
+&lt;pre class=&quot;MathJax_Preview&quot;&gt;&lt;code&gt;\begin{aligned}
+    \max_{\bm{\bar{C}}} P(\bm{\bar{C}})
+\end{aligned}&lt;/code&gt;&lt;/pre&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+    \max_{\bm{\bar{C}}} P(\bm{\bar{C}})
+\end{aligned}&lt;/script&gt;
+
+&lt;p&gt;where &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{\bar{C}})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{\bar{C}})&lt;/script&gt; can be calculated as a sum over all the operators in the coset: &lt;code class=&quot;MathJax_Preview&quot;&gt;P(\bm{\bar{C}}) = \sum_{\bm{C} \in \bm{\bar{C}}} P(\bm{C})&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(\bm{\bar{C}}) = \sum_{\bm{C} \in \bm{\bar{C}}} P(\bm{C})&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Solving this problem exactly is computationally very hard, as it requires calculating a sum over an exponential number of terms (in the size of the lattice). But for the surface code, it can be approximated very well using &lt;a href=&quot;https://arxiv.org/abs/2101.04125&quot;&gt;tensor network decoders&lt;/a&gt;, which have a complexity of &lt;code class=&quot;MathJax_Preview&quot;&gt;O(n \chi^3)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n \chi^3)&lt;/script&gt; (up to some logarithmic factor), with &lt;code class=&quot;MathJax_Preview&quot;&gt;n&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; the number of qubits and &lt;code class=&quot;MathJax_Preview&quot;&gt;\chi&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\chi&lt;/script&gt; a parameter quantifying the degree of approximation of the decoder (corresponding to the bound dimension of the tensor network). The main downside of this decoder is that it generalizes poorly to the case of imperfect syndrome measurements. In this case, measurements need to be repeated in time, leading to a 3D decoding problem that tensor networks cannot solve efficiently at the moment.&lt;/p&gt;
+
+&lt;p&gt;As discussed in my &lt;a href=&quot;/blog/2023-03-28-stabilizer-formalism-3/&quot;&gt;stabilizer decoding post&lt;/a&gt;, the maximum-likelihood decoding problem can also be approximated by solving for the error with the highest probability, instead of the whole coset. Assuming i.i.d. noise, finding the error with the highest probability is equivalent to finding the smallest error that fits the syndrome. In the case of the surface code, this corresponds to matching the excitations with chains of minimum weight.&lt;/p&gt;
+
+&lt;p&gt;As it happens, this is completely equivalent to solving a famous graph problem, known as &lt;a href=&quot;https://en.wikipedia.org/wiki/Maximum_weight_matching&quot;&gt;&lt;strong&gt;minimum-weight perfect matching&lt;/strong&gt;&lt;/a&gt;! This problem can be expressed as matching all the vertices of a weighted graph (with an even number of vertices), such that the total weight is maximized. In our case, the graph is constructed as a complete graph with a vertex for each excitation. The weight of each edge between two vertices is then given by the Manhattan distance between the two corresponding excitations. For instance, let’s consider the following decoding problem:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-matching&quot; style=&quot;display: block; margin: auto; width: 400px; height: 400px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-matching';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 5,
+        Ly: 5,
+        Lz: 5,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.toggleStabilizer(gui.code.stabilizerMap[[2, 0]], true);
+    gui.code.toggleStabilizer(gui.code.stabilizerMap[[2, 4]], true);
+    gui.code.toggleStabilizer(gui.code.stabilizerMap[[6, 4]], true);
+    gui.code.toggleStabilizer(gui.code.stabilizerMap[[8, 8]], true);
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-matching.png&quot; height=&quot;350&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The associated graph is then the following:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/matching-graph.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;By enumerating all the possible matchings, you can quickly see that the one of minimum weight links vertices 1 and 2, and 3 and 4, with a total weight of 5:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/matching-graph-solution.png&quot; height=&quot;200&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;From there, we can deduce our decoding solution:&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;surface-code-decoding-solution&quot; style=&quot;display: block; margin: auto; width: 400px; height: 400px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    let id = 'surface-code-decoding-solution';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 5,
+        Ly: 5,
+        Lz: 5,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([2, 1], 'X');
+    gui.code.insertError([2, 3], 'X');
+    gui.code.insertError([7, 4], 'X');
+    gui.code.insertError([8, 5], 'X');
+    gui.code.insertError([8, 7], 'X');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-decoding-solution.png&quot; height=&quot;350&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;It happens that minimum-weight perfect-matching can be solved in polynomial time using the &lt;a href=&quot;https://en.wikipedia.org/wiki/Blossom_algorithm&quot;&gt;Blossom algorithm&lt;/a&gt;, which has a worst-case complexity of &lt;code class=&quot;MathJax_Preview&quot;&gt;O(n^3)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^3)&lt;/script&gt;. While this complexity might seem quite high, a &lt;a href=&quot;https://arxiv.org/abs/2303.15933&quot;&gt;recent modification&lt;/a&gt; of the Blossom algorithm, proposed by Oscar Higgott and Craig Gidney, seems to have an average complexity of &lt;code class=&quot;MathJax_Preview&quot;&gt;O(n)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;. It also generalizes very well to the imperfect syndrome case, making it one of the best decoders out there in terms of trade-off between speed and performance (the performance will be reviewed when talking about thresholds in the last section of the post).&lt;/p&gt;
+
+&lt;p&gt;You can play with the matching decoder in the following visualization:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 10px; color: gray; font-size: 15px&quot;&gt;
+    Click on edges to add
+    &lt;select id=&quot;select-surface-code-decoding-error-type&quot;&gt;
+        &lt;option value=&quot;x&quot;&gt;X errors&lt;/option&gt;
+        &lt;option value=&quot;z&quot;&gt;Z errors&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;surface-code-decoding-insert-errors&quot; style=&quot;margin: auto; display: block; width: 350px; height: 350px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-surface-code-decoding-decode&quot;&gt;Decode&lt;/button&gt;
+    &lt;button id=&quot;button-surface-code-decoding-reset&quot;&gt;Remove all errors&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    let params = {
+        dimension: 2,
+        codeName: 'Toric 2D',
+        Lx: 4,
+        Ly: 4,
+        Lz: 4,
+        decoder: 'Matching',
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'surface-code-decoding-insert-errors');
+
+    await gui.init();
+
+    let button1 = document.getElementById('button-surface-code-decoding-decode');
+    button1.onclick = () =&gt; gui.decode();
+
+    let button2 = document.getElementById('button-surface-code-decoding-reset');
+    button2.onclick = () =&gt; gui.removeAllErrors();
+
+    let selectErrorType = document.getElementById('select-surface-code-decoding-error-type');
+    selectErrorType.onchange = function() {
+        if (selectErrorType.value == 'x') {
+            gui.keycode['x-error'] = 0;
+            gui.keycode['z-error'] = -1;
+            gui.params.errorModel = 'Pure X';
+        }
+        else {
+            gui.keycode['x-error'] = -1;
+            gui.keycode['z-error'] = 0;
+            gui.params.errorModel = 'Pure Z';
+        }
+    }
+&lt;/script&gt;
+
+&lt;p&gt;There are many other surface code decoders out there with their own pros and cons, such as &lt;a href=&quot;https://arxiv.org/abs/1709.06218&quot;&gt;union-find&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/1811.12456&quot;&gt;neural network-based decoders&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/2005.07016&quot;&gt;belief propagation&lt;/a&gt;, etc. Describing them all in detail is out of scope for this blog post, but I hope to write a separate post one day dedicated to decoding. I also haven’t talked much about the decoding problem for imperfect syndrome, which I also leave for a separate blog post.&lt;/p&gt;
+
+&lt;p&gt;Let’s now answer a question that you might have been wondering this whole time: how the hell do we implement a toric lattice in practice? While it’s in principle possible to implement an actual torus with Rydberg atoms for instance, it’s impractical for many quantum computing architecture. Fortunately, there exists a purely planar version of the surface code, that we will discuss now!&lt;/p&gt;
+
+&lt;h2 id=&quot;surface-code-with-open-boundaries&quot;&gt;Surface code with open boundaries&lt;/h2&gt;
+
+&lt;p&gt;Consider the following version of the surface code, where vertex stabilizers on the top and bottom boundaries, and plaquette stabilizers on the left and right boundaries, are now supported on three qubits instead of four:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 0px; color: gray; font-size: 15px&quot;&gt;
+    Click on edges to add
+    &lt;select id=&quot;select-planar-code-error-type&quot;&gt;
+        &lt;option value=&quot;x&quot;&gt;X errors&lt;/option&gt;
+        &lt;option value=&quot;z&quot;&gt;Z errors&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;planar-code-lattice&quot; style=&quot;margin: auto; display: block; width: 450px; height: 450px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-planar-code-random&quot;&gt;Insert random errors&lt;/button&gt;
+    &lt;button id=&quot;button-planar-code-reset&quot;&gt;Remove all errors&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    let id = 'planar-code-lattice';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Planar 2D',
+        Lx: 5,
+        Ly: 5,
+        Lz: 5,
+        rotated: false
+    };
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', 'planar-code-lattice');
+
+    let button1 = document.getElementById('button-planar-code-random');
+    button1.onclick = () =&gt; gui.addRandomErrors();
+
+    let button2 = document.getElementById('button-planar-code-reset');
+    button2.onclick = () =&gt; gui.removeAllErrors();
+
+    let selectErrorType = document.getElementById('select-planar-code-error-type');
+    selectErrorType.onchange = function() {
+        if (selectErrorType.value == 'x') {
+            gui.keycode['x-error'] = 0;
+            gui.keycode['z-error'] = -1;
+            gui.params.errorModel = 'Pure X';
+        }
+        else {
+            gui.keycode['x-error'] = -1;
+            gui.keycode['z-error'] = 0;
+            gui.params.errorModel = 'Pure Z';
+        }
+    }
+
+    await gui.init()
+&lt;/script&gt;
+
+&lt;p&gt;We call the top and bottom boundaries &lt;strong&gt;smooth boundaries&lt;/strong&gt;, and the left and right boundaries &lt;strong&gt;rough boundaries&lt;/strong&gt;. Feel free to play with this lattice and try to figure out what the main differences are, compared to the toric code. In particular, can you identify the logical operators of this code? How many equivalent classes, or logical qubits, can you spot?&lt;/p&gt;
+
+&lt;p&gt;The first difference to notice is that excitations can now be created at the boundary!&lt;/p&gt;
+
+&lt;!-- &lt;div id=&quot;planar-code-boundary-errors&quot; style=&quot;margin: auto; display: block; width: 450px; height: 450px&quot;&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'http://127.0.0.1:5001/js/gui.js'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Planar 2D',
+        Lx: 5,
+        Ly: 5,
+        Lz: 5,
+        rotated: false
+    };
+
+    let id = 'planar-code-boundary-errors';
+
+    let gui = new Interface(params, {}, {}, 'http://127.0.0.1:5001', id);
+
+    await gui.init()
+    gui.code.insertError([1, 2], 'X');
+    gui.code.insertError([3, 2], 'X');
+    gui.code.insertError([7, 8], 'Z');
+    gui.code.insertError([7, 6], 'Z');
+
+    drawImage(gui, id, true);
+&lt;/script&gt; --&gt;
+
+&lt;p style=&quot;text-align:center;&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/planar-code-boundary-errors.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;In this example, a vertex excitation is created on the rough boundary, and a plaquette excitation is created on the smooth boundary. You can see that excitations don’t have to come in pairs anymore! This poses a slight issue when decoding using minimum-weight perfect matching, but this can easily be overcome by adding some new boundary nodes to the matching graph.&lt;/p&gt;
+
+&lt;p&gt;More importantly, we can observe that vertex excitations can only be created or annihilated at rough boundaries, and plaquette excitations only at the smooth boundaries. This means that &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; logicals have to join the rough boundaries, and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; logicals have to join the smooth boundaries. This is illustrated in the following figure, where we can see that there is no “vertical” &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; logical or “horizontal” &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; logical.&lt;/p&gt;
+
+&lt;p&gt;Therefore, there are only two equivalence classes of logicals for each error type: the strings that join opposite boundaries, and the trivial loops. As a consequence, this non-periodic version of the surface code, also called &lt;strong&gt;planar code&lt;/strong&gt;, only encodes a single qubit. It is a &lt;code class=&quot;MathJax_Preview&quot;&gt;[[2L^2 - 2L + 1, 1, L]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[2L^2 - 2L + 1, 1, L]]&lt;/script&gt;-code. While we have lost one qubit compared to the toric version, the fact that it can be laid out on a 2D surface makes it much more practical.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-more-compact-version-the-rotated-surface-code&quot;&gt;A more compact version: the rotated surface code&lt;/h2&gt;
+
+&lt;p&gt;If you have started looking at the surface code literature, you might have noticed that people often use a different representation, which looks roughly like the following:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 0px; color: gray; font-size: 15px&quot;&gt;
+    Click on vertices to add
+    &lt;select id=&quot;select-rectified-code-error-type&quot;&gt;
+        &lt;option value=&quot;x&quot;&gt;X errors&lt;/option&gt;
+        &lt;option value=&quot;z&quot;&gt;Z errors&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;surface-code-rectified-picture&quot; style=&quot;margin: auto; display: block; width: 450px; height: 450px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-rectified-code-random&quot;&gt;Insert random errors&lt;/button&gt;
+    &lt;button id=&quot;button-rectified-code-reset&quot;&gt;Remove all errors&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    let id = 'surface-code-rectified-picture';
+
+    const params = {
+        dimension: 2,
+        codeName: 'Planar 2D',
+        Lx: 5,
+        Ly: 5,
+        Lz: 5,
+        rotated: true
+    };
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+
+    let button1 = document.getElementById('button-rectified-code-random');
+    button1.onclick = () =&gt; gui.addRandomErrors();
+
+    let button2 = document.getElementById('button-rectified-code-reset');
+    button2.onclick = () =&gt; gui.removeAllErrors();
+
+    let selectErrorType = document.getElementById('select-rectified-code-error-type');
+    selectErrorType.onchange = function() {
+        if (selectErrorType.value == 'x') {
+            gui.keycode['x-error'] = 0;
+            gui.keycode['z-error'] = -1;
+            gui.params.errorModel = 'Pure X';
+        }
+        else {
+            gui.keycode['x-error'] = -1;
+            gui.keycode['z-error'] = 0;
+            gui.params.errorModel = 'Pure Z';
+        }
+    }
+
+    await gui.init()
+&lt;/script&gt;
+
+&lt;p&gt;In this representation, qubits are on the vertices, and all the stabilizers are on the plaquette. Feel free to play with this lattice to understand what’s going on.&lt;/p&gt;
+
+&lt;p&gt;It happens that this lattice represents exactly the planar code that we saw before! Here are the two lattices on top of each other:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-both-pictures.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The idea is to turn every edge of the original representation into a vertex, each vertex into yellow face, and each face into a rose face. As a result, both vertices and plaquettes become rotated squares, and qubits become vertices. This representation is called the &lt;a href=&quot;https://en.wikipedia.org/wiki/Rectification_(geometry)&quot;&gt;&lt;strong&gt;rectified lattice&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;One advantage of this representation is that it allows to come up with a different, more compact, version of the surface code. The idea is to take to following central piece of the rectified lattice:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/surface-code-rotated-construction.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;We then rotated it and add a few boundary stabilizers. This gives the following code, called the &lt;strong&gt;rotated surface code&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 0px; color: gray; font-size: 15px&quot;&gt;
+    Click on vertices to add
+    &lt;select id=&quot;select-rotated-code-error-type&quot;&gt;
+        &lt;option value=&quot;x&quot;&gt;X errors&lt;/option&gt;
+        &lt;option value=&quot;z&quot;&gt;Z errors&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;rotated-surface-code&quot; style=&quot;margin: auto; display: block; width: 450px; height: 450px&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;text-align: center; margin-bottom: 20px; font-size: 15px&quot;&gt;
+    &lt;button id=&quot;button-rotated-code-random&quot;&gt;Insert random errors&lt;/button&gt;
+    &lt;button id=&quot;button-rotated-code-reset&quot;&gt;Remove all errors&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    const params = {
+        dimension: 2,
+        codeName: 'Rotated Planar 2D',
+        Lx: 5,
+        Ly: 5,
+        Lz: 5,
+        rotated: true
+    };
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', 'rotated-surface-code');
+
+    let button1 = document.getElementById('button-rotated-code-random');
+    button1.onclick = () =&gt; gui.addRandomErrors();
+
+    let button2 = document.getElementById('button-rotated-code-reset');
+    button2.onclick = () =&gt; gui.removeAllErrors();
+
+    let selectErrorType = document.getElementById('select-rotated-code-error-type');
+    selectErrorType.onchange = function() {
+        if (selectErrorType.value == 'x') {
+            gui.keycode['x-error'] = 0;
+            gui.keycode['z-error'] = -1;
+            gui.params.errorModel = 'Pure X';
+        }
+        else {
+            gui.keycode['x-error'] = -1;
+            gui.keycode['z-error'] = 0;
+            gui.params.errorModel = 'Pure Z';
+        }
+    }
+
+    gui.init()
+&lt;/script&gt;
+
+&lt;p&gt;As always, feel free to familiarize yourself with this new code by playing with it on the visualization. You should be able to see that it also encodes a single logical qubit, and has a distance of &lt;code class=&quot;MathJax_Preview&quot;&gt;L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;. However, this time, the number of physical qubits is exactly &lt;code class=&quot;MathJax_Preview&quot;&gt;L^2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L^2&lt;/script&gt;. The rotated surface code is therefore a &lt;code class=&quot;MathJax_Preview&quot;&gt;[[L^2, 1, L]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[L^2, 1, L]]&lt;/script&gt;-code, which is a factor two improvement in the overhead compared to the original surface code. This version of the surface code is therefore the preferred one to realize experimentally. For instance, its two smallest instances, the &lt;code class=&quot;MathJax_Preview&quot;&gt;[[9,1,3]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[9,1,3]]&lt;/script&gt; code and the &lt;code class=&quot;MathJax_Preview&quot;&gt;[[16,1,4]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[16,1,4]]&lt;/script&gt; code are the ones recently realized by the Google lab.&lt;/p&gt;
+
+&lt;h2 id=&quot;thresholds-of-the-surface-code&quot;&gt;Thresholds of the surface code&lt;/h2&gt;
+
+&lt;p&gt;One of the most important characteristic of a code family is its set of thresholds. The &lt;strong&gt;threshold&lt;/strong&gt; of a code family for a given noise model and decoder is the maximal physical error rate &lt;code class=&quot;MathJax_Preview&quot;&gt;p_{th}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;p_{th}&lt;/script&gt; such that for all &lt;code class=&quot;MathJax_Preview&quot;&gt;p &amp;lt; p_{th}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+p &lt; p_{th} %]]&gt;&lt;/script&gt;, increasing the code size decreases the logical error rate. The threshold is typically calculated numerically using plots that look like the following:&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center; margin-top: 2em; margin-bottom: 2em&quot;&gt;
+    &lt;img src=&quot;/assets/img/blog/surface-code/threshold-example.png&quot; height=&quot;400&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;To make this figure, codes with distance &lt;code class=&quot;MathJax_Preview&quot;&gt;10,20,30&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;10,20,30&lt;/script&gt; are simulated under noise channel with varying physical error rate. Errors are then decoded, and logical errors are enumerated. We can see that above &lt;code class=&quot;MathJax_Preview&quot;&gt;p_{th} \approx 15.5\%&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;p_{th} \approx 15.5\%&lt;/script&gt;, increasing the code distance increases the logical error rate, while below &lt;code class=&quot;MathJax_Preview&quot;&gt;p_{th}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;p_{th}&lt;/script&gt;, the logical error rate decreases with the code distance.&lt;/p&gt;
+
+&lt;p&gt;So what is the threshold of the surface code? First of all, very importantly, there isn’t a single threshold for the surface code: it highly depends on which noise channel and which decoder we are using. Let’s start by discussing noise models.&lt;/p&gt;
+
+&lt;p&gt;We often make the distinction between three types of noise models:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The &lt;strong&gt;code-capacity&lt;/strong&gt; model, in which errors can occur on all the physical qubits of the code, but measurements are assumed to be perfect.&lt;/li&gt;
+  &lt;li&gt;The &lt;strong&gt;phenomenological&lt;/strong&gt; noise model, in which each stabilizer measurement can also fail with a fixed probability.&lt;/li&gt;
+  &lt;li&gt;The &lt;strong&gt;circuit-level&lt;/strong&gt; noise model, in which the circuits to prepare the code and extract the syndrome are considered, and errors are assumed to occur with a certain probability after each physical gate.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The code-capacity threshold is the easiest to estimate, both in terms of implementation time and computational time, and allows to get a rough idea of the performance of a given code or decoder. The phenomenological threshold gets us closer to the true threshold value and can be useful when comparing decoders that deal with measurement errors in interesting ways (such as single-shot decoders). Finally, circuit-level thresholds are the most realistic ones and approximate the most accurately the actual noise level that experimentalists need to reach to make error correction work with a given code. While circuit-level thresholds have been considered very hard to estimate for a long time, mainly due to the lack of very fast noisy Clifford circuit simulators, recent tools such as Stim have made those simulations much less cumbersome.&lt;/p&gt;
+
+&lt;p&gt;For each of those three models, we also need to specify the distribution of &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;Y&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; errors&lt;sup id=&quot;fnref:5&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;. There are two very common choices here. The first is the depolarizing noise model, in which those three Paulis are assumed to occur with the same probability. Since &lt;code class=&quot;MathJax_Preview&quot;&gt;Y&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; is made of &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt;, it means that &lt;code class=&quot;MathJax_Preview&quot;&gt;P(Y)=P(X,Z) \neq P(X)P(Z)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(Y)=P(X,Z) \neq P(X)P(Z)&lt;/script&gt;, or in other words, &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; are correlated. Another noise model is the independent &lt;code class=&quot;MathJax_Preview&quot;&gt;X/Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X/Z&lt;/script&gt; model, in which &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; are independent and occur with the same probability. The probability of getting &lt;code class=&quot;MathJax_Preview&quot;&gt;Y&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; errors is fixed as &lt;code class=&quot;MathJax_Preview&quot;&gt;P(Y)=P(X)P(Z)=P(X)^2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;P(Y)=P(X)P(Z)=P(X)^2&lt;/script&gt; and is therefore lower than for depolarizing noise.&lt;/p&gt;
+
+&lt;p&gt;Regarding the decoders, we will consider two of them here for simplicity: the maximum-likelihood decoder, and the matching decoder. As it happens, the code-capacity threshold for the maximum likelihood decoder corresponds exactly to the phase transition of a certain statistical mechanics model. This &lt;em&gt;stat mech mapping&lt;/em&gt; was established in &lt;a href=&quot;https://arxiv.org/abs/quant-ph/0110143&quot;&gt;Dennis et al.&lt;/a&gt; (probably the most cited paper of quantum error correction) in 2002. For the surface code subjected to independent &lt;code class=&quot;MathJax_Preview&quot;&gt;X/Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X/Z&lt;/script&gt; errors, the equivalent stat mech model is the random-bond Ising model, whose phase transition had just been calculated at that time. They were therefore able to give this first surface code threshold without doing any simulation themselves!&lt;/p&gt;
+
+&lt;p&gt;We are now ready to give the actual threshold values for the surface code! Here is a table with the code-capacity thresholds of the different noise models and decoder discussed previously:&lt;/p&gt;
+
+&lt;table style=&quot;margin: auto; width: 60%; text-align: center; margin-bottom: 1em&quot;&gt;
+&lt;th&gt;
+    &lt;td&gt;Maximum-likelihood&lt;/td&gt;
+    &lt;td&gt;Matching&lt;/td&gt;
+&lt;/th&gt;
+&lt;tr&gt;
+    &lt;td&gt;Depolarizing noise&lt;/td&gt;
+    &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/1202.1852&quot;&gt;18.9%&lt;/a&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/0905.0531&quot;&gt;15.5%&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;Independent noise&lt;/td&gt;
+    &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/quant-ph/0110143&quot;&gt;10.9%&lt;/a&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/quant-ph/0110143&quot;&gt;10.5%&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p class=&quot;figure&quot;&gt;Table 1: Code-capacity thresholds of the surface code&lt;/p&gt;
+
+&lt;p&gt;For phenomenological and circuit-level noise, I am only aware of some matching decoder thresholds under depolarizing noise. For phenomenological noise, we have a threshold of about &lt;a href=&quot;https://arxiv.org/abs/1907.02554&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;3\%&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;3\%&lt;/script&gt;&lt;/a&gt;. For circuit-level noise, the threshold goes down to about &lt;a href=&quot;https://arxiv.org/abs/0905.0531&quot;&gt;&lt;code class=&quot;MathJax_Preview&quot;&gt;1\%&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;1\%&lt;/script&gt;&lt;/a&gt;, which is often the cited value for “the threshold of the surface code”.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;In this post, we have defined the surface code and its different variants (toric, planar, rotated) and tried to understand its most important properties visually. We have seen that it encodes one or two logical qubits depending on the boundary conditions, and has a distance scaling as &lt;code class=&quot;MathJax_Preview&quot;&gt;\sqrt{N}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\sqrt{N}&lt;/script&gt;. Stabilizers can be thought as trivial (or contractible) loops on the underlying manifold, while the logical &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; operators are the non-trivial loops going around the torus or joining the boundaries, drawing a connection between topology and codes. We have also studied the decoding problem for the surface code and how minimum-weight perfect matching can be used for this purpose. Finally, I have introduced the notion of error-correction threshold and given its value for different decoders and noise models.&lt;/p&gt;
+
+&lt;p&gt;The surface code is by far one of the most studied codes of the quantum error-correction literature and there is a lot more to say about it! I haven’t told you how to deal with measurement errors, how to prepare the code and measure the syndrome using quantum circuits, how to run logical gates on it, how to generalize it to different lattices and dimensions, how to make precise the connection with topology, etc. The surface code is also a stepping stone to understand more complicated codes, from the color code (the second most famous family of 2D codes) to hypergraph product codes and all the way to good LDPC codes. Now that you are equipped with the stabilizer formalism and have a good grasp of the surface code, the tree of possible learning trajectories has suddenly acquired many branches, and I hope to cover as many of those in subsequent blog posts!&lt;/p&gt;
+
+&lt;p&gt;In the meantime, one direct follow-up from this post is &lt;a href=&quot;https://dom-kufel.github.io/blog/2023-04-15-toric_code-intro/&quot;&gt;Dominik Kufel’s post&lt;/a&gt; on the condensed matter aspects of the toric code, where you will learn about the connection between codes and Hamiltonians, why &lt;em&gt;excitations&lt;/em&gt; are called excitations and can be thought of as quasi-particles called &lt;em&gt;anyons&lt;/em&gt;, what the state of the surface code looks like and how it provides an example of topological phase of matter. This connection is crucial to learn for any practicing quantum error-correcter, as it is used extensively in the literature and allows to understand many computational aspects of the surface code (how to make gates by braiding anyons, why the circuit to prepare the surface code has polynomial size, etc.). So go read his post!&lt;/p&gt;
+
+&lt;h2 id=&quot;solution-of-the-exercise&quot;&gt;Solution of the exercise&lt;/h2&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Exercise&lt;/strong&gt;: What are the &lt;code class=&quot;MathJax_Preview&quot;&gt;[[n,k,d]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[n,k,d]]&lt;/script&gt; parameters of a surface code with lattice size &lt;code class=&quot;MathJax_Preview&quot;&gt;L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;? &lt;a href=&quot;#logical-operators-and-topology&quot;&gt;(Back to section)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p class=&quot;message&quot;&gt;&lt;br /&gt;
+&lt;strong&gt;Correction&lt;/strong&gt;: Since there are &lt;code class=&quot;MathJax_Preview&quot;&gt;L^2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L^2&lt;/script&gt; horizontal and &lt;code class=&quot;MathJax_Preview&quot;&gt;L^2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L^2&lt;/script&gt; vertical edges, we have &lt;code class=&quot;MathJax_Preview&quot;&gt;n=2L^2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;n=2L^2&lt;/script&gt;. Then, we saw that there are exactly two non-equivalent types of logical operators, meaning that there are &lt;code class=&quot;MathJax_Preview&quot;&gt;k=2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;k=2&lt;/script&gt; qubits. Finally, the distance is the minimum size of a logical operator, which in our case is &lt;code class=&quot;MathJax_Preview&quot;&gt;d=L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;d=L&lt;/script&gt;. Therefore, the surface code is a &lt;code class=&quot;MathJax_Preview&quot;&gt;[[2L^2, 2, L]]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[[2L^2, 2, L]]&lt;/script&gt;-code.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;I tend to use the names &lt;em&gt;surface code&lt;/em&gt; and &lt;em&gt;toric code&lt;/em&gt; interchangeably. Some people use &lt;em&gt;surface code&lt;/em&gt; to talk about the open-boundary version and &lt;em&gt;toric code&lt;/em&gt; to talk about the periodic-boundary one, but this is not a universal convention, and the name &lt;em&gt;planar code&lt;/em&gt; is also often used to talk about the open-boundary version. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+      &lt;p&gt;The final version of this embedding is just a few lines of Javascript, which use &lt;a href=&quot;gui.quantumcodes.io&quot;&gt;gui.quantumcodes.io&lt;/a&gt; as an API. So if &lt;strong&gt;you&lt;/strong&gt; would like to embed some codes (both 2D and 3D) in your website, feel free to contact me and I’ll give you the instructions to do it (I might add an official tutorial in the PanQEC documentation later). &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot;&gt;
+      &lt;p&gt;For the interested reader, the rigorous definition is that two loops are equivalent if there exists a &lt;strong&gt;homotopy&lt;/strong&gt; between them. More precisely, we can define a loop as a continuous map &lt;code class=&quot;MathJax_Preview&quot;&gt;\ell: S^1 \rightarrow \mathcal{M}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\ell: S^1 \rightarrow \mathcal{M}&lt;/script&gt; (an embedding of the circle onto the manifold). A homotopy between two loops &lt;code class=&quot;MathJax_Preview&quot;&gt;\ell_1, \ell_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\ell_1, \ell_2&lt;/script&gt; is then a continuous function &lt;code class=&quot;MathJax_Preview&quot;&gt;L:S^1 \times [0,1] \rightarrow \mathcal{M}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L:S^1 \times [0,1] \rightarrow \mathcal{M}&lt;/script&gt; such that &lt;code class=&quot;MathJax_Preview&quot;&gt;L(\cdot, 0)=\ell_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L(\cdot, 0)=\ell_1&lt;/script&gt; and &lt;code class=&quot;MathJax_Preview&quot;&gt;L(\cdot, 1)=\ell_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L(\cdot, 1)=\ell_2&lt;/script&gt;. In other words, each &lt;code class=&quot;MathJax_Preview&quot;&gt;L(\cdot, t)&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;L(\cdot, t)&lt;/script&gt; for &lt;code class=&quot;MathJax_Preview&quot;&gt;t \in [0,1]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;t \in [0,1]&lt;/script&gt; defines a different loop on the path from &lt;code class=&quot;MathJax_Preview&quot;&gt;\ell_1&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\ell_1&lt;/script&gt; to &lt;code class=&quot;MathJax_Preview&quot;&gt;\ell_2&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\ell_2&lt;/script&gt;. The equivalence relation defined here is called &lt;strong&gt;homotopy equivalence&lt;/strong&gt;, and is one of the most important notions of equivalence in topology (along with another one called &lt;strong&gt;homological equivalence&lt;/strong&gt;). &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/2303.13723&quot;&gt;Rotor codes&lt;/a&gt; are example of such continuous-variable codes. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:5&quot;&gt;
+      &lt;p&gt;We assume here that we have a Pauli error model. The reasons for this choice are actually quite technical and I hope to write a post about it one day. In the meantime, you can have a look at Section 10.3 of Nielsen &amp;amp; Chuang to get an idea of the argument. &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"></summary></entry><entry><title type="html">The stabilizer trilogy III — Parity-check matrices and decoding</title><link href="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/" rel="alternate" type="text/html" title="The stabilizer trilogy III — Parity-check matrices and decoding" /><published>2023-03-28T00:00:00-07:00</published><updated>2023-03-28T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-3</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/">&lt;p&gt;Welcome to the third and last post of the stabilizer trilogy! In &lt;a href=&quot;/blog/2023-01-31-stabilizer-formalism-1/&quot;&gt;Parts I&lt;/a&gt; and &lt;a href=&quot;/blog/2023-03-16-stabilizer-formalism-2/&quot;&gt;II&lt;/a&gt;, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to
 simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tools to prove theorems about them, to classify them, to decode them, and more!&lt;/p&gt;
 
 &lt;p&gt;In this post, we will see how to define the parity-check matrix of a stabilizer code in the binary symplectic format, and how to express the decoding problem using it. After a short motivation section to remind you about classical parity-check matrices, we will delve into the binary symplectic format, a way to express Pauli operators using vectors. We will then define quantum parity-check matrices in this format and see how syndromes and logical operators can be expressed using them. With those tools in our hand, we will finally be able to define the decoding problem for quantum codes, and in particular see how to decode the Steane code. We will finish this post by defining quantum Tanner graphs, a graphical representation of parity-check matrices, often used in the literature to study the properties of codes and decoders.&lt;/p&gt;
@@ -437,7 +2081,7 @@ Each stabilizer node is then connected to the qubits in its support (with the ri
       &lt;p&gt;Thanks Alex Cliffe for suggesting this proof! &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">Welcome to the third and last post of the stabilizer trilogy! In Parts I and II, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tools to prove theorems about them, to classify them, to decode them, and more!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy II — Logical operators</title><link href="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/" rel="alternate" type="text/html" title="The stabilizer trilogy II — Logical operators" /><published>2023-03-16T00:00:00-06:00</published><updated>2023-03-16T00:00:00-06:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-2</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/">&lt;p&gt;Happy to see you back for the second part of the stabilizer trilogy! In the &lt;a href=&quot;/blog/2023-01-31-stabilizer-formalism-1&quot;&gt;previous post&lt;/a&gt;, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and a &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What logical operations can we apply to this code? How does the decoding process work?&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">Welcome to the third and last post of the stabilizer trilogy! In Parts I and II, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tools to prove theorems about them, to classify them, to decode them, and more!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy II — Logical operators</title><link href="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/" rel="alternate" type="text/html" title="The stabilizer trilogy II — Logical operators" /><published>2023-03-16T00:00:00-07:00</published><updated>2023-03-16T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-2</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/">&lt;p&gt;Happy to see you back for the second part of the stabilizer trilogy! In the &lt;a href=&quot;/blog/2023-01-31-stabilizer-formalism-1&quot;&gt;previous post&lt;/a&gt;, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an &lt;code class=&quot;MathJax_Preview&quot;&gt;X&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and a &lt;code class=&quot;MathJax_Preview&quot;&gt;Z&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What logical operations can we apply to this code? How does the decoding process work?&lt;/p&gt;
 
 &lt;p&gt;In this post, we will get down to the nitty-gritty of logical operations. Those are unitary operators acting on the physical qubits, which allow you to go from one part of the codespace to another. For instance, a logical Hadamard lets you go from the logical zero state &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert 0 \rangle_L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert 0 \rangle_L&lt;/script&gt; to the logical plus state &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert + \rangle_L&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert + \rangle_L&lt;/script&gt;. An important class of logical operations are the Pauli logicals, whose properties form a crucial component of stabilizer codes, as they allow to derive the distance of the code, the number of logical qubits, and the main formulation of decoding. Formalizing all those ideas rigorously relies on a fair bit of abstraction, using notions such as centralizers, normalizers, equivalence classes, etc. While we won’t shy away from the abstraction, we will also make every notion as concrete as possible using the Steane code as our running example.&lt;/p&gt;
 
@@ -659,7 +2303,7 @@ Thus, &lt;code class=&quot;MathJax_Preview&quot;&gt;H_L&lt;/code&gt;&lt;script t
       &lt;p&gt;For simplicity, I have chosen to ignore phases here. A more exact decomposition would need to include the cosets &lt;code class=&quot;MathJax_Preview&quot;&gt;-\bar{X}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;-\bar{X}&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;i\bar{X}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;i\bar{X}&lt;/script&gt;, &lt;code class=&quot;MathJax_Preview&quot;&gt;-i\bar{X}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;-i\bar{X}&lt;/script&gt;, etc. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">Happy to see you back for the second part of the stabilizer trilogy! In the previous post, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an X and a Z stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What logical operations can we apply to this code? How does the decoding process work?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy I — Stabilizer codes</title><link href="https://arthurpesah.me/blog/2023-01-31-stabilizer-formalism-1/" rel="alternate" type="text/html" title="The stabilizer trilogy I — Stabilizer codes" /><published>2023-01-31T00:00:00-07:00</published><updated>2023-01-31T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-1</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-01-31-stabilizer-formalism-1/">&lt;p&gt;Now that you know &lt;a href=&quot;/blog/2022-05-21-classical-error-correction/&quot;&gt;all you need to know about classical error correction&lt;/a&gt;, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in &lt;a href=&quot;https://thesis.library.caltech.edu/2900/2/THESIS.pdf&quot;&gt;his landmark 1997 PhD thesis&lt;/a&gt; is the stabilizer formalism.
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">Happy to see you back for the second part of the stabilizer trilogy! In the previous post, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an X and a Z stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What logical operations can we apply to this code? How does the decoding process work?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy I — Stabilizer codes</title><link href="https://arthurpesah.me/blog/2023-01-31-stabilizer-formalism-1/" rel="alternate" type="text/html" title="The stabilizer trilogy I — Stabilizer codes" /><published>2023-01-31T00:00:00-08:00</published><updated>2023-01-31T00:00:00-08:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-1</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-01-31-stabilizer-formalism-1/">&lt;p&gt;Now that you know &lt;a href=&quot;/blog/2022-05-21-classical-error-correction/&quot;&gt;all you need to know about classical error correction&lt;/a&gt;, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in &lt;a href=&quot;https://thesis.library.caltech.edu/2900/2/THESIS.pdf&quot;&gt;his landmark 1997 PhD thesis&lt;/a&gt; is the stabilizer formalism.
 The same way most classical codes fall into the linear code category, almost all the quantum codes you will encounter can be classified as stabilizer codes. And for a good reason: stabilizer codes are simply the quantum generalization of linear codes!
 Your beloved parity checks will turn into stabilizers, a set of commuting measurements controlling the parity of your qubits in different bases.
 Parity-check matrices and Tanner graphs will get slightly bigger and more constrained. But apart from that, if you’re more or less comfortable with the notions discussed in the last post, going quantum shouldn’t give you too much trouble.&lt;/p&gt;
@@ -1088,7 +2732,7 @@ PP'=-P'_i P_1 \ldots P_n P'_1 \ldots P'_{i-1} P'_{i+1} \ldots P_n
       &lt;p&gt;The &lt;code class=&quot;MathJax_Preview&quot;&gt;\vert 0 \rangle_{L}&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;\vert 0 \rangle_{L}&lt;/script&gt; state of the Steane code was first implemented by an Austrian team, in &lt;a href=&quot;https://arxiv.org/abs/1403.5426&quot;&gt;Nigg et al., 2014&lt;/a&gt;. Actual error correction using stabilizer measurements was then done by Honeywell in &lt;a href=&quot;https://arxiv.org/abs/2107.07505&quot;&gt;Ryan-Anderson et al., 2021&lt;/a&gt;. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">Now that you know all you need to know about classical error correction, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in his landmark 1997 PhD thesis is the stabilizer formalism. The same way most classical codes fall into the linear code category, almost all the quantum codes you will encounter can be classified as stabilizer codes. And for a good reason: stabilizer codes are simply the quantum generalization of linear codes! Your beloved parity checks will turn into stabilizers, a set of commuting measurements controlling the parity of your qubits in different bases. Parity-check matrices and Tanner graphs will get slightly bigger and more constrained. But apart from that, if you’re more or less comfortable with the notions discussed in the last post, going quantum shouldn’t give you too much trouble.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-1/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-1/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">All you need to know about classical error correction</title><link href="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/" rel="alternate" type="text/html" title="All you need to know about classical error correction" /><published>2022-05-21T00:00:00-06:00</published><updated>2022-05-21T00:00:00-06:00</updated><id>https://arthurpesah.me/blog/classical-error-correction</id><content type="html" xml:base="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/">&lt;p&gt;When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction.
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">Now that you know all you need to know about classical error correction, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in his landmark 1997 PhD thesis is the stabilizer formalism. The same way most classical codes fall into the linear code category, almost all the quantum codes you will encounter can be classified as stabilizer codes. And for a good reason: stabilizer codes are simply the quantum generalization of linear codes! Your beloved parity checks will turn into stabilizers, a set of commuting measurements controlling the parity of your qubits in different bases. Parity-check matrices and Tanner graphs will get slightly bigger and more constrained. But apart from that, if you’re more or less comfortable with the notions discussed in the last post, going quantum shouldn’t give you too much trouble.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-1/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-1/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">All you need to know about classical error correction</title><link href="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/" rel="alternate" type="text/html" title="All you need to know about classical error correction" /><published>2022-05-21T00:00:00-07:00</published><updated>2022-05-21T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/classical-error-correction</id><content type="html" xml:base="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/">&lt;p&gt;When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction.
 So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, low-density parity-check (LDPC) codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!&lt;/p&gt;
 
 &lt;p&gt;So what exactly are we gonna study today? The central notion in this post is that of &lt;strong&gt;linear code&lt;/strong&gt;. Linear codes form one of the most important families of error-correcting codes. It includes for instance Hamming codes (some of the earliest codes, invented in 1950), Reed-Solomon codes (used in CDs and QR codes), Turbo codes (used in 3G/4G communication) and LDPC codes (used in 5G communication). While we won’t try to cover the whole zoo of linear codes here, we will introduce some crucial tools to understand them. In particular, the goal of this post is to give you a good grasp of the parity-check matrix, and its graphical representation, the Tanner graph. As we will see when going quantum, the stabilizer formalism (the dominant paradigm to construct quantum codes) can be understood as a direct generalization of linear coding theory, and the quantum parity-check matrix happens to be an essential tool to simulate quantum codes in practice. This post will also be the occasion to introduce some more general coding terminology (encoding, decoding, distance, &lt;code class=&quot;MathJax_Preview&quot;&gt;[n,k,d]&lt;/code&gt;&lt;script type=&quot;math/tex&quot;&gt;[n,k,d]&lt;/script&gt;-code, codewords, etc.), which will be handy when delving into QEC.&lt;/p&gt;
@@ -2048,7 +3692,7 @@ m &lt; n %]]&gt;&lt;/script&gt; (a fair assumption if we want &lt;code class=&qu
       &lt;p&gt;See McKay, &lt;a href=&quot;https://www.inference.org.uk/itprnn/book.pdf&quot;&gt;Information Theory, Inference, and Learning Algorithms&lt;/a&gt;¸ for a great introduction to belief propagation algorithms for decoding &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction. So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, low-density parity-check (LDPC) codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A bird’s-eye view of quantum error correction and fault tolerance</title><link href="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/" rel="alternate" type="text/html" title="A bird’s-eye view of quantum error correction and fault tolerance" /><published>2022-01-25T00:00:00-07:00</published><updated>2022-01-25T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/intro-qec-1</id><content type="html" xml:base="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/">&lt;p&gt;This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction. So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, low-density parity-check (LDPC) codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A bird’s-eye view of quantum error correction and fault tolerance</title><link href="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/" rel="alternate" type="text/html" title="A bird’s-eye view of quantum error correction and fault tolerance" /><published>2022-01-25T00:00:00-08:00</published><updated>2022-01-25T00:00:00-08:00</updated><id>https://arthurpesah.me/blog/intro-qec-1</id><content type="html" xml:base="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/">&lt;p&gt;This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.&lt;/p&gt;
 
 &lt;p&gt;As I am just starting my PhD adventure, I have taken the resolution to start blogging again. And since my first task as a new PhD student is to learn as much as I can about my field, why not sharing this learning journey with you?&lt;/p&gt;
 
@@ -2287,7 +3931,7 @@ To mitigate this effect, the basic technique simply consists in repeating the st
       &lt;p&gt;Ryan Babbush, Jarrod McClean, Michael Newman, Craig Gidney, Sergio Boixo, Hartmut Neven, &lt;a href=&quot;https://arxiv.org/abs/2011.04149&quot;&gt;Focus beyond quadratic speedups for error-corrected quantum advantage&lt;/a&gt; &lt;a href=&quot;#fnref:8&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</title><link href="https://arthurpesah.me/blog/2018-12-23-alfi/" rel="alternate" type="text/html" title="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference" /><published>2018-12-23T00:00:00-07:00</published><updated>2018-12-23T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/alfi</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-12-23-alfi/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a &lt;a href=&quot;https://towardsdatascience.com/improve-your-scientific-models-with-meta-learning-and-likelihood-free-inference-2f904d0bd7fa&quot;&gt;Medium Article&lt;/a&gt; for Towards Data Science&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html">This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</title><link href="https://arthurpesah.me/blog/2018-12-23-alfi/" rel="alternate" type="text/html" title="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference" /><published>2018-12-23T00:00:00-08:00</published><updated>2018-12-23T00:00:00-08:00</updated><id>https://arthurpesah.me/blog/alfi</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-12-23-alfi/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a &lt;a href=&quot;https://towardsdatascience.com/improve-your-scientific-models-with-meta-learning-and-likelihood-free-inference-2f904d0bd7fa&quot;&gt;Medium Article&lt;/a&gt; for Towards Data Science&lt;/p&gt;
 &lt;p&gt;Introduction to likelihood-free inference and distillation of the paper &lt;a href=&quot;https://arxiv.org/abs/1811.12932&quot;&gt;Recurrent Machines for Likelihood-Free Inference&lt;/a&gt;, published at the &lt;a href=&quot;http://metalearning.ml&quot;&gt;NeurIPS 2018 Workshop on Meta-Learning&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Article jointly written by Arthur Pesah and Antoine Wehenkel&lt;/p&gt;
@@ -2443,7 +4087,7 @@ To mitigate this effect, the basic technique simply consists in repeating the st
       &lt;p&gt;M. Andrychowicz, M. Denil, S. Gomez, M. W. Hoffman, D. Pfau, T. Schaul, B. Shillingford, N. de Freitas, &lt;a href=&quot;https://arxiv.org/abs/1606.04474&quot;&gt;Learning to learn gradient descent by gradient descent&lt;/a&gt; (2016), NIPS 2016 &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science Introduction to likelihood-free inference and distillation of the paper Recurrent Machines for Likelihood-Free Inference, published at the NeurIPS 2018 Workshop on Meta-Learning.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/alfi/cms_coverl.jpg" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/alfi/cms_coverl.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Recent Advances for a Better Understanding of Deep Learning</title><link href="https://arthurpesah.me/blog/2018-08-19-theory-deep-learning/" rel="alternate" type="text/html" title="Recent Advances for a Better Understanding of Deep Learning" /><published>2018-08-19T00:00:00-06:00</published><updated>2018-08-19T00:00:00-06:00</updated><id>https://arthurpesah.me/blog/theory-deep-learning</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-08-19-theory-deep-learning/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a &lt;a href=&quot;https://towardsdatascience.com/recent-advances-for-a-better-understanding-of-deep-learning-part-i-5ce34d1cc914&quot;&gt;Medium Article&lt;/a&gt; for Towards Data Science*&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science Introduction to likelihood-free inference and distillation of the paper Recurrent Machines for Likelihood-Free Inference, published at the NeurIPS 2018 Workshop on Meta-Learning.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/alfi/cms_coverl.jpg" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/alfi/cms_coverl.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Recent Advances for a Better Understanding of Deep Learning</title><link href="https://arthurpesah.me/blog/2018-08-19-theory-deep-learning/" rel="alternate" type="text/html" title="Recent Advances for a Better Understanding of Deep Learning" /><published>2018-08-19T00:00:00-07:00</published><updated>2018-08-19T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/theory-deep-learning</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-08-19-theory-deep-learning/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a &lt;a href=&quot;https://towardsdatascience.com/recent-advances-for-a-better-understanding-of-deep-learning-part-i-5ce34d1cc914&quot;&gt;Medium Article&lt;/a&gt; for Towards Data Science*&lt;/p&gt;
 
 &lt;blockquote class=&quot;lead&quot;&gt;
   &lt;p&gt;I would like to live in a world whose systems are built on &lt;strong&gt;rigorous, reliable, verifiable knowledge&lt;/strong&gt;, and not on alchemy. […] Simple experiments and simple theorems are the &lt;strong&gt;building blocks&lt;/strong&gt; that help understand complicated larger phenomena.&lt;/p&gt;
@@ -2592,7 +4236,7 @@ minimizing a certain potential ϕ as well as maximizing the entropy of the distr
       &lt;p&gt;Pratik Chaudhari, Stefano Soatto. &lt;em&gt;Stochastic gradient descent performs variational inference, converges to limit cycles for deep network&lt;/em&gt;, ICLR 2018 &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science*</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/theory-deep-learning/blackboard.jpg" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/theory-deep-learning/blackboard.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A Little Review of Domain Adaptation in 2017</title><link href="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/" rel="alternate" type="text/html" title="A Little Review of Domain Adaptation in 2017" /><published>2018-01-03T00:00:00-07:00</published><updated>2018-01-03T00:00:00-07:00</updated><id>https://arthurpesah.me/blog/domain-adaptation-2017</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a Quora answer to the question &lt;a href=&quot;https://www.quora.com/What-are-the-most-significant-machine-learning-advances-in-2017/answer/Arthur-Pesah&quot;&gt;What are the most significant machine learning advances in 2017?&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html">Note: This post was first published as a Medium Article for Towards Data Science*</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/theory-deep-learning/blackboard.jpg" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/theory-deep-learning/blackboard.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A Little Review of Domain Adaptation in 2017</title><link href="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/" rel="alternate" type="text/html" title="A Little Review of Domain Adaptation in 2017" /><published>2018-01-03T00:00:00-08:00</published><updated>2018-01-03T00:00:00-08:00</updated><id>https://arthurpesah.me/blog/domain-adaptation-2017</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/">&lt;p class=&quot;message&quot;&gt;&lt;strong&gt;Note&lt;/strong&gt;: This post was first published as a Quora answer to the question &lt;a href=&quot;https://www.quora.com/What-are-the-most-significant-machine-learning-advances-in-2017/answer/Arthur-Pesah&quot;&gt;What are the most significant machine learning advances in 2017?&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;2017 has been an amazing year for domain adaptation: awesome image-to-image and language-to-language translations have been produced, adversarial methods for DA have made huge progress and very innovative algorithms have been proposed to tackle the giant problem of adapting two domains.&lt;/p&gt;
 
