@@ -49,12 +49,12 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:site_name" content="Arthur Pesah" />
 <meta property="og:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2023-03-28T00:00:00-07:00" />
+<meta property="article:published_time" content="2023-03-28T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" />
 <meta property="twitter:title" content="The stabilizer trilogy III — Parity-check matrices and decoding" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-28T00:00:00-07:00","datePublished":"2023-03-28T00:00:00-07:00","description":"Research blog","headline":"The stabilizer trilogy III — Parity-check matrices and decoding","image":"https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-28T00:00:00+01:00","datePublished":"2023-03-28T00:00:00+01:00","description":"Research blog","headline":"The stabilizer trilogy III — Parity-check matrices and decoding","image":"https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -220,7 +220,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
     <p class="post-date heading">
       
-      <time datetime="2023-03-28T00:00:00-07:00">28 Mar 2023</time>
+      <time datetime="2023-03-28T00:00:00+01:00">28 Mar 2023</time>
       
       
       
@@ -355,10 +355,11 @@ Until I do a separate post on <code class="MathJax_Preview">GF(4)</code><script 
 
 <p>In this representation, the first bit indicates the presence of an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and the second bit the presence of a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>.
 So <code class="MathJax_Preview">(0\vert0)</code><script type="math/tex">(0\vert0)</script> is the identity operator (no <code class="MathJax_Preview">X</code><script type="math/tex">X</script>, no <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>) and <code class="MathJax_Preview">(1\vert1)</code><script type="math/tex">(1\vert1)</script> is the <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> operator (as it can be written <code class="MathJax_Preview">XZ</code><script type="math/tex">XZ</script>).
-We can also write this more formally as <code class="MathJax_Preview">(x \vert z) \leftrightarrow X^{x} Z^{z}</code><script type="math/tex">(x \vert z) \leftrightarrow X^{x} Z^{z}</script>.
-Note that from now on, we will ignore the phases arising when multiplying Pauli operators, as they don’t play any role in our formalism. For instance, we will write <code class="MathJax_Preview">Y=XZ</code><script type="math/tex">Y=XZ</script> instead of <code class="MathJax_Preview">Y=iXZ</code><script type="math/tex">Y=iXZ</script>.</p>
+We can also write this more formally as <code class="MathJax_Preview">(x \vert z) \leftrightarrow X^{x} Z^{z}</code><script type="math/tex">(x \vert z) \leftrightarrow X^{x} Z^{z}</script>.</p>
 
-<p>What’s nice with this representation is that the multiplication of Pauli elements maps to the addition (modulo 2) of two-bit words <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>. Indeed,</p>
+<p>Since Pauli elements can also have a phase (which can be <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script>, <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>, <code class="MathJax_Preview">+i</code><script type="math/tex">+i</script> or <code class="MathJax_Preview">-i</code><script type="math/tex">-i</script>), we should in principle include two more bits in our dictionary in order to represent it. While some applications do require those two bits, e.g. the <a href="https://arxiv.org/abs/quant-ph/0406196">stabilizer tableau method</a> for simulating Clifford circuits efficiently, the phase is often ignored in the context of quantum error correction. To understand why, let’s consider a quantum code characterized by a stabilizer group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> generated by some elements <code class="MathJax_Preview">\{S_i\}</code><script type="math/tex">\{S_i\}</script>. Since Pauli elements with a phase of <code class="MathJax_Preview">+i</code><script type="math/tex">+i</script> or <code class="MathJax_Preview">-i</code><script type="math/tex">-i</script> are not Hermitian (and furthermore, square to <code class="MathJax_Preview">-I</code><script type="math/tex">-I</script>), they cannot be included in the stabilizer group. Moreover, any time a stabilizer <code class="MathJax_Preview">S_i</code><script type="math/tex">S_i</script> has a phase of <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>, it’s possible to replace it by <code class="MathJax_Preview">-S_i</code><script type="math/tex">-S_i</script> without changing any property of the code. So choosing to have stabilizer generators with a phase of <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> or <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script> is a matter of convention, and the choice of <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> for every generator is often adopted. Furthermore, Pauli errors can also be considered to have a phase of <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> (in that case, the phase is global and can safely be ignored), and all the important operations considered in this post (such as commutation and anticommutation of Paulis) are phase-independent as well<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
+
+<p>One nice feature of our binary representation is that the multiplication of Pauli elements maps to the addition (modulo 2) of two-bit words <sup id="fnref:3:1"><a href="#fn:3" class="footnote">3</a></sup>. Indeed,</p>
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
 (x \vert z) + (x' \vert z') = (x+x' \vert z+z') \leftrightarrow \left( X^{x} Z^{z} \right) \left( X^{x'} Z^{z'} \right) = X^{x+x'} Z^{z+z'}
@@ -367,7 +368,7 @@ Note that from now on, we will ignore the phases arising when multiplying Pauli 
 (x \vert z) + (x' \vert z') = (x+x' \vert z+z') \leftrightarrow \left( X^{x} Z^{z} \right) \left( X^{x'} Z^{z'} \right) = X^{x+x'} Z^{z+z'}
 \end{aligned}</script>
 
-<p>We were able to commute things through in the last equality as Pauli operators commute up to a phase, which we can safely ignore.</p>
+<p>We were able to commute things through in the last equality as Pauli operators commute up to a phase, which we’re choosing to ignore here.</p>
 
 <p>For instance, <code class="MathJax_Preview">(1\vert0) + (0\vert1) = (1\vert1) \leftrightarrow XZ = Y</code><script type="math/tex">(1\vert0) + (0\vert1) = (1\vert1) \leftrightarrow XZ = Y</script>, or <code class="MathJax_Preview">(1\vert0) + (1\vert0) = (0\vert0) \leftrightarrow X^2 = I</code><script type="math/tex">(1\vert0) + (1\vert0) = (0\vert0) \leftrightarrow X^2 = I</script>.</p>
 
@@ -717,7 +718,7 @@ Each stabilizer node is then connected to the qubits in its support (with the ri
       <p>qecsim, PanQEC, PyMatching, ldpc, etc. <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:3">
-      <p>If you know a bit of abstract algebra, you will notice that our map defines an isomorphism from the Pauli group (modulo the phase) to the group <code class="MathJax_Preview">(\mathbb{Z}_2^2, +)</code><script type="math/tex">(\mathbb{Z}_2^2, +)</script> <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>If you know a bit of abstract algebra, you will notice that our map defines an isomorphism from the Pauli group (modulo the phase) to the group <code class="MathJax_Preview">(\mathbb{Z}_2^2, +)</code><script type="math/tex">(\mathbb{Z}_2^2, +)</script> <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:3:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
     </li>
     <li id="fn:4">
       <p>Thanks Alex Cliffe for suggesting this proof! <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
