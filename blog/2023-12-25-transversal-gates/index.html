@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Computing with quantum codes I: transversal gates | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Computing with quantum codes I: transversal gates" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="https://arthurpesah.me/blog/2023-12-25-transversal-gates/" />
+<meta property="og:url" content="https://arthurpesah.me/blog/2023-12-25-transversal-gates/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/transversal-gates/thumbnail.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-12-25T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/transversal-gates/thumbnail.png" />
+<meta property="twitter:title" content="Computing with quantum codes I: transversal gates" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-12-25T00:00:00+01:00","datePublished":"2023-12-25T00:00:00+01:00","description":"Research blog","headline":"Computing with quantum codes I: transversal gates","image":"https://arthurpesah.me/assets/img/blog/transversal-gates/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-12-25-transversal-gates/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-12-25-transversal-gates/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="https://arthurpesah.me/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="https://arthurpesah.me/blog/2023-12-25-transversal-gates/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+<link rel="dns-prefetch" href="https://arthurpesah.disqus.com" id="_hrefDisqus">
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-transversal-gates" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        Computing with quantum codes I: transversal gates
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2023-12-25T00:00:00+01:00">25 Dec 2023</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/thumbnail.png"
+    
+    alt="Computing with quantum codes I: transversal gates"><img src="/assets/img/blog/transversal-gates/thumbnail.png"
+    
+    alt="Computing with quantum codes I: transversal gates"></hy-img>
+
+
+
+      </div>
+      
+    
+
+    
+
+
+
+  
+
+
+  </header>
+
+  
+    <p>As we discussed in my first blog post series, quantum error correction can be roughly divided into two related objectives: 1. finding new codes and 2. doing stuff with those codes. In today’s blog post, we will finally give a go at the second question. While codes can be used as quantum memories, it is often more interesting to use them within a quantum algorithm, in which case we need to learn how to implement logical operations. The main challenge of this area is <em>fault-tolerance</em>: we don’t want our operations to propagate errors and destroy the nice error-correcting properties of our codes. One way to naturally achieve fault-tolerance is through transversal gates, and this is the topic of the current post.</p>
+
+<p>We will start by building up the edifice necessary to understand transversal gates, definition the notions of logical gates, locality-preserving operators and fault-tolerant gates. This will allow us to define transversal gates and understand why they are useful. We will then give a few examples on transversal gates, using both the surface code and the Steane code. Finally, we will study the limitations of transversal gates through the Eastin-Knill and the Bravyi-König theorem, and glimpse at how those limitations can be by-passed when considering non-transversal implementation methods.</p>
+
+<h1 id="definition-and-examples">Definition and examples</h1>
+
+<h2 id="what-is-a-logical-gate">What is a logical gate?</h2>
+
+<p>Let’s consider an <code class="MathJax_Preview">[[n,k,d]]</code><script type="math/tex">[[n,k,d]]</script> stabilizer code defined by the stabilizer group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>.
+A <strong>logical unitary gate</strong> is a unitary operator <code class="MathJax_Preview">U</code><script type="math/tex">U</script> acting on the <code class="MathJax_Preview">n</code><script type="math/tex">n</script> physical qubits of the code, that preserves its codespace <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script>, that is</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    U \vert \psi \rangle \in \mathcal{C}, \; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    U \vert \psi \rangle \in \mathcal{C}, \; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</script>
+
+<p>For instance, if we start in a state <code class="MathJax_Preview">a\vert 000\rangle + b\vert 111\rangle</code><script type="math/tex">a\vert 000\rangle + b\vert 111\rangle</script> in the codespace of the repetition code, we want our logical operation to give us another state <code class="MathJax_Preview">a'\vert 000\rangle + b'\vert 111\rangle</code><script type="math/tex">a'\vert 000\rangle + b'\vert 111\rangle</script> within the same codespace. Note that if we take our code to be a tensor product of several stabilizer codes (e.g. a tensor product of two surface codes), this definition includes multi-qubit logical gates as well (e.g. a <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> between two surface codes). Also note that logical gates in general can also include measurements, but for the purpose of this post, we will restrain ourselves to logical <em>unitary</em> gates.</p>
+
+<p>An important observation is that the set of logical unitary gates forms a group: both the product of two logical gates and the inverse of one preserve the codespace. For the inverse, we can see this by writing the unitary as a block diagonal matrix (with two blocks, one acting on the codespace and one acting on the rest of the Hilbert space) and remember that the inverse of a block diagonal matrix consists of the inverse of each block.</p>
+
+<p>Let’s now use the fact that we are dealing with stabilizer codes. By definition of the codespace of a stabilizer code, the definition above can be reformulated as</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    S U \vert \psi \rangle = U \vert \psi \rangle, \; \forall S \in \mathcal{S},\; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    S U \vert \psi \rangle = U \vert \psi \rangle, \; \forall S \in \mathcal{S},\; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</script>
+
+<p>Multiplying by <code class="MathJax_Preview">U^{\dagger}</code><script type="math/tex">U^{\dagger}</script> on both sides, this is equivalent to:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    U^{\dagger} S U \vert \psi \rangle = \vert \psi \rangle, \; \forall S \in \mathcal{S},\; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    U^{\dagger} S U \vert \psi \rangle = \vert \psi \rangle, \; \forall S \in \mathcal{S},\; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</script>
+
+<p>Or, using the fact that the inverse of a logical gate is also a logical gate:</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    U S U^{\dagger} \vert \psi \rangle = \vert \psi \rangle, \; \forall S \in \mathcal{S},\; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    U S U^{\dagger} \vert \psi \rangle = \vert \psi \rangle, \; \forall S \in \mathcal{S},\; \forall \vert \psi \rangle \in \mathcal{C}
+\end{aligned}</script>
+
+<p>In other words, logical gates turn stabilizers into stabilizers! From this point-of-view, it is tempting to redefine logical gates as operators that preserve the stabilizer group. However, this is not exactly true: while elements of the stabilizer group are by definition Pauli operators, there is no constraint for <code class="MathJax_Preview">U^{\dagger}SU</code><script type="math/tex">U^{\dagger}SU</script> to be Pauli. For instance, in the 3D color code, the transversal <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate turns Pauli <code class="MathJax_Preview">X</code><script type="math/tex">X</script> stabilizers into products of phase gates, which are (non-Pauli) stabilizers, and are therefore outside of <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>.</p>
+
+<p>Denoting the group of (both Pauli and non-Pauli) stabilizers by <code class="MathJax_Preview">\widetilde{\mathcal{S}}</code><script type="math/tex">\widetilde{\mathcal{S}}</script>, we can now give the following equivalent definition of a logical gate. A unitary operator <code class="MathJax_Preview">U</code><script type="math/tex">U</script> is a logical gate if and only if</p>
+
+<pre class="MathJax_Preview"><code>\begin{aligned}
+    USU^{\dagger} \in \widetilde{\mathcal{S}}, \; \forall S \in \mathcal{S}
+\end{aligned}</code></pre>
+<script type="math/tex; mode=display">\begin{aligned}
+    USU^{\dagger} \in \widetilde{\mathcal{S}}, \; \forall S \in \mathcal{S}
+\end{aligned}</script>
+
+<p>So whenever we introduce a new potential logical gate for a given code, the first step is always to verify that it maps Pauli stabilizers to general stabilizers<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. The second step is to check what logical operation it performs. Indeed, it is in principle possible that applying Hadamard gates on all the physical qubits ends up implementing a completely different logical gate than Hadamard. To determine the effect of a logical gate, there are two possibilities:</p>
+
+<ol>
+  <li>We check its effect on logical states. For instance, if we can prove that it maps <code class="MathJax_Preview">\vert 0\rangle_L</code><script type="math/tex">\vert 0\rangle_L</script> to <code class="MathJax_Preview">\vert +\rangle_L</code><script type="math/tex">\vert +\rangle_L</script>, and <code class="MathJax_Preview">\vert 1\rangle_L</code><script type="math/tex">\vert 1\rangle_L</script> to <code class="MathJax_Preview">\vert -\rangle_L</code><script type="math/tex">\vert -\rangle_L</script>, it means we are dealing with a logical Hadamard.</li>
+  <li>We check its effect on logical Paulis. For instance, showing that <code class="MathJax_Preview">UX_LU^{\dagger}=Z_L</code><script type="math/tex">UX_LU^{\dagger}=Z_L</script> and <code class="MathJax_Preview">UZ_LU^{\dagger}=X_L</code><script type="math/tex">UZ_LU^{\dagger}=X_L</script> also proves that <code class="MathJax_Preview">U</code><script type="math/tex">U</script> is a logical Hadamard.</li>
+</ol>
+
+<p>While we can find examples of the two methods used in the literatures, I tend to prefer the second one as the resulting proofs are often easier to visualize.</p>
+
+<p>In this context, it can be useful to memorize how the most important gates transform Pauli operators. Here are a few examples:</p>
+
+<ul>
+  <li><code class="MathJax_Preview">\texttt{H}: X \leftrightarrow Z</code><script type="math/tex">\texttt{H}: X \leftrightarrow Z</script>.</li>
+  <li><code class="MathJax_Preview">\texttt{S}: X \rightarrow Y</code><script type="math/tex">\texttt{S}: X \rightarrow Y</script> and <code class="MathJax_Preview">Z \rightarrow Z</code><script type="math/tex">Z \rightarrow Z</script></li>
+  <li><code class="MathJax_Preview">\texttt{S}^\dagger: X \rightarrow -Y</code><script type="math/tex">\texttt{S}^\dagger: X \rightarrow -Y</script> and <code class="MathJax_Preview">Z \rightarrow Z</code><script type="math/tex">Z \rightarrow Z</script></li>
+  <li><code class="MathJax_Preview">\texttt{T}: X \rightarrow e^{-i\pi/4} \texttt{SX}</code><script type="math/tex">\texttt{T}: X \rightarrow e^{-i\pi/4} \texttt{SX}</script> and <code class="MathJax_Preview">Z \rightarrow Z</code><script type="math/tex">Z \rightarrow Z</script></li>
+  <li><code class="MathJax_Preview">\texttt{T}^\dagger: X \rightarrow e^{i\pi/4} \texttt{S}^\dagger\texttt{X}</code><script type="math/tex">\texttt{T}^\dagger: X \rightarrow e^{i\pi/4} \texttt{S}^\dagger\texttt{X}</script> and <code class="MathJax_Preview">Z \rightarrow Z</code><script type="math/tex">Z \rightarrow Z</script></li>
+  <li><code class="MathJax_Preview">\texttt{CNOT}: XI \rightarrow XX,\; IX \rightarrow IX,\; ZI \rightarrow ZI</code><script type="math/tex">\texttt{CNOT}: XI \rightarrow XX,\; IX \rightarrow IX,\; ZI \rightarrow ZI</script> and <code class="MathJax_Preview">IZ \rightarrow ZZ</code><script type="math/tex">IZ \rightarrow ZZ</script> (where the first qubit is the control and the second is the target)</li>
+  <li><code class="MathJax_Preview">\texttt{CZ}: XI \rightarrow XZ,\; IX \rightarrow ZX,\; ZI \rightarrow ZI</code><script type="math/tex">\texttt{CZ}: XI \rightarrow XZ,\; IX \rightarrow ZX,\; ZI \rightarrow ZI</script> and <code class="MathJax_Preview">IZ \rightarrow IZ</code><script type="math/tex">IZ \rightarrow IZ</script></li>
+  <li><code class="MathJax_Preview">\texttt{CCZ}: XII \rightarrow X(\texttt{CZ})</code><script type="math/tex">\texttt{CCZ}: XII \rightarrow X(\texttt{CZ})</script> and <code class="MathJax_Preview">ZII \rightarrow ZII</code><script type="math/tex">ZII \rightarrow ZII</script> (and similarly when putting the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> on the two other qubits)</li>
+</ul>
+
+<h2 id="what-is-a-fault-tolerant-gate">What is a fault-tolerant gate?</h2>
+
+<p>While our definition of logical gates guarantees that the code itself is preserved, it does not guarantee that the error-correcting properties are. For instance, imagine a code defined on a square grid, with qubits as vertices, and a logical gate made of <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script>s between disjoint pairs of physical qubits. Something like this:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/fault-tolerant-example-1.png" height="300"><img src="/assets/img/blog/transversal-gates/fault-tolerant-example-1.png" height="300"></hy-img>
+
+</p>
+
+<p>Now, imagine that an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> error appears on the top-left qubit. We can understand how this error propagate by looking at the effect of <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> on it. As we saw in the previous section, <code class="MathJax_Preview">\texttt{CNOT} (XI) \texttt{CNOT}^{\dagger} = XX</code><script type="math/tex">\texttt{CNOT} (XI) \texttt{CNOT}^{\dagger} = XX</script>, or equivalently <code class="MathJax_Preview">\texttt{CNOT} (XI) = (XX) \texttt{CNOT}</code><script type="math/tex">\texttt{CNOT} (XI) = (XX) \texttt{CNOT}</script>. This can be visualized by the following circuit:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/cnot-error-propagation.png" height="150"><img src="/assets/img/blog/transversal-gates/cnot-error-propagation.png" height="150"></hy-img>
+
+</p>
+
+<p>In other words, a single <code class="MathJax_Preview">X</code><script type="math/tex">X</script> error propagates into two <code class="MathJax_Preview">X</code><script type="math/tex">X</script> errors once we have applied our logical gate. Now, let’s suppose that the distance of this code is <code class="MathJax_Preview">4</code><script type="math/tex">4</script> and that any vertical string of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> is an example of minimum-weight logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operator. It means that with only <code class="MathJax_Preview">2</code><script type="math/tex">2</script> errors present before applying the gate, we can get a logical error once the gate has been applied. In other words, the effective distance has been reduced by two.</p>
+
+<p>As a second (and even worst!) example, imagine that our <code class="MathJax_Preview">\texttt{CNOT}s</code><script type="math/tex">\texttt{CNOT}s</script> were instead acting on intersecting pairs of qubits:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/fault-tolerant-example-2.png" height="300"><img src="/assets/img/blog/transversal-gates/fault-tolerant-example-2.png" height="300"></hy-img>
+
+</p>
+
+<p>Then, a single qubit <code class="MathJax_Preview">X</code><script type="math/tex">X</script> error can propagate into <code class="MathJax_Preview">d</code><script type="math/tex">d</script> <code class="MathJax_Preview">X</code><script type="math/tex">X</script> errors and create a logical error, effectively reducing the distance to one!</p>
+
+<p>So what is a fault-tolerant logical gate? For a given family of code with a growing distance, a <strong>fault-tolerant logical gate</strong> is a gate that doesn’t reduce the effective distance (i.e. the minimum number of physical errors that creates a logical error after applying the gate) to <code class="MathJax_Preview">O(1)</code><script type="math/tex">O(1)</script> when the family is growing<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. For instance, generalizing the two examples above to families of codes of size <code class="MathJax_Preview">L \times L</code><script type="math/tex">L \times L</script>, the first gate would be considered fault-tolerant while the second one wouldn’t.</p>
+
+<p>Within the class of fault-tolerant gates, locality-preserving gates are particularly useful to consider and easier to manipulate in practice. A <strong>locality-preserving gate</strong> is a gate <code class="MathJax_Preview">U</code><script type="math/tex">U</script> that transforms small errors to small errors, that is, if <code class="MathJax_Preview">\bm{e}</code><script type="math/tex">\bm{e}</script> is a Pauli error supported on <code class="MathJax_Preview">\ell</code><script type="math/tex">\ell</script> qubits, <code class="MathJax_Preview">UeU^\dagger</code><script type="math/tex">UeU^\dagger</script> must be supported on <code class="MathJax_Preview">c \ell</code><script type="math/tex">c \ell</script> qubits, where <code class="MathJax_Preview">c=O(1)</code><script type="math/tex">c=O(1)</script>. Equivalently, a locality-preserving gate is a gate implemented via a constant depth circuit. Again, our first example is locality-preserving while the second one is not.</p>
+
+<h2 id="what-is-a-transversal-gate">What is a transversal gate?</h2>
+
+<h3 id="definition">Definition</h3>
+
+<p>The easiest examples of locality-preserving gates are the transversal gates. To understand them, let’s consider the setting where we are trying to apply a logical gate between multiple copies of a code (e.g. a CNOT between two surface code qubits). Each copy of the code is often called a <strong>code block</strong>. <strong>Transversal gates</strong> are logical gates that don’t propagate errors within each code block: one-qubit errors remain one-qubit errors on each code block, thereby preserving the distance. To guarantee this, transversal gates should never couple multiple physical qubits of the same code block. This include logical gates that can be written as a tensor product of single-qubit physical gates only, but also those made of multi-qubit gates connecting qubits of different code blocks.</p>
+
+<p>For instance, Pauli gates are transversal for all stabilizer codes, since by definition Pauli logicals can always be written as a tensor product of Pauli operators. But, as we will soon see, the gate made of <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script>s between corresponding qubits on two code blocks also implements a transversal <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> for any CSS code:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/transversal-cnot.png" height="300"><img src="/assets/img/blog/transversal-gates/transversal-cnot.png" height="300"></hy-img>
+
+</p>
+
+<h3 id="example-1-steane-code">Example 1: Steane code</h3>
+
+<p>Let’s take a look at some examples of transversal gates in codes that we know. Let’s start with the Steane code. As a reminder, the Steane code is defined on the following lattice, where qubits are on vertices, and <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizers on faces:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/steane-code-lattice.png" height="300"><img src="/assets/img/blog/transversal-gates/steane-code-lattice.png" height="300"></hy-img>
+
+</p>
+
+<p>Let’s consider the gate made of <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script> acting on every qubits. Is it a logical gate? To determine this, let’s see how it transforms stabilizers. Since <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script> transforms <code class="MathJax_Preview">X</code><script type="math/tex">X</script> into <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>, and vice-versa, it means that any plaquette stabilizer <code class="MathJax_Preview">XXXX</code><script type="math/tex">XXXX</script> will turn into <code class="MathJax_Preview">ZZZZ</code><script type="math/tex">ZZZZ</script> supported on the same plaquette, and similarly, any stabilizer <code class="MathJax_Preview">ZZZZ</code><script type="math/tex">ZZZZ</script> will turn into <code class="MathJax_Preview">XXXX</code><script type="math/tex">XXXX</script>. Since the resulting operators are stabilizers as well, it means that our gate preserves the stabilizer group! So it’s a logical gate.</p>
+
+<p>What is the effect of this logical gate? Let’s see how it transforms the logical Paulis. For that, we can pick any representative Pauli <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> logical, such as those:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/steane-code-logicals.png" height="300"><img src="/assets/img/blog/transversal-gates/steane-code-logicals.png" height="300"></hy-img>
+
+</p>
+
+<p>Since our gate turns <code class="MathJax_Preview">XXX</code><script type="math/tex">XXX</script> into <code class="MathJax_Preview">ZZZ</code><script type="math/tex">ZZZ</script> and vice-versa, it means that it exchanges <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> and is therefore a logical Hadamard!</p>
+
+<p>Can we also implement an <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate transversally? Let’s see what happens when we apply <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> to all the physical qubits. Since <code class="MathJax_Preview">\texttt{S}X\texttt{S}^\dagger=Y</code><script type="math/tex">\texttt{S}X\texttt{S}^\dagger=Y</script>, every <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette will turn into <code class="MathJax_Preview">Y^{\otimes 4}</code><script type="math/tex">Y^{\otimes 4}</script> under the action of our gate. Now, is <code class="MathJax_Preview">Y^{\otimes 4}</code><script type="math/tex">Y^{\otimes 4}</script> a stabilizer? Using <code class="MathJax_Preview">XZ=-iY</code><script type="math/tex">XZ=-iY</script>, we can see that multiplying an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquette results in the stabilizer <code class="MathJax_Preview">(-i)^{4} Y^{\otimes 4}=Y^{\otimes 4}</code><script type="math/tex">(-i)^{4} Y^{\otimes 4}=Y^{\otimes 4}</script>, so <code class="MathJax_Preview">Y^{\otimes 4}</code><script type="math/tex">Y^{\otimes 4}</script> is indeed a stabilizer. Moreover, since <code class="MathJax_Preview">\texttt{S}Z\texttt{S}^\dagger=Z</code><script type="math/tex">\texttt{S}Z\texttt{S}^\dagger=Z</script>, <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquettes are preserved. Hence, our gate preserves the codespace and is therefore a valid transversal logical gate!</p>
+
+<p>Let’s now look at the action of our gate on the logicals! For our gate to be a logical <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate, we need to prove that <code class="MathJax_Preview">\texttt{S} \bar{X} \texttt{S}^\dagger = \bar{Y}</code><script type="math/tex">\texttt{S} \bar{X} \texttt{S}^\dagger = \bar{Y}</script>. Picking the logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> representative supported on three qubits from the figure above, we can see that the gate turns <code class="MathJax_Preview">\bar{X}</code><script type="math/tex">\bar{X}</script> it <code class="MathJax_Preview">Y^{\otimes 3}</code><script type="math/tex">Y^{\otimes 3}</script>. But is <code class="MathJax_Preview">Y^{\otimes 3}</code><script type="math/tex">Y^{\otimes 3}</script> a <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> logical for our code? By definition, <code class="MathJax_Preview">\bar{Y}=i\bar{X}\bar{Z}</code><script type="math/tex">\bar{Y}=i\bar{X}\bar{Z}</script>. Multiplying the representatives of <code class="MathJax_Preview">\bar{X}</code><script type="math/tex">\bar{X}</script> and <code class="MathJax_Preview">\bar{Z}</code><script type="math/tex">\bar{Z}</script> drawn in the figure above and using <code class="MathJax_Preview">XZ=-iY</code><script type="math/tex">XZ=-iY</script> again, we get the operator <code class="MathJax_Preview">(-i)^3 Y^{\otimes 3}=i Y^{\otimes 3}</code><script type="math/tex">(-i)^3 Y^{\otimes 3}=i Y^{\otimes 3}</script>. So <code class="MathJax_Preview">\bar{Y}=i\bar{X}\bar{Z}=i^2 Y^{\otimes 3}=-Y^{\otimes 3}</code><script type="math/tex">\bar{Y}=i\bar{X}\bar{Z}=i^2 Y^{\otimes 3}=-Y^{\otimes 3}</script>, and our gates turns any <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logical into a <code class="MathJax_Preview">-Y</code><script type="math/tex">-Y</script> logical. So perhaps surprisingly, what our gate actually implements is a logical <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script>!</p>
+
+<p>To implement an actual logical <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script>, one simple solution is to instead apply <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script> everywhere. However, there exists a second solution: take a bipartition of the qubits of the Steane code, that is, divide the vertices into two colors (black and white), such that two vertices of the same color are never incident to each other through an edge:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/steane-code-partition.png" height="300"><img src="/assets/img/blog/transversal-gates/steane-code-partition.png" height="300"></hy-img>
+
+</p>
+
+<p>Since we have an odd number of qubits, one color will contain more vertices than the other. In the drawing above, there are more black vertices than white vertices. However, every plaquette contains the same number of white and black qubits. Now, let’s apply <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> to the four black qubits, and <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script> to the three white qubits. Using the same calculation techniques as above, it should be an easy exercise to show that this gate also implements a logical <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script>:</p>
+
+<p class="message"><strong>Exercise 1</strong>: Show that the following operator made of a combination of <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> and <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script> implements a logical <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate. <a href="#solution-of-the-exercise">(solution)</a></p>
+<p style="text-align:center;" class="figure message">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/steane-code-s-gate.png" height="300"><img src="/assets/img/blog/transversal-gates/steane-code-s-gate.png" height="300"></hy-img>
+
+</p>
+
+<p>The advantage of this later implementation based on a bipartition of qubits is that it generalizes well to color codes, so it will be useful when we will discuss color codes in a future post! It also shows that the transversal implementation of a logical gate is not necessarily unique.</p>
+
+<p>Since we are on a good streak, let’s go on and look at the <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate! Can we implement a <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate transversally on the Steane code? Unfortunately, the answer is no this time. For instance, try to show that using <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> on all qubits does not implement a logical gate at all:</p>
+
+<p class="message"><strong>Exercise 2</strong>: Show that any operator made of <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> and <code class="MathJax_Preview">\texttt{T}^\dagger</code><script type="math/tex">\texttt{T}^\dagger</script> on every physical qubit of the Steane code does <strong>not</strong> implement a logical gate. <a href="#solution-of-the-exercise">(solution)</a></p>
+
+<p>And this time, no combination of <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> and <code class="MathJax_Preview">\texttt{T}^\dagger</code><script type="math/tex">\texttt{T}^\dagger</script> will make things work. More generally, we will soon see that it is not possible to implement non-Clifford gates transversally on 2D codes, so this eliminates any other possibility of transversal <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate on the Steane code.</p>
+
+<p>There’s one last important gate that we can implement transversally on the Steane code: the <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> gate. As a matter of fact, <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> is transversal for any CSS code! Indeed, <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> maps <code class="MathJax_Preview">X \otimes I</code><script type="math/tex">X \otimes I</script> to <code class="MathJax_Preview">X \otimes X</code><script type="math/tex">X \otimes X</script>, <code class="MathJax_Preview">I \otimes Z</code><script type="math/tex">I \otimes Z</script> to <code class="MathJax_Preview">Z \otimes Z</code><script type="math/tex">Z \otimes Z</script>, and preserves <code class="MathJax_Preview">I \otimes X</code><script type="math/tex">I \otimes X</script> and <code class="MathJax_Preview">Z \otimes I</code><script type="math/tex">Z \otimes I</script>. So any <code class="MathJax_Preview">X</code><script type="math/tex">X</script> stabilizer <code class="MathJax_Preview">S_X</code><script type="math/tex">S_X</script> of the control code will be mapped to <code class="MathJax_Preview">S_X \otimes S_X</code><script type="math/tex">S_X \otimes S_X</script>, which stabilizes the tensor product of the two codes, and similarly for <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizers on the target code. So the transversal <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> gate preserves the stabilizer group and is therefore a valid logical gate. Moreover, it will map any logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> representative of the control code to a logical <code class="MathJax_Preview">X \otimes X</code><script type="math/tex">X \otimes X</script> representative of the two codes, and similarly for the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> logicals of the target code, thereby implementing a logical <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script>.</p>
+
+<p>However, despite its simplicity, the transversal CNOT is often too impractical when dealing with a planar architecture. Indeed, to implement it physically, it requires either putting one code block above the other or having long-range connections. Alternatively, methods based on lattice surgery or code deformation, that I will discuss in a separate blog post, only use geometrically-local operations in 2D, making it more practical on planar architectures.</p>
+
+<h3 id="example-2-surface-code">Example 2: Surface code</h3>
+
+<p>The biggest advantage of the Steane code (and more generally, color codes) is the ease with which it can implement the full Clifford group transversally. As we will now see, things gets a bit trickier with surface codes.</p>
+
+<p>Let’s start by considering an non-rotated surface code with periodic boundary conditions. We put qubits on edges, <code class="MathJax_Preview">X</code><script type="math/tex">X</script> stabilizers (red) on plaquettes and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizers (blue) on vertices:</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/surface-code-stabilizers.png"><img src="/assets/img/blog/transversal-gates/surface-code-stabilizers.png"></hy-img>
+</p>
+
+<p>As a reminder, this version of the surface code encodes two logical qubits, whose logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators correspond to the two types of non-trivial loops of the torus, in the primal and dual pictures respectively:</p>
+
+<p><hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/surface-code-x-logicals.png" style="display: block; float: left;"><img src="/assets/img/blog/transversal-gates/surface-code-x-logicals.png" style="display: block; float: left;"></hy-img>
+
+<hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/surface-code-z-logicals.png" style="display: block; float: right;"><img src="/assets/img/blog/transversal-gates/surface-code-z-logicals.png" style="display: block; float: right;"></hy-img>
+</p>
+<div style="clear: both"></div>
+
+<p>So what happens when we apply a Hadamard gate on all physical qubits of the code? It turns the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette stabilizers into <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquette operators, and the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> vertex stabilizers into <code class="MathJax_Preview">X</code><script type="math/tex">X</script> vertex operators. Since <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> plaquette and <code class="MathJax_Preview">X</code><script type="math/tex">X</script> vertex operators are not stabilizers of the surface code we are considering, the operation is <em>not</em> a logical gate according to our definition. However, that’s where we might want to loosen our definition a little bit: the code resulting from the application of <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script> everywhere is still a valid surface code, with just a different convention for which stabilizers are <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>. Since we have periodic boundary condition, this code transformation can also be seen as a simple translation by half an edge in the horizontal and vertical directions. Moreover, <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals of the initial code are turned into <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> logicals of the new code, so the operation corresponds to a logical Hadamard applied simultaneously to the two logical qubits of the toric code. So, as long as we keep track of what the stabilizers are at every instant, we are in principle allowed to modify the code when applying logical gates (particularly if the new code is just a translation or rotation of the original one).</p>
+
+<p>More care is needed when considering this operation on the planar code, in the context of a broader quantum circuit. Indeed, when using a rotated planar code, we can see the code resulting from the application of the transversal Hadamard as a rotation of the original code:</p>
+
+<p>Now, let’s imagine that we would like to apply a <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> after the Hadamard. In most proposed fault-tolerant architectures based on the surface code, CNOTs are done using code deformation or lattice surgery. And for those to work, we need <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> logicals to be aligned on all the different patches of surface code. So to recover the original code with logicals aligned as before, we need to somehow rotate the code back. This can be done either by physically moving the qubits around, which is often not feasible in the context of a 2D architecture, or by applying some operations to perform the rotation without moving qubits. This <a href="https://arxiv.org/abs/1111.4022">can be done fault-tolerantly</a> using lattice surgery on some ancilla patches, and a few SWAP gates. In summary, it is possible to implement the Hadamard gate transversally on the surface code, but on a planar architecture, this requires some lattice surgery if we want to apply logical gates afterwards.</p>
+
+<p>What about the <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate? Applying it on all physical qubits turns <code class="MathJax_Preview">X</code><script type="math/tex">X</script> stabilizers into <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> stabilizers, and preserve the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> ones. This “ZY surface code” defines a valid code, and you can check that the transversal <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> has the right effect on the logicals. However, contrary to the Hadamard case, this new code is not a simple translation or rotation of the original surface code, it is a fundamentally different code with a different set of transversal gates. For instance, it is lacking a transversal CNOT (as a non-CSS code), which is replaced by a transversal <code class="MathJax_Preview">\texttt{S} \; \texttt{CNOT} \; \texttt{S}^\dagger</code><script type="math/tex">\texttt{S} \; \texttt{CNOT} \; \texttt{S}^\dagger</script>. But applying this newly-available gate after having applied a transversal <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate would undo the <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script>, defeating the purpose of having it. I believe that a similar reasoning could be done when considering <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script>s implemented through lattice surgery. More generally, to design a complete architecture with a universal set of gates, imposing that gates preserve the codespace (potentially up to an isomorphism of the Tanner graph, like a rotation or translation of the code) is required. We therefore conclude that, contrary to the Steane code, the <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate is <strong>not</strong> available transversally on the surface code. As we will see in different posts, there are other ways to implement it, such as state injection, braiding, or fold-transversality.</p>
+
+<p>What about other gates? Similarly to the Steane code, non-Clifford gates such as <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> are not available on the surface code. Let’s now try to understand why using more general results in the field.</p>
+
+<h1 id="limitations-on-transversal-gates">Limitations on transversal gates</h1>
+
+<p>Now that we have understood how transversal gates work, let’s take a step back and try to answer the following question: given any stabilizer code, what types of gate can be implemented transversally? As we will see in this section, the answer is a resounding <em>not enough</em>. The <a href="https://arxiv.org/abs/0811.4262">Eastin-Knill theorem</a> states that no universal gate set can be fully implemented transversally, while the <a href="https://arxiv.org/abs/1206.1609">Bravyi-König theorem</a> states that the subset of gates that can be implemented transversally depends on the dimension of the code.</p>
+
+<h2 id="eastin-knill-theorem">Eastin-Knill theorem</h2>
+
+<p>Let’s start with the Eastin-Knill theorem. The statement of the theorem from the original paper is the following:</p>
+
+<p class="message"><strong>Theorem (Eastin-Knill)</strong>: For any nontrivial local-error-detecting quantum code, the set of logical unitary product operators is not universal</p>
+
+<p>Let’s try to understand what that means. First, the theorem imposes a limit on <em>logical unitary product operators</em>. For any partition of our physical qubits into <code class="MathJax_Preview">m</code><script type="math/tex">m</script> subsystems <code class="MathJax_Preview">\{ \mathcal{Q}_i \}_{1 \leq i \leq m}</code><script type="math/tex">\{ \mathcal{Q}_i \}_{1 \leq i \leq m}</script>, each of dimension <code class="MathJax_Preview">d_i</code><script type="math/tex">d_i</script>, a logical unitary product operator is a logical operator of the form <code class="MathJax_Preview">\otimes_{i=1}^m U_i</code><script type="math/tex">\otimes_{i=1}^m U_i</script> where each <code class="MathJax_Preview">U_i</code><script type="math/tex">U_i</script> acts on subsystem <code class="MathJax_Preview">\mathcal{Q}_i</code><script type="math/tex">\mathcal{Q}_i</script>. For instance, if we pick each <code class="MathJax_Preview">\mathcal{Q}_i</code><script type="math/tex">\mathcal{Q}_i</script> to contain exactly one physical qubit, those are exactly transversal operators.</p>
+
+<p>Then, any <em>local-error-detecting quantum code</em> is concerned by this theorem. The notion of locality here is induced by the partition of our physical qubits. More precisely, a local error here is an error supported on a given subsystem, and the only assumption of our code is that those errors can be detected. This is translated mathematically by the so-called Knill-Laflamme condition, stating that <code class="MathJax_Preview">P E P \propto P</code><script type="math/tex">P E P \propto P</script> for all local errors, where <code class="MathJax_Preview">P</code><script type="math/tex">P</script> is the projector into the codespace. For instance, restricting ourselves to transversal gates, any stabilizer code with a distance <code class="MathJax_Preview">d \geq 2</code><script type="math/tex">d \geq 2</script> will be concerned by this theorem.</p>
+
+<p>Finally, what is a <em>universal</em> gate set? It is a gate set that can approximate any unitary in <code class="MathJax_Preview">U(2^n)</code><script type="math/tex">U(2^n)</script> up to arbitrary precision. For instance, the set <strong>generated</strong> by the gates <code class="MathJax_Preview">\{ \texttt{H}, \texttt{CNOT}, \texttt{T} \}</code><script type="math/tex">\{ \texttt{H}, \texttt{CNOT}, \texttt{T} \}</script>, i.e. that contains all the products of those gates, is universal.</p>
+
+<p>How is the Eastin-Knill theorem proven? The main idea is to show that the group of logical unitary product operators is finite, while any universal gate set is infinite. The technical details of the proof rely on the theory of Lie groups and algebras, and would require a separate post (in preparation!) to discuss properly.</p>
+
+<p>While the application domain of this theorem is already quite large-it applies both beyond stabilizer codes and beyond transversal gates-it has been generalized even further in the literature. For instance, the same limit applies when looking at locality-preserving gates in general, rather than product operators.</p>
+
+<h2 id="bravyi-könig-theorem">Bravyi-König theorem</h2>
+
+<p>The Bravyi-König theorem states that the transversal gates (or more generally the gates implemented by a constant-depth quantum circuit) of a <code class="MathJax_Preview">D</code><script type="math/tex">D</script>-dimensional quantum code are limited to the <code class="MathJax_Preview">D</code><script type="math/tex">D</script>-th level of the Clifford hierarchy. The <code class="MathJax_Preview">n</code><script type="math/tex">n</script>-qubit <strong>Clifford hierarchy</strong> <code class="MathJax_Preview">\left(\mathcal{P}_j\right)_{j \geq 1}</code><script type="math/tex">\left(\mathcal{P}_j\right)_{j \geq 1}</script> is a family of sets of unitaries that can be defined by induction as follow:</p>
+
+<ul>
+  <li>The first element <code class="MathJax_Preview">\mathcal{P}_1</code><script type="math/tex">\mathcal{P}_1</script> is the <code class="MathJax_Preview">n</code><script type="math/tex">n</script>-qubit Pauli group.</li>
+  <li>The <code class="MathJax_Preview">j</code><script type="math/tex">j</script>-th element <code class="MathJax_Preview">\mathcal{P}_j</code><script type="math/tex">\mathcal{P}_j</script> is the set of <code class="MathJax_Preview">n</code><script type="math/tex">n</script>-qubit unitaries <code class="MathJax_Preview">U</code><script type="math/tex">U</script> such that <code class="MathJax_Preview">U \mathcal{P}_1 U^{\dagger} \subseteq \mathcal{P}_{j-1}</code><script type="math/tex">U \mathcal{P}_1 U^{\dagger} \subseteq \mathcal{P}_{j-1}</script>.</li>
+</ul>
+
+<p>For instance, <code class="MathJax_Preview">\mathcal{P}_2</code><script type="math/tex">\mathcal{P}_2</script> is the set of all unitaries such that <code class="MathJax_Preview">U \mathcal{P}_1 U^{\dagger} \subseteq \mathcal{P}_{1}</code><script type="math/tex">U \mathcal{P}_1 U^{\dagger} \subseteq \mathcal{P}_{1}</script>, or in other words, all the unitaries that preserve the Pauli group. This is known as the <strong>Clifford group</strong>, which can be generated by <code class="MathJax_Preview">\{\texttt{H}, \texttt{S}, \texttt{CNOT}\}</code><script type="math/tex">\{\texttt{H}, \texttt{S}, \texttt{CNOT}\}</script>. An important characteristic of the Clifford group is that it is not universal, and any circuit starting from the <code class="MathJax_Preview">\vert 0 \rangle</code><script type="math/tex">\vert 0 \rangle</script> state and consisting uniquely of Clifford gates can be simulated efficiently on a classical computer (using the <a href="https://arxiv.org/abs/quant-ph/0406196">stabilizer tableau formalism</a>). Universality is achieved from the next element of the Clifford hierarchy, <code class="MathJax_Preview">\mathcal{P}_3</code><script type="math/tex">\mathcal{P}_3</script>, which contains gates such as <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> and <code class="MathJax_Preview">\texttt{CCX}</code><script type="math/tex">\texttt{CCX}</script>. More generally, <code class="MathJax_Preview">\mathcal{P}_j</code><script type="math/tex">\mathcal{P}_j</script> contains <code class="MathJax_Preview">\texttt{R}_k=\begin{pmatrix} 1 &amp; 0 \\ 0 &amp; e^{2i\pi/2^{j}} \end{pmatrix}</code><script type="math/tex">% <![CDATA[
+\texttt{R}_k=\begin{pmatrix} 1 & 0 \\ 0 & e^{2i\pi/2^{j}} \end{pmatrix} %]]></script> and <code class="MathJax_Preview">\texttt{C}^{j-1} \texttt{X}</code><script type="math/tex">\texttt{C}^{j-1} \texttt{X}</script>.</p>
+
+<p>Let’s now state the theorem as originally formulated in the <a href="https://arxiv.org/abs/1206.1609">Bravyi-König paper</a>:</p>
+
+<p class="message"><strong>Theorem (Bravyi-König)</strong>: Suppose a unitary operator <code class="MathJax_Preview">U</code><script type="math/tex">U</script> implementable by a constant-depth quantum circuit preserves the codespace <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script> of a topological stabilizer code on a <code class="MathJax_Preview">D</code><script type="math/tex">D</script>-dimensional lattice, <code class="MathJax_Preview">D \geq 2</code><script type="math/tex">D \geq 2</script>. Then the restriction of <code class="MathJax_Preview">U</code><script type="math/tex">U</script> onto <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script> implements an encoded gate from the set <code class="MathJax_Preview">\mathcal{P}_D</code><script type="math/tex">\mathcal{P}_D</script>.</p>
+
+<p>Applying this theorem to 2D codes, we see that they have their transversal gates limited to the Clifford group, so no hope of finding a transversal <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate on the 2D surface or color code. This justifies the need for magic-state distillation, a method to implement a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate (or any other non-Clifford gate) using state injection (more on that in the next section)</p>
+
+<p>What about 3D codes? Those can in principle implement transversal non-Clifford gates, which is one of their key advantages. For instance, the 3D toric code has a <a href="https://arxiv.org/abs/1801.04255">transversal CCZ</a>, and the 3D color code (with open boundaries) has a <a href="https://arxiv.org/abs/1410.0069">transversal T</a>. However, you might object, doesn’t the Eastin-Knill theorem also apply to 3D codes, meaning that their transversal gate set is still not universal? That’s right! For example, the 3D toric code doesn’t have a transversal Hadamard gate.
+But as we will discuss in the next section, the key difference with the 2D case is that it is much less costly to implement a fault-tolerant <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script> than a fault-tolerant <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> non-transversally using state injection.</p>
+
+<h2 id="how-can-we-circumvent-those-limitations">How can we circumvent those limitations?</h2>
+
+<p>While those two theorems put severe restrictions on how to implement fault-tolerant gates on quantum codes, there are many ways to circumvent them! The general idea is that those theorems apply to <em>unitary</em> implementations only. So implementations involving measurements do not fall under the assumptions of Eastin-Knill and Bravyi-König!</p>
+
+<p>One example of non-transversal method to implement a logical gate is through state injection, where a certain ancilla state is coupled to our qubit, and conditional measurement is used to implement a gate on this qubit. For instance, an <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script> gate can be implemented by preparing an ancilla qubit in the <code class="MathJax_Preview">\vert+\rangle</code><script type="math/tex">\vert+\rangle</script> state and using the following circuit:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/h-injection.png" height="100"><img src="/assets/img/blog/transversal-gates/h-injection.png" height="100"></hy-img>
+
+</p>
+
+<p>So for a given code, if there exists a method to prepare it in the logical <code class="MathJax_Preview">\vert+\rangle_L</code><script type="math/tex">\vert+\rangle_L</script> state (which is often the case, just exchange <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizers when preparing the state) and to implement a logical <code class="MathJax_Preview">\texttt{CZ}</code><script type="math/tex">\texttt{CZ}</script> gate, then it’s possible to implement the Hadamard gate as well. It is for instance the case of the 3D toric code, which has a transversal <code class="MathJax_Preview">\texttt{CZ}</code><script type="math/tex">\texttt{CZ}</script> and <code class="MathJax_Preview">\texttt{CCZ}</code><script type="math/tex">\texttt{CCZ}</script> but no transversal <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script>. Using Hadamard state injection allows to get a universal logical gate set on this code.</p>
+
+<p>A more common example of state injection is magic state distillation, where an approximation of the state <code class="MathJax_Preview">\texttt{T} \vert + \rangle_L</code><script type="math/tex">\texttt{T} \vert + \rangle_L</script> (a so-called <em>magic state</em>) is prepared and injected onto a code using the following circuit</p>
+
+<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/magic-state-distillation.png" alt=""><img src="/assets/img/blog/intro-qec/magic-state-distillation.png" alt=""></hy-img>
+</p>
+
+<p>This results in a <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate being applied to the code. Magic state distillation is for instance the preferred method to implement the <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate on the surface code.</p>
+
+<p>Another method to implement logical gates fault-tolerantly is code switching, where measurements are used to switch between two codes with different sets of transversal gates, while preserving the logical information. For instance, code switching between the 2D and 3D color code allows to implement both the <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> gate (using the 3D color code) and the <code class="MathJax_Preview">\texttt{H}</code><script type="math/tex">\texttt{H}</script> gate (using the 2D color code), which make up a universal gate set when adding <code class="MathJax_Preview">\texttt{CNOT}</code><script type="math/tex">\texttt{CNOT}</script> (implementable on both codes).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post, we looked at the definition of logical gates—operations that preserve the codespace—, fault-tolerant gates—operations that don’t propagate errors uncontrollably—, and transversal gates—operations that don’t propagate errors at all within a codeblock. After studying proof techniques to show that a gate is a logical gate, we considered a few examples of transversal gates in codes that you know. In particular, we showed that the Steane code can implement the full Clifford group transversally, while the surface code only has the Hadamard gate available (modulo a rotation of the code). Finally, we looked at general limitations on transversal gates through the Eastin-Knill and the Bravyi-König theorem. Due to those limitations, we discussed how many other methods are available to circumvent those theorems and implement logical gates fault-tolerantly. Therefore, there is much more to say about logical gates and I hope to continue this series with topics such as lattice surgery, fold-transversality, braiding, code switching, etc.</p>
+
+<p>However, despite this abundance of more complicated techniques to implement logical gates, research in transversal gates is still very much active and many open question remain to be answered. In particular, with the recent rise of new qubit architectures which are not constrained by locality (such as <a href="https://arxiv.org/abs/2308.08648">Rydberg atom arrays</a>, <a href="https://www.riverlane.com/blog/qec23-six-key-takeaways-on-the-state-of-quantum-error-correction">the star of QEC 2023</a>), and of <a href="https://arxiv.org/abs/2111.03654">new low-density parity-check (LDPC) codes</a> which exploit this non-locality to drastically improve the (asymptotic) qubit overhead of quantum codes, transversal gates are becoming popular again. For instance, implementing a CNOT transversally by moving qubits that are far away close to each other could be less costly than performing lattice surgery (which involves the use some ancilla patches). But all the transversal gates of those LDPC codes have very much not been figured out. Only recently have the <a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=49-A-XQAAAAJ&amp;sortby=pubdate&amp;citation_for_view=49-A-XQAAAAJ:mvPsJ3kp5DgC">first codes with a constant rate and some transversal non-Clifford gates</a> been found. Finding non-Clifford transversal gates on good LDPC codes (i.e. with a constant rate AND a linear distance) with extensive addressability (i.e. where logical gates could be implemented on all logical qubits, or pairs of logical qubits, individually) could result in very low-overhead fault-tolerant architectures.</p>
+
+<h2 id="solution-of-the-exercise">Solution of the exercise</h2>
+
+<p class="message"><strong>Exercise 1</strong>: Show that the following operator made of a combination of <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> and <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script> implements a logical <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate. <a href="#solution-of-the-exercise">(solution)</a></p>
+<p style="text-align:center;" class="figure message">
+    <hy-img root-margin="511px" src="/assets/img/blog/transversal-gates/steane-code-s-gate.png" height="250"><img src="/assets/img/blog/transversal-gates/steane-code-s-gate.png" height="250"></hy-img>
+
+</p>
+<p class="message"><strong>Correction</strong>: Let’s start by showing that this operator preserves the stabilizer group. Since both <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> and <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script> preserve <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>, we just need to look at the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquettes. We note that each plaquette has exactly two <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> and two <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script> applied to it.
+So the gate transforms <code class="MathJax_Preview">XXXX</code><script type="math/tex">XXXX</script> into <code class="MathJax_Preview">YY(-Y)(-Y)=YYYY</code><script type="math/tex">YY(-Y)(-Y)=YYYY</script>, which is a stabilizer (as we proved at the beginning of the section). This means that the gate preserves the stabilizer group. We now need to study its logical action. Since it preserves <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators, any logical <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> representative is preserved. Let’s now pick a logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> representative, such as the one supported on the three bottom qubits of the triangle. Since it contains a single <code class="MathJax_Preview">\texttt{S}^\dagger</code><script type="math/tex">\texttt{S}^\dagger</script>, it transforms <code class="MathJax_Preview">XXX</code><script type="math/tex">XXX</script> into <code class="MathJax_Preview">-YYY</code><script type="math/tex">-YYY</script>, which is the <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> logical of the code (as we also saw at the beginning of the section). Therefore, we are indeed dealing with a logical <code class="MathJax_Preview">\texttt{S}</code><script type="math/tex">\texttt{S}</script> gate.</p>
+
+<p class="message"><strong>Exercise 2</strong>: Show that any operator made of <code class="MathJax_Preview">\texttt{T}</code><script type="math/tex">\texttt{T}</script> and <code class="MathJax_Preview">\texttt{T}^\dagger</code><script type="math/tex">\texttt{T}^\dagger</script> on every physical qubit of the Steane code does <strong>not</strong> implement a logical gate. <a href="#solution-of-the-exercise">(solution)</a></p>
+<p class="message"><strong>Correction</strong>: We can show that such operator doesn’t turn <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquettes into stabilizers. Indeed, applying it to an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette <code class="MathJax_Preview">P</code><script type="math/tex">P</script> gives a combination of <code class="MathJax_Preview">SX</code><script type="math/tex">SX</script> and <code class="MathJax_Preview">S^\dagger X</code><script type="math/tex">S^\dagger X</script> with some phase factors. Let’s call this new operator <code class="MathJax_Preview">U_P</code><script type="math/tex">U_P</script>. For it to be a stabilizer, it needs to turn Pauli stabilizers into stabilizers. Let’s pick an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette stabilizer <code class="MathJax_Preview">P'</code><script type="math/tex">P'</script> adjacent to <code class="MathJax_Preview">P</code><script type="math/tex">P</script>. We can see that <code class="MathJax_Preview">U_P</code><script type="math/tex">U_P</script> intersect with <code class="MathJax_Preview">P'</code><script type="math/tex">P'</script> on exactly two qubits, turning it into a combination of <code class="MathJax_Preview">X</code><script type="math/tex">X</script>s (where it doesn’t intersect) and <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> or <code class="MathJax_Preview">-Y</code><script type="math/tex">-Y</script> where it intersects. This operator made of both <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> on a plaquette is clearly not a stabilizer, meaning that <code class="MathJax_Preview">U_P</code><script type="math/tex">U_P</script> is not a stabilizer, meaning that the initial gate is not a logical gate.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>In practice, if <code class="MathJax_Preview">U^{\dagger}SU</code><script type="math/tex">U^{\dagger}SU</script> is not a Pauli, it is often more involved to show that it’s a stabilizer. The most general method, that you find in <a href="https://arxiv.org/abs/1408.1720">many</a> <a href="https://arxiv.org/abs/1801.04255">papers</a>, is to explicitly write the states of the codespace and show that it stabilizes them. However, my favorite method is to show that <code class="MathJax_Preview">U^{\dagger}SU</code><script type="math/tex">U^{\dagger}SU</script> is itself a logical gate, acting as the identity (i.e. mapping <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> to <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> to <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script>). To show that <code class="MathJax_Preview">U^{\dagger}SU</code><script type="math/tex">U^{\dagger}SU</script> is a logical gate, you either show that it maps Pauli stabilizers to Pauli stabilizers (which is the case in all the situations I’ve encountered), or you recursively continue this process until the operator maps Pauli stabilizers to Pauli stabilizers. We will revise this and look at some explicit examples when talking about 3D codes in a future post, so don’t dwell on that if you find this method a bit abstract at the moment. All our examples of logical gate in this post will map Paulis to Paulis. <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>We can find many definitions (as well as absence of definitions) of fault-tolerance in the literature. One of the most formal and general ones is due to Gottesman and can be found <a href="https://arxiv.org/pdf/0904.2557.pdf">here</a> (Sec. 4.2). However, in practice, not reducing the distance to a constant seems to be a good effective definition that is implied in many papers. <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2020. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing. PhD student at UCL (London)
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/writing/"
+          class="sidebar-nav-item"
+          
+        >
+          Other writings
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/animations/"
+          class="sidebar-nav-item"
+          
+        >
+          Animations
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'UA-207151706-1', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementsByTagName('hy-push-state')[0];
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
