@@ -482,32 +482,15 @@ npm <span class="nb">install </span>uglify <span class="nt">--save-dev</span>
   
 
   
-  <script>!function(w, d) {
-    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K1GWGLHP0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-    /**/
-      ga('create', 'G-3K1GWGLHP0', 'auto');
-    /**/
-
-    var pushStateEl = d.getElementsByTagName('hy-push-state')[0];
-    var timeoutId;
-    pushStateEl.addEventListener('hy-push-state-load', function() {
-      w.clearTimeout(timeoutId);
-      timeoutId = w.setTimeout(function() {
-        ga('set', 'page', w.location.pathname);
-        ga('send', 'pageview');
-      }, 500);
-    });
-
-    d.addEventListener('hy--cookies-ok', function () {
-      w.ga(function(tracker) {
-        w.ga("set", "anonymizeIp", undefined);
-        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
-      });
-    });
-
-    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
-  }(window, document);</script>
+    gtag('config', 'G-3K1GWGLHP0');
+  </script>
 
 
 
