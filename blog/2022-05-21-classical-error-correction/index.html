@@ -49,12 +49,12 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:site_name" content="Arthur Pesah" />
 <meta property="og:image" content="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-05-21T00:00:00+02:00" />
+<meta property="article:published_time" content="2022-05-21T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" />
 <meta property="twitter:title" content="All you need to know about classical error correction" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2022-05-21T00:00:00+02:00","datePublished":"2022-05-21T00:00:00+02:00","description":"Research blog","headline":"All you need to know about classical error correction","image":"https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2022-05-21T00:00:00+01:00","datePublished":"2022-05-21T00:00:00+01:00","description":"Research blog","headline":"All you need to know about classical error correction","image":"https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -228,7 +228,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
     <p class="post-date heading">
       
-      <time datetime="2022-05-21T00:00:00+02:00">21 May 2022</time>
+      <time datetime="2022-05-21T00:00:00+01:00">21 May 2022</time>
       
       
       
@@ -588,12 +588,12 @@ A code that encodes <code class="MathJax_Preview">k</code><script type="math/tex
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
     a + b + d + z_1 = 0 \\
-    a + b + c + z_2 = 0 \\
+    a + c + d + z_2 = 0 \\
     b + c + d + z_3 = 0
 \end{aligned}</code></pre>
 <script type="math/tex; mode=display">\begin{aligned}
     a + b + d + z_1 = 0 \\
-    a + b + c + z_2 = 0 \\
+    a + c + d + z_2 = 0 \\
     b + c + d + z_3 = 0
 \end{aligned}</script>
 
@@ -663,12 +663,12 @@ A code that encodes <code class="MathJax_Preview">k</code><script type="math/tex
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
     a + b + d + z_1 = s_1 \\
-    a + b + c + z_2 = s_2 \\
+    a + c + d + z_2 = s_2 \\
     b + c + d + z_3 = s_3
 \end{aligned}</code></pre>
 <script type="math/tex; mode=display">\begin{aligned}
     a + b + d + z_1 = s_1 \\
-    a + b + c + z_2 = s_2 \\
+    a + c + d + z_2 = s_2 \\
     b + c + d + z_3 = s_3
 \end{aligned}</script>
 
@@ -693,10 +693,10 @@ The following table shows the bit we choose to correct for each of the 8 possibl
     <tr>
       <td style="text-align: center">Correction</td>
       <td style="text-align: center"><code class="MathJax_Preview">\emptyset</code><script type="math/tex">\emptyset</script></td>
-      <td style="text-align: center"><code class="MathJax_Preview">z_1</code><script type="math/tex">z_1</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">z_3</code><script type="math/tex">z_3</script></td>
       <td style="text-align: center"><code class="MathJax_Preview">z_2</code><script type="math/tex">z_2</script></td>
       <td style="text-align: center"><code class="MathJax_Preview">c</code><script type="math/tex">c</script></td>
-      <td style="text-align: center"><code class="MathJax_Preview">z_3</code><script type="math/tex">z_3</script></td>
+      <td style="text-align: center"><code class="MathJax_Preview">z_1</code><script type="math/tex">z_1</script></td>
       <td style="text-align: center"><code class="MathJax_Preview">b</code><script type="math/tex">b</script></td>
       <td style="text-align: center"><code class="MathJax_Preview">a</code><script type="math/tex">a</script></td>
       <td style="text-align: center"><code class="MathJax_Preview">d</code><script type="math/tex">d</script></td>
