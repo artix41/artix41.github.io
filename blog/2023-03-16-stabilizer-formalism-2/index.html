@@ -309,8 +309,7 @@ Remember that the number of logical qubits is given by the logarithm of the dime
 <p>Relabelling <code class="MathJax_Preview">\vert a_1\rangle</code><script type="math/tex">\vert a_1\rangle</script> as <code class="MathJax_Preview">\vert 00\rangle_L</code><script type="math/tex">\vert 00\rangle_L</script>, <code class="MathJax_Preview">\vert a_2\rangle</code><script type="math/tex">\vert a_2\rangle</script> as <code class="MathJax_Preview">\vert 01\rangle_L</code><script type="math/tex">\vert 01\rangle_L</script>, etc. shows that the space corresponds to a two-qubit space.</p>
 
 <p>So what we really need to compute is the dimension of <code class="MathJax_Preview">\mathcal{C}</code><script type="math/tex">\mathcal{C}</script> for a stabilizer code.
-Let <code class="MathJax_Preview">n</code><script type="math/tex">n</script> denote the number of physical qubits of our code, and <code class="MathJax_Preview">m</code><script type="math/tex">m</script> the number of generators of the stabilizer group (i.e. there are <code class="MathJax_Preview">m</code><script type="math/tex">m</script> independent elements whose products generate the whole group).
-The dimension of the physical Hilbert space is <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script>, and each constraint <code class="MathJax_Preview">S_i \vert \psi \rangle = \vert \psi \rangle</code><script type="math/tex">S_i \vert \psi \rangle = \vert \psi \rangle</script> divides this dimension by two. Indeed, each <code class="MathJax_Preview">S_i</code><script type="math/tex">S_i</script> has two eigenvalues with the same multiplicity, <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> and <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>, dividing the physical Hilbert space into two eigenspaces of equal dimension. Therefore, we have</p>
+Let <code class="MathJax_Preview">n</code><script type="math/tex">n</script> denote the number of physical qubits of our code, and <code class="MathJax_Preview">m</code><script type="math/tex">m</script> the number of generators of the stabilizer group (i.e. there are <code class="MathJax_Preview">m</code><script type="math/tex">m</script> independent elements whose products generate the whole group). The dimension of the codespace is then given by</p>
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
 \text{dim}(\mathcal{C})=2^{n-m}
@@ -319,8 +318,16 @@ The dimension of the physical Hilbert space is <code class="MathJax_Preview">2^n
 \text{dim}(\mathcal{C})=2^{n-m}
 \end{aligned}</script>
 
-<p>and the number of logical qubits is <code class="MathJax_Preview">k=n-m</code><script type="math/tex">k=n-m</script>.
-This should remind you of classical codes, where the same formula applies when <code class="MathJax_Preview">m</code><script type="math/tex">m</script> is the number of independent parity checks.</p>
+<p>and the number of logical qubits is therefore <code class="MathJax_Preview">k=n-m</code><script type="math/tex">k=n-m</script>. This should remind you of classical codes, where the same formula applies when <code class="MathJax_Preview">m</code><script type="math/tex">m</script> is the number of independent parity checks.</p>
+
+<p>Intuitively, the argument goes as follow: the dimension of the physical Hilbert space is <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script>, and each independent constraint <code class="MathJax_Preview">S_i \vert \psi \rangle = \vert \psi \rangle</code><script type="math/tex">S_i \vert \psi \rangle = \vert \psi \rangle</script> divides this dimension by two. For instance, let’s start with the full space and consider an arbitrary stabilizer <code class="MathJax_Preview">S_i</code><script type="math/tex">S_i</script>. It has two eigenvalues, <code class="MathJax_Preview">+1</code><script type="math/tex">+1</script> and <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>, with the same multiplicity (since the trace of a Pauli operator is always zero), dividing the physical Hilbert space into two eigenspaces of equal dimension. We then need to show that the next stabilizer we choose divides this new space into two as well, etc. Let’s prove this rigorously through the following exercise.</p>
+
+<p class="message"><strong>Exercise 1</strong>: Let <code class="MathJax_Preview">\Pi_{\mathcal{C}}=\frac{1}{2^m} (1+S_1)\ldots (I+S_m)</code><script type="math/tex">\Pi_{\mathcal{C}}=\frac{1}{2^m} (1+S_1)\ldots (I+S_m)</script> <br />
+<strong>(a)</strong> Show that <code class="MathJax_Preview">\Pi_{\mathcal{C}}</code><script type="math/tex">\Pi_{\mathcal{C}}</script> is a projector onto the codespace, that is, <code class="MathJax_Preview">\Pi_{\mathcal{C}} |\psi\rangle=|\psi\rangle</code><script type="math/tex">\Pi_{\mathcal{C}} |\psi\rangle=|\psi\rangle</script> if <code class="MathJax_Preview">|\psi\rangle \in \mathcal{C}</code><script type="math/tex">|\psi\rangle \in \mathcal{C}</script>, and <code class="MathJax_Preview">\Pi_{\mathcal{C}} |\psi\rangle=0</code><script type="math/tex">\Pi_{\mathcal{C}} |\psi\rangle=0</script> if <code class="MathJax_Preview">|\psi\rangle \in \mathcal{C}^\perp</code><script type="math/tex">|\psi\rangle \in \mathcal{C}^\perp</script>. <br />
+<strong>(b)</strong> Show that we can rewrite this projector as <code class="MathJax_Preview">\Pi_{\mathcal{C}}=\frac{1}{2^m}\sum_{S \in \mathcal{S}} S</code><script type="math/tex">\Pi_{\mathcal{C}}=\frac{1}{2^m}\sum_{S \in \mathcal{S}} S</script>, where <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> is the full stabilizer group. <br />
+<strong>(c)</strong> Show that <code class="MathJax_Preview">\text{Tr}[\Pi_\mathcal{C}]=\text{dim}(\mathcal{C})</code><script type="math/tex">\text{Tr}[\Pi_\mathcal{C}]=\text{dim}(\mathcal{C})</script> <br />
+<strong>(d)</strong> Deduce that <code class="MathJax_Preview">\text{dim}(\mathcal{C})=2^{n-m}</code><script type="math/tex">\text{dim}(\mathcal{C})=2^{n-m}</script> <br />
+<a href="#solution-of-the-exercises">(solution)</a></p>
 
 <p>Let’s apply this formula to the Steane code. As a reminder, the Steane code is a <code class="MathJax_Preview">7</code><script type="math/tex">7</script>-qubit code defined on the following lattice, such that each face (also called <em>plaquette</em>) supports an <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> stabilizer generator:</p>
 
@@ -346,7 +353,7 @@ For instance, a logical Hadamard maps the logical zero state <code class="MathJa
 
 <p>Note that this is precisely the definition of the <strong>normalizer</strong> of the group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>, denoted <code class="MathJax_Preview">\mathcal{N}(\mathcal{S})</code><script type="math/tex">\mathcal{N}(\mathcal{S})</script>, and you will often find logical gates defined in the literature as elements of the normalizer of the stabilizer group. This proposition explains why those two definitions are equivalent, and proving it is a cute little exercise that I encourage you to try on your own before reading the solution at the end of this post.</p>
 
-<p class="message"><strong>Exercise 1</strong>: Prove Proposition 1 <a href="#solution-of-the-exercises">(solution)</a></p>
+<p class="message"><strong>Exercise 2</strong>: Prove Proposition 1 <a href="#solution-of-the-exercises">(solution)</a></p>
 
 <p>Let’s apply this to the Steane code. For instance, let’s consider the operator <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> consisting of applying a Hadamard gate on all the physical qubits:</p>
 
@@ -378,7 +385,7 @@ H_L S^X_r H_L
 <p>Note that we haven’t shown that <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> actually corresponds to a logical Hadamard, i.e. that it maps <code class="MathJax_Preview">\vert \overline{0} \rangle</code><script type="math/tex">\vert \overline{0} \rangle</script> to <code class="MathJax_Preview">\vert \overline{+} \rangle</code><script type="math/tex">\vert \overline{+} \rangle</script> and <code class="MathJax_Preview">\vert \overline{1} \rangle</code><script type="math/tex">\vert \overline{1} \rangle</script> to <code class="MathJax_Preview">\vert \overline{-} \rangle</code><script type="math/tex">\vert \overline{-} \rangle</script>. The easiest way to show that is by proving that <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> maps the logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operator to the logical <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operator, and vice-versa.
 The next step is therefore to get a grasp of the Pauli logical operators. But before that, feel free to try the following exercise to check your understanding of logical gates:</p>
 
-<p class="message"><strong>Exercise 2</strong>: Show that <code class="MathJax_Preview">S_L=S^{\otimes 7}</code><script type="math/tex">S_L=S^{\otimes 7}</script> is a logical gate <a href="#solution-of-the-exercises">(solution)</a></p>
+<p class="message"><strong>Exercise 3</strong>: Show that <code class="MathJax_Preview">S_L=S^{\otimes 7}</code><script type="math/tex">S_L=S^{\otimes 7}</script> is a logical gate <a href="#solution-of-the-exercises">(solution)</a></p>
 
 <h2 id="pauli-logicals">Pauli logicals</h2>
 
@@ -415,7 +422,7 @@ d = \min_{L \in \mathcal{C}(\mathcal{S}) \backslash \mathcal{S}} |L|
 
 <p>Therefore, as it is usually done with stabilizer codes, let’s <strong>define</strong> <code class="MathJax_Preview">\vert 0 \rangle_L</code><script type="math/tex">\vert 0 \rangle_L</script> and <code class="MathJax_Preview">\vert 1 \rangle_L</code><script type="math/tex">\vert 1 \rangle_L</script> as the two eigenstates of <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script>, and <code class="MathJax_Preview">\vert + \rangle_L</code><script type="math/tex">\vert + \rangle_L</script> and <code class="MathJax_Preview">\vert - \rangle_L</code><script type="math/tex">\vert - \rangle_L</script> as the two eigenstates of <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script>. This is a valid choice since <code class="MathJax_Preview">X_L</code><script type="math/tex">X_L</script> and <code class="MathJax_Preview">Z_L</code><script type="math/tex">Z_L</script> anticommute, and this also fixes the logical <code class="MathJax_Preview">Y</code><script type="math/tex">Y</script> operator as <code class="MathJax_Preview">Y_L=X_LZ_L</code><script type="math/tex">Y_L=X_LZ_L</script>. All the other logical gates are also fixed by how they transform those Pauli operators. For instance, you are now ready to prove that the logical gate <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script> actually acts as a logical Hadamard gate.</p>
 
-<p class="message"><strong>Exercise 3</strong>: Show that <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> acts as a logical Hadamard gate <a href="#solution-of-exercises">(solution)</a><br />
+<p class="message"><strong>Exercise 4</strong>: Show that <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> acts as a logical Hadamard gate <a href="#solution-of-exercises">(solution)</a><br />
 <em>(<strong>Hint</strong>:  show that <code class="MathJax_Preview">H_L X_L H_L=Z_L</code><script type="math/tex">H_L X_L H_L=Z_L</script> and <code class="MathJax_Preview">H_L Z_L H_L=X_L</code><script type="math/tex">H_L Z_L H_L=X_L</script>)</em></p>
 
 <h2 id="logical-cosets">Logical cosets</h2>
@@ -456,7 +463,7 @@ In other words, a coset is a set of equivalent logicals.
 Any element <code class="MathJax_Preview">P \in \bar{L}</code><script type="math/tex">P \in \bar{L}</script> is called a <strong>representative</strong> of the coset <code class="MathJax_Preview">\bar{L}</code><script type="math/tex">\bar{L}</script>.
 For instance, any of the three <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals of the figure above are representative of the coset <code class="MathJax_Preview">\bar{X}</code><script type="math/tex">\bar{X}</script> of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals. Note that since the Steane code has only one qubit, all the <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals are equivalent and there is only one coset of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> logicals.</p>
 
-<p>Let’s remember a few important properties of equivalence classes. First of all, they <strong>partition</strong> the set of logical operators, that is, they are all disjoint (i.e. have an empty intersection) and their union is the whole set. In the case of the Steane code, this can be written<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>:</p>
+<p>Let’s remember a few important properties of equivalence classes. First of all, they <strong>partition</strong> the set of logical operators, that is, they are all disjoint (i.e. have an empty intersection) and their union is the whole set. In the case of the Steane code, this can be written[^2]:</p>
 
 <pre class="MathJax_Preview"><code>\begin{aligned}
 \mathcal{L}=\bar{I} \cup \bar{X} \cup \bar{Y} \cup \bar{Z}
@@ -479,7 +486,21 @@ For instance, any of the three <code class="MathJax_Preview">X</code><script typ
 
 <h2 id="solution-of-the-exercises">Solution of the exercises</h2>
 
-<p class="message"><strong>Exercise 1</strong>: Prove that a unitary <code class="MathJax_Preview">L</code><script type="math/tex">L</script> is a logical gate if and only if it maps the stabilizer group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> to itself, i.e.
+<p class="message"><strong>Exercise 1</strong>: Let <code class="MathJax_Preview">\Pi_{\mathcal{C}}=\frac{1}{2^m} (I+S_1)\ldots (I+S_m)</code><script type="math/tex">\Pi_{\mathcal{C}}=\frac{1}{2^m} (I+S_1)\ldots (I+S_m)</script> <br />
+<strong>(a)</strong> Show that <code class="MathJax_Preview">\Pi_{\mathcal{C}}</code><script type="math/tex">\Pi_{\mathcal{C}}</script> is a projector onto the codespace, that is, <code class="MathJax_Preview">\Pi_{\mathcal{C}} |\psi\rangle=|\psi\rangle</code><script type="math/tex">\Pi_{\mathcal{C}} |\psi\rangle=|\psi\rangle</script> if <code class="MathJax_Preview">|\psi\rangle \in \mathcal{C}</code><script type="math/tex">|\psi\rangle \in \mathcal{C}</script>, and <code class="MathJax_Preview">\Pi_{\mathcal{C}} |\psi\rangle=0</code><script type="math/tex">\Pi_{\mathcal{C}} |\psi\rangle=0</script> if <code class="MathJax_Preview">|\psi\rangle \in \mathcal{C}^\perp</code><script type="math/tex">|\psi\rangle \in \mathcal{C}^\perp</script>. <br />
+<strong>(b)</strong> Show that we can rewrite this projector as <code class="MathJax_Preview">\Pi_{\mathcal{C}}=\frac{1}{2^m}\sum_{S \in \mathcal{S}} S</code><script type="math/tex">\Pi_{\mathcal{C}}=\frac{1}{2^m}\sum_{S \in \mathcal{S}} S</script>, where <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> is the full stabilizer group. <br />
+<strong>(c)</strong> Show that <code class="MathJax_Preview">\text{Tr}[\Pi_\mathcal{C}]=\text{dim}(\mathcal{C})</code><script type="math/tex">\text{Tr}[\Pi_\mathcal{C}]=\text{dim}(\mathcal{C})</script> <br />
+<strong>(d)</strong> Deduce that <code class="MathJax_Preview">\text{dim}(\mathcal{C})=2^{n-m}</code><script type="math/tex">\text{dim}(\mathcal{C})=2^{n-m}</script>
+<br /><br />
+<strong>Correction</strong>:
+<strong>(a)</strong> Let’s show that each operator <code class="MathJax_Preview">\frac{1}{2}(I+S_i)</code><script type="math/tex">\frac{1}{2}(I+S_i)</script> is a projector onto the space stabilized by <code class="MathJax_Preview">S_i</code><script type="math/tex">S_i</script>. If <code class="MathJax_Preview">|\psi\rangle</code><script type="math/tex">|\psi\rangle</script> is stabilized by <code class="MathJax_Preview">S_i</code><script type="math/tex">S_i</script>, we have <code class="MathJax_Preview">\frac{1}{2}(I+S_i)|\psi\rangle=\frac{1}{2}|\psi\rangle+\frac{1}{2}S_i|\psi\rangle=\frac{1}{2}|\psi\rangle+\frac{1}{2}|\psi\rangle=|\psi\rangle</code><script type="math/tex">\frac{1}{2}(I+S_i)|\psi\rangle=\frac{1}{2}|\psi\rangle+\frac{1}{2}S_i|\psi\rangle=\frac{1}{2}|\psi\rangle+\frac{1}{2}|\psi\rangle=|\psi\rangle</script>. If <code class="MathJax_Preview">|\psi\rangle</code><script type="math/tex">|\psi\rangle</script> is in the orthogonal complement of this space, it means that <code class="MathJax_Preview">S_i|\psi\rangle=-|\psi\rangle</code><script type="math/tex">S_i|\psi\rangle=-|\psi\rangle</script>, and therefore <code class="MathJax_Preview">\frac{1}{2}(I+S_i)|\psi\rangle=\frac{1}{2}|\psi\rangle+\frac{1}{2}S_i|\psi\rangle=\frac{1}{2}|\psi\rangle-\frac{1}{2}|\psi\rangle=0</code><script type="math/tex">\frac{1}{2}(I+S_i)|\psi\rangle=\frac{1}{2}|\psi\rangle+\frac{1}{2}S_i|\psi\rangle=\frac{1}{2}|\psi\rangle-\frac{1}{2}|\psi\rangle=0</script>. The product of those operators is therefore a projector onto the space stabilized by all the stabilizers. <br />
+<strong>(b)</strong> There are exactly <code class="MathJax_Preview">2^m</code><script type="math/tex">2^m</script> elements in the group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script>, each defined by the choice of the generators to include in the stabilizers. This is due to the independence of the generators, meaning that their products always defines a new stabilizer. When developing the expression of <code class="MathJax_Preview">\Pi_\mathcal{C}</code><script type="math/tex">\Pi_\mathcal{C}</script>, we therefore get all the elements of the stabilizer group exactly once in the sum. <br />
+<strong>(c)</strong> The eigenvalues of <code class="MathJax_Preview">\Pi_{\mathcal{C}}</code><script type="math/tex">\Pi_{\mathcal{C}}</script> are <code class="MathJax_Preview">1</code><script type="math/tex">1</script> and <code class="MathJax_Preview">0</code><script type="math/tex">0</script>, with the multiplicity of <code class="MathJax_Preview">1</code><script type="math/tex">1</script> corresponding to the dimension of the codespace (since <code class="MathJax_Preview">\Pi_{\mathcal{C}}</code><script type="math/tex">\Pi_{\mathcal{C}}</script> projects onto the codespace). The trace is therefore exactly this dimension. <br />
+<strong>(d)</strong> Taking the trace on both sides, we get <code class="MathJax_Preview">\text{dim}(\mathcal{C})=\frac{1}{2^m}\sum_{S \in \mathcal{S}} \text{Tr}[S]</code><script type="math/tex">\text{dim}(\mathcal{C})=\frac{1}{2^m}\sum_{S \in \mathcal{S}} \text{Tr}[S]</script>. Since all stabilizers are Paulis, their trace is zero except for the identity element, for which it is <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script> (the total dimension of the space). Therefore, the sum is equal to <code class="MathJax_Preview">2^n</code><script type="math/tex">2^n</script> and we recover the desired formula.
+<br />
+<a href="#logical-gates">(Back to section)</a></p>
+
+<p class="message"><strong>Exercise 2</strong>: Prove that a unitary <code class="MathJax_Preview">L</code><script type="math/tex">L</script> is a logical gate if and only if it maps the stabilizer group <code class="MathJax_Preview">\mathcal{S}</code><script type="math/tex">\mathcal{S}</script> to itself, i.e.
 <code class="MathJax_Preview">L^{\dagger} SL \in \mathcal{S}</code><script type="math/tex">L^{\dagger} SL \in \mathcal{S}</script> for all <code class="MathJax_Preview">S \in \mathcal{S}</code><script type="math/tex">S \in \mathcal{S}</script>.
 <br /><br />
 <strong>Correction</strong>: For the first direction, let’s suppose that <code class="MathJax_Preview">L</code><script type="math/tex">L</script> is a logical gate, i.e. <code class="MathJax_Preview">L</code><script type="math/tex">L</script> maps the codespace to itself.
@@ -488,7 +509,7 @@ For the other direction, let’s suppose that <code class="MathJax_Preview">L \i
 <br />
 <a href="#logical-gates">(Back to section)</a></p>
 
-<p class="message"><strong>Exercise 2</strong>: Show that <code class="MathJax_Preview">S_L=S^{\otimes 7}</code><script type="math/tex">S_L=S^{\otimes 7}</script> is a logical gate
+<p class="message"><strong>Exercise 3</strong>: Show that <code class="MathJax_Preview">S_L=S^{\otimes 7}</code><script type="math/tex">S_L=S^{\otimes 7}</script> is a logical gate
 <br /><br />
 <strong>Correction</strong>: Remember that the <code class="MathJax_Preview">S</code><script type="math/tex">S</script> gate turns <code class="MathJax_Preview">X</code><script type="math/tex">X</script> into <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> into itself.
 Let’s pick any <code class="MathJax_Preview">X</code><script type="math/tex">X</script> plaquette. Applying <code class="MathJax_Preview">S_L</code><script type="math/tex">S_L</script> turns <code class="MathJax_Preview">X^{\otimes 4}</code><script type="math/tex">X^{\otimes 4}</script> into <code class="MathJax_Preview">Y^{\otimes 4}</code><script type="math/tex">Y^{\otimes 4}</script>.
@@ -498,7 +519,7 @@ Thus, <code class="MathJax_Preview">S_L</code><script type="math/tex">S_L</scrip
 <br />
 <a href="#logical-gates">(Back to section)</a></p>
 
-<p class="message"><strong>Exercise 3</strong>: Show that <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> acts as a logical Hadamard gate<br />
+<p class="message"><strong>Exercise 4</strong>: Show that <code class="MathJax_Preview">H_L=H^{\otimes 7}</code><script type="math/tex">H_L=H^{\otimes 7}</script> acts as a logical Hadamard gate<br />
 <em>(<strong>Hint</strong>:  show that <code class="MathJax_Preview">H_L X_L H_L=Z_L</code><script type="math/tex">H_L X_L H_L=Z_L</script> and <code class="MathJax_Preview">H_L Z_L H_L=X_L</code><script type="math/tex">H_L Z_L H_L=X_L</script>)</em>
 <br /><br />
 <strong>Correction</strong>: Consider the logical <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operator <code class="MathJax_Preview">X_L=X^{\otimes 3}</code><script type="math/tex">X_L=X^{\otimes 3}</script> acting on qubits <code class="MathJax_Preview">5,6,7</code><script type="math/tex">5,6,7</script>.
@@ -508,13 +529,6 @@ Thus, <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</scrip
 <br />
 <a href="#logical-gates">(Back to section)</a></p>
 
-<div class="footnotes">
-  <ol>
-    <li id="fn:1">
-      <p>For simplicity, I have chosen to ignore phases here. A more exact decomposition would need to include the cosets <code class="MathJax_Preview">-\bar{X}</code><script type="math/tex">-\bar{X}</script>, <code class="MathJax_Preview">i\bar{X}</code><script type="math/tex">i\bar{X}</script>, <code class="MathJax_Preview">-i\bar{X}</code><script type="math/tex">-i\bar{X}</script>, etc. <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
-    </li>
-  </ol>
-</div>
 
   
 </article>
