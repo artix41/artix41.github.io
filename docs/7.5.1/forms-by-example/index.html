@@ -137,6 +137,24 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 
 
+<script>
+	window.MathJax = {
+		loader: { load: ['[tex]/physics', '[tex]/boldsymbol'] },
+		tex: {
+			inlineMath: [['\\(', '\\)']],
+			displayMath: [['$$', '$$'], ['\\[', '\\]']],
+			packages: { '[+]': ['physics', 'boldsymbol'] },
+			macros: {
+				bm: ['\\boldsymbol{#1}', 1]
+			}
+		},
+		options: {
+			skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		}
+	};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
 
 </head>
 
