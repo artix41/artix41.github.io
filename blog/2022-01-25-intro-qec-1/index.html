@@ -38,23 +38,23 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
   
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>A bird’s-eye view of quantum error correction and fault tolerance | Arthur Pesah</title>
-<meta name="generator" content="Jekyll v3.8.6" />
+<meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="A bird’s-eye view of quantum error correction and fault tolerance" />
 <meta name="author" content="Arthur Pesah" />
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/" />
-<meta property="og:url" content="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/" />
+<link rel="canonical" href="http://localhost:4000/blog/2022-01-25-intro-qec-1/" />
+<meta property="og:url" content="http://localhost:4000/blog/2022-01-25-intro-qec-1/" />
 <meta property="og:site_name" content="Arthur Pesah" />
-<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/intro-qec/thumbnail.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2022-01-25T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" />
+<meta property="twitter:image" content="http://localhost:4000/assets/img/blog/intro-qec/thumbnail.png" />
 <meta property="twitter:title" content="A bird’s-eye view of quantum error correction and fault tolerance" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2022-01-25T00:00:00+01:00","datePublished":"2022-01-25T00:00:00+01:00","description":"Research blog","headline":"A bird’s-eye view of quantum error correction and fault tolerance","image":"https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2022-01-25-intro-qec-1/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2022-01-25-intro-qec-1/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2022-01-25T00:00:00+01:00","datePublished":"2022-01-25T00:00:00+01:00","description":"Research blog","headline":"A bird’s-eye view of quantum error correction and fault tolerance","image":"http://localhost:4000/assets/img/blog/intro-qec/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2022-01-25-intro-qec-1/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2022-01-25-intro-qec-1/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -80,11 +80,11 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 <meta name="generator" content="Hydejack v8.5.2" />
 
-<link type="application/atom+xml" rel="alternate" href="https://arthurpesah.me/feed.xml" title="Arthur Pesah" />
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
 
 
 
-<link rel="alternate" href="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/" hreflang="en">
+<link rel="alternate" href="http://localhost:4000/blog/2022-01-25-intro-qec-1/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -155,8 +155,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
   <style id="_pageStyle">
 
-.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
-
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:rgb(63.8602040816,154.5602040816,162.8897959184);border-color:rgb(63.8602040816,154.5602040816,162.8897959184)}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:rgb(63.8602040816,154.5602040816,162.8897959184);border-color:rgb(63.8602040816,154.5602040816,162.8897959184)}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
 </style>
 
 
@@ -307,63 +306,48 @@ on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
 
 Article from <a href="https://physicstoday.scitation.org/doi/10.1063/1.881512">Physics Today</a> by Serge Haroche and Jean-Michel Raimond, that expressed a general skepticism towards the idea of a large-scale quantum computer.</p>
 
-<p>Fortunately, the problem of computing with noise had been known for decades in the classical computing community. In the 1940s and 1950s, most computers were built from either mechanical relays or vacuum tubes, both of which were very prone to failure. It meant that random bits could flip in the middle of your calculations, giving you rubbish at the end. It’s exactly in this context that the Bell Labs mathematician Richard Hamming invented the first practical error-correcting code, out of frustration that his calculations on <em>Model 5</em>—a relay computer only available to him on week-ends—were failing weeks after weeks<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. Modern computers can still have errors from time to time (for instance <a href="https://www.youtube.com/watch?v=AaZ_RSt0KP8&amp;ab_channel=Veritasium">due to cosmic rays</a>!) and some critical systems therefore still require some sort of error correction. But more commonly, error-correcting codes are used everywhere in wireless communication, including satellite communication and the 4G/5G protocol.</p>
+<p>Fortunately, the problem of computing with noise had been known for decades in the classical computing community. In the 1940s and 1950s, most computers were built from either mechanical relays or vacuum tubes, both of which were very prone to failure. It meant that random bits could flip in the middle of your calculations, giving you rubbish at the end. It’s exactly in this context that the Bell Labs mathematician Richard Hamming invented the first practical error-correcting code, out of frustration that his calculations on <em>Model 5</em>—a relay computer only available to him on weekends—were failing weeks after weeks<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>. Modern computers can still have errors from time to time (for instance <a href="https://www.youtube.com/watch?v=AaZ_RSt0KP8&amp;ab_channel=Veritasium">due to cosmic rays</a>!) and some critical systems therefore still require some sort of error correction. But more commonly, error-correcting codes are used everywhere in wireless communication, including satellite communication and the 4G/5G protocol.</p>
 
-<p>However, generalizing those ideas from classical to quantum bits was not an easy task. The invention of the first quantum error-correcting codes, and with them of the <strong>threshold theorem</strong>, changed the game. This theorem states that there exist some families of quantum codes that can correct arbitrary errors by increasing the number of redundant qubits, as long as the noise level of the system is below a certain threshold. So, let’s say you found a code with a threshold of <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script>. Then, if your noise is above <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script>, adding more qubits to your code will yield more errors, while if it is below, adding more qubits will reduce the number of errors. 
-The presence of a threshold below <code class="MathJax_Preview">50\%</code><script type="math/tex">50\%</script> is a purely quantum phenomenon: classical codes are always improved by increasing the number of redundant bits. This important difference is due to the fact that there is only one type of classical errors, the bit-flips, while quantum errors can be caused by both bit-flips and phase-flips, as we will see in the next section.</p>
+<p>However, generalizing those ideas from classical to quantum bits was not an easy task. The invention of the first quantum error-correcting codes, and with them of the <strong>threshold theorem</strong>, changed the game. This theorem states that there exist some families of quantum codes that can correct arbitrary errors by increasing the number of redundant qubits, as long as the noise level of the system is below a certain threshold. So, let’s say you found a code with a threshold of \(1\%\). Then, if your noise is above \(1\%\), adding more qubits to your code will yield more errors, while if it is below, adding more qubits will reduce the number of errors.
+The presence of a threshold below \(50\%\) is a purely quantum phenomenon: classical codes are always improved by increasing the number of redundant bits. This important difference is due to the fact that there is only one type of classical errors, the bit-flips, while quantum errors can be caused by both bit-flips and phase-flips, as we will see in the next section.</p>
 
-<p>While the first quantum codes served as a useful proof of concept, their threshold was estimated to be around <code class="MathJax_Preview">10^{-6}</code><script type="math/tex">10^{-6}</script>, which was far below the experimental capabilities of the time <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. The introduction of the stabilizer formalism in 1998 revolutionized quantum error-correction and led to the invention of the surface code<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>, which has a threshold over <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script> in realistic settings<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>. While subsequent years saw the development of many different quantum codes, the surface code has remained one of the most promising one, and I will probably dedicate several articles to it. But for now, let’s try to understand how quantum error correction works.</p>
+<p>While the first quantum codes served as a useful proof of concept, their threshold was estimated to be around \(10^{-6}\), which was far below the experimental capabilities of the time <sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>. The introduction of the stabilizer formalism in 1998 revolutionized quantum error-correction and led to the invention of the surface code<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>, which has a threshold over \(1\%\) in realistic settings<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>. While subsequent years saw the development of many quantum codes, the surface code has remained one of the most promising one, and I will probably dedicate several articles to it. But for now, let’s try to understand how quantum error correction works.</p>
 
 <h2 id="what-is-quantum-error-correction">What is quantum error correction?</h2>
 
 <h3 id="modeling-quantum-noise">Modeling quantum noise</h3>
 
-<p>Imagine that you are running a circuit on a real quantum computer. At each step of the circuit, you are expecting a certain state <code class="MathJax_Preview">\vert \psi \rangle</code><script type="math/tex">\vert \psi \rangle</script> to come out of the device. However, if you are reading this in the 2020s, chances are that your device is noisy: instead of getting <code class="MathJax_Preview">\vert \psi\rangle</code><script type="math/tex">\vert \psi\rangle</script>, you will get a different state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle</script>. This failure can be caused by multiple phenomena: unwanted interactions between qubits when applying a gate, unwanted interactions with the environment (causing decoherence), badly-controlled gates, errors in the measurement or state preparation process, etc. While the source of noise is diverse, it happens that a very general and simple noise model can be used to accurately model noise in a large range of situations: the <strong>Pauli error model</strong>. It consists in assuming that a Pauli operator <code class="MathJax_Preview">X</code><script type="math/tex">X</script> or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> is randomly applied after each gate or each clock cycle of the quantum computer. The generality of this model comes from the fact that any continuous error can be decomposed in the Pauli basis, and <code class="MathJax_Preview">Y=iXZ</code><script type="math/tex">Y=iXZ</script>. For instance, if your error is an unwanted rotation by an angle <code class="MathJax_Preview">\theta</code><script type="math/tex">\theta</script> in the Bloch sphere (let’s say in the <code class="MathJax_Preview">x</code><script type="math/tex">x</script> direction), we can write:</p>
+<p>Imagine that you are running a circuit on a real quantum computer. At each step of the circuit, you are expecting a certain state \(\vert \psi \rangle\) to come out of the device. However, if you are reading this in the 2020s, chances are that your device is noisy: instead of getting \(\vert \psi\rangle\), you will get a different state \(\vert \widetilde{\psi} \rangle\). This failure can be caused by multiple phenomena: unwanted interactions between qubits when applying a gate, unwanted interactions with the environment (causing decoherence), badly-controlled gates, errors in the measurement or state preparation process, etc. While the source of noise is diverse, it happens that a very general and simple noise model can be used to accurately model noise in a large range of situations: the <strong>Pauli error model</strong>. It consists in assuming that a Pauli operator \(X\) or \(Z\) is randomly applied after each gate or each clock cycle of the quantum computer. The generality of this model comes from the fact that any continuous error can be decomposed in the Pauli basis, and \(Y=iXZ\). For instance, if your error is an unwanted rotation by an angle \(\theta\) in the Bloch sphere (let’s say in the \(x\) direction), we can write:</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 R_x(\theta) = \cos\left(\frac{\theta}{2}\right) I - i \sin\left(\frac{\theta}{2}\right) X
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-R_x(\theta) = \cos\left(\frac{\theta}{2}\right) I - i \sin\left(\frac{\theta}{2}\right) X
-\end{aligned}</script>
+\end{aligned}\]
 
 <p>implying that</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 \vert \widetilde{\psi} \rangle = R_x(\theta) \vert \psi\rangle = \cos\left(\frac{\theta}{2}\right) \vert \psi\rangle - i \sin\left(\frac{\theta}{2}\right) X \vert \psi\rangle
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-\vert \widetilde{\psi} \rangle = R_x(\theta) \vert \psi\rangle = \cos\left(\frac{\theta}{2}\right) \vert \psi\rangle - i \sin\left(\frac{\theta}{2}\right) X \vert \psi\rangle
-\end{aligned}</script>
+\end{aligned}\]
 
-<p>You will soon learn that quantum error correction is done by constantly applying non-destructive measurements to our state (the so-called stabilizer measurements), resulting in the above state being projected in either <code class="MathJax_Preview">\vert \psi\rangle</code><script type="math/tex">\vert \psi\rangle</script> with probability <code class="MathJax_Preview">\cos^2(\theta/2)</code><script type="math/tex">\cos^2(\theta/2)</script>, or <code class="MathJax_Preview">X \vert \psi\rangle</code><script type="math/tex">X \vert \psi\rangle</script> with probability <code class="MathJax_Preview">\sin^2(\theta/2)</code><script type="math/tex">\sin^2(\theta/2)</script>. This process of decomposing any continuous error into <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> errors is called the <strong>digitization of errors</strong>, and is key to quantum error correction, since analog errors, even on a classical computer, cannot easily be error-corrected.</p>
+<p>You will soon learn that quantum error correction is done by constantly applying non-destructive measurements to our state (the so-called stabilizer measurements), resulting in the above state being projected in either \(\vert \psi\rangle\) with probability \(\cos^2(\theta/2)\), or \(X \vert \psi\rangle\) with probability \(\sin^2(\theta/2)\). This process of decomposing any continuous error into \(X\) and \(Z\) errors is called the <strong>digitization of errors</strong>, and is key to quantum error correction, since analog errors, even on a classical computer, cannot easily be error-corrected.</p>
 
-<p>So we’ve reduced the infinite range of possible continuous errors to only two types of errors: <code class="MathJax_Preview">X</code><script type="math/tex">X</script> and <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script>. But what is the effect of those errors? Let’s consider a general single-qubit state, given by</p>
+<p>So we’ve reduced the infinite range of possible continuous errors to only two types of errors: \(X\) and \(Z\). But what is the effect of those errors? Let’s consider a general single-qubit state, given by</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 \vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle
-\end{aligned}</script>
+\end{aligned}\]
 
-<p>Applying <code class="MathJax_Preview">X</code><script type="math/tex">X</script> to it results in the state</p>
+<p>Applying \(X\) to it results in the state</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 X \vert \psi \rangle = a \vert 1 \rangle + b \vert 0 \rangle
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-X \vert \psi \rangle = a \vert 1 \rangle + b \vert 0 \rangle
-\end{aligned}</script>
+\end{aligned}\]
 
-<p>In other words, we have applied a <strong>bit-flip</strong> to our state. On the other hand, applying a <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> error</p>
+<p>In other words, we have applied a <strong>bit-flip</strong> to our state. On the other hand, applying a \(Z\) error</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 Z \vert \psi \rangle = a \vert 0 \rangle - b \vert 1 \rangle
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-Z \vert \psi \rangle = a \vert 0 \rangle - b \vert 1 \rangle
-\end{aligned}</script>
+\end{aligned}\]
 
 <p>results in a <strong>phase-flip</strong>. That’s a first major difference between classical and quantum error-correction: instead of having just one type of error (bit-flips), we now have two types of error (bit-flips and phase-flips). This is a key fact that makes classical error correction techniques not directly applicable to the quantum setting. So, how can we correct quantum errors?</p>
 
@@ -371,34 +355,27 @@ Z \vert \psi \rangle = a \vert 0 \rangle - b \vert 1 \rangle
 
 <p>The idea of quantum error correction is to <strong>encode</strong> your state on a larger system, using redundant qubits. A simple example of encoding is the 3-repetition code, defined with the following dictionary:</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 \vert 0 \rangle \longrightarrow \vert 000 \rangle_E \\
 \vert 1 \rangle \longrightarrow \vert 111 \rangle_E
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-\vert 0 \rangle \longrightarrow \vert 000 \rangle_E \\
-\vert 1 \rangle \longrightarrow \vert 111 \rangle_E
-\end{aligned}</script>
+\end{aligned}\]
 
-<p>It means that a general qubit <code class="MathJax_Preview">\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle</code><script type="math/tex">\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle</script> will be encoded as <code class="MathJax_Preview">\vert \psi \rangle_E = a \vert 000 \rangle + b \vert 111 \rangle</code><script type="math/tex">\vert \psi \rangle_E = a \vert 000 \rangle + b \vert 111 \rangle</script>. We say that the code maps three <strong>physical qubits</strong> into one <strong>logical qubit</strong>.</p>
+<p>It means that a general qubit \(\vert \psi \rangle = a \vert 0 \rangle + b \vert 1 \rangle\) will be encoded as \(\vert \psi \rangle_E = a \vert 000 \rangle + b \vert 111 \rangle\). We say that the code maps three <strong>physical qubits</strong> into one <strong>logical qubit</strong>.</p>
 
-<p>When this encoded state goes through a noisy channel, errors can happen. But this time, we have some degree of protection. For instance, let’s say that a bit-flip occurred on the first qubit, leading to the state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</script>. We can then detect and correct this error, in the so-called <strong>decoding</strong> process: we perform measurements to the state and apply some correction operators depending on the measurement results. However, here comes another specificity of the quantum setting: we cannot simply measure the whole state (and then apply a majority vote or something), as it would result in a general collapse of the state. So we need to apply non-destructive measurements, also called <strong>stabilizer measurements</strong>. An example of stabilizer measurement would be to measure the parity of each pair of qubits, i.e. whether the two qubits are equal or not. For instance, the following circuit can be used to measure the parity of qubits 1 and 2:</p>
+<p>When this encoded state goes through a noisy channel, errors can happen. But this time, we have some degree of protection. For instance, let’s say that a bit-flip occurred on the first qubit, leading to the state \(\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle\). We can then detect and correct this error, in the so-called <strong>decoding</strong> process: we perform measurements to the state and apply some correction operators depending on the measurement results. However, here comes another specificity of the quantum setting: we cannot simply measure the whole state (and then apply a majority vote or something), as it would result in a general collapse of the state. So we need to apply non-destructive measurements, also called <strong>stabilizer measurements</strong>. An example of stabilizer measurement would be to measure the parity of each pair of qubits, i.e. whether the two qubits are equal or not. For instance, the following circuit can be used to measure the parity of qubits 1 and 2:</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/stabilizer-measurement.png" alt=""><img src="/assets/img/blog/intro-qec/stabilizer-measurement.png" alt=""></hy-img>
 </p>
 
-<p>Indeed, if the first two qubits are in the state <code class="MathJax_Preview">\vert 00 \rangle</code><script type="math/tex">\vert 00 \rangle</script> or <code class="MathJax_Preview">\vert 11 \rangle</code><script type="math/tex">\vert 11 \rangle</script>, you can check that the measurement result in the <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> basis will be <code class="MathJax_Preview">1</code><script type="math/tex">1</script> (i.e. the ancilla qubit is in the <code class="MathJax_Preview">\vert 0 \rangle</code><script type="math/tex">\vert 0 \rangle</script> state), while if we are in either <code class="MathJax_Preview">\vert 01 \rangle</code><script type="math/tex">\vert 01 \rangle</script> or <code class="MathJax_Preview">\vert 10 \rangle</code><script type="math/tex">\vert 10 \rangle</script>, the measurement result will be <code class="MathJax_Preview">-1</code><script type="math/tex">-1</script>. Note that by measuring the ancilla qubit, our state has not been destroyed.</p>
+<p>Indeed, if the first two qubits are in the state \(\vert 00 \rangle\) or \(\vert 11 \rangle\), you can check that the measurement result in the \(Z\) basis will be \(1\) (i.e. the ancilla qubit is in the \(\vert 0 \rangle\) state), while if we are in either \(\vert 01 \rangle\) or \(\vert 10 \rangle\), the measurement result will be \(-1\). Note that by measuring the ancilla qubit, our state has not been destroyed.</p>
 
-<p>So, what happens if we apply those parity measurements to the state <code class="MathJax_Preview">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</code><script type="math/tex">\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle</script>? We will see that qubits 2 and 3 are equal, while qubit 1 is different from the two others. Assuming that we only had one <code class="MathJax_Preview">X</code><script type="math/tex">X</script> error, we can deduce that the only possibility is that the first qubit has been subjected to a bit-flip. Therefore, we apply a Pauli <code class="MathJax_Preview">\text{X}</code><script type="math/tex">\text{X}</script> operator on the first qubit to recover our original state.</p>
+<p>So, what happens if we apply those parity measurements to the state \(\vert \widetilde{\psi} \rangle_E = a \vert 100 \rangle + b \vert 011 \rangle\)? We will see that qubits 2 and 3 are equal, while qubit 1 is different from the two others. Assuming that we only had one \(X\) error, we can deduce that the only possibility is that the first qubit has been subjected to a bit-flip. Therefore, we apply a Pauli \(\text{X}\) operator on the first qubit to recover our original state.</p>
 
 <p>The quantum error-correction process can be summarized by the following diagram:</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 \vert \psi \rangle \xrightarrow{\text{encoding}} \vert \psi \rangle_E \xrightarrow{\text{noise}} \vert \widetilde{\psi} \rangle_E \xrightarrow{\text{decoding}} \vert \psi \rangle_E
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-\vert \psi \rangle \xrightarrow{\text{encoding}} \vert \psi \rangle_E \xrightarrow{\text{noise}} \vert \widetilde{\psi} \rangle_E \xrightarrow{\text{decoding}} \vert \psi \rangle_E
-\end{aligned}</script>
+\end{aligned}\]
 
 <p>Note that our code has two major drawbacks: it cannot correctly decode more than one bit-flip errors, and cannot detect phase-flip errors at all. While the first problem could be alleviated by increasing the number of physical qubits, the second one is more fundamental and requires the design of more complex quantum codes. One of the most popular such code is the <strong>surface code</strong> (also called <strong>toric code</strong>), which belongs to the more general class of <strong>topological quantum codes</strong>.</p>
 
@@ -406,74 +383,63 @@ Z \vert \psi \rangle = a \vert 0 \rangle - b \vert 1 \rangle
 
 <p>Explaining exactly how the surface code work is a out-of-scope for this article, as it would require a proper introduction to the stabilizer formalism. However, given the importance this code has taken in the QEC world, I couldn’t resist giving you a big picture overview of its main characteristics, as a treat before I write a dedicated article on the topic! If you want to get a more in-depth explanation, feel free to look at the resources posted at the end of this article, such as <a href="https://decodoku.medium.com/5-the-toric-code-part-1-caaa4b79afd8">this series of blog post</a> by James Wootton!</p>
 
-<p>So what is the surface code? It’s a code that encodes one logical qubit on a 2D grid of <code class="MathJax_Preview">L^2</code><script type="math/tex">L^2</script> physical qubits. For instance, the picture below represents one logical qubit of the surface code, encoded with 25 physical qubits (the white dots). The two colors represent the two types of measurements that are used to detect errors, made either of <code class="MathJax_Preview">X</code><script type="math/tex">X</script> operators (to detect phase-flips) or <code class="MathJax_Preview">Z</code><script type="math/tex">Z</script> operators (to detect bit-flips), but we won’t dive into those details now.</p>
+<p>So what is the surface code? It’s a code that encodes one logical qubit on a 2D grid of \(L^2\) physical qubits. For instance, the picture below represents one logical qubit of the surface code, encoded with 25 physical qubits (the white dots). The two colors represent the two types of measurements that are used to detect errors, made either of \(X\) operators (to detect phase-flips) or \(Z\) operators (to detect bit-flips), but we won’t dive into those details now.</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/surface-code.png" alt=""><img src="/assets/img/blog/intro-qec/surface-code.png" alt=""></hy-img>
 </p>
 
-<p>To achieve noise levels that are low enough to run something like Shor’s algorithm might require grids containing between 1,000 and 10,000 physical qubits per logical qubit<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup>! While it might sound like a huge overhead (and indeed, it is!), the surface code still has a few advantages, otherwise it wouldn’t be the most popular code in the market! First, contrary to the repetition code that we saw in the previous section, it can detect both bit-flips and phase-flips. Since doing so is one of the main difficulties in designing QEC codes and the reason why we cannot simply generalize classical codes, it is worth noting. A second advantage compared to other QEC codes is that it’s <strong>two-dimensional</strong>. It means that in practice, we only need to arrange the qubits on a physical 2D chip with interaction between nearest neighbors, which makes the surface code particularly promising for superconducting chips like IBM’s and Google’s quantum computers. Finally, the threshold has been calculated to be around <code class="MathJax_Preview">\sim 1\%</code><script type="math/tex">\sim 1\%</script> (the exact number depends on the exact nature of the noise), which is one of the highest in the QEC zoo<sup id="fnref:5:1"><a href="#fn:5" class="footnote">5</a></sup>. As a reminder, the threshold is the noise level below which increasing the number of physical qubits (here the size of the grid) actually improves the number of errors that can be corrected. So to make the surface code work, it means that we just need our noise level to be below <code class="MathJax_Preview">1\%</code><script type="math/tex">1\%</script> (probably slightly lower in realistic settings), which is definitely within the range of what experimentalists can do!</p>
+<p>To achieve noise levels that are low enough to run something like Shor’s algorithm might require grids containing between 1,000 and 10,000 physical qubits per logical qubit<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup>! While it might sound like a huge overhead (and indeed, it is!), the surface code still has a few advantages, otherwise it wouldn’t be the most popular code in the market! First, contrary to the repetition code that we saw in the previous section, it can detect both bit-flips and phase-flips. Since doing so is one of the main difficulties in designing QEC codes and the reason why we cannot simply generalize classical codes, it is worth noting. A second advantage compared to other QEC codes is that it’s <strong>two-dimensional</strong>. It means that in practice, we only need to arrange the qubits on a physical 2D chip with interaction between nearest neighbors, which makes the surface code particularly promising for superconducting chips like IBM’s and Google’s quantum computers. Finally, the threshold has been calculated to be around \(\sim 1\%\) (the exact number depends on the exact nature of the noise), which is one of the highest in the QEC zoo<sup id="fnref:5:1"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup>. As a reminder, the threshold is the noise level below which increasing the number of physical qubits (here the size of the grid) actually improves the number of errors that can be corrected. So to make the surface code work, it means that we just need our noise level to be below \(1\%\) (probably slightly lower in realistic settings), which is definitely within the range of what experimentalists can do!</p>
 
 <p>Note that many alternatives to the 2D surface code have been proposed, such as 3D and 4D surface codes, color codes, low-density parity-check codes (also known as LDPC codes), subsystem codes, etc. Choosing a code is often a trade-off between connectivity (e.g. LDPC codes often require long-range interaction, so are not easily implementable on 2D chips), ease of measurements (how many qubits are measured simultaneously to detect errors), performance with a given noise model, threshold, gate design, etc.</p>
 
-<p>Once the encoding and decoding procedures are established, there is still one last step before being able to do quantum computation error-free: designing logical gates that act on the code. It happens that this task is far from trivial in general, and a whole sub-field of QEC is dedicated to it. That’s the subject of <strong>fault-tolerant quantum computing</strong>.</p>
+<p>Once the encoding and decoding procedures are established, there is still one last step before being able to do quantum computation error-free: designing logical gates that act on the code. It happens that this task is far from trivial in general, and a whole subfield of QEC is dedicated to it. That’s the subject of <strong>fault-tolerant quantum computing</strong>.</p>
 
 <h2 id="fault-tolerant-quantum-computing">Fault-tolerant quantum computing</h2>
 
 <h3 id="transversality-and-fault-tolerance">Transversality and fault-tolerance</h3>
 
-<p>The main challenge in designing gates is to avoid the propagation of errors: if we’re not careful, multi-qubit gates can turn one-qubit errors into correlated multi-qubit ones. This is particularly disturbing when the gate couples several physical qubits representing a single logical one (what we call a <strong>block</strong>). For instance, imagine you want to apply a logical Hadamard on the 3-repetition code considered earlier. This gate, that we can call <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script>, should use three physical qubits to act on one logical qubit, i.e.:</p>
+<p>The main challenge in designing gates is to avoid the propagation of errors: if we’re not careful, multi-qubit gates can turn one-qubit errors into correlated multi-qubit ones. This is particularly disturbing when the gate couples several physical qubits representing a single logical one (what we call a <strong>block</strong>). For instance, imagine you want to apply a logical Hadamard on the 3-repetition code considered earlier. This gate, that we can call \(H_L\), should use three physical qubits to act on one logical qubit, i.e.:</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
 H \vert 0 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle + \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 000 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle + \vert 111 \rangle \right) \\
 H \vert 1 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle - \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 111 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle - \vert 111 \rangle \right)
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">\begin{aligned}
-H \vert 0 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle + \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 000 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle + \vert 111 \rangle \right) \\
-H \vert 1 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle - \vert 1 \rangle \right) \; \xrightarrow{\text{encoding}} \; H_L \vert 111 \rangle = \frac{1}{\sqrt{2}} \left( \vert 000 \rangle - \vert 111 \rangle \right)
-\end{aligned}</script>
+\end{aligned}\]
 
-<p>To implement the unitary <code class="MathJax_Preview">H_L</code><script type="math/tex">H_L</script>, some entangling gates will be needed. For example, you can check that the following circuit gives the correct unitary on <code class="MathJax_Preview">\vert 000 \rangle</code><script type="math/tex">\vert 000 \rangle</script> and <code class="MathJax_Preview">\vert 111 \rangle</code><script type="math/tex">\vert 111 \rangle</script>:</p>
+<p>To implement the unitary \(H_L\), some entangling gates will be needed. For example, you can check that the following circuit gives the correct unitary on \(\vert 000 \rangle\) and \(\vert 111 \rangle\):</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/logical-hadamard-small.png" alt=""><img src="/assets/img/blog/intro-qec/logical-hadamard-small.png" alt=""></hy-img>
 </p>
 
 <p>The issue here is the presence of physical CNOTs <em>within the block</em>, as they can create correlated errors that won’t be easily correctable.</p>
 
-<p>On the other hand, if we wanted to implement a logical CNOT between two logical qubits <code class="MathJax_Preview">\vert \psi \rangle_1</code><script type="math/tex">\vert \psi \rangle_1</script> and <code class="MathJax_Preview">\vert \psi \rangle_2</code><script type="math/tex">\vert \psi \rangle_2</script>, we would simply use the following circuit</p>
+<p>On the other hand, if we wanted to implement a logical CNOT between two logical qubits \(\vert \psi \rangle_1\) and \(\vert \psi \rangle_2\), we would simply use the following circuit</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/cnot-small.png" alt=""><img src="/assets/img/blog/intro-qec/cnot-small.png" alt=""></hy-img>
 </p>
 
 <p>which doesn’t contain any entangling gate within each block. Such gate is called <strong>transversal</strong>, while the Hadamard gate we saw previously was <strong>non-transversal</strong>. An encoded circuit composed only of transversal gates is <strong>fault-tolerant</strong>, meaning that it doesn’t propagate errors further.</p>
 
-<p>So, do we know any code such that all the gates can be built transversally? Unfortunately, the answer is no, and we even know that such code cannot exist. That’s the object of a foundational theorem in the field, called the <a href="https://arxiv.org/abs/0811.4262">Eastin-Knill theorem</a>, which states that for any QEC code, there is no universal gate set<sup id="fnref:6"><a href="#fn:6" class="footnote">6</a></sup> made only of transversal gates. For instance, in the surface code, only <strong>Clifford gates</strong> can be implemented transversally, i.e all the gates that can be constructed from <code class="MathJax_Preview">H</code><script type="math/tex">H</script>, <code class="MathJax_Preview">CNOT</code><script type="math/tex">CNOT</script> and <code class="MathJax_Preview">S</code><script type="math/tex">S</script> gates. It includes all Pauli gates, but not the <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate for example, which is required for universality.</p>
+<p>So, do we know any code such that all the gates can be built transversally? Unfortunately, the answer is no, and we even know that such code cannot exist. That’s the object of a foundational theorem in the field, called the <a href="https://arxiv.org/abs/0811.4262">Eastin-Knill theorem</a>, which states that for any QEC code, there is no universal gate set<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> made only of transversal gates. For instance, in the surface code, only <strong>Clifford gates</strong> can be implemented transversally, i.e. all the gates that can be constructed from \(H\), \(CNOT\) and \(S\) gates. It includes all Pauli gates, but not the \(T\) gate for example, which is required for universality.</p>
 
 <h3 id="magic-state-distillation">Magic state distillation</h3>
 
-<p>Many tricks have been proposed to “by-pass” this no-go theorem. One of the most common tricks is called <strong>magic state distillation</strong>. To illustrate how it works, let’s say we want to implement a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate fault-tolerantly. As a reminder, the <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate is a one-qubit gate defined by the matrix</p>
+<p>Many tricks have been proposed to “by-pass” this no-go theorem. One of the most common tricks is called <strong>magic state distillation</strong>. To illustrate how it works, let’s say we want to implement a \(T\) gate fault-tolerantly. As a reminder, the \(T\) gate is a one-qubit gate defined by the matrix</p>
 
-<pre class="MathJax_Preview"><code>\begin{aligned}
+\[\begin{aligned}
     T = \left( \begin{matrix}
     1 &amp; 0          \\
     0 &amp; e^{i\pi/4} \\
     \end{matrix} \right)
-\end{aligned}</code></pre>
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-    T = \left( \begin{matrix}
-    1 & 0          \\
-    0 & e^{i\pi/4} \\
-    \end{matrix} \right)
-\end{aligned} %]]></script>
+\end{aligned}\]
 
-<p>and is one of the simplest examples of non-Clifford gate, meaning that it cannot be written out of just <code class="MathJax_Preview">H</code><script type="math/tex">H</script>, <code class="MathJax_Preview">S</code><script type="math/tex">S</script> and <code class="MathJax_Preview">CNOT</code><script type="math/tex">CNOT</script>. On the other hand, appending it to the Clifford gate set leads to a universal gate set, i.e. any gate you can think of can be written out of just <code class="MathJax_Preview">T</code><script type="math/tex">T</script>, <code class="MathJax_Preview">H</code><script type="math/tex">H</script> and <code class="MathJax_Preview">CNOT</code><script type="math/tex">CNOT</script> (we don’t need <code class="MathJax_Preview">S</code><script type="math/tex">S</script> anymore, since <code class="MathJax_Preview">S=T^2</code><script type="math/tex">S=T^2</script>). Since the surface code can already implement all Clifford gates fault-tolerantly, it means that we only need a procedure to implement <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gates!</p>
+<p>and is one of the simplest examples of non-Clifford gate, meaning that it cannot be written out of just \(H\), \(S\) and \(CNOT\). On the other hand, appending it to the Clifford gate set leads to a universal gate set, i.e. any gate you can think of can be written out of just \(T\), \(H\) and \(CNOT\) (we don’t need \(S\) anymore, since \(S=T^2\)). Since the surface code can already implement all Clifford gates fault-tolerantly, it means that we only need a procedure to implement \(T\) gates!</p>
 
-<p>The first idea of magic state distillation is to implement the state <code class="MathJax_Preview">T\vert+\rangle=\vert 0 \rangle + e^{i\pi/4} \vert 1 \rangle</code><script type="math/tex">T\vert+\rangle=\vert 0 \rangle + e^{i\pi/4} \vert 1 \rangle</script> non-fault-tolerantly on an ancilla qubit (meaning that errors can occur when creating the state) and to “inject” it in the qubits of our code, thereby creating a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate on those qubits. This trick, called <strong>state injection</strong> (or <strong>gate teleportation</strong> in the measurement-based QC community) can be summarized by the following circuit:</p>
+<p>The first idea of magic state distillation is to implement the state \(T\vert+\rangle=\vert 0 \rangle + e^{i\pi/4} \vert 1 \rangle\) non-fault-tolerantly on an ancilla qubit (meaning that errors can occur when creating the state) and to “inject” it in the qubits of our code, thereby creating a \(T\) gate on those qubits. This trick, called <strong>state injection</strong> (or <strong>gate teleportation</strong> in the measurement-based QC community) can be summarized by the following circuit:</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/magic-state-distillation.png" alt=""><img src="/assets/img/blog/intro-qec/magic-state-distillation.png" alt=""></hy-img>
 </p>
 
-<p>where the <code class="MathJax_Preview">S</code><script type="math/tex">S</script> gate is applied when the measurement of the ancilla qubit leads <code class="MathJax_Preview">1</code><script type="math/tex">1</script>. It’s a little exercise the check that the circuit above indeed leads to a <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate (and you can find the answer on <a href="https://quantumcomputing.stackexchange.com/questions/13629/what-are-magic states">Stack Exchange</a>). The state <code class="MathJax_Preview">T\vert + \rangle</code><script type="math/tex">T\vert + \rangle</script> is called a <strong>magic state</strong>, and as we saw, its preparation can involve some errors (it’s not fault-tolerant). The second idea of magic state distillation is therefore distillation. By preparing <code class="MathJax_Preview">N</code><script type="math/tex">N</script> copies of a noisy magic state, it’s possible to create an arbitrary clean <code class="MathJax_Preview">T</code><script type="math/tex">T</script> gate (similarly to how <a href="https://en.wikipedia.org/wiki/Entanglement_distillation">entanglement distillation</a> is done in quantum communication). The full protocol can be shown to be fault-tolerant, but it often requires a very large overhead in both the number of qubits and number of gates<sup id="fnref:7"><a href="#fn:7" class="footnote">7</a></sup>. This overhead led to the claim that obtaining a quantum advantage with quadratic speed-ups might be unrealistic in the first fault-tolerant quantum computers<sup id="fnref:8"><a href="#fn:8" class="footnote">8</a></sup>. Reducing this overhead or finding codes that don’t need magic state distillation is therefore a very important research problem.</p>
+<p>where the \(S\) gate is applied when the measurement of the ancilla qubit leads \(1\). It’s a little exercise the check that the circuit above indeed leads to a \(T\) gate (and you can find the answer on <a href="https://quantumcomputing.stackexchange.com/questions/13629/what-are-magic states">Stack Exchange</a>). The state \(T\vert + \rangle\) is called a <strong>magic state</strong>, and as we saw, its preparation can involve some errors (it’s not fault-tolerant). The second idea of magic state distillation is therefore distillation. By preparing \(N\) copies of a noisy magic state, it’s possible to create an arbitrary clean \(T\) gate (similarly to how <a href="https://en.wikipedia.org/wiki/Entanglement_distillation">entanglement distillation</a> is done in quantum communication). The full protocol can be shown to be fault-tolerant, but it often requires a very large overhead in both the number of qubits and number of gates<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">7</a></sup>. This overhead led to the claim that obtaining a quantum advantage with quadratic speed-ups might be unrealistic in the first fault-tolerant quantum computers<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">8</a></sup>. Reducing this overhead or finding codes that don’t need magic state distillation is therefore a very important research problem.</p>
 
 <h3 id="measurement-based-gates-lattice-surgery-and-twists">Measurement-based gates: lattice surgery and twists</h3>
 
@@ -482,13 +448,13 @@ H \vert 1 \rangle = \frac{1}{\sqrt{2}} \left( \vert 0 \rangle - \vert 1 \rangle 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/intro-qec/lattice-surgery.png" alt=""><img src="/assets/img/blog/intro-qec/lattice-surgery.png" alt=""></hy-img>
 </p>
 
-<p>A transversal two-qubit gate would consist in <code class="MathJax_Preview">L^2</code><script type="math/tex">L^2</script> physical gates between each pair of qubits <code class="MathJax_Preview">a</code><script type="math/tex">a</script> and <code class="MathJax_Preview">a'</code><script type="math/tex">a'</script>. However, as seen in the picture above, it would require some long-range interactions, since qubits <code class="MathJax_Preview">a</code><script type="math/tex">a</script> and <code class="MathJax_Preview">a'</code><script type="math/tex">a'</script> are always <code class="MathJax_Preview">L</code><script type="math/tex">L</script> qubits apart. A solution could consist in putting one surface code above the other (in 3D). However, 3D chips are hard to build in practice, and it happens that more convenient solutions exist, namely <strong>lattice surgery</strong> and <strong>twist deformations</strong>.</p>
+<p>A transversal two-qubit gate would consist in \(L^2\) physical gates between each pair of qubits \(a\) and \(a'\). However, as seen in the picture above, it would require some long-range interactions, since qubits \(a\) and \(a'\) are always \(L\) qubits apart. A solution could consist in putting one surface code above the other (in 3D). However, 3D chips are hard to build in practice, and it happens that more convenient solutions exist, namely <strong>lattice surgery</strong> and <strong>twist deformations</strong>.</p>
 
-<p>In both methods, gates are applied by performing measurements and temporarily changing the code itself. In lattice surgery, those measurements allow to merge different surface codes into a single one, and split it again when needed. It can be shown that many gates, such as the CNOT gate, can be designed by performing such a series of merge and split operations. In twist deformations, measurements create holes in the lattice, and braiding operators around those holes allow to create some gates. All those operations are local, making both techniques amenable to real devices. I hope to describe those techniques in more details in future posts.</p>
+<p>In both methods, gates are applied by performing measurements and temporarily changing the code itself. In lattice surgery, those measurements allow merging different surface codes into a single one, and split it again when needed. It can be shown that many gates, such as the CNOT gate, can be designed by performing such a series of merge and split operations. In twist deformations, measurements create holes in the lattice, and braiding operators around those holes allow to create some gates. All those operations are local, making both techniques amenable to real devices. I hope to describe those techniques in more details in future posts.</p>
 
 <h3 id="measurement-errors">Measurement errors</h3>
 
-<p>Finally, in fault-tolerant quantum computing, the measurement apparatus is also crucial. To detect errors, measurements are made all the time, and those can be very noisy. It means that our stabilizer measurements can lead to the wrong answer. 
+<p>Finally, in fault-tolerant quantum computing, the measurement apparatus is also crucial. To detect errors, measurements are made all the time, and those can be very noisy. It means that our stabilizer measurements can lead to the wrong answer.
 To mitigate this effect, the basic technique simply consists in repeating the stabilizer measurements many times. However, some codes such as the 3D surface code have a property that make them amenable to <strong>single-shot quantum error correction</strong>, as set of techniques that allow to correct errors with a single noisy measurement per stabilizer. More generally, any fault-tolerant scheme must also include a method to perform measurements without propagating errors in a non-fault-tolerant way.</p>
 
 <h2 id="conclusion">Conclusion</h2>
@@ -507,31 +473,31 @@ To mitigate this effect, the basic technique simply consists in repeating the st
   <li><a href="https://decodoku.medium.com/1-what-is-quantum-error-correction-4ab6d97cb398">What is Quantum Error Correction</a>, series of blog posts by James Wootton</li>
 </ul>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1">
-      <p>Richard Hamming, <a href="http://worrydream.com/refs/Hamming-TheArtOfDoingScienceAndEngineering.pdf">The Art of Doing Science and Engineering</a>, 1997 <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>Richard Hamming, <a href="http://worrydream.com/refs/Hamming-TheArtOfDoingScienceAndEngineering.pdf">The Art of Doing Science and Engineering</a>, 1997 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:2">
-      <p>E. Knill, R. Laflamme, W. Zurek, <a href="https://arxiv.org/abs/quant-ph/9610011">Threshold Accuracy for Quantum Computation</a>, 1996 <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>E. Knill, R. Laflamme, W. Zurek, <a href="https://arxiv.org/abs/quant-ph/9610011">Threshold Accuracy for Quantum Computation</a>, 1996 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:3">
-      <p>Eric Dennis, Alexei Kitaev, Andrew Landahl, John Preskill, <a href="https://arxiv.org/abs/quant-ph/0110143">Topological quantum memory</a>, 2001 <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>Eric Dennis, Alexei Kitaev, Andrew Landahl, John Preskill, <a href="https://arxiv.org/abs/quant-ph/0110143">Topological quantum memory</a>, 2001 <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:4">
-      <p>David S. Wang, Austin G. Fowler, Lloyd C. L. Hollenberg, <a href="https://arxiv.org/abs/1009.3686">Quantum computing with nearest neighbor interactions and error rates over 1%</a>, 2010 <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>David S. Wang, Austin G. Fowler, Lloyd C. L. Hollenberg, <a href="https://arxiv.org/abs/1009.3686">Quantum computing with nearest neighbor interactions and error rates over 1%</a>, 2010 <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:5">
-      <p>Austin G. Fowler, Matteo Mariantoni, John M. Martinis,  Andrew N. Cleland, <a href="https://arxiv.org/abs/1208.0928">Surface codes: Towards practical large-scale quantum computation</a> <a href="#fnref:5" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:5:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+      <p>Austin G. Fowler, Matteo Mariantoni, John M. Martinis, Andrew N. Cleland, <a href="https://arxiv.org/abs/1208.0928">Surface codes: Towards practical large-scale quantum computation</a> <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:5:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
     </li>
     <li id="fn:6">
-      <p>Here, a universal gate set is defined as a set that can approximate any unitary up to a precision <code class="MathJax_Preview">\epsilon</code><script type="math/tex">\epsilon</script> with <code class="MathJax_Preview">O\left(\log\left( \frac{1}{\epsilon}\right)^c\right)</code><script type="math/tex">O\left(\log\left( \frac{1}{\epsilon}\right)^c\right)</script> gates. <a href="#fnref:6" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>Here, a universal gate set is defined as a set that can approximate any unitary up to a precision \(\epsilon\) with \(O\left(\log\left( \frac{1}{\epsilon}\right)^c\right)\) gates. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:7">
-      <p>Sergey Bravyi, Jeongwan Haah, <a href="https://arxiv.org/abs/1209.2426">Magic-state distillation with low overhead</a> <a href="#fnref:7" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>Sergey Bravyi, Jeongwan Haah, <a href="https://arxiv.org/abs/1209.2426">Magic-state distillation with low overhead</a> <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:8">
-      <p>Ryan Babbush, Jarrod McClean, Michael Newman, Craig Gidney, Sergio Boixo, Hartmut Neven, <a href="https://arxiv.org/abs/2011.04149">Focus beyond quadratic speedups for error-corrected quantum advantage</a> <a href="#fnref:8" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p>Ryan Babbush, Jarrod McClean, Michael Newman, Craig Gidney, Sergio Boixo, Hartmut Neven, <a href="https://arxiv.org/abs/2011.04149">Focus beyond quadratic speedups for error-corrected quantum advantage</a> <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
 </div>
@@ -602,7 +568,7 @@ To mitigate this effect, the basic technique simply consists in repeating the st
 <footer role="contentinfo">
   <hr/>
   
-    <p><small class="copyright">© 2020. All rights reserved.
+    <p><small class="copyright">© 2026. All rights reserved.
 </small></p>
   
   
@@ -635,7 +601,7 @@ To mitigate this effect, the basic technique simply consists in repeating the st
         
         
           <p class="">
-            Researcher in quantum computing. PhD student at UCL (London)
+            Researcher in quantum computing at FU Berlin.
 
           </p>
         

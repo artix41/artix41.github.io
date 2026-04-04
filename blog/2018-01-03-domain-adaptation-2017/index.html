@@ -38,23 +38,23 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
   
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>A Little Review of Domain Adaptation in 2017 | Arthur Pesah</title>
-<meta name="generator" content="Jekyll v3.8.6" />
+<meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="A Little Review of Domain Adaptation in 2017" />
 <meta name="author" content="Arthur Pesah" />
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/" />
-<meta property="og:url" content="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/" />
+<link rel="canonical" href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" />
+<meta property="og:url" content="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" />
 <meta property="og:site_name" content="Arthur Pesah" />
-<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/domain-adaptation/teaser_high_res.jpg" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-01-03T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/domain-adaptation/teaser_high_res.jpg" />
+<meta property="twitter:image" content="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" />
 <meta property="twitter:title" content="A Little Review of Domain Adaptation in 2017" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2018-01-03T00:00:00+01:00","datePublished":"2018-01-03T00:00:00+01:00","description":"Research blog","headline":"A Little Review of Domain Adaptation in 2017","image":"https://arthurpesah.me/assets/img/blog/domain-adaptation/teaser_high_res.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2018-01-03T00:00:00+01:00","datePublished":"2018-01-03T00:00:00+01:00","description":"Research blog","headline":"A Little Review of Domain Adaptation in 2017","image":"http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -80,11 +80,11 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 <meta name="generator" content="Hydejack v8.5.2" />
 
-<link type="application/atom+xml" rel="alternate" href="https://arthurpesah.me/feed.xml" title="Arthur Pesah" />
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
 
 
 
-<link rel="alternate" href="https://arthurpesah.me/blog/2018-01-03-domain-adaptation-2017/" hreflang="en">
+<link rel="alternate" href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -155,8 +155,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
   <style id="_pageStyle">
 
-.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,0.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,0.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:#409ba3;border-color:#409ba3}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:#409ba3;border-color:#409ba3}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
-
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:rgb(63.8602040816,154.5602040816,162.8897959184);border-color:rgb(63.8602040816,154.5602040816,162.8897959184)}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:rgb(63.8602040816,154.5602040816,162.8897959184);border-color:rgb(63.8602040816,154.5602040816,162.8897959184)}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
 </style>
 
 
@@ -292,17 +291,17 @@ on <a href="/tag-machine-learning/" class="flip-title">Machine Learning</a>
 
 <p>2017 has been an amazing year for domain adaptation: awesome image-to-image and language-to-language translations have been produced, adversarial methods for DA have made huge progress and very innovative algorithms have been proposed to tackle the giant problem of adapting two domains.</p>
 
-<p>By domain adaptation, I mean any algorithm trying to transfer two domains, usually called source and target (for instance paintings and real photos), into a common domain. To do so, one can chose either to translate one domain into the other (e.g. translate paintings to photos) or to find a common embedding between the two domains. When only the source domain has labels and the goal is to predict the labels of the target domain, it’s called unsupervised domain adaptation and that’s where the advances were the most incredible. There are many benchmarks to evaluate a DA algorithm, one of the most common being to predict the labels of SVHN (a dataset of digits built with house numbers) by using MNIST (the most common handwritten digits dataset) and its labels. In a year, the results have passed from 90% (with Domain Transfer Network (DTN)<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>, which was already a great improvement on previous methods that turned around 82%, like DRCN<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>) to 99.2% (with self-ensembling DA<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>). Besides this quantitative analysis, the translations performed by some algorithms released this year are qualitatively amazing, particularly in visual DA and NLP.</p>
+<p>By domain adaptation, I mean any algorithm trying to transfer two domains, usually called source and target (for instance paintings and real photos), into a common domain. To do so, one can chose either to translate one domain into the other (e.g. translate paintings to photos) or to find a common embedding between the two domains. When only the source domain has labels and the goal is to predict the labels of the target domain, it’s called unsupervised domain adaptation and that’s where the advances were the most incredible. There are many benchmarks to evaluate a DA algorithm, one of the most common being to predict the labels of SVHN (a dataset of digits built with house numbers) by using MNIST (the most common handwritten digits dataset) and its labels. In a year, the results have passed from 90% (with Domain Transfer Network (DTN)<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>, which was already a great improvement on previous methods that turned around 82%, like DRCN<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>) to 99.2% (with self-ensembling DA<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>). Besides this quantitative analysis, the translations performed by some algorithms released this year are qualitatively amazing, particularly in visual DA and NLP.</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png" alt=""><img src="/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png" alt=""></hy-img>
 
-Figure 1. Transfer of SVHN to MNIST by SBADA-GAN<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>, May 2017. For testing a DA algorithm, one can try to predict the labels of SVHN by only using the labels of MNIST and the unsupervised translation between SVHN and MNIST.*</p>
+Figure 1. Transfer of SVHN to MNIST by SBADA-GAN<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>, May 2017. For testing a DA algorithm, one can try to predict the labels of SVHN by only using the labels of MNIST and the unsupervised translation between SVHN and MNIST.*</p>
 
 <p>Let’s try to summarize how awesome this year has been for domain adaptation.</p>
 
 <h1 id="adversarial-domain-adaptation">Adversarial Domain Adaptation</h1>
 
-<p>If 2015 saw the birth of adversarial domain adaptation (with DANN<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup>) and 2016 the birth of GAN-based domain adaptation (with CoGAN<sup id="fnref:6"><a href="#fn:6" class="footnote">6</a></sup> and DTN<sup id="fnref:2:1"><a href="#fn:2" class="footnote">2</a></sup> ), 2017 has seen huge improvements and amazing results with these methods. The idea behind adversarial DA is to train two neural networks: a discriminator that tries to separate the target domain from the transformed source domain, and a generator that tries to fool the discriminator to make the source domain look like the target one as much as possible. It’s basically a GAN but taking the source distribution as input instead of a uniform distribution (it is usually called a conditional GAN). I’ve realized a little animation to explain the concept more visually (you can find the code <a href="https://github.com/artix41/transfer-learning-algorithms/tree/master/adda">here</a>):</p>
+<p>If 2015 saw the birth of adversarial domain adaptation (with DANN<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup>) and 2016 the birth of GAN-based domain adaptation (with CoGAN<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> and DTN<sup id="fnref:2:1"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> ), 2017 has seen huge improvements and amazing results with these methods. The idea behind adversarial DA is to train two neural networks: a discriminator that tries to separate the target domain from the transformed source domain, and a generator that tries to fool the discriminator to make the source domain look like the target one as much as possible. It’s basically a GAN but taking the source distribution as input instead of a uniform distribution (it is usually called a conditional GAN). I’ve realized a little animation to explain the concept more visually (you can find the code <a href="https://github.com/artix41/transfer-learning-algorithms/tree/master/adda">here</a>):</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/gan-working.gif" alt=""><img src="/assets/img/blog/domain-adaptation/gan-working.gif" alt=""></hy-img>
 
@@ -315,11 +314,11 @@ You can find the code <a href="https://github.com/artix41/transfer-learning-algo
 
 <h2 id="adda">ADDA</h2>
 
-<p>First, in February, ADDA<sup id="fnref:8"><a href="#fn:8" class="footnote">7</a></sup> released a generalized theoretical framework for adversarial domain adaptation and achieved a 76.0% score with a simple GAN loss on SVHN → MNIST (which they thought to be the best score for an adversarial network on this task, but they had probably not heard of DTN at the time they submitted their article).</p>
+<p>First, in February, ADDA<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">7</a></sup> released a generalized theoretical framework for adversarial domain adaptation and achieved a 76.0% score with a simple GAN loss on SVHN → MNIST (which they thought to be the best score for an adversarial network on this task, but they had probably not heard of DTN at the time they submitted their article).</p>
 
 <h2 id="cyclegan">CycleGAN</h2>
 
-<p>A month later, the most important contribution of adversarial DA occurred: the invention of the cycle-consistency loss by <strong>CycleGAN</strong><sup id="fnref:9"><a href="#fn:9" class="footnote">8</a></sup>. This paper was a real revolution. Their idea was to train two conditional GANs, one transferring source to target, and the other target to source, and to consider a new loss, called cycle-consistency, which ensures that if you connect the two networks together it will produce an identity mapping (source → target → source). Their examples of transferring horses to zebra or painting to photos have become really famous and I consider it to be one of the coolest thing of this year! Contrary to other methods like pix2pix<sup id="fnref:10"><a href="#fn:10" class="footnote">9</a></sup>, they didn’t train their algorithm on pairs of images (like a photo of cat and the sketch of this same cat, for pix2pix), but only on the two distributions separated, which makes their results even more impressive.</p>
+<p>A month later, the most important contribution of adversarial DA occurred: the invention of the cycle-consistency loss by <strong>CycleGAN</strong><sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">8</a></sup>. This paper was a real revolution. Their idea was to train two conditional GANs, one transferring source to target, and the other target to source, and to consider a new loss, called cycle-consistency, which ensures that if you connect the two networks together it will produce an identity mapping (source → target → source). Their examples of transferring horses to zebra or painting to photos have become really famous and I consider it to be one of the coolest thing of this year! Contrary to other methods like pix2pix<sup id="fnref:10"><a href="#fn:10" class="footnote" rel="footnote" role="doc-noteref">9</a></sup>, they didn’t train their algorithm on pairs of images (like a photo of cat and the sketch of this same cat, for pix2pix), but only on the two distributions separated, which makes their results even more impressive.</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/cycleGAN.png" alt=""><img src="/assets/img/blog/domain-adaptation/cycleGAN.png" alt=""></hy-img>
 
@@ -327,7 +326,7 @@ Figure 3. Examples of image-to-image translations with CycleGAN</p>
 
 <h2 id="discogan">DiscoGAN</h2>
 
-<p>What’s fun is that a bunch of other papers discovered the cycle-consistency loss simultaneously, between March and May, sometimes giving it another name (like reconstruction loss). It’s for instance the case of <strong>DiscoGAN</strong><sup id="fnref:11"><a href="#fn:11" class="footnote">10</a></sup>, whose loss was a bit different (cross-entropy for the GAN loss instead of MSE for instance) but they also achieved incredible results, by managing to transfer both texture properties (like transforming blonde-haired to brown-haired people, women to men or people with glasses to people without glasses) and geometrical properties (chairs to cars and faces to cars).</p>
+<p>What’s fun is that a bunch of other papers discovered the cycle-consistency loss simultaneously, between March and May, sometimes giving it another name (like reconstruction loss). It’s for instance the case of <strong>DiscoGAN</strong><sup id="fnref:11"><a href="#fn:11" class="footnote" rel="footnote" role="doc-noteref">10</a></sup>, whose loss was a bit different (cross-entropy for the GAN loss instead of MSE for instance) but they also achieved incredible results, by managing to transfer both texture properties (like transforming blonde-haired to brown-haired people, women to men or people with glasses to people without glasses) and geometrical properties (chairs to cars and faces to cars).</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/discoGAN-01.png" alt="discoGAN-01"><img src="/assets/img/blog/domain-adaptation/discoGAN-01.png" alt="discoGAN-01"></hy-img>
 
@@ -337,7 +336,7 @@ Figure 4. Examples of image-to-image translations with DiscoGAN</p>
 
 <h2 id="dualgan">DualGAN</h2>
 
-<p>It’s also the case of <strong>DualGAN</strong><sup id="fnref:12"><a href="#fn:12" class="footnote">11</a></sup>, who used the cycle loss with a WGAN and other recent tricks on how to train GANs. They applied it on day ←→ night or sketch ←→ photos translations, and here are the results:</p>
+<p>It’s also the case of <strong>DualGAN</strong><sup id="fnref:12"><a href="#fn:12" class="footnote" rel="footnote" role="doc-noteref">11</a></sup>, who used the cycle loss with a WGAN and other recent tricks on how to train GANs. They applied it on day ←→ night or sketch ←→ photos translations, and here are the results:</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/dualgan.png" alt="dualgan"><img src="/assets/img/blog/domain-adaptation/dualgan.png" alt="dualgan"></hy-img>
 
@@ -345,11 +344,11 @@ Figure 5. Examples of image-to-image translations with DualGAN</p>
 
 <h2 id="sbada-gan">SBADA-GAN</h2>
 
-<p>But those 3 papers didn’t consider any dataset with a task (like classification), so didn’t give any quantitative evaluation of their method. <strong>SBADA-GAN</strong><sup id="fnref:4:1"><a href="#fn:4" class="footnote">4</a></sup> did it by adding a classifier at the end of their network in order to predict the labels of both the source and the transformed target sample. During the training, pseudo-labels are assigned to the target samples and contribute to the classification loss. The score obtained for SVHN → MNIST is not very good (~76%, same as ADDA), but they achieved new state-of-the-arts on the opposite transformation (MNIST→SVHN) and on MNIST ←→ USPS (another handwritten-digits dataset very close to MNIST).</p>
+<p>But those 3 papers didn’t consider any dataset with a task (like classification), so didn’t give any quantitative evaluation of their method. <strong>SBADA-GAN</strong><sup id="fnref:4:1"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> did it by adding a classifier at the end of their network in order to predict the labels of both the source and the transformed target sample. During the training, pseudo-labels are assigned to the target samples and contribute to the classification loss. The score obtained for SVHN → MNIST is not very good (~76%, same as ADDA), but they achieved new state-of-the-arts on the opposite transformation (MNIST→SVHN) and on MNIST ←→ USPS (another handwritten-digits dataset very close to MNIST).</p>
 
 <h2 id="gentoadapt">GenToAdapt</h2>
 
-<p>Other kind of adversarial architectures have been tried this year with more success on digits benchmarks, like <strong>GenToAdapt</strong><sup id="fnref:14"><a href="#fn:14" class="footnote">12</a></sup> in April who made the first real state-of-the-art of the year in SVHN → MNIST, with a score of 92.4%. Their technique was basically to use a GAN to generate source images from both source and target samples, and to discriminate both real vs fake samples and the different classes of the source samples (like AC-GAN). The learned embedding is then used to train a third network, C, to directly predict the labels of the input samples. The figure below (from the original paper) is certainly clearer than my explanation:</p>
+<p>Other kind of adversarial architectures have been tried this year with more success on digits benchmarks, like <strong>GenToAdapt</strong><sup id="fnref:14"><a href="#fn:14" class="footnote" rel="footnote" role="doc-noteref">12</a></sup> in April who made the first real state-of-the-art of the year in SVHN → MNIST, with a score of 92.4%. Their technique was basically to use a GAN to generate source images from both source and target samples, and to discriminate both real vs fake samples and the different classes of the source samples (like AC-GAN). The learned embedding is then used to train a third network, C, to directly predict the labels of the input samples. The figure below (from the original paper) is certainly clearer than my explanation:</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/gentoadapt.png" alt="gentoadapt"><img src="/assets/img/blog/domain-adaptation/gentoadapt.png" alt="gentoadapt"></hy-img>
 
@@ -357,7 +356,7 @@ Figure 6. The architecture of GenToAdapt</p>
 
 <h2 id="unit">UNIT</h2>
 
-<p>It’s also the case of <strong>UNIT</strong><sup id="fnref:15"><a href="#fn:15" class="footnote">13</a></sup>, an adversarial method proposed by Nvidia. Like in many Nvidia papers, they performed a large bunch of amazing experiments (image-to-image translation between different outside conditions on the road, between GTA and reality, between different breeds of dogs, etc.). They have also tested their algorithm on SVHN → MNIST, and obtained 90.53%, which is very close to DTN score, but they manage to transfer much higher-resolution images. Their technique is based on CoGAN<sup id="fnref:6:1"><a href="#fn:6" class="footnote">6</a></sup>, which consists in two GANs, one for generating the source domain and one for the target domain, with weight-sharing for some layers. Nvidia’s main contribution was to replace the generator by a VAE. They indeed show that the VAE loss is equivalent to the cycle-consistency constraint described in the previous papers.</p>
+<p>It’s also the case of <strong>UNIT</strong><sup id="fnref:15"><a href="#fn:15" class="footnote" rel="footnote" role="doc-noteref">13</a></sup>, an adversarial method proposed by Nvidia. Like in many Nvidia papers, they performed a large bunch of amazing experiments (image-to-image translation between different outside conditions on the road, between GTA and reality, between different breeds of dogs, etc.). They have also tested their algorithm on SVHN → MNIST, and obtained 90.53%, which is very close to DTN score, but they manage to transfer much higher-resolution images. Their technique is based on CoGAN<sup id="fnref:6:1"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup>, which consists in two GANs, one for generating the source domain and one for the target domain, with weight-sharing for some layers. Nvidia’s main contribution was to replace the generator by a VAE. They indeed show that the VAE loss is equivalent to the cycle-consistency constraint described in the previous papers.</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/UNIT.png" alt="UNIT"><img src="/assets/img/blog/domain-adaptation/UNIT.png" alt="UNIT"></hy-img>
 
@@ -365,7 +364,7 @@ Figure 7. Examples of image-to-image translations with UNIT</p>
 
 <h2 id="stargan">StarGAN</h2>
 
-<p>However, those architectures are only capable of transferring one source domain to one target domain at a time. But if you have multiple domains, there should be a way to train a network to perform transfers in all the domains. In November <strong>StarGAN</strong><sup id="fnref:17"><a href="#fn:17" class="footnote">14</a></sup> adapted CycleGAN to this so-called multi-source domain adaptation problem. Their results in transferring different hair colors or emotions for the same person were pretty amazing as you can see:</p>
+<p>However, those architectures are only capable of transferring one source domain to one target domain at a time. But if you have multiple domains, there should be a way to train a network to perform transfers in all the domains. In November <strong>StarGAN</strong><sup id="fnref:17"><a href="#fn:17" class="footnote" rel="footnote" role="doc-noteref">14</a></sup> adapted CycleGAN to this so-called multi-source domain adaptation problem. Their results in transferring different hair colors or emotions for the same person were pretty amazing as you can see:</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/StarGAN.png" alt="StarGAN"><img src="/assets/img/blog/domain-adaptation/StarGAN.png" alt="StarGAN"></hy-img>
 
@@ -373,7 +372,7 @@ Figure 8. Example of multi-domain image translations with StarGAN</p>
 
 <h2 id="word-translation-without-parallel-data">Word Translation Without Parallel Data</h2>
 
-<p>It might seem from the examples above that the DA community is putting all its efforts into computer vision (CV). But one of the most impressive (and shared) DA paper of the year is in natural language processing (NLP) : <strong>Word Translation Without Parallel Data</strong><sup id="fnref:18"><a href="#fn:18" class="footnote">15</a></sup>. They basically used adversarial DA to find a common embedding between samples from two languages (source and target), and managed to perform very accurate translations without having trained on any example of translation! If you read the paper, you can notice that the expression “domain adaptation” haven’t been used once… Since most DA folks are into computer vision, it seems that the NLP guys who wrote this paper were not aware that their work entered into domain adaptation. So I think NLP would benefit a great deal by testing on their data all the brand new DA methods that the CV community has invented this year.</p>
+<p>It might seem from the examples above that the DA community is putting all its efforts into computer vision (CV). But one of the most impressive (and shared) DA paper of the year is in natural language processing (NLP) : <strong>Word Translation Without Parallel Data</strong><sup id="fnref:18"><a href="#fn:18" class="footnote" rel="footnote" role="doc-noteref">15</a></sup>. They basically used adversarial DA to find a common embedding between samples from two languages (source and target), and managed to perform very accurate translations without having trained on any example of translation! If you read the paper, you can notice that the expression “domain adaptation” haven’t been used once… Since most DA folks are into computer vision, it seems that the NLP guys who wrote this paper were not aware that their work entered into domain adaptation. So I think NLP would benefit a great deal by testing on their data all the brand new DA methods that the CV community has invented this year.</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/translation-without-pairs.png" alt="translation-without-pairs"><img src="/assets/img/blog/domain-adaptation/translation-without-pairs.png" alt="translation-without-pairs"></hy-img>
 
@@ -381,7 +380,7 @@ Figure 9. Alignement of the embedding word spaces of the source (english) and th
 
 <h2 id="pix2pix-hd">Pix2Pix HD</h2>
 
-<p>Finally, I have talked only about unpaired domain adaptation (where you don’t use any pair of corresponding source/target samples during the training), but paired DA has also known a little revolution with <strong>pix2pixHD</strong><sup id="fnref:19"><a href="#fn:19" class="footnote">16</a></sup>. It’s basically an improved version of pix2pix (a conditional GAN trained on pairs of images) with many tricks to make it scalable to bigger images. They trained their network to transform semantic maps into realistic photos of street scenes, as you can see on the animation below:</p>
+<p>Finally, I have talked only about unpaired domain adaptation (where you don’t use any pair of corresponding source/target samples during the training), but paired DA has also known a little revolution with <strong>pix2pixHD</strong><sup id="fnref:19"><a href="#fn:19" class="footnote" rel="footnote" role="doc-noteref">16</a></sup>. It’s basically an improved version of pix2pix (a conditional GAN trained on pairs of images) with many tricks to make it scalable to bigger images. They trained their network to transform semantic maps into realistic photos of street scenes, as you can see on the animation below:</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/pix2pixHD.gif" alt="pix2pixHD"><img src="/assets/img/blog/domain-adaptation/pix2pixHD.gif" alt="pix2pixHD"></hy-img>
 
@@ -393,11 +392,11 @@ Figure 10. Translation of a semantic map (map of labels) to a real street scene 
 
 <h2 id="associative-da">Associative DA</h2>
 
-<p>The first one is <strong>Associative DA</strong> <code class="MathJax_Preview">DA_{assoc}</code><script type="math/tex">DA_{assoc}</script><sup id="fnref:20"><a href="#fn:20" class="footnote">17</a></sup> who achieved a score of <strong>97.6%</strong> on SVHN→MNIST. In order to find the best embedding, they used the new trend of 2017… cycle-consistency loss! Yes, again, but this time without any GAN or other adversarial network: they just try to learn an embedding (last layer of a neural network) such that the probability of translating a source sample to a target sample (based on the distance between the two points in the embedding space), then converting back this target sample to another source sample will be high if the two source samples belong to the same class.</p>
+<p>The first one is <strong>Associative DA</strong> \(DA_{assoc}\)<sup id="fnref:20"><a href="#fn:20" class="footnote" rel="footnote" role="doc-noteref">17</a></sup> who achieved a score of <strong>97.6%</strong> on SVHN→MNIST. In order to find the best embedding, they used the new trend of 2017… cycle-consistency loss! Yes, again, but this time without any GAN or other adversarial network: they just try to learn an embedding (last layer of a neural network) such that the probability of translating a source sample to a target sample (based on the distance between the two points in the embedding space), then converting back this target sample to another source sample will be high if the two source samples belong to the same class.</p>
 
 <h2 id="self-ensembling-da">Self-Ensembling DA</h2>
 
-<p>The second one is <strong>Self-Ensembling DA</strong><sup id="fnref:3:1"><a href="#fn:3" class="footnote">3</a></sup>, who really destroyed our benchmark SVHN→MNIST with a score of <strong>99.2%</strong> ! We’ll have to find other benchmarks next year! They did this exploit by adapting Mean Teacher − a method coming from semi-supervised learning that has achieved recent SOTA in this field − to domain adaptation. The idea is to have two networks, a student and a teacher, and to make the weights of the teacher a moving average of all the weights that the student got during training. Then, labeled source samples are used to train the student to be a good classifier, and unlabeled target samples to train the student to be like the teacher (with a consistency loss). You can find a more visual explanation <a href="https://thecuriousaicompany.com/mean-teacher/">here</a>.</p>
+<p>The second one is <strong>Self-Ensembling DA</strong><sup id="fnref:3:1"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>, who really destroyed our benchmark SVHN→MNIST with a score of <strong>99.2%</strong> ! We’ll have to find other benchmarks next year! They did this exploit by adapting Mean Teacher − a method coming from semi-supervised learning that has achieved recent SOTA in this field − to domain adaptation. The idea is to have two networks, a student and a teacher, and to make the weights of the teacher a moving average of all the weights that the student got during training. Then, labeled source samples are used to train the student to be a good classifier, and unlabeled target samples to train the student to be like the teacher (with a consistency loss). You can find a more visual explanation <a href="https://thecuriousaicompany.com/mean-teacher/">here</a>.</p>
 
 <h1 id="optimal-transport">Optimal Transport</h1>
 
@@ -411,7 +410,7 @@ This graph has been produced with the library <a href="https://github.com/rflama
 
 <p>This <a href="https://vincentherrmann.github.io/blog/wasserstein/">blog article</a> is an excellent introduction if you want to learn more about OT.</p>
 
-<p>If you start to understand a bit domain adaptation, I think you can now clearly see the link between OT and DA. The relation between those two fields had been theorized in 2016<sup id="fnref:22"><a href="#fn:22" class="footnote">18</a></sup>, but a very interesting algorithm has come out in 2017: <strong>Joint Distribution Optimal Transportation (JDOT)</strong><sup id="fnref:23"><a href="#fn:23" class="footnote">19</a></sup>. Their method is an iterative process: at each iteration, pseudo-labels are given to every target points (at first using a classifier trained on the source samples). Then, the goal is to transport every source point to a target point, minimizing not only the total distance traveled, but also the number of change of label during the transport (between the label of the source point and the pseudo-label of the target point). I made a visual explanation here : <a href="https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md">A Visual Explanation of JDOT Algorithm</a>, summarized in this GIF (not sure if understandable without pausing at each step):</p>
+<p>If you start to understand a bit domain adaptation, I think you can now clearly see the link between OT and DA. The relation between those two fields had been theorized in 2016<sup id="fnref:22"><a href="#fn:22" class="footnote" rel="footnote" role="doc-noteref">18</a></sup>, but a very interesting algorithm has come out in 2017: <strong>Joint Distribution Optimal Transportation (JDOT)</strong><sup id="fnref:23"><a href="#fn:23" class="footnote" rel="footnote" role="doc-noteref">19</a></sup>. Their method is an iterative process: at each iteration, pseudo-labels are given to every target points (at first using a classifier trained on the source samples). Then, the goal is to transport every source point to a target point, minimizing not only the total distance traveled, but also the number of change of label during the transport (between the label of the source point and the pseudo-label of the target point). I made a visual explanation here : <a href="https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md">A Visual Explanation of JDOT Algorithm</a>, summarized in this GIF (not sure if understandable without pausing at each step):</p>
 
 <p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/animation.gif" alt="animation"><img src="/assets/img/blog/domain-adaptation/animation.gif" alt="animation"></hy-img>
 
@@ -427,64 +426,64 @@ You can find all those images separated and associated to some explanations
 
 <p><strong>Disclaimer</strong>: the description of those papers only corresponds to my current understanding of them, so take it with a grain of salt and don’t hesitate to tell me if I am incorrect or imprecise in some of my explanations. Concerning the results I give, they are only the ones given in the original papers and a more rigorous methodology should be used in order to make a real comparison.</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1">
-      <p><a href="https://arxiv.org/pdf/1611.02200.pdf">Unsupervised Cross-domain Image Generation</a> (2016) <a href="#fnref:1" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1611.02200.pdf">Unsupervised Cross-domain Image Generation</a> (2016) <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:2">
-      <p><a href="https://arxiv.org/pdf/1607.03516.pdf">Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation</a> (2016) <a href="#fnref:2" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:2:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+      <p><a href="https://arxiv.org/pdf/1607.03516.pdf">Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation</a> (2016) <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:2:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
     </li>
     <li id="fn:3">
-      <p><a href="https://arxiv.org/pdf/1706.05208.pdf">Self-ensembling for domain adaptation</a> (2017) <a href="#fnref:3" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:3:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+      <p><a href="https://arxiv.org/pdf/1706.05208.pdf">Self-ensembling for domain adaptation</a> (2017) <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:3:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
     </li>
     <li id="fn:4">
-      <p><a href="https://arxiv.org/pdf/1705.08824.pdf">From source to target and back: symmetric bi-directional adaptive GAN</a> (2017) <a href="#fnref:4" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:4:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+      <p><a href="https://arxiv.org/pdf/1705.08824.pdf">From source to target and back: symmetric bi-directional adaptive GAN</a> (2017) <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:4:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
     </li>
     <li id="fn:5">
-      <p><a href="https://arxiv.org/pdf/1505.07818.pdf">Domain-Adversarial Training of Neural Networks</a> (2015) <a href="#fnref:5" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1505.07818.pdf">Domain-Adversarial Training of Neural Networks</a> (2015) <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:6">
-      <p><a href="https://arxiv.org/pdf/1606.07536.pdf">Coupled Generative Adversarial Networks</a> (2016) <a href="#fnref:6" class="reversefootnote">&#x21a9;&#xfe0e;</a> <a href="#fnref:6:1" class="reversefootnote">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
+      <p><a href="https://arxiv.org/pdf/1606.07536.pdf">Coupled Generative Adversarial Networks</a> (2016) <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:6:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
     </li>
     <li id="fn:8">
-      <p><a href="https://arxiv.org/pdf/1702.05464.pdf">Adaptative Discriminative Domain Adaptation</a> (2017) <a href="#fnref:8" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1702.05464.pdf">Adaptative Discriminative Domain Adaptation</a> (2017) <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:9">
-      <p><a href="https://arxiv.org/pdf/1703.10593">Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks</a> (2017) <a href="#fnref:9" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1703.10593">Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks</a> (2017) <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:10">
-      <p><a href="https://arxiv.org/pdf/1611.07004.pdf">Image-to-Image Translation with Conditional Adversarial Networks</a> (2016) <a href="#fnref:10" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1611.07004.pdf">Image-to-Image Translation with Conditional Adversarial Networks</a> (2016) <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:11">
-      <p><a href="https://arxiv.org/pdf/1703.05192.pdf">Learning to Discover Cross-Domain Relations with Generative Adversarial Networks</a> (2017) <a href="#fnref:11" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1703.05192.pdf">Learning to Discover Cross-Domain Relations with Generative Adversarial Networks</a> (2017) <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:12">
-      <p><a href="https://arxiv.org/pdf/1704.02510.pdf">DualGAN: Unsupervised Dual Learning for Image-to-Image Translation</a> (2017) <a href="#fnref:12" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1704.02510.pdf">DualGAN: Unsupervised Dual Learning for Image-to-Image Translation</a> (2017) <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:14">
-      <p><a href="https://arxiv.org/pdf/1704.01705.pdf">Generate To Adapt: Aligning Domains using Generative Adversarial Networks</a> (2017) <a href="#fnref:14" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1704.01705.pdf">Generate To Adapt: Aligning Domains using Generative Adversarial Networks</a> (2017) <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:15">
-      <p><a href="https://arxiv.org/pdf/1703.00848.pdf">Unsupervised Image-to-Image Translation Networks</a> (2017) <a href="#fnref:15" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1703.00848.pdf">Unsupervised Image-to-Image Translation Networks</a> (2017) <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:17">
-      <p><a href="https://arxiv.org/pdf/1711.09020.pdf">StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation</a> (2017) <a href="#fnref:17" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1711.09020.pdf">StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation</a> (2017) <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:18">
-      <p><a href="">Word Translation without Parallel Data</a> (2017) <a href="#fnref:18" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="">Word Translation without Parallel Data</a> (2017) <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:19">
-      <p><a href="https://arxiv.org/pdf/1711.11585.pdf">High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs</a> <a href="#fnref:19" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1711.11585.pdf">High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs</a> <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:20">
-      <p><a href="https://arxiv.org/pdf/1708.00938.pdf">Associative Domain Adaptation</a> (2017) <a href="#fnref:20" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1708.00938.pdf">Associative Domain Adaptation</a> (2017) <a href="#fnref:20" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:22">
-      <p><a href="https://arxiv.org/pdf/1610.04420.pdf">Theoretical Analysis of Domain Adaptation with Optimal Transport</a> (2016) <a href="#fnref:22" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1610.04420.pdf">Theoretical Analysis of Domain Adaptation with Optimal Transport</a> (2016) <a href="#fnref:22" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:23">
-      <p><a href="https://arxiv.org/pdf/1705.08848.pdf">Joint distribution optimal transportation for domain adaptation</a> (2017) <a href="#fnref:23" class="reversefootnote">&#x21a9;&#xfe0e;</a></p>
+      <p><a href="https://arxiv.org/pdf/1705.08848.pdf">Joint distribution optimal transportation for domain adaptation</a> (2017) <a href="#fnref:23" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
 </div>
@@ -555,7 +554,7 @@ You can find all those images separated and associated to some explanations
 <footer role="contentinfo">
   <hr/>
   
-    <p><small class="copyright">© 2020. All rights reserved.
+    <p><small class="copyright">© 2026. All rights reserved.
 </small></p>
   
   
@@ -588,7 +587,7 @@ You can find all those images separated and associated to some explanations
         
         
           <p class="">
-            Researcher in quantum computing. PhD student at UCL (London)
+            Researcher in quantum computing at FU Berlin.
 
           </p>
         
