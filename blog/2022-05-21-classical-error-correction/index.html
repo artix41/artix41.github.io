@@ -606,12 +606,12 @@ Tanner graph of the Hamming code. The top nodes represent the codeword bits and 
 
 <p class="message"><strong>Exercise 6</strong>: Show that the set of codewords is a vector space, i.e. if two vectors \(\bm{y_1}\) and \(\bm{y_2}\) are codewords, \(\bm{y_1} + \bm{y_2}\) is also a codeword. This property is sometimes taken as the definition of linear codes.</p>
 
-<p class="message"><strong>Exercise 7</strong>: <strong>(a)</strong> Show that if \(V\) is a vector space over binary numbers, then \(\vert V\vert  = 2^{\dim(V)}\), where \(\vert V\vert\) is the the number of elements in the vector space. \(\newline\)
-<strong>(b)</strong> Deduce that the parity-check matrix \(\bm{H}\) of an \([n,k,d]\)-code obeys the relation \(\text{rank}(H)=n-k\).\(\newline\)
+<p class="message"><strong>Exercise 7</strong>: <strong>(a)</strong> Show that if \(V\) is a vector space over binary numbers, then \(\vert V\vert  = 2^{\dim(V)}\), where \(\vert V\vert\) is the the number of elements in the vector space. <br />
+<strong>(b)</strong> Deduce that the parity-check matrix \(\bm{H}\) of an \([n,k,d]\)-code obeys the relation \(\text{rank}(H)=n-k\).<br />
 <strong>(c)</strong> Deduce that if a code has \(m\) independent parity checks, we have \(m=n-k\). This relation is often used to find the parameter \(k\) of a code given the parity checks.</p>
 
 <p class="message"><strong>Exercise 8</strong>:
-<strong>(a)</strong> Show that the distance of a linear code is the minimum Hamming weight of all the non-zero codewords, i.e. \(d=\min_{\bm{y}\in \mathcal{C}, \bm{y} \neq \bm{0}} \vert \bm{y} \vert\), where \(\mathcal{C}\) is the space of codewords and \(\vert\cdot\vert\) denotes the Hamming weight (<em>Hint: first prove that the Hamming distance between two codewords is translation-invariant, i.e. \(D_H(\bm{x},\bm{y})=D_H(\bm{x}+\bm{z},\bm{y}+\bm{z})\)</em>)\(\newline\)
+<strong>(a)</strong> Show that the distance of a linear code is the minimum Hamming weight of all the non-zero codewords, i.e. \(d=\min_{\bm{y}\in \mathcal{C}, \bm{y} \neq \bm{0}} \vert \bm{y} \vert\), where \(\mathcal{C}\) is the space of codewords and \(\vert\cdot\vert\) denotes the Hamming weight (<em>Hint: first prove that the Hamming distance between two codewords is translation-invariant, i.e. \(D_H(\bm{x},\bm{y})=D_H(\bm{x}+\bm{z},\bm{y}+\bm{z})\)</em>)<br />
 <strong>(b)</strong> Use this property to compute the distance of the Hamming code.</p>
 
 <h2 id="decoding-linear-codes">Decoding linear codes</h2>
@@ -847,9 +847,9 @@ Indeed, this code is the simplest example of a <strong>self-dual code</strong>: 
 
 <p>Before concluding this post, here is one last exercise to consolidate your knowledge of duality.</p>
 
-<p class="message"><strong>Exercise 9</strong>: We can extend the Hamming code by adding a last parity-check bit, that checks the total parity of the message, i.e. \(z_4=a+b+c+d\). We call this code the <strong>extended Hamming code</strong>. \(\newline\)
-<strong>(a)</strong> Write the parity-check matrix of the extended Hamming code. \(\newline\)
-<strong>(b)</strong> Show that the extended Hamming code is a \([8,4,4]\)-code. It means that it can now detect (but not correct) all the \(2\)-bit errors.\(\newline\)
+<p class="message"><strong>Exercise 9</strong>: We can extend the Hamming code by adding a last parity-check bit, that checks the total parity of the message, i.e. \(z_4=a+b+c+d\). We call this code the <strong>extended Hamming code</strong>. <br />
+<strong>(a)</strong> Write the parity-check matrix of the extended Hamming code. <br />
+<strong>(b)</strong> Show that the extended Hamming code is a \([8,4,4]\)-code. It means that it can now detect (but not correct) all the \(2\)-bit errors.<br />
 <strong>(c)</strong> Show that this code is self-dual. It is the smallest non-trivial self-dual code, after the \(2\)-repetition code introduced earlier.</p>
 
 <h2 id="conclusion">Conclusion</h2>
@@ -903,7 +903,7 @@ There are two codewords, made of all \(0\) or all \(1\): \(0...0\) and \(1...1\)
     0 &amp; 0 &amp; 1 \\\hline
     1 &amp; 1 &amp; 1
     \end{matrix}
-\right)\). \(\newline\)
+\right)\). <br />
 Similarly, using \(\bm{H}=\left(\begin{matrix} \bm{A} &amp; I_m \end{matrix} \right)\), we find \(\bm{H}=\left(\begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 \end{matrix} \right)\). The Tanner graph can be constructed using four message nodes, and one check node connected to all the message nodes.</p>
 
 <p class="message"><strong>Exercise 5</strong>: The repetition code has two codewords, \(\left( \begin{matrix} 0 \\ 0 \\ 0 \end{matrix} \right)\)
@@ -916,11 +916,11 @@ and \(\left( \begin{matrix} 1 \\ 1 \\ 1 \end{matrix} \right)\). It is therefore 
 In the parity-check picture, it comes down to showing that \(\text{Ker}(\bm{H})\) is a vector space, which you might also already know from linear algebra. It can be shown by taking two codewords \(\bm{y_1}, \bm{y_2} \in \text{Ker}(\bm{H})\). Then \(\bm{H} (\bm{y_1} + \bm{y_2}) = \bm{H} \bm{y_1} + \bm{H} \bm{y_2} = \bm{0} + \bm{0} = \bm{0}\), so \(\bm{y_1}+\bm{y_2} \in \text{Ker}(\bm{H})\).</p>
 
 <p class="message"><strong>Exercise 7</strong>:
-<strong>(a)</strong> If \(k=\dim V\), we can find a basis \(\bm{y}_1,...,\bm{y}_k\) of \(V\) s.t. any element \(\bm{y} \in V\) can be written \(\bm{y}=a_1 \bm{y}_1 + ... + a_k \bm{y}_k\) with \(a_1,...,a_k \in \{0,1\}\). Since there are \(2^k\) possible values of \(a_1,...,a_k\), we can deduce that there are \(2^k\) elements in \(V\). It can also be seen as a consequence of Exercise 3, where we showed that for any code, the number of codewords is \(2^k\). \(\newline\)
-<strong>(b)</strong> From the <a href="https://en.wikipedia.org/wiki/Rank%E2%80%93nullity_theorem">rank-nullity theorem</a>, we know that \(\text{rank}(H) + \text{dim}(\text{Ker}(H)) = n\). Using (a), we get \(\dim(\text{Ker}(H))=\log \vert \text{Ker}(H) \vert\). But we know from Exercise 3 that \(\vert\text{Ker}(H)\vert=2^k\), from which we can deduce that \(\dim(\text{Ker}(H))=k\). Therefore, \(\text{rank}(H) = n - k\).\(\newline\)
+<strong>(a)</strong> If \(k=\dim V\), we can find a basis \(\bm{y}_1,...,\bm{y}_k\) of \(V\) s.t. any element \(\bm{y} \in V\) can be written \(\bm{y}=a_1 \bm{y}_1 + ... + a_k \bm{y}_k\) with \(a_1,...,a_k \in \{0,1\}\). Since there are \(2^k\) possible values of \(a_1,...,a_k\), we can deduce that there are \(2^k\) elements in \(V\). It can also be seen as a consequence of Exercise 3, where we showed that for any code, the number of codewords is \(2^k\). <br />
+<strong>(b)</strong> From the <a href="https://en.wikipedia.org/wiki/Rank%E2%80%93nullity_theorem">rank-nullity theorem</a>, we know that \(\text{rank}(H) + \text{dim}(\text{Ker}(H)) = n\). Using (a), we get \(\dim(\text{Ker}(H))=\log \vert \text{Ker}(H) \vert\). But we know from Exercise 3 that \(\vert\text{Ker}(H)\vert=2^k\), from which we can deduce that \(\dim(\text{Ker}(H))=k\). Therefore, \(\text{rank}(H) = n - k\).<br />
 <strong>(c)</strong>: If there \(m\) independent parity checks, we can write \(\bm{H}\) as a full-rank matrix where each row is one of the parity checks. Since \(\bm{H}\) has dimension \(m \times n\), and \(m &lt; n\) (a fair assumption if we want \(k &gt; 0\)), we have \(\text{rank}(\bm{H})=m\), and by the previous question, \(m=n-k\).</p>
 
-<p class="message"><strong>Exercise 8</strong>: <strong>(a)</strong> Let’s first show that the Hamming distance is translation-invariant: \(D_H(\bm{x}+\bm{z}, \bm{y}+\bm{z})=\vert \bm{x} + \bm{z} - (\bm{y}+\bm{z})\vert=\vert \bm{x} - \bm{y} \vert=D_H(\bm{x},\bm{y})\). Therefore, it means that \(D_H(\bm{x},\bm{y})=D_H(\bm{x}-\bm{x}, \bm{y}-\bm{x})=D_H(0,\bm{y}-\bm{x})\). If \(\bm{x}\) and \(\bm{y}\) are two codewords, \(\bm{y}-\bm{x}\) is also a codeword by linearity of our code (see Exercise 6 for a proof). Therefore, \(d=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{x},\bm{y})=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{0},\bm{x}-\bm{y})=\min_{\bm{x}\in \mathcal{C}, \bm{x} \neq \bm{0}} D_H(\bm{0},\bm{x})\). \(\newline\)
+<p class="message"><strong>Exercise 8</strong>: <strong>(a)</strong> Let’s first show that the Hamming distance is translation-invariant: \(D_H(\bm{x}+\bm{z}, \bm{y}+\bm{z})=\vert \bm{x} + \bm{z} - (\bm{y}+\bm{z})\vert=\vert \bm{x} - \bm{y} \vert=D_H(\bm{x},\bm{y})\). Therefore, it means that \(D_H(\bm{x},\bm{y})=D_H(\bm{x}-\bm{x}, \bm{y}-\bm{x})=D_H(0,\bm{y}-\bm{x})\). If \(\bm{x}\) and \(\bm{y}\) are two codewords, \(\bm{y}-\bm{x}\) is also a codeword by linearity of our code (see Exercise 6 for a proof). Therefore, \(d=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{x},\bm{y})=\min_{\bm{x},\bm{y}\in \mathcal{C}, \bm{x} \neq \bm{y}} D_H(\bm{0},\bm{x}-\bm{y})=\min_{\bm{x}\in \mathcal{C}, \bm{x} \neq \bm{0}} D_H(\bm{0},\bm{x})\). <br />
 <strong>(b)</strong> Let’s show that the \([7,4]\)-Hamming code has distance \(3\). Any codeword of the Hamming code is of the form \((a, b, c, d, z_1, z_2, z_3)\). If \(a=b=c=d=0\), then we will have the zero codeword (which is not included in our optimization). If one of \(a,b,c,d\) is \(1\), two of the parity checks will be \(1\), giving a weight of \(3\) for those codewords. If two of \(a,b,c,d\) are \(1\), then one parity-check will be \(1\), giving also a weight of \(3\). And if three or more variables are \(1\), the weight will be at least three. Therefore, the minimum weight of a non-zero codeword is \(3\), and we have \(d=3\) by the previous question.</p>
 
 <p class="message"><strong>Exercise 9</strong>: <strong>(a)</strong> We obtain the parity-check matrix of the extended Hamming code by adding a new column (for our new parity-check bit) and appending the row \(\left( \begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \end{matrix} \right)\), giving
@@ -934,8 +934,8 @@ In the parity-check picture, it comes down to showing that \(\text{Ker}(\bm{H})\
             1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
         \end{matrix}
     \right)
-\end{aligned}\) \(\newline\)
-<strong>(b)</strong> We now have \(n=8\) since we have added a new check bit to the original Hamming code. The new parity-check matrix is full-rank, and therefore it has a number of columns \(m=n-k\) (by Exercise 7). Since \(m=4\), we can deduce that \(k=4\). To calculate the distance, we can find the lowest weight of its codewords (by Exercise 8a). A very similar reasoning to the proof of Exercise 8b can be used to prove that \(d=4\). \(\newline\)
+\end{aligned}\) <br />
+<strong>(b)</strong> We now have \(n=8\) since we have added a new check bit to the original Hamming code. The new parity-check matrix is full-rank, and therefore it has a number of columns \(m=n-k\) (by Exercise 7). Since \(m=4\), we can deduce that \(k=4\). To calculate the distance, we can find the lowest weight of its codewords (by Exercise 8a). A very similar reasoning to the proof of Exercise 8b can be used to prove that \(d=4\). <br />
 <strong>(c)</strong> The non-identity part \(A\) of the parity-check matrix computed above is a symmetric matrix. Therefore, \(A^T=A\) and the transpose of the parity-check matrix will be equal to the generator matrix, meaning that the code is self-dual.</p>
 
 <!-- ---------------------------------------------------------------- -->
