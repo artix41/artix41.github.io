@@ -44,17 +44,17 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/" />
-<meta property="og:url" content="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/" />
+<link rel="canonical" href="http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/" />
+<meta property="og:url" content="http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/" />
 <meta property="og:site_name" content="Arthur Pesah" />
-<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" />
+<meta property="og:image" content="http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2023-03-16T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" />
+<meta property="twitter:image" content="http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png" />
 <meta property="twitter:title" content="The stabilizer trilogy II — Logical operators" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-16T00:00:00+01:00","datePublished":"2023-03-16T00:00:00+01:00","description":"Research blog","headline":"The stabilizer trilogy II — Logical operators","image":"https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2023-03-16T00:00:00+01:00","datePublished":"2023-03-16T00:00:00+01:00","description":"Research blog","headline":"The stabilizer trilogy II — Logical operators","image":"http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -80,11 +80,11 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 <meta name="generator" content="Hydejack v8.5.2" />
 
-<link type="application/atom+xml" rel="alternate" href="https://arthurpesah.me/feed.xml" title="Arthur Pesah" />
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
 
 
 
-<link rel="alternate" href="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/" hreflang="en">
+<link rel="alternate" href="http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -305,11 +305,11 @@ on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
   </header>
 
   
-    <p>Happy to see you back for the second part of the stabilizer trilogy! In the <a href="/blog/2023-01-31-stabilizer-formalism-1">previous post</a>, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an \(X\) and a \(Z\) stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What logical operations can we apply to this code? How does the decoding process work?</p>
+    <p>Happy to see you back for the second part of the stabilizer trilogy! In the <a href="/blog/2023-01-31-stabilizer-formalism-1">previous post</a>, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an \(X\) and a \(Z\) stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What are its Pauli logical operators? How does the decoding process work?</p>
 
-<p>In this post, we will get down to the nitty-gritty of logical operations. Those are unitary operators acting on the physical qubits, which allow you to go from one part of the codespace to another. For instance, a logical Hadamard lets you go from the logical zero state \(\vert 0 \rangle_L\) to the logical plus state \(\vert + \rangle_L\). An important class of logical operations are the Pauli logicals, whose properties form a crucial component of stabilizer codes, as they allow to derive the distance of the code, the number of logical qubits, and the main formulation of decoding. Formalizing all those ideas rigorously relies on a fair bit of abstraction, using notions such as centralizers, normalizers, equivalence classes, etc. While we won’t shy away from the abstraction, we will also make every notion as concrete as possible using the Steane code as our running example.</p>
+<p>In this post, we will get down to the nitty-gritty of Pauli logical operators, whose properties form a crucial component of stabilizer codes, as they allow to derive the distance of the code, the number of logical qubits, and the main formulation of decoding. Formalizing all those ideas rigorously relies on a fair bit of abstraction, using notions such as centralizers, equivalence classes, etc. While we won’t shy away from the abstraction, we will also make every notion as concrete as possible using the Steane code as our running example.</p>
 
-<p>We will start by showing how to count the number of logical qubits encoded in a stabilizer code. We will then formalize the notion of logical gates in a stabilizer code, and specialize the definition to the case of Pauli operators. Finally, we will see how to understand logical operators in terms of equivalent classes, which will become very handy when trying to understand decoding and topological constructions.</p>
+<p>We will start by showing how to count the number of logical qubits encoded in a stabilizer code. We will then formalize the notion of Pauli logical operator in a stabilizer code. Finally, we will see how to understand logical operators in terms of equivalent classes, which will become very handy when trying to understand decoding and topological constructions.</p>
 
 <h2 id="logical-qubits">Logical qubits</h2>
 
@@ -352,7 +352,7 @@ Let \(n\) denote the number of physical qubits of our code, and \(m\) the number
 <h2 id="pauli-logical-operators">Pauli logical operators</h2>
 
 <p>Now that we know the number of encoded qubits, what about the distance?
-To describe it, we need to introduce the notion of logical operator. A <strong>Pauli logical operator</strong> (often abbreviated <em>logical operator</em>, or even just <em>logical</em>) is a Pauli operator that commutes with all the stabilizers. In other words, a logical operator is an element of the <strong>centralizer</strong> \(C(\mathcal{S})\) of the stabilizer group \(\mathcal{S}\), defined as</p>
+To describe it, we need to introduce the notion of logical operator. A <strong>Pauli logical operator</strong> (often abbreviated <em>logical operator</em>, or just <em>logical</em>) is a Pauli operator that commutes with all the stabilizers. In other words, a logical operator is an element of the <strong>centralizer</strong> \(C(\mathcal{S})\) of the stabilizer group \(\mathcal{S}\), defined as</p>
 
 \[\begin{aligned}
     C(\mathcal{S})=\{L \in \mathcal{P}_n \,:\, LS = SL,\, \forall S \in \mathcal{S} \}
