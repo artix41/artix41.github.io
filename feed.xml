@@ -1,5 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-04-06T12:49:20+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
-</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">Computing with quantum codes using transversal gates</title><link href="http://localhost:4000/blog/2023-12-25-transversal-gates/" rel="alternate" type="text/html" title="Computing with quantum codes using transversal gates" /><published>2023-12-25T00:00:00+01:00</published><updated>2023-12-25T00:00:00+01:00</updated><id>http://localhost:4000/blog/transversal-gates</id><content type="html" xml:base="http://localhost:4000/blog/2023-12-25-transversal-gates/"><![CDATA[<p>If you have been following the quantum news lately, you certainly didn’t miss <a href="https://scirate.com/arxiv/2312.03982">one of the biggest announcements of the year</a>: the demonstration of various quantum codes and logical operations on up to 48 logical qubits and 280 physical qubits of a Rydberg atom array. To me, one of the most exciting features of this experiment is its inherent <strong>non-locality</strong>: it is possible to apply gates between qubits that are far away by simply moving the corresponding atoms, without inducing more errors than we are able to correct. From a quantum error correction point-of-view, this allows two things: the possibility to create codes beyond two dimensions (such as 3D codes or more general LDPC codes), and the possibility to apply logical two-qubit gates without inducing any additional space-time cost: transversal gates can be used instead of the more common lattice surgery of traditional surface code architectures.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-04-21T12:12:46+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">The maths behind topological quantum error correction</title><link href="http://localhost:4000/blog/2026-04-05-topological-qec/" rel="alternate" type="text/html" title="The maths behind topological quantum error correction" /><published>2026-04-05T00:00:00+02:00</published><updated>2026-04-05T00:00:00+02:00</updated><id>http://localhost:4000/blog/topological-qec</id><content type="html" xml:base="http://localhost:4000/blog/2026-04-05-topological-qec/"><![CDATA[<p>To pursue our quantum error correction journey, we now need to dive deeper into the maths that underlie the main ideas of the field! Why \(k\) in the surface code is independent on the specific cellulation.</p>
+
+<p>We will see chain complexes, homological algebra, etc.</p>
+
+<p>All codes are topological codes via code-to-manifold mapping (but not necessarily the natural way to see them). Most codes build on homological ideas.</p>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>In <a href="/blog/2023-03-28-stabilizer-formalism-3/">Part III of the stabilizer trilogy</a>, we saw that CSS codes can be characterized by two matrices, the parity-check matrices \(H_X\) and \(H_Z\), whose rows encode all the \(X\) and \(Z\) stabilizers of the code as binary vectors. For those two matrices to form a valid stabilizer code, we saw that they must obey the condition</p>
+
+\[\begin{aligned}
+    H_X H_Z^T = 0
+\end{aligned}\]
+
+<p>which means that every \(X\) stabilizer must commute with every \(Z\) stabilizer.
+Furthermore, the parameters of the code can also be expressed using those matrices. For instance, the number of logical qubits \(k\) is exactly the dimension of the quotient space \(\ker(H_X)/\Im(H_Z^T)\). Why is that so? The kernel of \(H_X\) is the set of Pauli operators that commute with all the \(X\) stabilizers, that is, the set of (trivial and non-trivial) \(Z\) logical operators. And \(\Im(H_Z^T)\) is the set of \(Z\) stabilizers. The quotient therefore represents the equivalence classes of \(Z\) logicals up to stabilizers, which contains one element per logical qubit of the code. Another way to see it is via the formula</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = \dim(\ker(H_X)) - \dim(\Im(H_Z^T))
+\end{aligned}\]
+
+<p>Using the rank-nullity theorem, this gives us</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = n - \rank(H_X) - \rank(H_Z^T)
+\end{aligned}\]
+
+<p>where \(\rank(H_X)=\rank(H_X^T)\) is the number of independent \(X\) stabilizers, and \(\rank(H_Z^T)\) is the number of independent \(Z\) stabilizers. This means that</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = n - m = k
+\end{aligned}\]
+
+<p>with \(m\) the total number of independent stabilizers, and where we used the formula for the number of logical qubits that we saw in <a href="/blog/2023-03-16-stabilizer-formalism-2/">Part II of the stabilizer trilogy</a>.</p>
+
+<p>What about the distance? The \(X\) distance \(d_X\) can be expressed as</p>
+
+\[\begin{aligned}
+d_X = \min_{L \in \ker(H_Z) \setminus \Im(H_X^T)} |L|
+\end{aligned}\]
+
+<p>and similarly for the \(Z\) distance \(d_Z\). The total distance is then the minimum of \(d_X\) and \(d_Z\).</p>
+
+<p>One last important property that can be read from the parity-check matrices is the locality of the code. It is not enough for a code to have good \([[n,k,d]]\) parameters, it must also have a good fault-tolerant implementation, that is, a set of circuits to extract the syndrome, to prepare the initial states, to perform logical gates, etc. such that the threshold is non-zero (i.e. there exists a non-zero physical error rate under which scaling the code and the corresponding circuits exponentially decreases the logical error-rate). One sufficient condition for a code family with growing distance to possess such fault-tolerant implementation is for it to be a low-density parity-check (LDPC) code: each stabilizer must be attached to a constant number of qubits, and each qubit to a constant number of stabilizers. This was for instance shown in a classic <a href="https://arxiv.org/abs/1310.2984">2013 paper by Daniel Gottesman</a>. From the point-of-view of our matrices, a code family with parity-check matrices \((H_X,H_Z)\) is LDPC if both \(H_X\) and \(H_Z\) are sparse, that is, the weight of their rows and columns is constant when increasing the size of the code<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>.</p>
+
+<p>Where does this lead us? We found out that CSS code design can basically be reduced to finding a family of pairs of matrices \((H_X, H_Z)\), such that:</p>
+
+<ol class="indented-list">
+  <li>\(H_X H_Z^T = 0\),</li>
+  <li>\(H_X\) and \(H_Z\) are sparse,</li>
+  <li>\(k\) is non-zero, and \(d\) is growing with the code size.</li>
+</ol>
+
+<p>But from a coding theory perspective, satisfying those three constraints seems like a hard problem! Indeed, in classical land, random classical LDPC codes (characterized by a single sparse parity-check matrix \(H\)), are almost-certainly <em>good</em>, meaning that they typically have \(k\) and \(d\) scaling as \(n\). So what happens if we try to take \(H_X\) as a random sparse matrix? To satisfy the orthogonality condition (1), rows of \(H_Z\) must be in the kernel of \(H_X\). But since \(H_X\) is a good LDPC code, all the elements of its kernel (the codewords) have weight scaling as \(n\), meaning that \(H_Z\) cannot be sparse. One idea to maintain sparsity (from <a href="https://arxiv.org/abs/quant-ph/0304161">MacKay et al., 2003</a>) is to take a random dual-containing LDPC code \(H\), i.e. a sparse matrix satisfying \(HH^T=0\). We can then choose \(H_X=H_Z=H\) to obtain a quantum LDPC code. But the orthogonality condition means that rows of \(H\) (stabilizers) will be in the kernel of \(H\) (stabilizers and logicals). Due to the randomness of the construction, we will then almost-certainly have some \(X\) stabilizers turning into \(Z\) logicals when changing \(X\) to \(Z\), making the distance of the quantum code constant.</p>
+
+<p>So we need a bit more structure if we want to satisfy all the three constraints above. And this is where the magic starts: a whole field of mathematics has been built since the end of the 19th century that deals with exactly such matrices! I’m talking about the field of <strong>algebraic topology</strong>, and its extensions, <strong>homological algebra</strong>.</p>
+
+<h1 id="topological-spaces-manifolds-and-cellulations">Topological spaces, manifolds and cellulations</h1>
+
+<p>Algebraic topology can be described as the study of topological spaces, and invariant quantities under continuous deformations of those spaces. This sentence contains a lot of important concepts, so let’s slowly decipher it. <strong>Topological spaces</strong> are sets that have a well-defined notion of neighborhood (satisfying certain axioms on their intersections and unions, which you can find on <a href="https://en.wikipedia.org/wiki/Topological_space">Wikipedia</a>). They are very general spaces, which include things like \(\mathbb{R}^n\), spheres, toruses, but also discrete structure like graphs, and even fractals. The axioms of topological spaces are sufficient to generalize a certain number of notions from analysis, such as continuous functions and limits. What about continuous deformations? Those are usually either <strong>homeomorphisms</strong> (continuous bijections with a continuous inverse) or <strong>homotopy equivalences</strong> (progressive continuous transformation from one space to the other). Finally, the invariant quantities that are considered in algebraic topology are numbers or algebraic structures that allow to classify topological spaces up to those deformations. For instance, we can associate to each topological space a certain number of groups, called <strong>homology groups</strong>, whose dimensions intuitively represent the number of “\(k\)-dimensional holes” of the space, which is invariant under homeomorphism and homotopy equivalence. We will see how those homology groups are constructed (and their meaning in quantum error correction) very soon.</p>
+
+<p>To understand how this works, let’s restrict ourselves to a specific type of topological spaces, called <strong>topological manifolds</strong> (or simply <strong>manifolds</strong> for short). Formally, a manifold is a locally Euclidean Haussdord second-countable topological space. Locally Euclidean means that for every point, there is a neighborhood that is homeomorphic to an open subset of \(\mathbb{R}^n\) (for some \(n\)), like in the following example (image taken from <a href="https://www.columbia.edu/~mf2954/Lecture%206.pdf">Daniel Irvine’s lecture notes</a>):</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/manifold.png" height="300"><img src="/assets/img/blog/topological-qec/manifold.png" height="300"></hy-img>
+
+</p>
+
+<p>It excludes things like crosses, since the neighborhood of an intersection point can neither be mapped to an open subset of \(\mathbb{R}\) nor \(\mathbb{R}^2\) (a cross is not open in \(\mathbb{R}^2\)), and topological spaces that have a boundary (e.g. a disk), since neighborhood of points at the boundary would always map to non-open sets of \(\mathbb{R}^n\). This also excludes spaces like fractals and graphs.</p>
+
+<p>What about “Haussdorf” and “second-countable”? Haussdorf means that distinct points have disjoint neighborhoods (it excludes for instance a line with two origins) and second-countable means that there exists a countable basis of open sets, such that every open set can be decomposed in this basis (it excludes for instance an uncountable number of copies of a line). Those are technical details which are important to avoid pathological cases and make many theorems work, but don’t linger over them too much. Simply think of a manifold as a continuous shape without boundaries or crossing points, like a sphere or a torus.</p>
+
+<p>Finally, we say that a manifold is \(\bm{D}\)<strong>-dimensional</strong> if the neighborhood of every point can be mapped to an open set of \(\mathbb{R}^D\).</p>
+
+<p>A nice property of manifolds is that they can be <em>cellulated</em>. There are many ways to define cellulations on a manifold. A simple way, which is the most relevant in the context of quantum error correction, is by using polytopes (the \(D\)-dimensional generalization of polygons). The <strong>cellulation of a manifold</strong> can then be defined as a set of polytopes, and a map (homeomorphism) from every polytope to the manifold, such that the manifold is fully covered and the polytopes only intersect at their faces. Here is an example of cellulation of 2D torus:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/polytopes.png" height="200"><img src="/assets/img/blog/topological-qec/polytopes.png" height="200"></hy-img>
+
+</p>
+
+<p>Note that I use here the same representation of the torus as when I defined the toric code: a square with top-bottom and left-right boundaries identified. This can be made rigorous topologically, by defining the manifold as the square \(S=[0,1]^2\) <em>quotiented</em> by an equivalence relation \(\sim\) such that top-bottom boundaries are equivalent, i.e. \((x,0) \sim (x,1)\) for all \(x \in [0,1]\), and left-right boundaries are equivalent, i.e.  \((0,y) \sim (1,y)\) for all \(y \in [0,1]\). We discussed the notion of quotient before in the context of <a href="blog/2023-03-16-stabilizer-formalism-2/">logical operators</a>, defining the quotient of a group (the logicals) by a subgroup (the stabilizers). The idea for topological spaces is similar: the quotient \(\mathcal{M}=S/\sim\) of the topological space \(S\) (our square) by the equivalence relation \(\sim\) is formally defined as a space of sets (called <strong>cosets</strong>) such that each coset contained equivalent points. In our case, cosets corresponding to points in the bulk of our square are singleton, e.g. \(\{ (0.5, 0.2) \}\), while cosets corresponding to points at the boundaries contain either two elements, e.g. \(\{ (0,0.5), (1,0.5) \}\) or four for the corners, e.g. \(\{(0,0),(0,1),(1,0),(1,1)\}\). We can make this quotient a topological space by defining the neighborhood of points at the boundary to correspond to the union of neighborhoods on both sides, and then prove that it is actually a manifold, fulfilling all the properties of manifolds discussed above.</p>
+
+<p>For any cellulation of a \(D\)-dimensional manifold, a \(\bm{k}\)<strong>-cell</strong> of this cellulation (for \(k \in \{ 0,\ldots,D \}\)) is the image of a \(k\)-dimensional face of one of the polytopes. For instance, \(0\)-cells are vertices of the cellulation, \(1\)-cells edges, \(2\)-cells, faces, etc.</p>
+
+<p>As we will soon see, one can learn invariant properties of the manifold by using only the combinatorial description of <em>any</em> cellulation of the manifold. By combinatorial description, I simply mean how our polytopes are connected to each other, rather than their exact shape. And a nice way to formalize this notion is through the concept of chain complex.</p>
+
+<h1 id="chain-complexes">Chain complexes</h1>
+
+<p>There is a famous adage in maths communities saying that all mathematics can be reduced to either linear algebra or combinatorics. Chain complexes reduce the study of topological manifolds to both.</p>
+
+<p>Let’s consider a cellulation of a \(D\)-dimensional manifold.</p>
+
+<h1 id="homology-and-cohomology">Homology and cohomology</h1>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Problem with a fix Euclidean manifold</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>To be more precise, I should write \((H_X^{(\ell)},H_Z^{(\ell)})\) to emphasize that we are dealing with a family of codes indexed by an integer \(\ell\), and not just a single code (e.g. \(\ell\) would be the lattice size for the surface code). The parameters of the code family could then also be written \([[n_\ell,k_\ell,d_\ell]]\). I omit the index here and in the rest of the post to avoid overloading the notations, as it should be clear from context when there is an implicit dependency on some integers \(\ell\). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[To pursue our quantum error correction journey, we now need to dive deeper into the maths that underlie the main ideas of the field! Why \(k\) in the surface code is independent on the specific cellulation.]]></summary></entry><entry><title type="html">Computing with quantum codes using transversal gates</title><link href="http://localhost:4000/blog/2023-12-25-transversal-gates/" rel="alternate" type="text/html" title="Computing with quantum codes using transversal gates" /><published>2023-12-25T00:00:00+01:00</published><updated>2023-12-25T00:00:00+01:00</updated><id>http://localhost:4000/blog/transversal-gates</id><content type="html" xml:base="http://localhost:4000/blog/2023-12-25-transversal-gates/"><![CDATA[<p>If you have been following the quantum news lately, you certainly didn’t miss <a href="https://scirate.com/arxiv/2312.03982">one of the biggest announcements of the year</a>: the demonstration of various quantum codes and logical operations on up to 48 logical qubits and 280 physical qubits of a Rydberg atom array. To me, one of the most exciting features of this experiment is its inherent <strong>non-locality</strong>: it is possible to apply gates between qubits that are far away by simply moving the corresponding atoms, without inducing more errors than we are able to correct. From a quantum error correction point-of-view, this allows two things: the possibility to create codes beyond two dimensions (such as 3D codes or more general LDPC codes), and the possibility to apply logical two-qubit gates without inducing any additional space-time cost: transversal gates can be used instead of the more common lattice surgery of traditional surface code architectures.</p>
 
 <p>Transversal gates are both the earliest and simplest way to perform computation fault-tolerantly with a quantum code. But those new experimental prospects, along with the recent discovery of many new quantum LDPC codes with great parameters (but not a lot of gates yet!), make research into transversal gates an exciting area again! And if you haven’t had the occasion to learn about them yet, or even logical gates in general, this blog post is for you!</p>
 
@@ -144,7 +249,7 @@ chosen logical state.</li>
 <br />
 <a href="#solution-of-the-exercise">(solution)</a></p>
 
-<p>Can we also implement an \(\texttt{S}\) gate transversally? Let’s see what happens when we apply \(\texttt{S}\) to all the physical qubits. Since \(\texttt{S}X\texttt{S}^\dagger=Y\), every \(X\) plaquette will turn into \(Y^{\otimes 4}\) under the action of our gate. Now, is \(Y^{\otimes 4}\) a stabilizer? Since \(Y^{\otimes 4}=(iXZ)^{\otimes 4}=X^{\otimes 4} Z^{\otimes 4}, with both\)X^{\otimes 4}\(and\)Z^{\otimes 4}\(being stabilizers supported on the same plaquette, we see that\)Y^{\otimes 4}\(is indeed a stabilizer. Moreover, since\)\texttt{S}Z\texttt{S}^\dagger=Z\(,\)Z$$ plaquettes are preserved. Hence, our gate preserves the codespace and is therefore a valid transversal logical gate!</p>
+<p>Can we also implement an \(\texttt{S}\) gate transversally? Let’s see what happens when we apply \(\texttt{S}\) to all the physical qubits. Since \(\texttt{S}X\texttt{S}^\dagger=Y\), every \(X\) plaquette will turn into \(Y^{\otimes 4}\) under the action of our gate. Now, is \(Y^{\otimes 4}\) a stabilizer? Since \(Y^{\otimes 4}=(iXZ)^{\otimes 4}=X^{\otimes 4} Z^{\otimes 4}\), with both \(X^{\otimes 4}\) and \(Z^{\otimes 4}\) being stabilizers supported on the same plaquette, we see that \(Y^{\otimes 4}\) is indeed a stabilizer. Moreover, since \(\texttt{S}Z\texttt{S}^\dagger=Z\), \(Z\) plaquettes are preserved. Hence, our gate preserves the codespace and is therefore a valid transversal logical gate!</p>
 
 <p>Let’s now look at the action of our gate on the logicals. For our gate to be a logical \(\texttt{S}\) gate, we would need to prove that \(\texttt{S} \bar{X} \texttt{S}^\dagger = \bar{Y}\). Picking the logical \(X\) representative supported on three qubits from the figure above, we can see that the gate turns \(\bar{X}\) into \(Y^{\otimes 3}\). But \(Y^{\otimes 3}=(iXZ)^{\otimes 3}=-iX^{\otimes} Z^{\otimes 3}=-i\bar{X} \bar{Z}=-\bar{Y}\). So \(\texttt{S}^{\otimes 7}\) turns any \(X\) logical into a \(-Y\) logical. Thus, perhaps surprisingly, what our gate actually implements is a logical \(\texttt{S}^\dagger\)!</p>
 
@@ -4115,203 +4220,4 @@ minimizing a certain potential ϕ as well as maximizing the entropy of the distr
       <p>Pratik Chaudhari, Stefano Soatto. <em>Stochastic gradient descent performs variational inference, converges to limit cycles for deep network</em>, ICLR 2018 <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html"><![CDATA[Note: This post was first published as a Medium Article for Towards Data Science*]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A Little Review of Domain Adaptation in 2017</title><link href="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/" rel="alternate" type="text/html" title="A Little Review of Domain Adaptation in 2017" /><published>2018-01-03T00:00:00+01:00</published><updated>2018-01-03T00:00:00+01:00</updated><id>http://localhost:4000/blog/domain-adaptation-2017</id><content type="html" xml:base="http://localhost:4000/blog/2018-01-03-domain-adaptation-2017/"><![CDATA[<p class="message"><strong>Note</strong>: This post was first published as a Quora answer to the question <a href="https://www.quora.com/What-are-the-most-significant-machine-learning-advances-in-2017/answer/Arthur-Pesah">What are the most significant machine learning advances in 2017?</a></p>
-
-<p>2017 has been an amazing year for domain adaptation: awesome image-to-image and language-to-language translations have been produced, adversarial methods for DA have made huge progress and very innovative algorithms have been proposed to tackle the giant problem of adapting two domains.</p>
-
-<p>By domain adaptation, I mean any algorithm trying to transfer two domains, usually called source and target (for instance paintings and real photos), into a common domain. To do so, one can chose either to translate one domain into the other (e.g. translate paintings to photos) or to find a common embedding between the two domains. When only the source domain has labels and the goal is to predict the labels of the target domain, it’s called unsupervised domain adaptation and that’s where the advances were the most incredible. There are many benchmarks to evaluate a DA algorithm, one of the most common being to predict the labels of SVHN (a dataset of digits built with house numbers) by using MNIST (the most common handwritten digits dataset) and its labels. In a year, the results have passed from 90% (with Domain Transfer Network (DTN)<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>, which was already a great improvement on previous methods that turned around 82%, like DRCN<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>) to 99.2% (with self-ensembling DA<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>). Besides this quantitative analysis, the translations performed by some algorithms released this year are qualitatively amazing, particularly in visual DA and NLP.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png" alt=""><img src="/assets/img/blog/domain-adaptation/svhn2mnist-SBDA-GAN.png" alt=""></hy-img>
-
-Figure 1. Transfer of SVHN to MNIST by SBADA-GAN<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>, May 2017. For testing a DA algorithm, one can try to predict the labels of SVHN by only using the labels of MNIST and the unsupervised translation between SVHN and MNIST.*</p>
-
-<p>Let’s try to summarize how awesome this year has been for domain adaptation.</p>
-
-<h1 id="adversarial-domain-adaptation">Adversarial Domain Adaptation</h1>
-
-<p>If 2015 saw the birth of adversarial domain adaptation (with DANN<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup>) and 2016 the birth of GAN-based domain adaptation (with CoGAN<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> and DTN<sup id="fnref:2:1"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> ), 2017 has seen huge improvements and amazing results with these methods. The idea behind adversarial DA is to train two neural networks: a discriminator that tries to separate the target domain from the transformed source domain, and a generator that tries to fool the discriminator to make the source domain look like the target one as much as possible. It’s basically a GAN but taking the source distribution as input instead of a uniform distribution (it is usually called a conditional GAN). I’ve realized a little animation to explain the concept more visually (you can find the code <a href="https://github.com/artix41/transfer-learning-algorithms/tree/master/adda">here</a>):</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/gan-working.gif" alt=""><img src="/assets/img/blog/domain-adaptation/gan-working.gif" alt=""></hy-img>
-
-Figure 2. GAN-based adversarial domain adaptation for two Gaussian domains. 
-The discriminator (background) tries to separate the green distribution from the orange 
-distribution, and the generator modifies the green distribution to fool the discriminator. 
-You can find the code <a href="https://github.com/artix41/transfer-learning-algorithms/tree/master/adda">here</a>.</p>
-
-<p>So, what were the “significant advances” in 2017?</p>
-
-<h2 id="adda">ADDA</h2>
-
-<p>First, in February, ADDA<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">7</a></sup> released a generalized theoretical framework for adversarial domain adaptation and achieved a 76.0% score with a simple GAN loss on SVHN → MNIST (which they thought to be the best score for an adversarial network on this task, but they had probably not heard of DTN at the time they submitted their article).</p>
-
-<h2 id="cyclegan">CycleGAN</h2>
-
-<p>A month later, the most important contribution of adversarial DA occurred: the invention of the cycle-consistency loss by <strong>CycleGAN</strong><sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">8</a></sup>. This paper was a real revolution. Their idea was to train two conditional GANs, one transferring source to target, and the other target to source, and to consider a new loss, called cycle-consistency, which ensures that if you connect the two networks together it will produce an identity mapping (source → target → source). Their examples of transferring horses to zebra or painting to photos have become really famous and I consider it to be one of the coolest thing of this year! Contrary to other methods like pix2pix<sup id="fnref:10"><a href="#fn:10" class="footnote" rel="footnote" role="doc-noteref">9</a></sup>, they didn’t train their algorithm on pairs of images (like a photo of cat and the sketch of this same cat, for pix2pix), but only on the two distributions separated, which makes their results even more impressive.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/cycleGAN.png" alt=""><img src="/assets/img/blog/domain-adaptation/cycleGAN.png" alt=""></hy-img>
-
-Figure 3. Examples of image-to-image translations with CycleGAN</p>
-
-<h2 id="discogan">DiscoGAN</h2>
-
-<p>What’s fun is that a bunch of other papers discovered the cycle-consistency loss simultaneously, between March and May, sometimes giving it another name (like reconstruction loss). It’s for instance the case of <strong>DiscoGAN</strong><sup id="fnref:11"><a href="#fn:11" class="footnote" rel="footnote" role="doc-noteref">10</a></sup>, whose loss was a bit different (cross-entropy for the GAN loss instead of MSE for instance) but they also achieved incredible results, by managing to transfer both texture properties (like transforming blonde-haired to brown-haired people, women to men or people with glasses to people without glasses) and geometrical properties (chairs to cars and faces to cars).</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/discoGAN-01.png" alt="discoGAN-01"><img src="/assets/img/blog/domain-adaptation/discoGAN-01.png" alt="discoGAN-01"></hy-img>
-
-<hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/discoGAN-02.png" alt="discoGAN-02"><img src="/assets/img/blog/domain-adaptation/discoGAN-02.png" alt="discoGAN-02"></hy-img>
-
-Figure 4. Examples of image-to-image translations with DiscoGAN</p>
-
-<h2 id="dualgan">DualGAN</h2>
-
-<p>It’s also the case of <strong>DualGAN</strong><sup id="fnref:12"><a href="#fn:12" class="footnote" rel="footnote" role="doc-noteref">11</a></sup>, who used the cycle loss with a WGAN and other recent tricks on how to train GANs. They applied it on day ←→ night or sketch ←→ photos translations, and here are the results:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/dualgan.png" alt="dualgan"><img src="/assets/img/blog/domain-adaptation/dualgan.png" alt="dualgan"></hy-img>
-
-Figure 5. Examples of image-to-image translations with DualGAN</p>
-
-<h2 id="sbada-gan">SBADA-GAN</h2>
-
-<p>But those 3 papers didn’t consider any dataset with a task (like classification), so didn’t give any quantitative evaluation of their method. <strong>SBADA-GAN</strong><sup id="fnref:4:1"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> did it by adding a classifier at the end of their network in order to predict the labels of both the source and the transformed target sample. During the training, pseudo-labels are assigned to the target samples and contribute to the classification loss. The score obtained for SVHN → MNIST is not very good (~76%, same as ADDA), but they achieved new state-of-the-arts on the opposite transformation (MNIST→SVHN) and on MNIST ←→ USPS (another handwritten-digits dataset very close to MNIST).</p>
-
-<h2 id="gentoadapt">GenToAdapt</h2>
-
-<p>Other kind of adversarial architectures have been tried this year with more success on digits benchmarks, like <strong>GenToAdapt</strong><sup id="fnref:14"><a href="#fn:14" class="footnote" rel="footnote" role="doc-noteref">12</a></sup> in April who made the first real state-of-the-art of the year in SVHN → MNIST, with a score of 92.4%. Their technique was basically to use a GAN to generate source images from both source and target samples, and to discriminate both real vs fake samples and the different classes of the source samples (like AC-GAN). The learned embedding is then used to train a third network, C, to directly predict the labels of the input samples. The figure below (from the original paper) is certainly clearer than my explanation:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/gentoadapt.png" alt="gentoadapt"><img src="/assets/img/blog/domain-adaptation/gentoadapt.png" alt="gentoadapt"></hy-img>
-
-Figure 6. The architecture of GenToAdapt</p>
-
-<h2 id="unit">UNIT</h2>
-
-<p>It’s also the case of <strong>UNIT</strong><sup id="fnref:15"><a href="#fn:15" class="footnote" rel="footnote" role="doc-noteref">13</a></sup>, an adversarial method proposed by Nvidia. Like in many Nvidia papers, they performed a large bunch of amazing experiments (image-to-image translation between different outside conditions on the road, between GTA and reality, between different breeds of dogs, etc.). They have also tested their algorithm on SVHN → MNIST, and obtained 90.53%, which is very close to DTN score, but they manage to transfer much higher-resolution images. Their technique is based on CoGAN<sup id="fnref:6:1"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup>, which consists in two GANs, one for generating the source domain and one for the target domain, with weight-sharing for some layers. Nvidia’s main contribution was to replace the generator by a VAE. They indeed show that the VAE loss is equivalent to the cycle-consistency constraint described in the previous papers.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/UNIT.png" alt="UNIT"><img src="/assets/img/blog/domain-adaptation/UNIT.png" alt="UNIT"></hy-img>
-
-Figure 7. Examples of image-to-image translations with UNIT</p>
-
-<h2 id="stargan">StarGAN</h2>
-
-<p>However, those architectures are only capable of transferring one source domain to one target domain at a time. But if you have multiple domains, there should be a way to train a network to perform transfers in all the domains. In November <strong>StarGAN</strong><sup id="fnref:17"><a href="#fn:17" class="footnote" rel="footnote" role="doc-noteref">14</a></sup> adapted CycleGAN to this so-called multi-source domain adaptation problem. Their results in transferring different hair colors or emotions for the same person were pretty amazing as you can see:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/StarGAN.png" alt="StarGAN"><img src="/assets/img/blog/domain-adaptation/StarGAN.png" alt="StarGAN"></hy-img>
-
-Figure 8. Example of multi-domain image translations with StarGAN</p>
-
-<h2 id="word-translation-without-parallel-data">Word Translation Without Parallel Data</h2>
-
-<p>It might seem from the examples above that the DA community is putting all its efforts into computer vision (CV). But one of the most impressive (and shared) DA paper of the year is in natural language processing (NLP) : <strong>Word Translation Without Parallel Data</strong><sup id="fnref:18"><a href="#fn:18" class="footnote" rel="footnote" role="doc-noteref">15</a></sup>. They basically used adversarial DA to find a common embedding between samples from two languages (source and target), and managed to perform very accurate translations without having trained on any example of translation! If you read the paper, you can notice that the expression “domain adaptation” haven’t been used once… Since most DA folks are into computer vision, it seems that the NLP guys who wrote this paper were not aware that their work entered into domain adaptation. So I think NLP would benefit a great deal by testing on their data all the brand new DA methods that the CV community has invented this year.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/translation-without-pairs.png" alt="translation-without-pairs"><img src="/assets/img/blog/domain-adaptation/translation-without-pairs.png" alt="translation-without-pairs"></hy-img>
-
-Figure 9. Alignement of the embedding word spaces of the source (english) and the target (italian) domains.</p>
-
-<h2 id="pix2pix-hd">Pix2Pix HD</h2>
-
-<p>Finally, I have talked only about unpaired domain adaptation (where you don’t use any pair of corresponding source/target samples during the training), but paired DA has also known a little revolution with <strong>pix2pixHD</strong><sup id="fnref:19"><a href="#fn:19" class="footnote" rel="footnote" role="doc-noteref">16</a></sup>. It’s basically an improved version of pix2pix (a conditional GAN trained on pairs of images) with many tricks to make it scalable to bigger images. They trained their network to transform semantic maps into realistic photos of street scenes, as you can see on the animation below:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/pix2pixHD.gif" alt="pix2pixHD"><img src="/assets/img/blog/domain-adaptation/pix2pixHD.gif" alt="pix2pixHD"></hy-img>
-
-Figure 10. Translation of a semantic map (map of labels) to a real street scene with pix2pixHD</p>
-
-<h1 id="embedding-methods">Embedding methods</h1>
-
-<p>Apart from adversarial DA, many other methods have been tried this year, some of them being very successful. That’s the case of two recent methods which try to find a common embedding between the source and target domains, leading at the end to a single neural network capable of classifying both source and target samples.</p>
-
-<h2 id="associative-da">Associative DA</h2>
-
-<p>The first one is <strong>Associative DA</strong> \(DA_{assoc}\)<sup id="fnref:20"><a href="#fn:20" class="footnote" rel="footnote" role="doc-noteref">17</a></sup> who achieved a score of <strong>97.6%</strong> on SVHN→MNIST. In order to find the best embedding, they used the new trend of 2017… cycle-consistency loss! Yes, again, but this time without any GAN or other adversarial network: they just try to learn an embedding (last layer of a neural network) such that the probability of translating a source sample to a target sample (based on the distance between the two points in the embedding space), then converting back this target sample to another source sample will be high if the two source samples belong to the same class.</p>
-
-<h2 id="self-ensembling-da">Self-Ensembling DA</h2>
-
-<p>The second one is <strong>Self-Ensembling DA</strong><sup id="fnref:3:1"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>, who really destroyed our benchmark SVHN→MNIST with a score of <strong>99.2%</strong> ! We’ll have to find other benchmarks next year! They did this exploit by adapting Mean Teacher − a method coming from semi-supervised learning that has achieved recent SOTA in this field − to domain adaptation. The idea is to have two networks, a student and a teacher, and to make the weights of the teacher a moving average of all the weights that the student got during training. Then, labeled source samples are used to train the student to be a good classifier, and unlabeled target samples to train the student to be like the teacher (with a consistency loss). You can find a more visual explanation <a href="https://thecuriousaicompany.com/mean-teacher/">here</a>.</p>
-
-<h1 id="optimal-transport">Optimal Transport</h1>
-
-<p>Another kind of method has been developed this year: domain adaptation based on optimal transport. Optimal transport is a huge area of applied mathematics, consisting in finding the best transport plan from one distribution to another, by minimizing the total cost of transporting a source mass to a target point. For instance, if you consider two sets of points (with the same number of points each), source and target, and take as the cost function simply the euclidean distance, optimal transport asks you to associate every source point to a target points, so that the total distance is minimized. Here is the solution for two Gaussian domains:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/simple-ot.png" alt="simple-ot"><img src="/assets/img/blog/domain-adaptation/simple-ot.png" alt="simple-ot"></hy-img>
-
-Figure 11. Best transport plan between two Gaussian domains. 
-Each source point is transported to a target point, and the total distance is minimized. 
-This graph has been produced with the library <a href="https://github.com/rflamary/POT">POT</a>.</p>
-
-<p>This <a href="https://vincentherrmann.github.io/blog/wasserstein/">blog article</a> is an excellent introduction if you want to learn more about OT.</p>
-
-<p>If you start to understand a bit domain adaptation, I think you can now clearly see the link between OT and DA. The relation between those two fields had been theorized in 2016<sup id="fnref:22"><a href="#fn:22" class="footnote" rel="footnote" role="doc-noteref">18</a></sup>, but a very interesting algorithm has come out in 2017: <strong>Joint Distribution Optimal Transportation (JDOT)</strong><sup id="fnref:23"><a href="#fn:23" class="footnote" rel="footnote" role="doc-noteref">19</a></sup>. Their method is an iterative process: at each iteration, pseudo-labels are given to every target points (at first using a classifier trained on the source samples). Then, the goal is to transport every source point to a target point, minimizing not only the total distance traveled, but also the number of change of label during the transport (between the label of the source point and the pseudo-label of the target point). I made a visual explanation here : <a href="https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md">A Visual Explanation of JDOT Algorithm</a>, summarized in this GIF (not sure if understandable without pausing at each step):</p>
-
-<p class="figure"><hy-img root-margin="511px" src="/assets/img/blog/domain-adaptation/animation.gif" alt="animation"><img src="/assets/img/blog/domain-adaptation/animation.gif" alt="animation"></hy-img>
-
-Figure 12. Animation showing the different steps of the JDOT algorithm. 
-You can find all those images separated and associated to some explanations 
-<a href="https://github.com/artix41/transfer-learning-algorithms/blob/master/jdot/README.md">here</a></p>
-
-<h1 id="conclusion">Conclusion</h1>
-
-<p>To sum it up, not only has 2017 destroyed some domain adaptation benchmarks, it has also produced the first high-quality translations from one domain to another (as you can see in all those pictures above). But we can still do much better on many more complicated benchmarks and adapt DA to other areas of machine learning (like reinforcement learning and NLP), so 2018 has all its chances to be as awesome as 2017, and I look forward to see what it gives!</p>
-
-<p>If you want to learn more about domain adaptation, I’m maintaining an updated list of great resources (papers, datasets, results, etc.) about DA and transfer learning on <a href="https://github.com/artix41/awesome-transfer-learning">this GitHub repository</a>.</p>
-
-<p><strong>Disclaimer</strong>: the description of those papers only corresponds to my current understanding of them, so take it with a grain of salt and don’t hesitate to tell me if I am incorrect or imprecise in some of my explanations. Concerning the results I give, they are only the ones given in the original papers and a more rigorous methodology should be used in order to make a real comparison.</p>
-
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1">
-      <p><a href="https://arxiv.org/pdf/1611.02200.pdf">Unsupervised Cross-domain Image Generation</a> (2016) <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:2">
-      <p><a href="https://arxiv.org/pdf/1607.03516.pdf">Deep Reconstruction-Classification Networks for Unsupervised Domain Adaptation</a> (2016) <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:2:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
-    </li>
-    <li id="fn:3">
-      <p><a href="https://arxiv.org/pdf/1706.05208.pdf">Self-ensembling for domain adaptation</a> (2017) <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:3:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
-    </li>
-    <li id="fn:4">
-      <p><a href="https://arxiv.org/pdf/1705.08824.pdf">From source to target and back: symmetric bi-directional adaptive GAN</a> (2017) <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:4:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
-    </li>
-    <li id="fn:5">
-      <p><a href="https://arxiv.org/pdf/1505.07818.pdf">Domain-Adversarial Training of Neural Networks</a> (2015) <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:6">
-      <p><a href="https://arxiv.org/pdf/1606.07536.pdf">Coupled Generative Adversarial Networks</a> (2016) <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a> <a href="#fnref:6:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;<sup>2</sup></a></p>
-    </li>
-    <li id="fn:8">
-      <p><a href="https://arxiv.org/pdf/1702.05464.pdf">Adaptative Discriminative Domain Adaptation</a> (2017) <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:9">
-      <p><a href="https://arxiv.org/pdf/1703.10593">Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks</a> (2017) <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:10">
-      <p><a href="https://arxiv.org/pdf/1611.07004.pdf">Image-to-Image Translation with Conditional Adversarial Networks</a> (2016) <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:11">
-      <p><a href="https://arxiv.org/pdf/1703.05192.pdf">Learning to Discover Cross-Domain Relations with Generative Adversarial Networks</a> (2017) <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:12">
-      <p><a href="https://arxiv.org/pdf/1704.02510.pdf">DualGAN: Unsupervised Dual Learning for Image-to-Image Translation</a> (2017) <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:14">
-      <p><a href="https://arxiv.org/pdf/1704.01705.pdf">Generate To Adapt: Aligning Domains using Generative Adversarial Networks</a> (2017) <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:15">
-      <p><a href="https://arxiv.org/pdf/1703.00848.pdf">Unsupervised Image-to-Image Translation Networks</a> (2017) <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:17">
-      <p><a href="https://arxiv.org/pdf/1711.09020.pdf">StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation</a> (2017) <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:18">
-      <p><a href="">Word Translation without Parallel Data</a> (2017) <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:19">
-      <p><a href="https://arxiv.org/pdf/1711.11585.pdf">High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs</a> <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:20">
-      <p><a href="https://arxiv.org/pdf/1708.00938.pdf">Associative Domain Adaptation</a> (2017) <a href="#fnref:20" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:22">
-      <p><a href="https://arxiv.org/pdf/1610.04420.pdf">Theoretical Analysis of Domain Adaptation with Optimal Transport</a> (2016) <a href="#fnref:22" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:23">
-      <p><a href="https://arxiv.org/pdf/1705.08848.pdf">Joint distribution optimal transportation for domain adaptation</a> (2017) <a href="#fnref:23" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-  </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html"><![CDATA[Note: This post was first published as a Quora answer to the question What are the most significant machine learning advances in 2017?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/domain-adaptation/teaser_high_res.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html"><![CDATA[Note: This post was first published as a Medium Article for Towards Data Science*]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/theory-deep-learning/blackboard.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
