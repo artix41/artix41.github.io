@@ -37,21 +37,22 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
   
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Animations | Arthur Pesah</title>
+<title>The maths behind topological quantum error correction | Arthur Pesah</title>
 <meta name="generator" content="Jekyll v4.4.1" />
-<meta property="og:title" content="Animations" />
+<meta property="og:title" content="The maths behind topological quantum error correction" />
 <meta name="author" content="Arthur Pesah" />
 <meta property="og:locale" content="en" />
 <meta name="description" content="Research blog" />
 <meta property="og:description" content="Research blog" />
-<link rel="canonical" href="https://arthurpesah.me/animations/" />
-<meta property="og:url" content="https://arthurpesah.me/animations/" />
+<link rel="canonical" href="https://arthurpesah.me/blog/2026-04-05-topological-qec/" />
+<meta property="og:url" content="https://arthurpesah.me/blog/2026-04-05-topological-qec/" />
 <meta property="og:site_name" content="Arthur Pesah" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-04-05T00:00:00+01:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Animations" />
+<meta property="twitter:title" content="The maths behind topological quantum error correction" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Arthur Pesah"},"description":"Research blog","headline":"Animations","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/animations/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2026-04-05T00:00:00+01:00","datePublished":"2026-04-05T00:00:00+01:00","description":"Research blog","headline":"The maths behind topological quantum error correction","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2026-04-05-topological-qec/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2026-04-05-topological-qec/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -81,7 +82,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 
 
 
-<link rel="alternate" href="https://arthurpesah.me/animations/" hreflang="en">
+<link rel="alternate" href="https://arthurpesah.me/blog/2026-04-05-topological-qec/" hreflang="en">
 
 <link rel="shortcut icon" href="/assets/icons/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/icons/icon.png">
@@ -218,7 +219,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
   
     <main
   id="_main"
-  class="content fade-in layout-animations"
+  class="content fade-in layout-post"
   role="main"
   data-color="rgb(79,177,186)"
   data-theme-color="rgb(25,55,71)"
@@ -227,46 +228,233 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
     data-overlay
   
   >
-  <article class="page" role="article">
-    <header>
-      <h1 class="page-title">Animations</h1>
+  
+
+
+
+
+<article id="post-blog-topological-qec" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
       
+        The maths behind topological quantum error correction
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2026-04-05T00:00:00+01:00">05 Apr 2026</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+
+    
 
 
 
   <div class="hr pb0"></div>
 
 
-    </header>
+  </header>
 
-    <div class="projects-gallery">
-        <a href="http://gui.quantumcodes.io" class="projects-link">
-            <div class="projects-item">
-                <div class="projects-img"><hy-img root-margin="511px" src="/assets/img/animations/toric-code-gui.png"><img src="/assets/img/animations/toric-code-gui.png"></hy-img>
-</div>
-                <p class="projects-title">Toric Code Visualizer</p>
-                <p class="projects-subtitle">Learn quantum error correction by manipulating the 2D and 3D toric codes with our interactive interface</p>
-            </div>
-        </a>
-        <a href="http://ising.arthurpesah.me" class="projects-link">
-            <div class="projects-item">
-                <div class="projects-img"><hy-img root-margin="511px" src="/assets/img/animations/magnet-simulation.png"><img src="/assets/img/animations/magnet-simulation.png"></hy-img>
-</div>
-                <p class="projects-title">Magnet Simulation</p>
-                <p class="projects-subtitle">3D simulation of a magnet at finite temperature: illustration of the Ising model and its phase transitions</p>
-            </div>
-        </a>
-        <a href="http://galaxy.ensta.fr" class="projects-link">
-            <div class="projects-item">
-                <div class="projects-img"><hy-img root-margin="511px" src="/assets/img/animations/spiral-kreator.png"><img src="/assets/img/animations/spiral-kreator.png"></hy-img>
-</div>
-                <p class="projects-title">Spiral Kreator</p>
-                <p class="projects-subtitle">Create your own spiral galaxy with the density wave model and compare your creation with real ones</p>
-            </div>
-        </a>
-    </div>
-</article>
   
+    <p>To pursue our quantum error correction journey, we now need to dive deeper into the maths that underlie the main ideas of the field! Why \(k\) in the surface code is independent on the specific cellulation.</p>
+
+<p>We will see chain complexes, homological algebra, etc.</p>
+
+<p>All codes are topological codes via code-to-manifold mapping (but not necessarily the natural way to see them). Most codes build on homological ideas.</p>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>In <a href="/blog/2023-03-28-stabilizer-formalism-3/">Part III of the stabilizer trilogy</a>, we saw that CSS codes can be characterized by two matrices, the parity-check matrices \(H_X\) and \(H_Z\), whose rows encode all the \(X\) and \(Z\) stabilizers of the code as binary vectors. For those two matrices to form a valid stabilizer code, we saw that they must obey the condition</p>
+
+\[\begin{aligned}
+    H_X H_Z^T = 0
+\end{aligned}\]
+
+<p>which means that every \(X\) stabilizer must commute with every \(Z\) stabilizer.
+Furthermore, the parameters of the code can also be expressed using those matrices. For instance, the number of logical qubits \(k\) is exactly the dimension of the quotient space \(\ker(H_X)/\Im(H_Z^T)\). Why is that so? The kernel of \(H_X\) is the set of Pauli operators that commute with all the \(X\) stabilizers, that is, the set of (trivial and non-trivial) \(Z\) logical operators. And \(\Im(H_Z^T)\) is the set of \(Z\) stabilizers. The quotient therefore represents the equivalence classes of \(Z\) logicals up to stabilizers, which contains one element per logical qubit of the code. Another way to see it is via the formula</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = \dim(\ker(H_X)) - \dim(\Im(H_Z^T))
+\end{aligned}\]
+
+<p>Using the rank-nullity theorem, this gives us</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = n - \rank(H_X) - \rank(H_Z^T)
+\end{aligned}\]
+
+<p>where \(\rank(H_X)=\rank(H_X^T)\) is the number of independent \(X\) stabilizers, and \(\rank(H_Z^T)\) is the number of independent \(Z\) stabilizers. This means that</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = n - m = k
+\end{aligned}\]
+
+<p>with \(m\) the total number of independent stabilizers, and where we used the formula for the number of logical qubits that we saw in <a href="/blog/2023-03-16-stabilizer-formalism-2/">Part II of the stabilizer trilogy</a>.</p>
+
+<p>What about the distance? The \(X\) distance \(d_X\) can be expressed as</p>
+
+\[\begin{aligned}
+d_X = \min_{L \in \ker(H_Z) \setminus \Im(H_X^T)} |L|
+\end{aligned}\]
+
+<p>and similarly for the \(Z\) distance \(d_Z\). The total distance is then the minimum of \(d_X\) and \(d_Z\).</p>
+
+<p>One last important property that can be read from the parity-check matrices is the locality of the code. It is not enough for a code to have good \([[n,k,d]]\) parameters, it must also have a good fault-tolerant implementation, that is, a set of circuits to extract the syndrome, to prepare the initial states, to perform logical gates, etc. such that the threshold is non-zero (i.e. there exists a non-zero physical error rate under which scaling the code and the corresponding circuits exponentially decreases the logical error-rate). One sufficient condition for a code family with growing distance to possess such fault-tolerant implementation is for it to be a low-density parity-check (LDPC) code: each stabilizer must be attached to a constant number of qubits, and each qubit to a constant number of stabilizers. This was for instance shown in a classic <a href="https://arxiv.org/abs/1310.2984">2013 paper by Daniel Gottesman</a>. From the point-of-view of our matrices, a code family with parity-check matrices \((H_X,H_Z)\) is LDPC if both \(H_X\) and \(H_Z\) are sparse, that is, the weight of their rows and columns is constant when increasing the size of the code<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>.</p>
+
+<p>Where does this lead us? We found out that CSS code design can basically be reduced to finding a family of pairs of matrices \((H_X, H_Z)\), such that:</p>
+
+<ol class="indented-list">
+  <li>\(H_X H_Z^T = 0\),</li>
+  <li>\(H_X\) and \(H_Z\) are sparse,</li>
+  <li>\(k\) is non-zero, and \(d\) is growing with the code size.</li>
+</ol>
+
+<p>But from a coding theory perspective, satisfying those three constraints seems like a hard problem! Indeed, in classical land, random classical LDPC codes (characterized by a single sparse parity-check matrix \(H\)), are almost-certainly <em>good</em>, meaning that they typically have \(k\) and \(d\) scaling as \(n\). So what happens if we try to take \(H_X\) as a random sparse matrix? To satisfy the orthogonality condition (1), rows of \(H_Z\) must be in the kernel of \(H_X\). But since \(H_X\) is a good LDPC code, all the elements of its kernel (the codewords) have weight scaling as \(n\), meaning that \(H_Z\) cannot be sparse. One idea to maintain sparsity (from <a href="https://arxiv.org/abs/quant-ph/0304161">MacKay et al., 2003</a>) is to take a random dual-containing LDPC code \(H\), i.e. a sparse matrix satisfying \(HH^T=0\). We can then choose \(H_X=H_Z=H\) to obtain a quantum LDPC code. But the orthogonality condition means that rows of \(H\) (stabilizers) will be in the kernel of \(H\) (stabilizers and logicals). Due to the randomness of the construction, we will then almost-certainly have some \(X\) stabilizers turning into \(Z\) logicals when changing \(X\) to \(Z\), making the distance of the quantum code constant.</p>
+
+<p>So we need a bit more structure if we want to satisfy all the three constraints above. And this is where the magic starts: a whole field of mathematics has been built since the end of the 19th century that deals with exactly such matrices! I’m talking about the field of <strong>algebraic topology</strong>, and its extensions, <strong>homological algebra</strong>.</p>
+
+<h1 id="topological-spaces-manifolds-and-cellulations">Topological spaces, manifolds and cellulations</h1>
+
+<p>Algebraic topology can be described as the study of topological spaces, and invariant quantities under continuous deformations of those spaces. This sentence contains a lot of important concepts, so let’s slowly decipher it. <strong>Topological spaces</strong> are sets that have a well-defined notion of neighborhood (satisfying certain axioms on their intersections and unions, which you can find on <a href="https://en.wikipedia.org/wiki/Topological_space">Wikipedia</a>). They are very general spaces, which include things like \(\mathbb{R}^n\), spheres, toruses, but also discrete structure like graphs, and even fractals. The axioms of topological spaces are sufficient to generalize a certain number of notions from analysis, such as continuous functions and limits. What about continuous deformations? Those are usually either <strong>homeomorphisms</strong> (continuous bijections with a continuous inverse) or <strong>homotopy equivalences</strong> (progressive continuous transformation from one space to the other). Finally, the invariant quantities that are considered in algebraic topology are numbers or algebraic structures that allow to classify topological spaces up to those deformations. For instance, we can associate to each topological space a certain number of groups, called <strong>homology groups</strong>, whose dimensions intuitively represent the number of “\(k\)-dimensional holes” of the space, which is invariant under homeomorphism and homotopy equivalence. We will see how those homology groups are constructed (and their meaning in quantum error correction) very soon.</p>
+
+<p>To understand how this works, let’s restrict ourselves to a specific type of topological spaces, called <strong>topological manifolds</strong> (or simply <strong>manifolds</strong> for short). Formally, a manifold is a locally Euclidean Haussdord second-countable topological space. Locally Euclidean means that for every point, there is a neighborhood that is homeomorphic to an open subset of \(\mathbb{R}^n\) (for some \(n\)), like in the following example (image taken from <a href="https://www.columbia.edu/~mf2954/Lecture%206.pdf">Daniel Irvine’s lecture notes</a>):</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/manifold.png" height="300"><img src="/assets/img/blog/topological-qec/manifold.png" height="300"></hy-img>
+
+</p>
+
+<p>It excludes things like crosses, since the neighborhood of an intersection point can neither be mapped to an open subset of \(\mathbb{R}\) nor \(\mathbb{R}^2\) (a cross is not open in \(\mathbb{R}^2\)), and topological spaces that have a boundary (e.g. a disk), since neighborhood of points at the boundary would always map to non-open sets of \(\mathbb{R}^n\). This also excludes spaces like fractals and graphs.</p>
+
+<p>What about “Haussdorf” and “second-countable”? Haussdorf means that distinct points have disjoint neighborhoods (it excludes for instance a line with two origins) and second-countable means that there exists a countable basis of open sets, such that every open set can be decomposed in this basis (it excludes for instance an uncountable number of copies of a line). Those are technical details which are important to avoid pathological cases and make many theorems work, but don’t linger over them too much. Simply think of a manifold as a continuous shape without boundaries or crossing points, like a sphere or a torus.</p>
+
+<p>Finally, we say that a manifold is \(\bm{D}\)<strong>-dimensional</strong> if the neighborhood of every point can be mapped to an open set of \(\mathbb{R}^D\).</p>
+
+<p>A nice property of manifolds is that they can be <em>cellulated</em>. There are many ways to define cellulations on a manifold. A simple way, which is the most relevant in the context of quantum error correction, is by using polytopes (the \(D\)-dimensional generalization of polygons). The <strong>cellulation of a manifold</strong> can then be defined as a set of polytopes, and a map (homeomorphism) from every polytope to the manifold, such that the manifold is fully covered and the polytopes only intersect at their faces. Here is an example of cellulation of 2D torus:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/polytopes.png" height="200"><img src="/assets/img/blog/topological-qec/polytopes.png" height="200"></hy-img>
+
+</p>
+
+<p>Note that I use here the same representation of the torus as when I defined the toric code: a square with top-bottom and left-right boundaries identified. This can be made rigorous topologically, by defining the manifold as the square \(S=[0,1]^2\) <em>quotiented</em> by an equivalence relation \(\sim\) such that top-bottom boundaries are equivalent, i.e. \((x,0) \sim (x,1)\) for all \(x \in [0,1]\), and left-right boundaries are equivalent, i.e.  \((0,y) \sim (1,y)\) for all \(y \in [0,1]\). We discussed the notion of quotient before in the context of <a href="blog/2023-03-16-stabilizer-formalism-2/">logical operators</a>, defining the quotient of a group (the logicals) by a subgroup (the stabilizers). The idea for topological spaces is similar: the quotient \(\mathcal{M}=S/\sim\) of the topological space \(S\) (our square) by the equivalence relation \(\sim\) is formally defined as a space of sets (called <strong>cosets</strong>) such that each coset contained equivalent points. In our case, cosets corresponding to points in the bulk of our square are singleton, e.g. \(\{ (0.5, 0.2) \}\), while cosets corresponding to points at the boundaries contain either two elements, e.g. \(\{ (0,0.5), (1,0.5) \}\) or four for the corners, e.g. \(\{(0,0),(0,1),(1,0),(1,1)\}\). We can make this quotient a topological space by defining the neighborhood of points at the boundary to correspond to the union of neighborhoods on both sides, and then prove that it is actually a manifold, fulfilling all the properties of manifolds discussed above.</p>
+
+<p>For any cellulation of a \(D\)-dimensional manifold, a \(\bm{k}\)<strong>-cell</strong> of this cellulation (for \(k \in \{ 0,\ldots,D \}\)) is the image of a \(k\)-dimensional face of one of the polytopes. For instance, \(0\)-cells are vertices of the cellulation, \(1\)-cells edges, \(2\)-cells, faces, etc.</p>
+
+<p>As we will soon see, one can learn invariant properties of the manifold by using only the combinatorial description of <em>any</em> cellulation of the manifold. By combinatorial description, I simply mean how our polytopes are connected to each other, rather than their exact shape. And a nice way to formalize this notion is through the concept of chain complex.</p>
+
+<h1 id="chain-complexes">Chain complexes</h1>
+
+<p>There is a famous adage in maths communities saying that all mathematics can be reduced to either linear algebra or combinatorics. Chain complexes reduce the study of topological manifolds to both.</p>
+
+<p>Let’s consider a cellulation of a \(D\)-dimensional manifold.</p>
+
+<h1 id="homology-and-cohomology">Homology and cohomology</h1>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Problem with a fix Euclidean manifold</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>To be more precise, I should write \((H_X^{(\ell)},H_Z^{(\ell)})\) to emphasize that we are dealing with a family of codes indexed by an integer \(\ell\), and not just a single code (e.g. \(\ell\) would be the lattice size for the surface code). The parameters of the code family could then also be written \([[n_\ell,k_\ell,d_\ell]]\). I omit the index here and in the rest of the post to avoid overloading the notations, as it should be clear from context when there is an implicit dependency on some integers \(\ell\). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
 
   
 <footer role="contentinfo">
@@ -333,7 +521,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
         <a
           
           href="/blog/"
-          class="sidebar-nav-item"
+          class="sidebar-nav-item active"
           
         >
           Blog
@@ -381,7 +569,7 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
         <a
           
           href="/animations/"
-          class="sidebar-nav-item active"
+          class="sidebar-nav-item"
           
         >
           Animations
