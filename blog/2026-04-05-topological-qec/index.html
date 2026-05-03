@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v8.5.2 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+
+
+  
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>The topology of topological QEC I — Manifolds and complexes | Arthur Pesah</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="The topology of topological QEC I — Manifolds and complexes" />
+<meta name="author" content="Arthur Pesah" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Research blog" />
+<meta property="og:description" content="Research blog" />
+<link rel="canonical" href="http://localhost:4000/blog/2026-04-05-topological-qec/" />
+<meta property="og:url" content="http://localhost:4000/blog/2026-04-05-topological-qec/" />
+<meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-04-05T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The topology of topological QEC I — Manifolds and complexes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2026-04-05T00:00:00+01:00","datePublished":"2026-04-05T00:00:00+01:00","description":"Research blog","headline":"The topology of topological QEC I — Manifolds and complexes","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2026-04-05-topological-qec/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"http://localhost:4000/blog/2026-04-05-topological-qec/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="quantum computing,machine learning,research,papers,qml,quantum ML">
+  
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arthur Pesah">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="application-name" content="Arthur Pesah">
+<meta name="msapplication-config" content="/assets/ieconfig.xml">
+
+
+<meta name="theme-color" content="rgb(25,55,71)">
+
+
+<meta name="generator" content="Hydejack v8.5.2" />
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Arthur Pesah" />
+
+
+
+<link rel="alternate" href="http://localhost:4000/blog/2026-04-05-topological-qec/" hreflang="en">
+
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon.png">
+
+<link rel="manifest" href="/assets/manifest.json">
+
+
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+
+<link rel="dns-prefetch" href="/" id="_baseURL">
+<link rel="dns-prefetch" href="/sw.js" id="_hrefSW">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.js" id="_hrefKatexJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_hrefKatexCSS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
+<link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+
+
+
+<link rel="dns-prefetch" href="https://arthurpesah.disqus.com" id="_hrefDisqus">
+
+
+<script>
+!function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(c,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(c,r)}var c=t.createElement("script");return c.src=r,e._loaded?a():n(e,"load",a,{once:!0}),c},e.setRel=e.setRelStylesheet=function(e){function r(){this.rel="stylesheet"}var o=t.getElementById(e);n(o,"load",r,{once:!0})}}(window,document);
+;
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+;
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+;
+!function(w, d) {
+  w._noPushState = false;
+  w._noDrawer = false;
+}(window, document);
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3K1GWGLHP0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3K1GWGLHP0');
+</script>
+
+<!--[if gt IE 8]><!---->
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/assets/css/hydejack-8.5.2.css">
+  <link rel="stylesheet" href="/assets/icomoon/style.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400|Noto+Sans:400,400i,700,700i&display=swap">
+  
+
+
+  <style id="_pageStyle">
+
+.content a:not(.btn){color:#4fb1ba;border-color:rgba(79,177,186,.2)}.content a:not(.btn):hover{border-color:#4fb1ba}:focus{outline-color:#4fb1ba !important}.btn-primary{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:focus,.btn-primary.focus,.form-control:focus,.form-control.focus{box-shadow:0 0 0 3px rgba(79,177,186,.5)}.btn-primary:hover,.btn-primary.hover{color:#fff;background-color:rgb(63.8602040816,154.5602040816,162.8897959184);border-color:rgb(63.8602040816,154.5602040816,162.8897959184)}.btn-primary:disabled,.btn-primary.disabled{color:#fff;background-color:#4fb1ba;border-color:#4fb1ba}.btn-primary:active,.btn-primary.active{color:#fff;background-color:rgb(63.8602040816,154.5602040816,162.8897959184);border-color:rgb(63.8602040816,154.5602040816,162.8897959184)}::selection{color:#fff;background:#4fb1ba}::-moz-selection{color:#fff;background:#4fb1ba}
+</style>
+
+
+<!--<![endif]-->
+
+
+
+<script>
+	window.MathJax = {
+		loader: { load: ['[tex]/physics', '[tex]/boldsymbol'] },
+		tex: {
+			inlineMath: [['\\(', '\\)']],
+			displayMath: [['$$', '$$'], ['\\[', '\\]']],
+			packages: { '[+]': ['physics', 'boldsymbol'] },
+			macros: {
+				bm: ['\\boldsymbol{#1}', 1]
+			}
+		},
+		options: {
+			skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		}
+	};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+</head>
+
+<body class="no-color-transition">
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <div class="nav-btn-bar">
+      <span class="sr-only">Jump to:</span>
+      <a id="_menu" class="nav-btn no-hover fl" href="#_navigation">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <a id="_search" class="nav-btn no-hover fl" href="#_search">
+        <span class="sr-only">Search</span>
+        <span class="icon-search"></span>
+      </a>
+      <form action="https://duckduckgo.com/" method="GET">
+        <div class="form-group fr">
+          <label class="sr-only" for="_search">Search</label>
+          <input id="_search" name="q" class="form-control" type="search" />
+        </div>
+        <input type="hidden" name="q" value="site:hydejack.com" />
+        <input type="hidden" name="ia" value="web" />
+      </form> -->
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+
+<hy-push-state
+  replace-ids="_main"
+  link-selector="a[href]:not([href*='/assets/']):not(.external):not(.no-push-state)"
+  duration="250"
+  script-selector="script:not([type^='math/tex'])"
+  prefetch
+>
+  
+    <main
+  id="_main"
+  class="content fade-in layout-post"
+  role="main"
+  data-color="rgb(79,177,186)"
+  data-theme-color="rgb(25,55,71)"
+  
+    data-image="/assets/img/sidebar-bg.jpg"
+    data-overlay
+  
+  >
+  
+
+
+
+
+<article id="post-blog-topological-qec" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title">
+      
+        The topology of topological QEC I — Manifolds and complexes
+      
+    </h1>
+
+    <p class="post-date heading">
+      
+      <time datetime="2026-04-05T00:00:00+01:00">05 Apr 2026</time>
+      
+      
+      
+      
+<!--      
+
+
+
+
+
+
+
+
+
+in <a href="/blog/" class="flip-title">Blog</a>
+-->
+      
+
+
+
+
+
+
+
+
+
+on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
+
+    </p>
+
+    
+    
+
+    
+
+
+
+  <div class="hr pb0"></div>
+
+
+  </header>
+
+  
+    <p>To continue our journey into quantum error correction, it is time to dive deeper into the theoretical foundations of the field. When <a href="/blog/2023-05-13-surface-code/">learning about the surface code</a>, you might have wondered: what exactly makes it work? Would it work as well on lattices other than the square lattice? On manifolds other than the torus? In higher dimensions?</p>
+
+<p>As it happens, the field of <strong>algebraic topology</strong> provides exactly the right tools to answer these questions. By understanding its basics, we can construct and study generalized surface codes and many other families of topological codes, such as color codes and fracton codes<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>. Furthermore, a generalization of algebraic topology, <strong>homological algebra</strong>, allows us to go beyond topological codes and serves as the foundation for most quantum LDPC code constructions and logical gate designs. The definitions and fundamental theorems from these two fields are therefore used all over the QEC literature, and studying them is well worth your time if you want to understand most modern fault-tolerant architecture constructions.</p>
+
+<p>In this two-post series, we will explore the basics of algebraic topology with a quantum error correction lens. This first post focuses on <em>constructions</em>: you will learn about topological spaces, manifolds, cellulations, and chain complexes, and see how they can be used to build generalized surface codes. The second post focuses on <em>properties</em>, introducing homology and cohomology groups and explaining how they relate to the main properties of quantum codes.</p>
+
+<p>As always, the main focus of this blog is on building intuition and visual understanding, and I therefore gloss over many technical details. However, if you are craving more details after reading these posts, I recommend consulting either Chapter 3 of <a href="https://discovery.ucl.ac.uk/id/eprint/10223041/7/phd-thesis-final-corrected.pdf">my thesis</a> or Chapter 2 of <a href="https://arxiv.org/abs/1802.01520">Niko Breuckmann’s thesis</a>, where all the definitions and theorems are presented more formally.</p>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>In <a href="/blog/2023-03-28-stabilizer-formalism-3/">Part III of the stabilizer trilogy</a>, we saw that CSS codes can be described by two matrices, the parity-check matrices \(H_X\) and \(H_Z\), whose rows encode all the \(X\) and \(Z\) stabilizers of the code as binary vectors. For those two matrices to form a valid stabilizer code, they must obey the condition</p>
+
+\[\begin{aligned}
+    H_X H_Z^T = 0
+\end{aligned}\]
+
+<p>which ensures that every \(X\) stabilizer must commute with every \(Z\) stabilizer.
+Furthermore, the parameters of the code can also be expressed using those matrices. For instance, the number of logical qubits \(k\) is exactly the dimension of the quotient space \(\ker(H_X)/\Im(H_Z^T)\). Why is that so? The kernel of \(H_X\) is the set of Pauli operators that commute with all the \(X\) stabilizers, that is, the (trivial and non-trivial) \(Z\) logical operators. Meanwhile, \(\Im(H_Z^T)\) corresponds to the set of \(Z\) stabilizers. The quotient therefore corresponds to equivalence classes of \(Z\) logicals up to stabilizers, with one class per logical qubit of the code. Another way to see it is through the identity</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = \dim(\ker(H_X)) - \dim(\Im(H_Z^T))
+\end{aligned}\]
+
+<p>Using the rank-nullity theorem, this becomes</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = n - \rank(H_X) - \rank(H_Z^T)
+\end{aligned}\]
+
+<p>where \(\rank(H_X)=\rank(H_X^T)\) gives the number of independent \(X\) stabilizers, and \(\rank(H_Z^T)\) gives the number of independent \(Z\) stabilizers. This means that</p>
+
+\[\begin{aligned}
+    \dim \left( \ker(H_X) / \Im(H_Z^T) \right) = n - m = k
+\end{aligned}\]
+
+<p>with \(m\) the total number of independent stabilizers. We used the formula for the number of logical qubits that we saw in <a href="/blog/2023-03-16-stabilizer-formalism-2/">Part II of the stabilizer trilogy</a>.</p>
+
+<p>What about the distance? The \(X\) distance \(d_X\) is given by</p>
+
+\[\begin{aligned}
+d_X = \min_{L \in \ker(H_Z) \setminus \Im(H_X^T)} |L|
+\end{aligned}\]
+
+<p>and similarly for the \(Z\) distance \(d_Z\). The total distance is then the minimum of \(d_X\) and \(d_Z\).</p>
+
+<p>One last important property that can be read from the parity-check matrices is the locality of the code. It is not enough for a code to have good \([[n,k,d]]\) parameters, it must also have a good fault-tolerant implementation, that is, a set of circuits for syndrome extraction, state preparation, and logical gates, such that the error threshold is non-zero (i.e., there exists a non-zero physical error rate below which scaling the code and its circuits exponentially suppresses the logical error rate). One sufficient condition for a code family with growing distance to possess such a fault-tolerant implementation is for it to be a low-density parity-check (LDPC) code: each stabilizer acts on a constant number of qubits, and each qubit participates in a constant number of stabilizers. This was shown, for instance, in a classic <a href="https://arxiv.org/abs/1310.2984">2013 paper by Daniel Gottesman</a>. From the point of view of our matrices, a code family with parity-check matrices \((H_X,H_Z)\) is LDPC if both \(H_X\) and \(H_Z\) are sparse, that is, if the weight of their rows and columns remains constant as the code size increases<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>.</p>
+
+<p>Where does this lead us? We can view CSS code design as the problem of finding families of matrix pairs \((H_X, H_Z)\), such that:</p>
+
+<ol class="indented-list">
+  <li>\(H_X H_Z^T = 0\),</li>
+  <li>\(H_X\) and \(H_Z\) are sparse,</li>
+  <li>\(k\) is non-zero, and \(d\) is growing with the code size.</li>
+</ol>
+
+<p>From a coding-theoretic perspective, satisfying these three constraints seems like a hard problem! In the classical setting, random LDPC codes are typically <em>good</em>, with both \(k\) and \(d\) scaling linearly with \(n\). However, naively trying to build <em>two</em> random matrices satisfying the orthogonality condition quickly runs into obstructions that prevent either sparsity or good parameters <sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>.</p>
+
+<p>So we need a bit more structure if we want to satisfy all three constraints above. And this is where the magic begins: since the end of the 19th century, an entire field of mathematics has been devoted to studying exactly such matrices. I’m talking about the field of <strong>algebraic topology</strong>, and its extension, <strong>homological algebra</strong>.</p>
+
+<h1 id="topological-spaces-manifolds-and-cellulations">Topological spaces, manifolds and cellulations</h1>
+
+<p>Algebraic topology can be described as the study of topological spaces and of quantities that remain invariant under continuous deformations of those spaces. This sentence contains a lot of important concepts, so let’s slowly decipher it. <strong>Topological spaces</strong> are sets equipped with a well-defined notion of neighborhood (satisfying <a href="https://en.wikipedia.org/wiki/Topological_space#Definition_via_neighbourhoods">certain axioms</a> on their intersections and unions). They are very general objects, including familiar spaces such as \(\mathbb{R}^n\), spheres, tori, but also countable sets, graphs, and even fractals. The axioms of topological spaces are sufficient to generalize a number of notions from analysis, such as continuous functions and limits.</p>
+
+<p>What about continuous deformations? Those are usually either <strong>homeomorphisms</strong> (continuous bijections with a continuous inverse) or <strong>homotopy equivalences</strong> (progressive continuous transformation of one space to another). Finally, the invariant quantities that are considered in algebraic topology are numbers or algebraic structures (groups, vector spaces, etc.) that allow us to classify topological spaces up to those deformations. For instance, to each topological space one can associate a sequence of groups, called <strong>homology groups</strong>, whose dimensions intuitively count the number of “\(k\)-dimensional holes” of the space. These quantities are invariant under homeomorphism and homotopy equivalence. We will see how these homology groups are constructed (and their interpretation in quantum error correction) very soon.</p>
+
+<p>To understand how this works, let’s restrict our attention to a specific type of topological spaces, called <strong>topological manifolds</strong> (or simply <strong>manifolds</strong> for short). Formally, a manifold is a locally Euclidean Haussdorff second-countable topological space. ‘Locally Euclidean’ means that for every point, there is a neighborhood that is homeomorphic to an open subset of \(\mathbb{R}^n\) (for some \(n\)), like in the following example (image taken from <a href="https://www.columbia.edu/~mf2954/Lecture%206.pdf">Daniel Irvine’s lecture notes</a>):</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/manifold.png" height="300"><img src="/assets/img/blog/topological-qec/manifold.png" height="300"></hy-img>
+
+</p>
+
+<p>This definition excludes objects like countable sets, self-intersecting spaces like crosses or graphs (the neighborhood of an intersection point cannot be mapped to an open subset of any \(\mathbb{R}^n\)), or fractals. Strictly speaking, it also excludes topological spaces that have a boundary, such as disks, since the neighborhood of points at the boundary would not be open in \(\mathbb{R}^n\). However, the notion of manifold can be generalized to that of <strong>manifold with boundary</strong>, where neighborhood of boundary points are allowed to map to the half-spaces (\(\{x \in \mathbb{R}^n\, :\, x_0 \geq 0 \}\)). In what follows, we will use the term ‘manifold’ to include manifolds with boundary.</p>
+
+<p>What about <em>Haussdorff</em> and <em>second-countable</em>? A space is Hausdorff if any two distinct points have disjoint neighborhoods (it excludes for instance a line with two origins) and it is second-countable if it admits a countable basis of open sets, such that every open set can be decomposed in this basis (it excludes for instance an uncountable disjoint union of lines). Those are technical details which are important to avoid pathological cases and make many theorems work, but we will not dwell on them too much. Simply think of a manifold as a continuous shape without crossing points, like a sphere, a torus or a disk.</p>
+
+<p>Finally, we say that a manifold is \(\bm{D}\)<strong>-dimensional</strong> if the neighborhood of every point can be mapped to an open subset of \(\mathbb{R}^D\).</p>
+
+<p>A nice property of manifolds is that they can be <em>cellulated</em>. There are many ways to define cellulations on a manifold. A simple approach, which is the most relevant in the context of quantum error correction, is to use polytopes (the \(D\)-dimensional generalization of polygons). The <strong>cellulation of a manifold</strong> is then given by a collection of polytopes, together with maps (homeomorphisms) from every polytope to the manifold, such that the manifold is fully covered and the polytopes intersect only along shared faces <sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>. Here is an example of cellulation of 2D torus:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/polytopes.png" height="200"><img src="/assets/img/blog/topological-qec/polytopes.png" height="200"></hy-img>
+
+</p>
+
+<p>Here, I use the same representation of the torus as when I defined the toric code, namely a square with its top and bottom boundaries identified, as well as its left and right boundaries<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup>.</p>
+
+<p>For any cellulation of a \(D\)-dimensional manifold, a \(\bm{k}\)<strong>-cell</strong> of this cellulation (for \(k \in \{ 0,\ldots,D \}\)) is the image of a \(k\)-dimensional face of one of the polytopes. For instance, \(0\)-cells correspond to vertices, \(1\)-cells to edges, \(2\)-cells to faces, etc.</p>
+
+<p>As we will soon see, many invariant properties of a manifold can be recovered purely from the combinatorial description of <em>any</em> of its cellulations. By <em>combinatorial description</em>, I simply mean how our polytopes are connected to each other, rather than their exact shapes. And a nice way to formalize this notion is through the notion of chain complex.</p>
+
+<h1 id="chain-complexes">Chain complexes</h1>
+
+<p>There is a famous adage in mathematical communities saying that all mathematics can be reduced to either linear algebra or combinatorics. Chain complexes reduce the study of topological manifolds to both.</p>
+
+<p>Let’s consider a cellulation of a \(D\)-dimensional manifold. For all \(i \in \{0,\ldots,D\}\), we denote by \(n_i\) the number of \(i\)-cells, and define the vector space</p>
+
+\[\begin{aligned}
+    C_i = \mathbb{Z}_2^{n_i}.
+\end{aligned}\]
+
+<p>We equip this vector space with a basis, where each basis element corresponds to a specific \(i\)-cell of the cellulation.</p>
+
+<p>To make things concrete, consider the following cellulation of a square (a manifold with boundary, equivalent to the closed unit disk \(D^2\)), with \(n_0=4\) vertices, \(n_1=4\) edges, and \(n_2=1\) face.</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/square-chain-complex.png" height="150"><img src="/assets/img/blog/topological-qec/square-chain-complex.png" height="150"></hy-img>
+
+</p>
+
+<p>We then have</p>
+
+\[\begin{aligned}
+    C_0 = \mathbb{Z}_2^{4},\;\; C_1 = \mathbb{Z}_2^{4},\;\; C_2 = \mathbb{Z}_2,
+\end{aligned}\]
+
+<p>with the following bases:</p>
+
+\[\begin{aligned}
+    C_0:&amp; \;\; v_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \\ 0 \end{pmatrix},\,\,
+    v_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \\ 0 \end{pmatrix},\,\,
+    v_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \\ 0 \end{pmatrix},\,\,
+    v_4 = \begin{pmatrix} 0 \\ 0 \\ 0 \\ 1 \end{pmatrix} \\
+    C_1:&amp; \;\; e_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \\ 0 \end{pmatrix},\,\,
+    e_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \\ 0 \end{pmatrix},\,\,
+    e_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \\ 0 \end{pmatrix},\,\,
+    e_4 = \begin{pmatrix} 0 \\ 0 \\ 0 \\ 1 \end{pmatrix} \\
+    C_2:&amp; \;\; f_1=\begin{pmatrix} 1 \end{pmatrix} \\
+\end{aligned}\]
+
+<p>This allows us to represent any collection of \(i\)-cells as a vector of \(C_i\), by simply summing the corresponding basis vectors. For instance, the set consisting of the two top vertices of our square is represented by the vector</p>
+
+\[\begin{aligned}
+    v = v_1 + v_2 = \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}.
+\end{aligned}\]
+
+<p>In other words, each entry equal to \(1\) in the vector indicates that the corresponding \(i\)-cell is included.</p>
+
+<p>Next, we define some linear operators \(\partial_i:C_{i} \rightarrow C_{i-1}\), called <strong>boundary operators</strong>, which encode the incidence structure of the cellulation. More precisely, if an \(i\)-cell \(c \in C_i\) has boundary \(\{c_1,\ldots,c_\ell\}\), we define</p>
+
+\[\begin{aligned}
+    \partial_i (c) = c_1 + \ldots + c_\ell.
+\end{aligned}\]
+
+<p>In our example, \(\partial_2\) maps faces to edges, and \(\partial_1\) edges to vertices. We have</p>
+
+\[\begin{aligned}
+    \partial_2 (f_1) = e_1 + e_2 + e_3 + e_4,
+\end{aligned}\]
+
+<p>since the face \(f_1\) is connected to all four edges, and</p>
+
+\[\begin{aligned}
+    \partial_1 (e_1) &amp;= v_1 + v_2, \\ \partial_1 (e_2) &amp;= v_2 + v_3, \\ \partial_1 (e_3) &amp;= v_3 + v_4, \\ \partial_1 (e_4) &amp;= v_4 + v_1
+\end{aligned}\]
+
+<p>since for instance \(e_1\) is incident to \(v_1\) and \(v_2\). We can also represent these operators as matrices:</p>
+
+\[\begin{aligned}
+    \partial_2 &amp;= \begin{pmatrix} 1 \\ 1 \\ 1 \\ 1 \end{pmatrix} \\
+    \partial_1 &amp;=
+    \begin{pmatrix}
+    1 &amp; 0 &amp; 0 &amp; 1 \\
+    1 &amp; 1 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 1 &amp; 1 \\
+    \end{pmatrix} \\
+\end{aligned}\]
+
+<p>From \(\partial_1\), we can read that \(e_1\) (first column) is incident to \(v_1\) and \(v_2\) (first and second rows), that \(e_2\) is incident to \(v_2\) and \(v_3\), and so on.</p>
+
+<p>Alternatively, boundary operators can be viewed as biadjacency matrices of certain bipartite graphs. For any cellulation, we can indeed construct a \((D+1)\)-partite graph with one node for each \(i\)-cell, and an edge between an \(i\)-cell and an \((i-1)\)-cell whenever the latter lies in the boundary of the former. For instance, here is the graph associated with our cellulation of the square:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/square-chain-complex-graph.png" height="120"><img src="/assets/img/blog/topological-qec/square-chain-complex-graph.png" height="120"></hy-img>
+
+</p>
+
+<p>where circles represent \(0\)-cells, squares represent \(1\)-cells, and triangles represent \(2\)-cells. The boundary operator \(\partial_1\) is then the biadjacency matrix of the bipartite graph between circles and squares, while \(\partial_2\) is the biadjacency matrix of the bipartite graph between squares and triangles. Recall that the <strong>biadjacency matrix</strong> of a bipartite graph with node sets \(U\) and \(V\) is the matrix whose rows are indexed by nodes of \(U\), columns indexed by nodes of \(V\), and entries equal to \(1\) if there is an edge between the corresponding nodes, and \(0\) otherwise. This graph is sometimes called the <strong>Hasse diagram</strong> of the cellulation.</p>
+
+<p>An important property of cellulations is that the boundary operators satisfy the following condition for any \(i \in \{0,\ldots,D-1\}\)<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup>:</p>
+
+\[\begin{aligned}
+    \partial_i \circ \partial_{i+1} = 0.
+\end{aligned}\]
+
+<p>Intuitively, this reflects the fact that the boundary of a boundary is empty. For instance, in our example, we have</p>
+
+\[\begin{aligned}
+    \partial_1 \partial_2 (f_1) &amp;= \partial_1 (e_1 + e_2 + e_3 + e_4) \\
+    &amp;= (v_1 + v_2) + (v_2 + v_3) + (v_3 + v_4) + (v_4 + v_1) \\
+    &amp;= 0
+\end{aligned}\]
+
+<p>since each \(v_i\) appears twice in the sum, and we are working over \(\mathbb{Z}_2\).</p>
+
+<p>We are now finally ready to introduce the notion of chain complex. A <strong>length-</strong>\(\bm{D}\) <strong>chain complex</strong> is a sequence of vector spaces \(C_0, \ldots, C_D\), along with linear operators \(\partial_i:C_i \rightarrow C_{i-1}\) satisfying the <strong>chain complex condition</strong> \(\partial_i \circ \partial_{i+1} = 0\) for all \(i \in \{0,\ldots,D-1\}\). We can represent a chain complex as a diagram:</p>
+
+\[\begin{aligned}
+    C_D \xrightarrow{\partial_D} C_{D-1} \xrightarrow{\partial_{D-1}} \cdots \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0.
+\end{aligned}\]
+
+<p>When the chain complex is constructed from a cellulation of a manifold, we call it a <strong>cell complex</strong>. However, the notion of chain complex is more general, and does not require any underlying manifold cellulation. It can be seen as a \((D+1)\)-partite graph with nodes of types \(0,\ldots,D\), edges only between successive types, and the constraint that the neighborhood of any node of type \(i\) must have even intersection with the neighborhood of every node of type \(i+2\), for all \(i \in \{0,\ldots,D-2\}\). For instance, you can check that the following graph defines a valid chain complex</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/non-manifold-complex.png" height="150"><img src="/assets/img/blog/topological-qec/non-manifold-complex.png" height="150"></hy-img>
+
+</p>
+
+<p>even though the square nodes cannot be interpreted as \(1\)-cells (edges) of a cellulation, since they are connected to four \(0\)-cells (vertices).</p>
+
+<p class="message"><strong>Exercise 1</strong>: <br />
+<strong>(a)</strong> Describe the chain complex associated to a filled tetrahedron (cellulation of a 3D ball), by writing down the different spaces and boundary matrices
+<br />
+<strong>(b)</strong> Prove the chain complex condition.
+<br />
+<strong>(c)</strong> Write the corresponding graph.
+<br />
+<a href="#solution-of-the-exercise">(solution)</a></p>
+<p style="text-align:center;" class="figure message">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/tetrahedron.png" height="200"><img src="/assets/img/blog/topological-qec/tetrahedron.png" height="200"></hy-img>
+
+</p>
+
+<h1 id="back-to-qec">Back to QEC</h1>
+
+<p>You can probably already see where this is going. For any CSS code with \(n\) qubits, \(m_X\) \(X\) stabilizers, \(m_Z\) \(Z\) stabilizers, and parity-check matrices \(H_X\) and \(H_Z\), the condition \(H_Z H_X^T = 0\) implies that the following diagram defines a valid chain complex:</p>
+
+\[\begin{aligned}
+    \mathcal{S}_X \xrightarrow{H_X^T} \mathcal{Q} \xrightarrow{H_Z} \mathcal{S}_Z,
+\end{aligned}\]
+
+<p>where \(\mathcal{S}_X = \mathbb{Z}_2^{m_X}\), \(\mathcal{Q} = \mathbb{Z}_2^n\), and \(\mathcal{S}_Z = \mathbb{Z}_2^{m_Z}\). Conversely, any length-2 chain complex</p>
+
+\[\begin{aligned}
+    C_2 \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0
+\end{aligned}\]
+
+<p>defines a valid CSS code with parity-check matrices \(H_Z = \partial_1\) and \(H_X = \partial_2^T\). In other words, CSS codes are equivalent to length-2 chain complexes over \(\mathbb{Z}_2\). The Hasse diagram of the chain complex then corresponds to the Tanner graph of the code. The problem of finding LDPC CSS codes therefore reduces to finding length-2 chain complexes with sparse boundary operators!</p>
+
+<p>And good news, we already have a way to construct such chain complexes: by taking cellulations of manifolds! Let’s consider a cellulated \(D\)-dimensional manifold \(\mathcal{M}\) with associated cell complex
+\(\begin{aligned}
+    C_D \xrightarrow{\partial_D} C_{D-1} \xrightarrow {\partial_{D-1}} \cdots \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0
+\end{aligned}\)</p>
+
+<p>For any \(i \in \{1,\ldots,D-1\}\), we can extract a length-2 chain complex</p>
+
+\[\begin{aligned}
+    C_{i+1} \xrightarrow{\partial_{i+1}} C_{i} \xrightarrow{\partial_{i}} C_{i-1}
+\end{aligned}\]
+
+<p>and define a CSS code with a qubit for each basis element of \(C_i\), an \(X\) stabilizer generator for every basis element of \(C_{i+1}\), a \(Z\) stabilizer generator for every basis element of \(C_{i-1}\), and parity-check matrices</p>
+
+\[\begin{aligned}
+    H_Z = \partial_i, \quad H_X = \partial_{i+1}^T
+\end{aligned}\]
+
+<p>We will refer to codes defined this way as \(\bm{D}\)<strong>-dimensional surface codes on</strong> \(\mathcal{M}\).</p>
+
+<p>For instance, in two dimensions, we can start from any cellulation</p>
+
+\[\begin{aligned}
+    C_2 \xrightarrow{\partial_2} C_1 \xrightarrow {\partial_1} C_0
+\end{aligned}\]
+
+<p>where \(C_2\) is the space of faces, \(C_1\) the space of edges, and \(C_0\) the space of vertices. We can then build a surface code by placing qubits on edges, \(Z\) stabilizers on vertices, and \(X\) stabilizers on faces. This is exactly the construction of the toric code discussed in <a href="/blog/2023-05-13-surface-code/">the surface code post</a>. But any other cellulation would work as well! For instance, here is a surface code defined on a hexagonal cellulation of the torus:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/hexagonal-surface-code.png" height="300"><img src="/assets/img/blog/topological-qec/hexagonal-surface-code.png" height="300"></hy-img>
+
+</p>
+
+<p>The fact that the stabilizers commute is a direct consequence of the fact that cellulations define valid chain complexes.</p>
+
+<p>We can also consider more exotic cellulations and manifolds. For instance, hyperbolic codes are defined from regular tessellations of hyperbolic manifolds<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">7</a></sup>, such as the following one:</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/hyperbolic-tessellation.png" height="300"><img src="/assets/img/blog/topological-qec/hyperbolic-tessellation.png" height="300"></hy-img>
+
+</p>
+
+<p>Depending on the chosen boundary conditions, i.e., how different parts of the disk boundary are identified with one another, we can obtain cellulations of different manifolds this way, including high-genus manifolds (obtained by gluing multiple tori together in a suitable way).</p>
+
+<p>What about higher dimensions? Let’s consider a cellulation of a 3D manifold, such as a cubic cellulation of the 3-torus:</p>
+
+<div id="toric-code-3d" style="margin: auto; display: block; max-width: 450px; height: 450px">
+</div>
+
+<script type="module">
+    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+
+    const params = {
+        dimension: 3,
+        codeName: 'Toric 3D',
+        Lx: 3,
+        Ly: 3,
+        Lz: 3,
+        rotated: false
+    };
+
+    let id = 'toric-code-3d';
+
+    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+
+    await gui.init();
+</script>
+
+<p>represented by a chain complex</p>
+
+\[\begin{aligned}
+    C_3 \xrightarrow{\partial_3} C_2 \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0
+\end{aligned}\]
+
+<p>where \(C_3\) is the space of cubes. We can then extract two possible chain complexes,</p>
+
+\[\begin{aligned}
+C_3 \xrightarrow{\partial_3} C_2 \xrightarrow{\partial_2} C_1
+\end{aligned}\]
+
+<p>and</p>
+
+\[\begin{aligned}
+C_2 \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0.
+\end{aligned}\]
+
+<p>These give rise, in principle, to two possible surface codes. In the first case, qubits are placed on faces, with stabilizers on volumes and edges; in the second, qubits are placed on edges, with stabilizers on faces and vertices. It is not hard to see that \(\partial_3 = \partial_1^T\), meaning that for the cubic lattice these two constructions are in fact equivalent, defining the so-called 3D toric code on a cubic lattice. The 3D toric code is one of my favorite codes, with many cool properties such as the existence of a transversal CCZ gate, and I hope to dedicate a full post to it in the future!</p>
+
+<p>More generally, one can define \(D\)-dimensional toric codes for any \(D\), and depending on the chosen length-2 chain complex, the resulting codes can have different properties. For instance, the 4D toric code can either have a <a href="https://arxiv.org/abs/2010.02238">transversal CCCZ gate</a> or serve as a <a href="https://arxiv.org/abs/0811.0033">self-correcting quantum memory</a>, depending on this choice.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>At the beginning of this post, we asked for a method to construct parity-check matrices satisfying three conditions: orthogonality, sparsity, and non-zero \(k\) with growing \(d\). We found out that algebraic topology provides us with a systematic way to construct orthogonal sparse matrices, by using the boundary operators of manifold cellulations. This works because these boundary operators satisfy the chain complex condition, which is precisely the orthogonality condition required by CSS codes. But we haven’t said anything about the parameters of the codes generated this way: can we guarantee that they have non-zero \(k\) and growing \(d\)? This is what we will explore in the next post, where we will introduce one of the most powerful tools of algebraic topology: the homology and cohomology groups of a chain complex.</p>
+
+<!-- **Acknowledgment**: Thanks to ...
+{:.message} -->
+
+<h1 id="resources">Resources</h1>
+
+<p>Algebraic topology for quantum error correction:</p>
+<ul>
+  <li><a href="https://discovery.ucl.ac.uk/id/eprint/10223041/7/phd-thesis-final-corrected.pdf">PhD Thesis: Quantum error correction in three dimensions and beyond, Chapter 3</a>, by myself.</li>
+  <li><a href="https://arxiv.org/abs/1802.01520">PhD Thesis: Homological quantum codes beyond the toric code, Chapter 2</a>, by Nikolas Breuckmann.</li>
+  <li><a href="https://drive.google.com/file/d/1AB0Kd5JV5TzqwvR4VysrJt-F3GVin2S4/view">Topological Codes and Computation</a>, by Dan Browne.</li>
+</ul>
+
+<p>General algebraic topology:</p>
+<ul>
+  <li><a href="https://pi.math.cornell.edu/~hatcher/AT/AT.pdf">Algebraic Topology</a>, by Allen Hatcher (the bible of the subject).</li>
+</ul>
+
+<h2 id="solution-of-the-exercise">Solution of the exercise</h2>
+<p class="message"><strong>Exercise 1</strong>: <br />
+<strong>(a)</strong> Describe the chain complex associated with a filled tetrahedron, by writing down the corresponding spaces and boundary matrices
+<br />
+<strong>(b)</strong> Prove the chain complex condition.
+<br />
+<strong>(c)</strong> Write the corresponding graph.
+<br /></p>
+<p style="text-align:center;" class="figure message">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/tetrahedron.png" height="200"><img src="/assets/img/blog/topological-qec/tetrahedron.png" height="200"></hy-img>
+
+</p>
+
+<div class="message">
+  <p><strong>Correction</strong>: <strong>(a)</strong> A filled tetrahedron is associated to a chain complex</p>
+
+\[\begin{aligned}
+    C_3 \xrightarrow{\partial_3} C_2 \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0
+\end{aligned}\]
+
+  <p>where the different spaces are given by</p>
+
+\[\begin{aligned}
+    C_3 = \mathbb{Z}_2, \quad C_2 = \mathbb{Z}_2^4, \quad C_1 = \mathbb{Z}_2^6, \quad C_0 = \mathbb{Z}_2^4
+\end{aligned}\]
+
+  <p>and we can find a basis where boundary operators are given by</p>
+
+\[\begin{aligned}
+    \partial_3 &amp;= \begin{pmatrix} 1 \\ 1 \\ 1 \\ 1 \end{pmatrix} \\
+    \partial_2 &amp;=
+    \begin{pmatrix}
+    1 &amp; 1 &amp; 0 &amp; 0 \\
+    1 &amp; 0 &amp; 1 &amp; 0 \\
+    1 &amp; 0 &amp; 0 &amp; 1 \\
+    0 &amp; 1 &amp; 1 &amp; 0 \\
+    0 &amp; 1 &amp; 0 &amp; 1 \\
+    0 &amp; 0 &amp; 1 &amp; 1 \\
+    \end{pmatrix} \\
+    \partial_1 &amp;=
+    \begin{pmatrix}
+    1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
+    1 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 \\
+    0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\
+    0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\
+    \end{pmatrix} \\
+\end{aligned}\]
+
+  <p>Indeed, \(\partial_3\) maps the volume to the sum of its four faces. Since each pair of faces is connected by an edge, \(\partial_2\) has a row for every pair of faces, so we have all combinations of two \(1\) out of four. Similarly, each pair of vertices is connected by an edge, so \(\partial_1\) has a column for every pair of vertices, and we have all combinations of two \(1\) out of four.
+<br />
+<strong>(b)</strong> We simply check that \(\partial_1 \partial_2 = 0\) and \(\partial_2 \partial_3 = 0\) by matrix multiplication.
+<br />
+<strong>(c)</strong> Representing vertices by circles, edges by squares, faces by triangles, and the volume by a star, we have the following graph:
+<br /></p>
+</div>
+<p style="text-align:center;" class="figure message">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec/tetrahedron-graph.png" height="200"><img src="/assets/img/blog/topological-qec/tetrahedron-graph.png" height="200"></hy-img>
+
+</p>
+
+<p>A natural idea to preserve sparsity, proposed by <a href="https://arxiv.org/abs/quant-ph/0304161">MacKay et al., 2003</a>, is to consider a random dual-containing LDPC code \(H\) satisfying \(HH^T = 0\), and to set \(H_X = H_Z = H\). However, in this case the rows of \(H\) lie in its own kernel, which contains both stabilizers and logical operators. Due to the randomness of the construction, some stabilizers will almost certainly correspond to low-weight logical operators under the \(X \leftrightarrow Z\) mapping, resulting in a quantum code with constant distance.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>By <strong>topological code</strong>, I mean any code family constructed from the cellulation of manifolds of fixed dimension with local stabilizers. In principle, all CSS codes are topological codes, since Freedman and Hastings <a href="https://arxiv.org/abs/2012.02249">showed in 2020</a> that any CSS code can be mapped to a surface code on an 11-dimensional manifold. However, when the most natural way to construct a code is not via the cellulation of a manifold (with local stabilizers), I would not colloquially refer to it as a topological code. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>To be more precise, I should write \((H_X^{(\ell)},H_Z^{(\ell)})\) to emphasize that we are dealing with a family of codes indexed by an integer \(\ell\), rather than a single code (e.g. \(\ell\) would correspond to the lattice size for the surface code). The parameters of the code family could then be written \([[n_\ell,k_\ell,d_\ell]]\). I omit this index here and throughout the post to avoid overloading the notation, as it should be clear from context when there is an implicit dependence on \(\ell\). <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>To see the difficulty, suppose we take \(H_X\) to be a random sparse parity-check matrix, defining a good classical LDPC code. Then, to satisfy the orthogonality condition \(H_X H_Z^T = 0\), the rows of \(H_Z\) must lie in the kernel of \(H_X\). But for a good LDPC code, all non-zero codewords (i.e., elements of the kernel) typically have weight scaling as \(O(n)\), which prevents \(H_Z\) from being sparse. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>A more common way to define cellulations in modern algebraic topology is via <em>CW-complexes</em>. This is what you will find for instance in <a href="https://pi.math.cornell.edu/~hatcher/AT/AT.pdf">Hatcher</a>, the bible of algebraic topology. This method often provides much smaller cellulations of a given manifold, by allowing objects such as monogons (a point with a self-loop and a face inside) and bigons (two points connected by two edges and a face instead) to serve as cells, even though these are not strictly-speaking polytopes. With CW-complexes, a torus can for instance be cellulated using only one vertex, two edges and one face (you can see it as a 1x1 lattice with periodic boundary conditions), while the simplest polytope-based cellulation requires four faces, eight edges, and four vertices (a 2x2 lattice with periodic boundary conditions), due to the requirements for our maps to be homeomorphisms. However, CW-complexes are also more complicated to define rigorously, and in practice, polytope cellulations are sufficient for most applications in QEC. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>This can be made rigorous, by defining the manifold as the square \(S=[0,1]^2\) <em>quotiented</em> by an equivalence relation \(\sim\) such that top-bottom boundaries are equivalent, i.e., \((x,0) \sim (x,1)\) for all \(x \in [0,1]\), and left-right boundaries are equivalent, i.e.,  \((0,y) \sim (1,y)\) for all \(y \in [0,1]\). We previously encountered the notion of quotient, defining the quotient of a group (the logicals) by a subgroup (the stabilizers). The idea is similar for topological spaces: the quotient \(\mathcal{M}=S/\sim\) of the topological space \(S\) (our square) by the equivalence relation \(\sim\) is formally defined as a space of sets (called <strong>cosets</strong>) such that each coset contains equivalent points. In our case, cosets corresponding to points in the bulk of our square are singleton, e.g. \(\{ (0.5, 0.2) \}\), while cosets corresponding to points at the boundaries contain either two elements, e.g. \(\{ (0,0.5), (1,0.5) \}\) or four for the corners, e.g. \(\{(0,0),(0,1),(1,0),(1,1)\}\). We can make this quotient a topological space by defining the neighborhood of points at the boundary to correspond to the union of neighborhoods on both sides, and one can then verify that the resulting space is indeed a manifold, fulfilling all the properties discussed above. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:6">
+      <p>For a rigorous proof of this fact, see Lemma 2.9 of Niko Breuckmann’s <a href="https://arxiv.org/abs/1802.01520">PhD thesis</a>. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:7">
+      <p>A <strong>tessellation</strong> is a cellulation in which each map from a polytope to the manifold is an isometry, i.e., it preserves angles and distances. A <strong>regular tessellation</strong> is a tessellation that uses a single type of polytope, and has the same number of edges meeting at each vertex. For instance, regular tessellations of the plane \(\mathbb{R}^2\) are made from polygons of the same type and size, and one can prove that only three types of regular tessellations of the plane exist: those made from equilateral triangles, squares, or hexagons. In the hyperbolic plane, such as the Poincaré disk model shown in the figure, we choose a metric such that the distance of edges close to the boundary have a much higher length than it seems visually (i.e., when measured with a Euclidean metric on the disk). The depicted cellulation is therefore a regular cellulation with pentagons and degree-4 vertices, where all the 2-cells actually have the same area with respect to the hyperbolic metric. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>
+
+  
+</article>
+
+
+<hr class="dingbat related" />
+
+
+
+
+  
+     
+
+
+
+  
+
+  
+  
+
+  
+    
+
+
+
+
+  
+
+  
+  
+
+
+  
+<aside class="comments related" role="complementary">
+  <h2 class="hr">Comments</h2>
+  
+
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script>!function(w, d) {
+  if (d.getElementById("disqus_thread")) {
+    if (w.DISQUS) {
+      w.DISQUS.reset({
+        reload: true,
+        config() {
+          this.page.url = w.location.href;
+          this.page.title = d.title;
+        },
+      });
+    } else {
+      w.disqus_config = function disqusConfig() {
+        this.page.url = w.location.href;
+        this.page.title = d.title;
+      };
+      w.loadJSDeferred(d.getElementById("_hrefDisqus").href + '/embed.js');
+    }
+  }
+}(window, document);</script>
+
+
+</aside>
+
+
+  
+<footer role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2026. All rights reserved.
+</small></p>
+  
+  
+  <p><small>Powered by <a class="external" href="https://hydejack.com/">Hydejack</a> v<span id="_version">8.5.2</span></small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+    <hy-drawer
+  class=""
+  align="left"
+  threshold="10"
+  touch-events
+  prevent-default
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+    <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+      <div class="sidebar-about">
+        
+          <a class="no-hover" href="/" tabindex="-1">
+            <img src="/assets/icons/icon.png" class="avatar" alt="Arthur Pesah" data-ignore />
+          </a>
+        
+        <h2 class="h1"><a href="/">Arthur Pesah</a></h2>
+        
+        
+          <p class="">
+            Researcher in quantum computing at FU Berlin.
+
+          </p>
+        
+      </div>
+
+      <nav class="sidebar-nav heading" role="navigation">
+        <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_navigation"
+          href="/"
+          class="sidebar-nav-item active"
+          
+        >
+          Intro
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/"
+          class="sidebar-nav-item active"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/publications/"
+          class="sidebar-nav-item"
+          
+        >
+          Publications
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/writing/"
+          class="sidebar-nav-item"
+          
+        >
+          Other writings
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/talks/"
+          class="sidebar-nav-item"
+          
+        >
+          Talks
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/animations/"
+          class="sidebar-nav-item"
+          
+        >
+          Animations
+        </a>
+      </li>
+    
+  
+</ul>
+
+      </nav>
+
+      
+
+      <div class="sidebar-social">
+        <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/artix41" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/artix41" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/arthur-pesah" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+      </div>
+    </div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+  
+</hy-push-state>
+
+<!--[if gt IE 10]><!---->
+
+  <script nomodule>!function(){var e=document.createElement("script");if(!("noModule"in e)&&"onbeforeload"in e){var t=!1;document.addEventListener("beforeload",function(n){if(n.target===e)t=!0;else if(!n.target.hasAttribute("nomodule")||!t)return;n.preventDefault()},!0),e.type="module",e.src=".",document.head.appendChild(e),e.remove()}}();
+</script>
+  <script type="module" src="/assets/js/hydejack-8.5.2.js"></script>
+  <script nomodule src="/assets/js/hydejack-legacy-8.5.2.js" defer></script>
+  
+
+<script>
+  (function disableSidebarMouseDrag() {
+    function disable(drawer) {
+      if (!drawer) return;
+      drawer.removeAttribute('mouse-events');
+      drawer.mouseEvents = false;
+    }
+
+    if (window.customElements && window.customElements.whenDefined) {
+      window.customElements.whenDefined('hy-drawer').then(function () {
+        disable(document.querySelector('hy-drawer'));
+      });
+    } else {
+      disable(document.querySelector('hy-drawer'));
+    }
+  })();
+</script>
+
+<script>
+  (function reenableRightClick() {
+    if (window.__contextMenuPatchApplied) return;
+    window.__contextMenuPatchApplied = true;
+
+    var originalPreventDefault = Event.prototype.preventDefault;
+    Event.prototype.preventDefault = function () {
+      if (this && this.type === 'contextmenu') return;
+      return originalPreventDefault.call(this);
+    };
+  })();
+</script>
+
+<script>
+  (function sidebarArrowHandle() {
+    var COLLAPSED_CLASS = 'sidebar-collapsed-by-arrow';
+    var DESKTOP_QUERY = '(min-width: 64em)';
+
+    function getStyleTag() {
+      var el = document.getElementById('_sidebarArrowStyle');
+      if (el) return el;
+      el = document.createElement('style');
+      el.id = '_sidebarArrowStyle';
+      el.textContent =
+        '@media screen and (min-width: 64em){' +
+        'body.' + COLLAPSED_CLASS + ' hy-drawer{display:none !important;}' +
+        'body.' + COLLAPSED_CLASS + '::before{width:0 !important;}' +
+        'body.' + COLLAPSED_CLASS + ' .content{margin-left:auto !important;margin-right:auto !important;}' +
+        '}';
+      document.head.appendChild(el);
+      return el;
+    }
+
+    function isDesktop() {
+      return window.matchMedia(DESKTOP_QUERY).matches;
+    }
+
+    function styleHandle(el, isLeft) {
+      el.style.position = 'fixed';
+      el.style.top = '50%';
+      el.style.transform = 'translateY(-50%)';
+      el.style.zIndex = '9999';
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+      el.style.width = '1.6rem';
+      el.style.height = '3.2rem';
+      el.style.background = 'rgba(0, 0, 0, 0.35)';
+      el.style.color = 'rgba(255, 255, 255, 0.98)';
+      el.style.fontSize = '1.05rem';
+      el.style.lineHeight = '1';
+      el.style.userSelect = 'none';
+      el.style.cursor = 'pointer';
+      el.style.pointerEvents = 'auto';
+      el.style.border = 'none';
+      el.style.padding = '0';
+      el.style.backdropFilter = 'blur(3px)';
+      if (isLeft) {
+        el.style.left = '0.35rem';
+        el.style.right = '';
+        el.style.borderRadius = '0 0.35rem 0.35rem 0';
+      } else {
+        el.style.right = '0';
+        el.style.left = '';
+        el.style.borderRadius = '0.35rem 0 0 0.35rem';
+      }
+    }
+
+    function getCollapseHandle() {
+      var el = document.getElementById('_sidebarArrowHandle');
+      if (el) return el;
+      el = document.createElement('button');
+      el.id = '_sidebarArrowHandle';
+      el.type = 'button';
+      el.setAttribute('aria-label', 'Hide left menu');
+      el.textContent = '❮';
+      styleHandle(el, false);
+      el.addEventListener('click', function () {
+        document.body.classList.add(COLLAPSED_CLASS);
+        queuePosition();
+      });
+      document.body.appendChild(el);
+      return el;
+    }
+
+    function getExpandHandle() {
+      var el = document.getElementById('_sidebarExpandHandle');
+      if (el) return el;
+      el = document.createElement('button');
+      el.id = '_sidebarExpandHandle';
+      el.type = 'button';
+      el.setAttribute('aria-label', 'Show left menu');
+      el.textContent = '❯';
+      styleHandle(el, true);
+      el.addEventListener('click', function () {
+        document.body.classList.remove(COLLAPSED_CLASS);
+        queuePosition();
+      });
+      document.body.appendChild(el);
+      return el;
+    }
+
+    function positionCollapseHandle() {
+      var sidebar = document.getElementById('_sidebar');
+      var sticky = document.querySelector('#_sidebar .sidebar-sticky');
+      var handle = getCollapseHandle();
+      if (!sidebar || !handle) return;
+
+      var rect = (sticky || sidebar).getBoundingClientRect();
+      if (rect.width < 10 || rect.height < 10 || rect.right <= 0) {
+        handle.style.opacity = '0';
+        return;
+      }
+
+      var handleWidth = handle.getBoundingClientRect().width || 26;
+      handle.style.opacity = '1';
+      handle.style.top = rect.top + rect.height / 2 + 'px';
+      handle.style.left = rect.right - handleWidth - 2 + 'px';
+      handle.style.transform = 'translateY(-50%)';
+    }
+
+    function positionExpandHandle() {
+      var handle = getExpandHandle();
+      if (!handle) return;
+      handle.style.opacity = '1';
+      handle.style.top = '50%';
+      handle.style.left = '0.35rem';
+      handle.style.transform = 'translateY(-50%)';
+    }
+
+    function isCollapsed() {
+      return document.body.classList.contains(COLLAPSED_CLASS);
+    }
+
+    function updateVisibility() {
+      var collapseHandle = getCollapseHandle();
+      var expandHandle = getExpandHandle();
+      if (!isDesktop()) {
+        document.body.classList.remove(COLLAPSED_CLASS);
+        collapseHandle.style.display = 'none';
+        expandHandle.style.display = 'none';
+        return;
+      }
+
+      if (isCollapsed()) {
+        collapseHandle.style.display = 'none';
+        expandHandle.style.display = 'flex';
+      } else {
+        collapseHandle.style.display = 'flex';
+        expandHandle.style.display = 'none';
+      }
+    }
+
+    var raf = null;
+    function queuePosition() {
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = null;
+        updateVisibility();
+        if (isCollapsed()) {
+          positionExpandHandle();
+        } else {
+          positionCollapseHandle();
+        }
+      });
+    }
+
+    function init() {
+      getStyleTag();
+      getCollapseHandle();
+      getExpandHandle();
+      queuePosition();
+
+      window.addEventListener('resize', queuePosition, { passive: true });
+      window.addEventListener('scroll', queuePosition, { passive: true });
+
+      var drawer = document.querySelector('hy-drawer');
+      if (drawer) {
+        drawer.addEventListener('hy-drawer-init', queuePosition);
+        drawer.addEventListener('hy-drawer-prepare', queuePosition);
+        drawer.addEventListener('hy-drawer-transitioned', queuePosition);
+      }
+
+      var push = document.querySelector('hy-push-state');
+      if (push) {
+        push.addEventListener('hy-push-state-load', function () {
+          queuePosition();
+          setTimeout(queuePosition, 200);
+        });
+      }
+
+      setTimeout(queuePosition, 300);
+      setTimeout(queuePosition, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>
+
+<script>
+  (function restoreMathRendering() {
+    function renderMathBlocks() {
+      if (!window.katex) return false;
+
+      var blocks = document.querySelectorAll('script[type^="math/tex"]');
+      if (!blocks.length) return true;
+
+      Array.prototype.forEach.call(blocks, function (el) {
+        try {
+          var preview = el.previousElementSibling;
+          while (preview && !preview.classList.contains('MathJax_Preview')) {
+            preview = preview.previousElementSibling;
+          }
+
+          var tex = (el.textContent || '')
+            .replace('% <![CDATA[', '')
+            .replace('%]]>', '');
+
+          el.outerHTML = window.katex.renderToString(tex, {
+            displayMode: el.type === 'math/tex; mode=display'
+          });
+
+          if (preview && preview.parentNode) {
+            preview.parentNode.removeChild(preview);
+          }
+        } catch (e) {}
+      });
+
+      return true;
+    }
+
+    function waitForKatex() {
+      var attempts = 0;
+
+      function tick() {
+        if (renderMathBlocks() || attempts > 20) return;
+        attempts += 1;
+        setTimeout(tick, 100);
+      }
+
+      tick();
+    }
+
+    function run() {
+      waitForKatex();
+      setTimeout(waitForKatex, 150);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
+    }
+
+    var pushState = document.querySelector('hy-push-state');
+    if (pushState) {
+      pushState.addEventListener('hy-push-state-load', run);
+    }
+  })();
+</script>
+
+<script>
+  (function rerunMathJaxOnPushState() {
+    function typeset() {
+      if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', typeset, { once: true });
+    } else {
+      typeset();
+    }
+
+    var pushState = document.querySelector('hy-push-state');
+    if (pushState) {
+      pushState.addEventListener('hy-push-state-load', function () {
+        typeset();
+        setTimeout(typeset, 100);
+      });
+    }
+  })();
+</script>
+
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K1GWGLHP0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-3K1GWGLHP0');
+  </script>
+
+
+
+<!--<![endif]-->
+
+
+
+
+<h2 class="sr-only" hidden>Templates (for web app):</h2>
+
+<template id="_animation-template" hidden>
+  <div class="animation-main fixed-top">
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+<template id="_loading-template" hidden>
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+<template id="_error-template" hidden>
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+<template id="_forward-template" hidden>
+  <button id="_forward" class="forward nav-btn no-hover fl">
+    <span class="sr-only">Forward</span>
+    <span class="icon-arrow-right2"></span>
+  </button>
+</template>
+
+<template id="_back-template" hidden>
+  <button id="_back" class="back nav-btn no-hover fl">
+    <span class="sr-only">Back</span>
+    <span class="icon-arrow-left2"></span>
+  </button>
+</template>
+
+<template id="_permalink-template" hidden>
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="icon-link"></span>
+  </a>
+</template>
+
+
+
+
+</body>
+</html>
