@@ -47,12 +47,14 @@ Powered by Hydejack v8.5.2 <https://hydejack.com/>
 <link rel="canonical" href="https://arthurpesah.me/blog/2026-07-23-topological-qec-3/" />
 <meta property="og:url" content="https://arthurpesah.me/blog/2026-07-23-topological-qec-3/" />
 <meta property="og:site_name" content="Arthur Pesah" />
+<meta property="og:image" content="https://arthurpesah.me/assets/img/blog/topological-qec-3/thumbnail.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2026-07-23T00:00:00+02:00" />
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://arthurpesah.me/assets/img/blog/topological-qec-3/thumbnail.png" />
 <meta property="twitter:title" content="The topology of topological QEC III — Cohomology groups" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2026-07-23T00:00:00+02:00","datePublished":"2026-07-23T00:00:00+02:00","description":"Research blog","headline":"The topology of topological QEC III — Cohomology groups","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2026-07-23-topological-qec-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2026-07-23-topological-qec-3/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Arthur Pesah"},"dateModified":"2026-07-23T00:00:00+02:00","datePublished":"2026-07-23T00:00:00+02:00","description":"Research blog","headline":"The topology of topological QEC III — Cohomology groups","image":"https://arthurpesah.me/assets/img/blog/topological-qec-3/thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://arthurpesah.me/blog/2026-07-23-topological-qec-3/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://arthurpesah.me/assets/icons/icon.png"},"name":"Arthur Pesah"},"url":"https://arthurpesah.me/blog/2026-07-23-topological-qec-3/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -276,12 +278,28 @@ on <a href="/tag-quantum-computing/" class="flip-title">Quantum Computing</a>
 
     
     
+      <div class="img lead sixteen-nine">
+        
+
+
+  <test2></test2>
+  <hy-img root-margin="511px" src="/assets/img/blog/topological-qec-3/thumbnail.png"
+    
+    alt="The topology of topological QEC III — Cohomology groups"><img src="/assets/img/blog/topological-qec-3/thumbnail.png"
+    
+    alt="The topology of topological QEC III — Cohomology groups"></hy-img>
+
+
+
+      </div>
+      
+    
 
     
 
 
 
-  <div class="hr pb0"></div>
+  
 
 
   </header>
@@ -308,7 +326,7 @@ Let’s get going!</p>
 <p>we can construct a new length-\(D\) complex, called the <strong>cochain complex</strong> \(C^\bullet\), as</p>
 
 \[\begin{aligned}
-    C^0 &amp;\xrightarrow{\partial^1} C^1 \xrightarrow{\partial^2} \cdots \xrightarrow{\partial^{D-1}} C^{D-1} \xrightarrow{\partial^{D}} C^D
+    C^0 &amp;\xrightarrow{\delta^1} C^1 \xrightarrow{\delta^2} \cdots \xrightarrow{\delta^{D-1}} C^{D-1} \xrightarrow{\delta^{D}} C^D
 \end{aligned}\]
 
 <p>where \(C^i\) is the dual of \(C_i\), that is, the set of linear maps from \(C_i\) to \(\mathbb{Z}_2\):</p>
@@ -317,10 +335,10 @@ Let’s get going!</p>
     C^i = \text{Hom}(C_i, \mathbb{Z}_2)
 \end{aligned}\]
 
-<p>and the <strong>coboundary operators</strong> \(\partial^i: C^{i-1} \to C^i\) are defined as</p>
+<p>and the <strong>coboundary operators</strong> \(\delta^i: C^{i-1} \to C^i\) are defined as</p>
 
 \[\begin{aligned}
-    \partial^i(f)(x) = f ( \partial_i (x))
+    \delta^i(f)(x) = f ( \partial_i (x))
 \end{aligned}\]
 
 <p>for every \(x \in C_i\).</p>
@@ -349,7 +367,7 @@ We can make the correspondence between chains and cochains concrete by construct
 These send row vectors of \(C^{i-1}\) to row vectors of \(C^i\) by composing them with the boundary operator \(\partial_i\):</p>
 
 \[\begin{aligned}
-    \partial^i:\: \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix} \mapsto \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
+    \delta^i:\: \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix} \mapsto \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
     \begin{pmatrix}
         &amp; &amp; \\
         &amp; \partial_i &amp; \\
@@ -360,7 +378,7 @@ These send row vectors of \(C^{i-1}\) to row vectors of \(C^i\) by composing the
 <p>It’s easy to check that these indeed obey the chain complex condition:</p>
 
 \[\begin{aligned}
-    \partial^{i+1} \partial^i f = \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
+    \delta^{i+1} \delta^i f = \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
     \begin{pmatrix}
         &amp; &amp; \\
         &amp; \partial_i &amp; \\
@@ -377,10 +395,10 @@ These send row vectors of \(C^{i-1}\) to row vectors of \(C^i\) by composing the
 <p>since \(\partial_{i} \partial_{i+1} = 0\).</p>
 
 <p>But how can we interpret those coboundary operators? Again, it’s easier to interpret them by looking at the transpose.
-Using the isomorphism \(\psi\) we saw earlier in each degree, let’s define the operator \(\tilde{\partial}^i:\: C_{i-1} \rightarrow C_i\) as</p>
+Using the isomorphism \(\psi\) we saw earlier in each degree, let’s define the operator \(\tilde{\delta}^i:\: C_{i-1} \rightarrow C_i\) as</p>
 
 \[\begin{aligned}
-    \tilde{\partial}^i = \psi_i \circ \partial^i \circ \psi_{i-1}^{-1}
+    \tilde{\delta}^i = \psi_i \circ \delta^i \circ \psi_{i-1}^{-1}
 \end{aligned}\]
 
 <p>which takes a chain, turns it into a cochain, applies the coboundary operator, and turns the output cochain back into a chain.
@@ -390,7 +408,7 @@ These three steps can be represented in matrix form as follows:</p>
     \begin{pmatrix} c_1 \\ c_2 \\ \vdots \\ c_m \end{pmatrix}
     &amp; \xrightarrow{\psi^{-1}}
     \begin{pmatrix} c_1 &amp; c_2 &amp; \cdots &amp; c_m \end{pmatrix} \\
-    &amp; \xrightarrow{\partial^i}
+    &amp; \xrightarrow{\delta^i}
     \begin{pmatrix} c_1 &amp; c_2 &amp; \cdots &amp; c_m \end{pmatrix}
     \begin{pmatrix}
         &amp; &amp; \\
@@ -409,7 +427,7 @@ These three steps can be represented in matrix form as follows:</p>
 <p>Therefore, for every \(c \in C_{i-1}\), we simply have</p>
 
 \[\begin{aligned}
-    \tilde{\partial}^i(c) = \partial_i^T c
+    \tilde{\delta}^i(c) = \partial_i^T c
 \end{aligned}\]
 
 <p>and coboundary operators can be interpreted, up to an isomorphism, as the transpose of boundary operators.
@@ -447,19 +465,19 @@ Applying this to a hexagonal cellulation of the torus, we get the following dual
 <p>Schematically, if \(C^\star_j\) denotes the space of \(j\)-cells in the dual cellulation, the cochain complex can be identified with the chain complex of the dual cellulation as</p>
 
 \[\begin{array}{ccccccccc}
-     C^0 &amp;  \overset{\partial^1}{\longrightarrow} &amp;  C^1 &amp;  \overset{\partial^2}{\longrightarrow} &amp;  \cdots &amp;  \overset{\partial^{D-1}}{\longrightarrow} &amp;  C^{D-1} &amp;  \overset{\partial^D}{\longrightarrow} &amp;  C^D \\
+     C^0 &amp;  \overset{\delta^1}{\longrightarrow} &amp;  C^1 &amp;  \overset{\delta^2}{\longrightarrow} &amp;  \cdots &amp;  \overset{\delta^{D-1}}{\longrightarrow} &amp;  C^{D-1} &amp;  \overset{\delta^D}{\longrightarrow} &amp;  C^D \\
     \cong &amp; &amp; \cong &amp; &amp; &amp; &amp; \cong &amp; &amp; \cong \\
      C^\star_D &amp;  \overset{\partial^\star_D}{\longrightarrow} &amp;  C^\star_{D-1} &amp;  \overset{\partial^\star_{D-1}}{\longrightarrow} &amp;  \cdots &amp;  \overset{\partial^\star_2}{\longrightarrow} &amp;  C^\star_1 &amp;  \overset{\partial^\star_1}{\longrightarrow} &amp;  C^\star_0 .
 \end{array}\]
 
-<p>The difference between the cochain complex and the dual complex is therefore just a matter of interpretation and indices: \(i\)-dimensional objects of the cochain complex are interpreted as \((D-i)\)-dimensional objects in the dual cell complex, but the spaces and boundary operators are algebraically the same, up to the relabeling \(C^i \leftrightarrow C^\star_{D-i}\) and \(\partial^i \leftrightarrow \partial^\star_{D-i+1}\).</p>
+<p>The difference between the cochain complex and the dual complex is therefore just a matter of interpretation and indices: \(i\)-dimensional objects of the cochain complex are interpreted as \((D-i)\)-dimensional objects in the dual cell complex, but the spaces and maps are algebraically the same, up to the relabeling \(C^i \leftrightarrow C^\star_{D-i}\) and \(\delta^i \leftrightarrow \partial^\star_{D-i+1}\).</p>
 
 <p>This gives us all the elements needed to define cohomology.
 The <strong>cohomology groups</strong> \(H^i(C_\bullet)\) of a chain complex \(C_\bullet\) are simply the homology groups of the cochain complex:</p>
 
 \[\begin{aligned}
     H^i(C_\bullet) &amp;:= H_i(C^\bullet) \\
-    &amp;= \ker(\partial^{i+1}) / \Im(\partial^{i}) \\
+    &amp;= \ker(\delta^{i+1}) / \Im(\delta^{i}) \\
     &amp;\cong \ker(\partial_{i+1}^T) / \Im(\partial_{i}^T)
 \end{aligned}\]
 
