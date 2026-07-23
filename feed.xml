@@ -1,5 +1,514 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-06-17T12:07:58+02:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
-</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">The topology of topological QEC II — Homology groups</title><link href="https://arthurpesah.me/blog/2026-06-15-topological-qec-2/" rel="alternate" type="text/html" title="The topology of topological QEC II — Homology groups" /><published>2026-06-15T00:00:00+02:00</published><updated>2026-06-15T00:00:00+02:00</updated><id>https://arthurpesah.me/blog/topological-qec-2</id><content type="html" xml:base="https://arthurpesah.me/blog/2026-06-15-topological-qec-2/"><![CDATA[<p>In the <a href="/blog/2026-05-04-topological-qec/">previous post</a>, we introduced algebraic topology through one of its most important objects: chain complexes.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-07-23T13:00:08+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+</subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">The topology of topological QEC III — Cohomology groups</title><link href="http://localhost:4000/blog/2026-07-23-topological-qec-3/" rel="alternate" type="text/html" title="The topology of topological QEC III — Cohomology groups" /><published>2026-07-23T00:00:00+02:00</published><updated>2026-07-23T00:00:00+02:00</updated><id>http://localhost:4000/blog/topological-qec-3</id><content type="html" xml:base="http://localhost:4000/blog/2026-07-23-topological-qec-3/"><![CDATA[<p>In the two previous posts, we learned about <a href="/blog/2026-05-04-topological-qec/">chain complexes</a> and <a href="/blog/2026-06-15-topological-qec-2/">their homology groups</a>.
+We are now ready for another foundational concept needed to understand QEC from a topological perspective: in this copost, we dive into <strong>cohomology</strong>!</p>
+
+<p>When learning about the surface code, we saw that \(Z\) logical operators can be seen as loops in a <em>dual lattice</em>, constructed by replacing faces of the original lattice by vertices, vertices by faces, and edges by orthogonal ones. What is the interpretation of this construction from an algebraic topology perspective? It turns out that this dual lattice construction is an instance of a more general construction called the <em>cochain complex</em>, which leads to the definition of <em>cohomology groups</em>.
+Cohomology groups are closely related to homology groups, and as we will see, can be interpreted as \(Z\) logical cosets if the homology groups correspond to \(X\) logical cosets.</p>
+
+<p>We will first introduce the cochain complex and cohomology groups, and then see two important theorems that relate homology and cohomology groups: the <strong>universal coefficient theorem</strong> and <strong>Poincaré duality</strong>.
+These tools will help us characterize the space of logical operators, and provide a helpful way to compute the number of logical qubits of some topological codes.
+Let’s get going!</p>
+
+<h1 id="cochain-complex-and-cohomology-groups">Cochain complex and cohomology groups</h1>
+
+<p>Given a length-\(D\) chain complex \(C_\bullet\)</p>
+
+\[\begin{aligned}
+    C_D &amp;\xrightarrow{\partial_D} C_{D-1} \xrightarrow{\partial_{D-1}} \cdots \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0
+\end{aligned}\]
+
+<p>we can construct a new length-\(D\) complex, called the <strong>cochain complex</strong> \(C^\bullet\), as</p>
+
+\[\begin{aligned}
+    C^0 &amp;\xrightarrow{\partial^1} C^1 \xrightarrow{\partial^2} \cdots \xrightarrow{\partial^{D-1}} C^{D-1} \xrightarrow{\partial^{D}} C^D
+\end{aligned}\]
+
+<p>where \(C^i\) is the dual of \(C_i\), that is, the set of linear maps from \(C_i\) to \(\mathbb{Z}_2\):</p>
+
+\[\begin{aligned}
+    C^i = \text{Hom}(C_i, \mathbb{Z}_2)
+\end{aligned}\]
+
+<p>and the <strong>coboundary operators</strong> \(\partial^i: C^{i-1} \to C^i\) are defined as</p>
+
+\[\begin{aligned}
+    \partial^i(f)(x) = f ( \partial_i (x))
+\end{aligned}\]
+
+<p>for every \(x \in C_i\).</p>
+
+<p>Let’s interpret these new objects.
+An element \(f \in C^i\), that we call an \(\bm{i}\)-<strong>cochain</strong>, is a map that outputs a bit for every \(i\)-chain.
+Given a basis of \(i\)-chains \(c_1,\ldots,c_m \in C_i\), we can interpret the function \(f\) as a <em>selection</em> of basis elements: \(f(c_k)=1\) if \(c_k\) is selected, and \(f(c_k)=0\) otherwise.
+As a linear map from an \(m\)-dimensional space to a \(1\)-dimensional space, we can also write \(f\) as an \(1 \times m\) matrix</p>
+
+\[\begin{aligned}
+    f = \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
+\end{aligned}\]
+
+<p>where \(f_k=f(c_k)\).
+Cochains can therefore be interpreted simply as row vectors with a \(1\) in column \(k\) if the basis chain \(c_k\) is selected by \(f\).
+Contrast this with the interpretation of chains as column vectors, with a \(1\) in row \(k\) if \(c_k\) is in the basis decomposition of the chain.
+We can make the correspondence between chains and cochains concrete by constructing an isomorphism \(\psi\) from \(C^i\) to \(C_i\), which maps row vectors to column vectors:</p>
+
+\[\begin{aligned}
+    \psi:\: \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix} \mapsto \begin{pmatrix} f_1 \\ f_2 \\ \vdots \\ f_m \end{pmatrix}
+\end{aligned}\]
+
+<p>In the finite-dimensional setting we care about here, one can therefore identify the space \(C^i\) with \(C_i\), and every cochain \(f \in C^i\) with a corresponding chain \(\tilde{f} \in C_i\).</p>
+
+<p>Let’s now move on to the coboundary operators.
+These send row vectors of \(C^{i-1}\) to row vectors of \(C^i\) by composing them with the boundary operator \(\partial_i\):</p>
+
+\[\begin{aligned}
+    \partial^i:\: \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix} \mapsto \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
+    \begin{pmatrix}
+        &amp; &amp; \\
+        &amp; \partial_i &amp; \\
+        &amp; &amp;
+    \end{pmatrix}
+\end{aligned}\]
+
+<p>It’s easy to check that these indeed obey the chain complex condition:</p>
+
+\[\begin{aligned}
+    \partial^{i+1} \partial^i f = \begin{pmatrix} f_1 &amp; f_2 &amp; \cdots &amp; f_m \end{pmatrix}
+    \begin{pmatrix}
+        &amp; &amp; \\
+        &amp; \partial_i &amp; \\
+        &amp; &amp;
+    \end{pmatrix}
+    \begin{pmatrix}
+        &amp; &amp; \\
+        &amp; \partial_{i+1} &amp; \\
+        &amp; &amp;
+    \end{pmatrix}
+    = 0
+\end{aligned}\]
+
+<p>since \(\partial_{i} \partial_{i+1} = 0\).</p>
+
+<p>But how can we interpret those coboundary operators? Again, it’s easier to interpret them by looking at the transpose.
+Using the isomorphism \(\psi\) we saw earlier in each degree, let’s define the operator \(\tilde{\partial}^i:\: C_{i-1} \rightarrow C_i\) as</p>
+
+\[\begin{aligned}
+    \tilde{\partial}^i = \psi_i \circ \partial^i \circ \psi_{i-1}^{-1}
+\end{aligned}\]
+
+<p>which takes a chain, turns it into a cochain, applies the coboundary operator, and turns the output cochain back into a chain.
+These three steps can be represented in matrix form as follows:</p>
+
+\[\begin{aligned}
+    \begin{pmatrix} c_1 \\ c_2 \\ \vdots \\ c_m \end{pmatrix}
+    &amp; \xrightarrow{\psi^{-1}}
+    \begin{pmatrix} c_1 &amp; c_2 &amp; \cdots &amp; c_m \end{pmatrix} \\
+    &amp; \xrightarrow{\partial^i}
+    \begin{pmatrix} c_1 &amp; c_2 &amp; \cdots &amp; c_m \end{pmatrix}
+    \begin{pmatrix}
+        &amp; &amp; \\
+        &amp; \partial_i &amp; \\
+        &amp; &amp;
+    \end{pmatrix} \\
+    &amp; \xrightarrow{\psi}
+    \begin{pmatrix}
+        &amp; &amp; \\
+        &amp; \partial_i &amp; \\
+        &amp; &amp;
+    \end{pmatrix}^T
+    \begin{pmatrix} c_1 \\ c_2 \\ \vdots \\ c_m \end{pmatrix}
+\end{aligned}\]
+
+<p>Therefore, for every \(c \in C_{i-1}\), we simply have</p>
+
+\[\begin{aligned}
+    \tilde{\partial}^i(c) = \partial_i^T c
+\end{aligned}\]
+
+<p>and coboundary operators can be interpreted, up to an isomorphism, as the transpose of boundary operators.
+We can in fact build a new chain complex \(\tilde{C}^\bullet\)</p>
+
+\[\begin{aligned}
+    C_0 &amp;\xrightarrow{\partial_1^T} C_1 \xrightarrow{\partial_2^T} \cdots \xrightarrow{\partial_{D-1}^T} C_{D-1} \xrightarrow{\partial_D^T} C_D
+\end{aligned}\]
+
+<p>and show that it is isomorphic<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> to the cochain complex \(C^\bullet\).
+The reason for the definition using cochains as elements of the dual spaces \(\text{Hom}(C_i, \mathbb{Z}_2)\) is that it is basis-independent, and generalizes better to the infinite-dimensional case or to spaces that don’t even have a basis (such as general \(R\)-modules).
+It also makes a lot of the theory behind cohomology much more natural mathematically.
+But for most practical purposes related to quantum error correction, we can simply consider the cochain complex to be the one above, made of the same spaces as the chain complex, but where all the boundary operators are transposed.</p>
+
+<p>The next natural question is therefore: what is the interpretation of transposed boundary operators?
+Written in matrix form, \(\partial_i\) tells us which \((i-1)\)-chains are incident to a given \(i\)-chain. For instance, in a 2D cell complex, \(\partial_2(f)\) gives us all the edges incident to the face \(f\), and \(\partial_1(e)\) gives us the two vertices incident to the edge \(e\).
+Conversely, \(\partial_i^T\) tells us which \(i\)-chains are incident to a given \((i-1)\)-chain.
+For instance, \(\partial_2^T(e)\) gives us all the faces incident to the edge \(e\), and \(\partial_1^T(v)\) gives us all the edges incident to the vertex \(v\).
+For example, we have in the following figure \(\partial_1^T(v_1) = e_1 + e_2 + e_3\):</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec-3/coboundary.png" height="250"><img src="/assets/img/blog/topological-qec-3/coboundary.png" height="250"></hy-img>
+
+</p>
+
+<p>In fact, for cellulations of closed manifolds (i.e. compact manifolds without boundary), the cochain complex can be interpreted as the chain complex of the <strong>dual cellulation</strong>, after some reindexing.
+It is constructed by replacing all \(D\)-cells by vertices, all \((D-1)\)-cells by edges (connecting the vertices corresponding to the adjacent \(D\)-cells), all \((D-2)\)-cells by faces, and all \((D-i)\)-cells by \(i\)-cells in general.
+Applying this to a hexagonal cellulation of the torus, we get the following dual cellulation (blue):</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec-3/dual-cellulation.png" height="300"><img src="/assets/img/blog/topological-qec-3/dual-cellulation.png" height="300"></hy-img>
+
+</p>
+
+<p>Schematically, if \(C^\star_j\) denotes the space of \(j\)-cells in the dual cellulation, the cochain complex can be identified with the chain complex of the dual cellulation as</p>
+
+\[\begin{array}{ccccccccc}
+     C^0 &amp;  \overset{\partial^1}{\longrightarrow} &amp;  C^1 &amp;  \overset{\partial^2}{\longrightarrow} &amp;  \cdots &amp;  \overset{\partial^{D-1}}{\longrightarrow} &amp;  C^{D-1} &amp;  \overset{\partial^D}{\longrightarrow} &amp;  C^D \\
+    \cong &amp; &amp; \cong &amp; &amp; &amp; &amp; \cong &amp; &amp; \cong \\
+     C^\star_D &amp;  \overset{\partial^\star_D}{\longrightarrow} &amp;  C^\star_{D-1} &amp;  \overset{\partial^\star_{D-1}}{\longrightarrow} &amp;  \cdots &amp;  \overset{\partial^\star_2}{\longrightarrow} &amp;  C^\star_1 &amp;  \overset{\partial^\star_1}{\longrightarrow} &amp;  C^\star_0 .
+\end{array}\]
+
+<p>The difference between the cochain complex and the dual complex is therefore just a matter of interpretation and indices: \(i\)-dimensional objects of the cochain complex are interpreted as \((D-i)\)-dimensional objects in the dual cell complex, but the spaces and boundary operators are algebraically the same, up to the relabeling \(C^i \leftrightarrow C^\star_{D-i}\) and \(\partial^i \leftrightarrow \partial^\star_{D-i+1}\).</p>
+
+<p>This gives us all the elements needed to define cohomology.
+The <strong>cohomology groups</strong> \(H^i(C_\bullet)\) of a chain complex \(C_\bullet\) are simply the homology groups of the cochain complex:</p>
+
+\[\begin{aligned}
+    H^i(C_\bullet) &amp;:= H_i(C^\bullet) \\
+    &amp;= \ker(\partial^{i+1}) / \Im(\partial^{i}) \\
+    &amp;\cong \ker(\partial_{i+1}^T) / \Im(\partial_{i}^T)
+\end{aligned}\]
+
+<p>where the last line comes from the isomorphism between \(C^\bullet\) and \(\tilde{C}^\bullet\) that we saw earlier.</p>
+
+<p>In the case of cell complexes, can we interpret the cohomology groups as the homology groups of the dual cellulation? Yes, as long as we make sure to use the right indices.
+As we defined it, \(H_i(C_\bullet)\) is a space of \(i\)-dimensional objects, and \(H^i(C_\bullet)\) can also be seen as a space of \(i\)-dimensional objects of the same cellulation.
+However, \(i\)-dimensional objects of the original cellulation correspond to \((D-i)\)-dimensional objects of the dual cellulation, meaning that if we denote by \(C^\star_\bullet\) the dual cell complex, \(H^i(C_\bullet)\) is actually isomorphic to \(H_{D-i}(C^\star_\bullet)\), the \((D-i)\)-homology group of the dual cell complex.</p>
+
+<p>Going back to quantum error correction, we can give cohomology a clear interpretation. Consider the length-2 chain complex associated to a CSS code with parity check matrices \(H_X\) and \(H_Z\),</p>
+
+\[\begin{aligned}
+    \mathcal{S}_X &amp;\xrightarrow{H_X^T} \mathcal{Q} \xrightarrow{H_Z} \mathcal{S}_Z
+\end{aligned}\]
+
+<p>We saw that the first homology group, \(H_1(C_\bullet)=\ker(H_Z)/\Im(H_X^T)\), represents the \(X\) logical cosets: errors that commute with all \(Z\) stabilizers and are defined up to \(X\) stabilizers. Conversely, the cochain complex is given by</p>
+
+\[\begin{aligned}
+    \mathcal{S}_Z &amp;\xrightarrow{H_Z^T} \mathcal{Q} \xrightarrow{H_X} \mathcal{S}_X
+\end{aligned}\]
+
+<p>and the first cohomology group by \(H^1(C_\bullet) = \ker(H_X) / \Im(H_Z^T)\).
+It can be interpreted as the set of \(Z\) logical cosets: errors that commute with all \(X\) stabilizers and are defined up to \(Z\) stabilizers.
+Therefore, when a CSS code comes from the cellulation of a manifold, its \(X\) logical operators are cycles of the original lattice while its \(Z\) logical operators are cycles of the dual lattice.
+This echoes what we already saw in the context of the surface code!</p>
+
+<h1 id="relationships-between-homology-and-cohomology-groups">Relationships between homology and cohomology groups</h1>
+
+<p>Given a chain complex \(C_\bullet\), we can now extract a set of homology groups \(H_i(C_\bullet)\) and cohomology groups \(H^i(C_\bullet)\).
+But is there any relationship between them?
+For instance, is it possible to deduce the cohomology groups from the homology groups? Or the \(i\)th (co)homology group from the \(j\)th (co)homology group for some \(i\) and \(j\)?</p>
+
+<p>The QEC intuition suggests that such a relationship should exist.
+The numbers of independent \(X\) and \(Z\) logicals are the same, and there is a basis \(\{\bar{X}_i,\bar{Z}_i\}\) such that \(\bar{X}_i\) and \(\bar{Z}_j\) intersect non-trivially mod \(2\) only for \(i=j\).
+Can we prove this rigorously from homological algebra?</p>
+
+<p>The answer is yes, and we will see here two important theorems that relate homology and cohomology groups.
+The first one, called the <strong>universal coefficient theorem</strong> (UCT), shows that \(H_i(C_\bullet)\) and \(H^i(C_\bullet)\) are actually isomorphic if \(C_\bullet\) is a chain complex over \(\mathbb{Z}_2\), and gives bases for both that satisfy the intersection property mentioned above.
+The second one, <strong>Poincaré duality</strong>, applies to cellulations of manifolds and shows that \(H_i(C_\bullet)\) and \(H^{n-i}(C_\bullet)\) are isomorphic.
+Together with the UCT, it also means that \(H_i(C_\bullet)\) and \(H_{n-i}(C_\bullet)\) are isomorphic, so for cell complexes coming from closed manifolds, we only ever need to calculate half of the homology groups.</p>
+
+<h2 id="universal-coefficient-theorem">Universal coefficient theorem</h2>
+
+<p>Considering a chain complex such that each \(C_i\) is a finite-dimensional vector space over \(\mathbb{Z}_2\)<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>, the universal coefficient theorem can be formulated as follows:</p>
+
+<p class="message"><strong>Theorem (Universal Coefficient Theorem)</strong>: The linear map \(\phi : H^i(C_\bullet) \rightarrow \text{Hom}(H_i(C_\bullet),\mathbb{Z}_2)\) defined by \(\phi([f])([x]) = f(x)\) is a well-defined isomorphism.</p>
+
+<p>Equivalently, using the isomorphism between chains and cochains, we can write (with a slight abuse of notation) \(\phi([f])([x]) = f^T x\).
+The proof of the universal coefficient theorem for vector spaces is a fun linear algebra exercise:</p>
+
+<div class="message">
+  <p><strong>Exercise 1 (Proof of the UCT)</strong>: <br />
+<strong>(a)</strong> Prove that for any matrix \(A\), we have \(\ker(A^T) = \Im(A)^\perp\) and \(\Im(A^T) = \ker(A)^\perp\). <br />
+<strong>(b)</strong> Deduce that \(H^i(C_\bullet)=\Im(\partial_{i+1})^\perp / \ker(\partial_i)^\perp\)
+<br />
+<strong>(c)</strong> Deduce that \(\phi\) (as defined in the UCT) is well-defined, i.e. does not depend on the choice of representative cycle \(x\) and cocycle \(f\).<br />
+<strong>(d)</strong> Show that \(\phi\) is injective<br />
+<strong>(e)</strong> Using the rank-nullity theorem, show that \(\dim(H^i(C_\bullet)) = \dim(H_i(C_\bullet))\), and conclude that \(\phi\) is an isomorphism.<br />
+<a href="#solution-of-the-exercises">(solution)</a></p>
+</div>
+
+<p>Another way to phrase the UCT is in terms of the <strong>intersection form</strong>.
+After identifying cochains with column vectors, define</p>
+
+\[\begin{aligned}
+    \Phi: C^i \times C_i &amp;\longrightarrow \mathbb{Z}_2 \\
+    (f,x) &amp;\longmapsto f^T x .
+\end{aligned}\]
+
+<p>This pairing counts the number of cells where the cocycle \(f\) and the cycle \(x\) overlap, modulo \(2\). From the UCT, we can deduce the following property of the intersection form:</p>
+
+<p class="message"><strong>Corollary (Intersection Form)</strong>: Let \(f,f' \in \ker(\partial_{i+1}^T)\) be two cocycles and \(x,x' \in \ker(\partial_i)\) be two cycles.
+If \([f]=[f']\) in \(H^i(C_\bullet)\) and \([x]=[x']\) in \(H_i(C_\bullet)\), then \(\Phi(f,x)=\Phi(f',x')\).</p>
+
+<p>In other words, whether a given cycle and cocycle intersect on an even or odd number of elements only depends on their homology and cohomology classes, not on the specific representatives chosen.</p>
+
+<p>This leads to the statement we wanted on bases of homology and cohomology groups:</p>
+
+<p class="message"><strong>Corollary (Dual Homology-Cohomology Bases)</strong>: There exists a basis \(\{e_j\}\) of \(H_i(C_\bullet)\) and a basis \(\{e^j\}\) of \(H^i(C_\bullet)\) such that for every pair of representatives \(x_j\) and \(f_k\) satisfying \([x_j]=e_j\) and \([f_k]=e^k\), we have \(\Phi(f_k,x_j) = \delta_{jk}\).</p>
+
+<p>Applied to the CSS chain complex, this tells us precisely that there is a basis of \(X\) logical operators \(\{\bar{X}_i\}\) and a basis of \(Z\) logical operators \(\{\bar{Z}_i\}\) such that \(\bar{X}_i\) and \(\bar{Z}_j\) intersect an odd number of times only for \(i=j\) (for any representatives).</p>
+
+<p>There are simpler ways to prove this fact (for instance using symplectic spaces, see <a href="https://discovery.ucl.ac.uk/id/eprint/10223041/7/phd-thesis-final-corrected.pdf">Proposition 2.2.7 of my thesis</a>), but I think it’s fun to also see it as a consequence of the universal coefficient theorem.</p>
+
+<p>The following exercise contains the proof of the two corollaries above.</p>
+
+<div class="message">
+  <p><strong>Exercise 2 (Proof of UCT corollaries)</strong>: <br />
+<strong>(a)</strong> Prove that \(\Phi\) only depends on the homology class of \(x\) and the cohomology class of \(f\). <br />
+<strong>(b)</strong> Prove that there exists a basis \(\{e_j\}\) of \(H_i(C_\bullet)\) and a basis \(\{e^j\}\) of \(H^i(C_\bullet)\) such that for every pair of representatives \(x_j\) and \(f_k\) satisfying \([x_j]=e_j\) and \([f_k]=e^k\), we have \(\Phi(f_k,x_j)=\delta_{jk}\).<br />
+<a href="#solution-of-the-exercises">(solution)</a></p>
+</div>
+
+<p>Here is an example of UCT homology-cohomology pairing for a 3D torus, where I highlighted a \(1\)-cycle in red and a corresponding \(1\)-cocycle in blue. These can be seen as \(X\) and \(Z\) logicals in a 3D toric code.</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec-3/uct.png" height="400"><img src="/assets/img/blog/topological-qec-3/uct.png" height="400"></hy-img>
+
+</p>
+
+<p>Before finishing this section, let’s briefly answer a question you might have been wondering this whole time: why is this theorem called “universal coefficient theorem”? We didn’t really talk about any kind of coefficient universality in our formulation of the UCT.
+The short answer is that the full theorem describes what happens when we change the coefficient group.</p>
+
+<p>Consider a chain complex \(C_\bullet\) over the ring of integers \(\mathbb{Z}\), such that each \(C_i\) and each \(H_i(C_\bullet)\) is free (i.e. have a well-defined basis).
+We can then define the cohomology with coefficients in an abelian group \(G\), \(H^i(C_\bullet;G)\), as the homology of the cochain complex \(\text{Hom}(C_\bullet,G)\).
+The (more general) UCT then gives us the following isomorphism:</p>
+
+\[\begin{aligned}
+    H^i(C_\bullet;G) \cong \text{Hom}(H_i(C_\bullet),G)
+\end{aligned}\]
+
+<p>This means that we can obtain cohomology with coefficients in any group \(G\) from the homology groups of the chain complex over \(\mathbb{Z}\), making \(\mathbb{Z}\) the “universal” coefficient ring.
+More generally, if the homology groups are not free, the UCT also gives us a way to compute cohomology groups with coefficients in \(G\) from homology groups with coefficients in \(\mathbb{Z}\), but the relation is more complicated and involves homology groups at different levels.</p>
+
+<h2 id="poincaré-duality">Poincaré duality</h2>
+
+<p>In the case of the cellulation of a closed manifold, we can go one step further and relate the homology and cohomology groups of different indices.
+This is known as <strong>Poincaré duality</strong>.</p>
+
+<p class="message"><strong>Theorem (Poincaré duality)</strong>: Let \(C_\bullet\) be a chain complex over \(\mathbb{Z}_2\), associated to a cellulation of a closed \(n\)-dimensional manifold.
+Then for every \(i\), we have \(H^i(C_\bullet) \cong H_{n-i}(C_\bullet)\).</p>
+
+<p>Using the UCT, this also implies that \(H_i(C_\bullet) \cong H_{n-i}(C_\bullet)\), or, in terms of Betti numbers, \(b_i = b_{n-i}\).</p>
+
+<p>Why is Poincaré duality true? Remember that \(H^i(C_\bullet)\) can be interpreted as the homology group of the dual cellulation, \(H_{n-i}(C^\star_\bullet)\).
+But all cellulations of a given manifold have the same homology groups, so in particular \(H_{n-i}(C^\star_\bullet) \cong H_{n-i}(C_\bullet)\). This gives a good intuition for why \(H^i(C_\bullet) \cong H_{n-i}(C_\bullet)\).</p>
+
+<p>However, this argument does not provide us with a very concrete isomorphism between \(i\)-cochains and \((n-i)\)-chains.
+Another formulation of Poincaré duality uses the notion of <em>cap product</em> to derive a very concrete way to go from \(i\)-cochains to \((n-i)\)-chains.
+You can find that version of the theorem in <a href="https://pi.math.cornell.edu/~hatcher/AT/AT.pdf">Hatcher, Section 3.3</a>.</p>
+
+<p>For a 3D torus, Poincaré duality maps for instance any \(1\)-cycle (e.g. a string of edges with no boundary) to a \(2\)-cocycle (e.g. a string of parallel faces with no coboundary).
+Here is an illustration of such a \(1\)-cycle (red) and a Poincaré-dual \(2\)-cocycle (blue):</p>
+
+<p style="text-align:center;" class="figure">
+    <hy-img root-margin="511px" src="/assets/img/blog/topological-qec-3/poincare-dual.png" height="300"><img src="/assets/img/blog/topological-qec-3/poincare-dual.png" height="300"></hy-img>
+
+</p>
+
+<p>From a QEC perspective, Poincaré duality tells us for instance directly that any surface code defined on a cellulation of the 3-torus has the same number of logical qubits, no matter whether we define the code using \(C_2 \rightarrow C_1 \rightarrow C_0\) (which has \(k=b_1\)) or \(C_3 \rightarrow C_2 \rightarrow C_1\) (which has \(k=b_2\)).</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>We now have the missing half of the homological picture of QEC introduced in the previous post!
+Homology describes cycles modulo boundaries, which naturally captures one type of logical operator in a CSS code. Cohomology gives the dual story, capturing the other type through cocycles modulo coboundaries, or for closed manifolds, homology of the dual cellulation.
+The universal coefficient theorem tells us that, over \(\mathbb{Z}_2\), the intersection between cycles and cocycles only depend on their homology and cohomology classes, capturing the intersection property of logical operators in a CSS code.
+For cellulations of closed manifolds, Poincaré duality provides an isomorphism between homology and cohomology groups of complementary dimensions.
+Together, these ideas explain why the dual lattice naturally appears in the surface code and give us a helpful way to move between primal cycles, dual cycles, and logical operators.</p>
+
+<p>There is much more to say about cohomology, and more generally about homological algebra, that is relevant for QEC. For instance, we can define a notion of <em>cup product</em> between cohomology classes, which <a href="https://arxiv.org/abs/2410.16250">can be used</a> to find short-depth diagonal logical gates (including non-Clifford gates) in some CSS codes. We can define <em>chain maps</em> to <a href="https://arxiv.org/abs/1905.07393">relate different CSS codes</a> or <a href="https://arxiv.org/abs/2509.09603">fault-tolerant protocols</a>, or to find <a href="https://arxiv.org/abs/2607.02482">logical gates</a>. Another concept, the <em>mapping cone</em> can allow us to <a href="https://arxiv.org/abs/2410.02753">design lattice surgery protocols</a> or <a href="https://arxiv.org/abs/2402.05228">reduce the weight of stabilizers</a> in a code. I hope to expand this series to cover all those concepts in the future! In the meantime, all this new knowledge should (hopefully) already make your next encounter with homological algebra in QEC papers feel a little less intimidating!</p>
+
+<h2 id="solution-of-the-exercises">Solution of the exercises</h2>
+
+<div class="message">
+  <p><strong>Exercise 1</strong>: <strong>(a)</strong> Let \(A : \mathbb{Z}_2^n \to \mathbb{Z}_2^m\) be an \(m \times n\) matrix, and use the standard pairing \(\langle u,v\rangle = u^T v\) over \(\mathbb{Z}_2\).</p>
+
+  <p>For any \(y \in \mathbb{Z}_2^m\), we have</p>
+
+\[\begin{aligned}
+    y \in \ker(A^T)
+    &amp;\Longleftrightarrow A^T y = 0 \\
+    &amp;\Longleftrightarrow y^T A x = 0 \quad \text{for all } x \in \mathbb{Z}_2^n \\
+    &amp;\Longleftrightarrow \langle y, z\rangle = 0 \quad \text{for all } z \in \Im(A) \\
+    &amp;\Longleftrightarrow y \in \Im(A)^\perp .
+\end{aligned}\]
+
+  <p>Thus, \(\ker(A^T)=\Im(A)^\perp\).
+Similarly, if \(y \in \Im(A^T)\), then \(y=A^T z\) for some \(z\), and for every \(x \in \ker(A)\),</p>
+
+\[\begin{aligned}
+    \langle y,x\rangle
+    = \langle A^Tz,x\rangle
+    = \langle z,Ax\rangle
+    = 0.
+\end{aligned}\]
+
+  <p>Hence, \(\Im(A^T) \subseteq \ker(A)^\perp\).
+The two spaces have the same dimension, since</p>
+
+\[\begin{aligned}
+    \dim(\Im(A^T))
+    = \mathrm{rank}(A)
+    = n - \dim(\ker(A))
+    = \dim(\ker(A)^\perp),
+\end{aligned}\]
+
+  <p>so \(\Im(A^T)=\ker(A)^\perp\).
+<br />
+<strong>(b)</strong> By definition of cohomology and using the identification between cochains and column vectors, we have</p>
+
+\[\begin{aligned}
+    H^i(C_\bullet)
+    \cong \ker(\partial_{i+1}^T)/\Im(\partial_i^T).
+\end{aligned}\]
+
+  <p>Applying part <strong>(a)</strong> to \(A=\partial_{i+1}\) and \(A=\partial_i\) gives</p>
+
+\[\begin{aligned}
+    \ker(\partial_{i+1}^T) &amp;= \Im(\partial_{i+1})^\perp, \\
+    \Im(\partial_i^T) &amp;= \ker(\partial_i)^\perp.
+\end{aligned}\]
+
+  <p>Therefore,</p>
+
+  <p>\(\begin{aligned}
+    H^i(C_\bullet)
+    \cong
+    \Im(\partial_{i+1})^\perp / \ker(\partial_i)^\perp.
+\end{aligned}\)
+<br />
+<strong>(c)</strong> Let \([f] \in H^i(C_\bullet)\) and \([x]\in H_i(C_\bullet)\).
+From part <strong>(b)</strong>, and using again the identification between cochains and column vectors, we can interpret \(f\) as a linear form that vanishes on \(\Im(\partial_{i+1})\), while two representatives of \([f]\) differ by an element of \(\ker(\partial_i)^\perp\).</p>
+
+  <p>First, suppose we change the representative cycle \(x\) to</p>
+
+\[\begin{aligned}
+    x' = x + \partial_{i+1} y.
+\end{aligned}\]
+
+  <p>Then</p>
+
+\[\begin{aligned}
+    f(x') = f(x) + f(\partial_{i+1}y) = f(x),
+\end{aligned}\]
+
+  <p>because \(f\) vanishes on \(\Im(\partial_{i+1})\).
+Second, suppose we change the representative cocycle \(f\) to</p>
+
+\[\begin{aligned}
+    f' = f + h
+\end{aligned}\]
+
+  <p>with \(h \in \ker(\partial_i)^\perp\).
+Since \(x\) is a cycle, \(x \in \ker(\partial_i)\), and hence</p>
+
+\[\begin{aligned}
+    f'(x)=f(x)+h(x)=f(x).
+\end{aligned}\]
+
+  <p>Thus, \(\phi([f])([x])=f(x)\) does not depend on the choice of representative cycle or cocycle, so \(\phi\) is well-defined.
+<br />
+<strong>(d)</strong> Let \([f]\in H^i(C_\bullet)\) be in the kernel of \(\phi\).
+Then \(\phi([f])([x])=0\) for every homology class \([x]\in H_i(C_\bullet)\).
+In particular, for every cycle \(x\in \ker(\partial_i)\), we have</p>
+
+\[\begin{aligned}
+    f(x)=0.
+\end{aligned}\]
+
+  <p>Therefore, \(f\in \ker(\partial_i)^\perp\).
+But \(\ker(\partial_i)^\perp\) is exactly the subspace by which we quotient in \(H^i(C_\bullet)\), so \([f]=0\).
+Hence \(\phi\) is injective.
+<br />
+<strong>(e)</strong> Using the rank-nullity theorem, we get</p>
+
+\[\begin{aligned}
+    \dim(H_i(C_\bullet))
+    &amp;= \dim(\ker(\partial_i)) - \dim(\Im(\partial_{i+1})) \\
+    &amp;= \dim(C_i) - \mathrm{rank}(\partial_i) - \mathrm{rank}(\partial_{i+1}).
+\end{aligned}\]
+
+  <p>Similarly,</p>
+
+\[\begin{aligned}
+    \dim(H^i(C_\bullet))
+    &amp;= \dim(\ker(\partial_{i+1}^T)) - \dim(\Im(\partial_i^T)) \\
+    &amp;= \dim(C_i) - \mathrm{rank}(\partial_{i+1}) - \mathrm{rank}(\partial_i),
+\end{aligned}\]
+
+  <p>where we used \(\mathrm{rank}(A^T)=\mathrm{rank}(A)\).
+Thus</p>
+
+\[\begin{aligned}
+    \dim(H^i(C_\bullet)) = \dim(H_i(C_\bullet)).
+\end{aligned}\]
+
+  <p>Since \(\phi\) is an injective linear map between finite-dimensional vector spaces of the same dimension, it is an isomorphism.</p>
+
+  <p><a href="#universal-coefficient-theorem">(Back to section)</a></p>
+</div>
+
+<div class="message">
+  <p><strong>Exercise 2</strong>: <strong>(a)</strong> By the UCT, the map \(\phi\) is well-defined and satisfies</p>
+
+\[\begin{aligned}
+    \phi([f])([x]) = f^T x = \Phi(f,x).
+\end{aligned}\]
+
+  <p>Therefore, if \([f]=[f']\) and \([x]=[x']\), then</p>
+
+\[\begin{aligned}
+    \Phi(f,x)
+    = \phi([f])([x])
+    = \phi([f'])([x'])
+    = \Phi(f',x').
+\end{aligned}\]
+
+  <p>Hence, the intersection form only depends on the homology and cohomology classes, not on the specific representatives.
+<br />
+<strong>(b)</strong> Let \(\{e_j\}\) be a basis of \(H_i(C_\bullet)\), and let \(\{g^j\}\) be the dual basis of \(\text{Hom}(H_i(C_\bullet),\mathbb{Z}_2)\), so that</p>
+
+\[\begin{aligned}
+    g^j(e_k)=\delta_{jk}.
+\end{aligned}\]
+
+  <p>Since \(\phi: H^i(C_\bullet) \to \text{Hom}(H_i(C_\bullet),\mathbb{Z}_2)\) is an isomorphism, for every \(j\) there exists a unique element \(e^j \in H^i(C_\bullet)\) such that</p>
+
+\[\begin{aligned}
+    \phi(e^j)=g^j.
+\end{aligned}\]
+
+  <p>The family \(\{e^j\}\) is a basis of \(H^i(C_\bullet)\), since it is the preimage of a basis under an isomorphism.
+Now take representatives \(x_j\) and \(f_k\) satisfying \([x_j]=e_k\) and \([f_k]=e^j\).
+Using part <strong>(a)</strong>, we get</p>
+
+\[\begin{aligned}
+    \Phi(f_k,x_j)
+    = \phi(e^j)(e_k)
+    = g^j(e_k)
+    = \delta_{jk}.
+\end{aligned}\]
+
+  <p>This proves the dual-basis corollary.</p>
+
+  <p><a href="#universal-coefficient-theorem">(Back to section)</a></p>
+</div>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>A morphism of chain complexes (also called <em>chain map</em>) is a collection of linear maps \(f_i: C_i \to D_i\) between two chain complexes \(C_\bullet\) and \(D_\bullet\) that commute with the boundary operators, i.e. such that \(\partial_i^D \circ f_i = f_{i-1} \circ \partial_i^C\) for every \(i\). A chain map is an <strong>isomorphism</strong> if each \(f_i\) is an isomorphism of vector spaces. In our case, the isomorphism between \(C^\bullet\) and \(\tilde{C}^\bullet\) is given by the collection of isomorphisms \(\psi: C^i \to C_i\) for every \(i\). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>As a reminder, chain complexes are usually defined for general \(R\)-modules (see <a href="/blog/2026-06-15-topological-qec-2/#fn:1">Footnote 1 of the previous post</a>), which only become vector spaces when \(R\) is a field (such as \(\mathbb{Z}_2\)). <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[In the two previous posts, we learned about chain complexes and their homology groups. We are now ready for another foundational concept needed to understand QEC from a topological perspective: in this copost, we dive into cohomology!]]></summary></entry><entry><title type="html">The topology of topological QEC II — Homology groups</title><link href="http://localhost:4000/blog/2026-06-15-topological-qec-2/" rel="alternate" type="text/html" title="The topology of topological QEC II — Homology groups" /><published>2026-06-15T00:00:00+02:00</published><updated>2026-06-15T00:00:00+02:00</updated><id>http://localhost:4000/blog/topological-qec-2</id><content type="html" xml:base="http://localhost:4000/blog/2026-06-15-topological-qec-2/"><![CDATA[<p>In the <a href="/blog/2026-05-04-topological-qec/">previous post</a>, we introduced algebraic topology through one of its most important objects: chain complexes.
 We saw how chain complexes can be constructed from cellulations of manifolds and how they give rise to CSS codes.
 But the main reason both mathematicians and quantum error correctors like chain complexes is that they allow us to define homology groups!</p>
 
@@ -1056,7 +1565,7 @@ However, algebraic topology is often developed using \(\mathbb{Z}\)-modules, bec
 In contrast, when restricting to field coefficients such as \(\mathbb{Z}_2\), many results from algebraic topology and homological algebra become much simpler. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[In the previous post, we introduced algebraic topology through one of its most important objects: chain complexes. We saw how chain complexes can be constructed from cellulations of manifolds and how they give rise to CSS codes. But the main reason both mathematicians and quantum error correctors like chain complexes is that they allow us to define homology groups!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/topological-qec-2/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/topological-qec-2/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The topology of topological QEC I — Manifolds and complexes</title><link href="https://arthurpesah.me/blog/2026-05-04-topological-qec/" rel="alternate" type="text/html" title="The topology of topological QEC I — Manifolds and complexes" /><published>2026-05-04T00:00:00+02:00</published><updated>2026-05-04T00:00:00+02:00</updated><id>https://arthurpesah.me/blog/topological-qec</id><content type="html" xml:base="https://arthurpesah.me/blog/2026-05-04-topological-qec/"><![CDATA[<p>To continue our journey into quantum error correction, it is time to dive deeper into the theoretical foundations of the field. When <a href="/blog/2023-05-13-surface-code/">learning about the surface code</a>, you might have wondered: what exactly makes it work? Would it work as well on lattices other than the square lattice? On manifolds other than the torus? In higher dimensions?</p>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[In the previous post, we introduced algebraic topology through one of its most important objects: chain complexes. We saw how chain complexes can be constructed from cellulations of manifolds and how they give rise to CSS codes. But the main reason both mathematicians and quantum error correctors like chain complexes is that they allow us to define homology groups!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/topological-qec-2/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/topological-qec-2/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The topology of topological QEC I — Manifolds and complexes</title><link href="http://localhost:4000/blog/2026-05-04-topological-qec/" rel="alternate" type="text/html" title="The topology of topological QEC I — Manifolds and complexes" /><published>2026-05-04T00:00:00+02:00</published><updated>2026-05-04T00:00:00+02:00</updated><id>http://localhost:4000/blog/topological-qec</id><content type="html" xml:base="http://localhost:4000/blog/2026-05-04-topological-qec/"><![CDATA[<p>To continue our journey into quantum error correction, it is time to dive deeper into the theoretical foundations of the field. When <a href="/blog/2023-05-13-surface-code/">learning about the surface code</a>, you might have wondered: what exactly makes it work? Would it work as well on lattices other than the square lattice? On manifolds other than the torus? In higher dimensions?</p>
 
 <p>As it happens, the field of <strong>algebraic topology</strong> provides exactly the right tools to answer these questions. By understanding its basics, we can construct and study generalized surface codes and many other families of topological codes, such as color codes and fracton codes<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>. Furthermore, a generalization of algebraic topology, <strong>homological algebra</strong>, allows us to go beyond topological codes and serves as the foundation for most quantum LDPC code constructions and logical gate designs. The definitions and fundamental theorems from these two fields are therefore used all over the QEC literature, and studying them is well worth your time if you want to understand most modern fault-tolerant architecture constructions.</p>
 
@@ -1499,7 +2008,7 @@ C_2 \xrightarrow{\partial_2} C_1 \xrightarrow{\partial_1} C_0.
       <p>A <strong>tessellation</strong> is a cellulation in which each map from a polytope to the manifold is an isometry, i.e., it preserves angles and distances. A <strong>regular tessellation</strong> is a tessellation that uses a single type of polytope, and has the same number of edges meeting at each vertex. For instance, regular tessellations of the plane \(\mathbb{R}^2\) are made from polygons of the same type and size, and one can prove that only three types of regular tessellations of the plane exist: those made from equilateral triangles, squares, or hexagons. In the hyperbolic plane, such as the Poincaré disk model shown in the figure, we choose a metric such that the distance of edges close to the boundary have a much higher length than it seems visually (i.e., when measured with a Euclidean metric on the disk). The depicted cellulation is therefore a regular cellulation with pentagons and degree-4 vertices, where all the 2-cells actually have the same area with respect to the hyperbolic metric. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[To continue our journey into quantum error correction, it is time to dive deeper into the theoretical foundations of the field. When learning about the surface code, you might have wondered: what exactly makes it work? Would it work as well on lattices other than the square lattice? On manifolds other than the torus? In higher dimensions?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/topological-qec/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/topological-qec/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Computing with quantum codes using transversal gates</title><link href="https://arthurpesah.me/blog/2023-12-25-transversal-gates/" rel="alternate" type="text/html" title="Computing with quantum codes using transversal gates" /><published>2023-12-25T00:00:00+01:00</published><updated>2023-12-25T00:00:00+01:00</updated><id>https://arthurpesah.me/blog/transversal-gates</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-12-25-transversal-gates/"><![CDATA[<p>If you have been following the quantum news lately, you certainly didn’t miss <a href="https://scirate.com/arxiv/2312.03982">one of the biggest announcements of the year</a>: the demonstration of various quantum codes and logical operations on up to 48 logical qubits and 280 physical qubits of a Rydberg atom array. To me, one of the most exciting features of this experiment is its inherent <strong>non-locality</strong>: it is possible to apply gates between qubits that are far away by simply moving the corresponding atoms, without inducing more errors than we are able to correct. From a quantum error correction point-of-view, this allows two things: the possibility to create codes beyond two dimensions (such as 3D codes or more general LDPC codes), and the possibility to apply logical two-qubit gates without inducing any additional space-time cost: transversal gates can be used instead of the more common lattice surgery of traditional surface code architectures.</p>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[To continue our journey into quantum error correction, it is time to dive deeper into the theoretical foundations of the field. When learning about the surface code, you might have wondered: what exactly makes it work? Would it work as well on lattices other than the square lattice? On manifolds other than the torus? In higher dimensions?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/topological-qec/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/topological-qec/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Computing with quantum codes using transversal gates</title><link href="http://localhost:4000/blog/2023-12-25-transversal-gates/" rel="alternate" type="text/html" title="Computing with quantum codes using transversal gates" /><published>2023-12-25T00:00:00+01:00</published><updated>2023-12-25T00:00:00+01:00</updated><id>http://localhost:4000/blog/transversal-gates</id><content type="html" xml:base="http://localhost:4000/blog/2023-12-25-transversal-gates/"><![CDATA[<p>If you have been following the quantum news lately, you certainly didn’t miss <a href="https://scirate.com/arxiv/2312.03982">one of the biggest announcements of the year</a>: the demonstration of various quantum codes and logical operations on up to 48 logical qubits and 280 physical qubits of a Rydberg atom array. To me, one of the most exciting features of this experiment is its inherent <strong>non-locality</strong>: it is possible to apply gates between qubits that are far away by simply moving the corresponding atoms, without inducing more errors than we are able to correct. From a quantum error correction point-of-view, this allows two things: the possibility to create codes beyond two dimensions (such as 3D codes or more general LDPC codes), and the possibility to apply logical two-qubit gates without inducing any additional space-time cost: transversal gates can be used instead of the more common lattice surgery of traditional surface code architectures.</p>
 
 <p>Transversal gates are both the earliest and simplest way to perform computation fault-tolerantly with a quantum code. But those new experimental prospects, along with the recent discovery of many new quantum LDPC codes with great parameters (but not a lot of gates yet!), make research into transversal gates an exciting area again! And if you haven’t had the occasion to learn about them yet, or even logical gates in general, this blog post is for you!</p>
 
@@ -1865,7 +2374,7 @@ So the gate transforms \(XXXX\) into \(YY(-Y)(-Y)=YYYY\), which is a stabilizer 
       <p>We can find many definitions (as well as absence of definitions) of fault-tolerance in the literature. One of the most formal and general ones is due to Gottesman and can be found <a href="https://arxiv.org/pdf/0904.2557.pdf">here</a> (Sec. 4.2). However, in practice, not reducing the distance to a constant seems to be a good effective definition that is implied in many papers. Alternatively, depending on the context, it could also be useful to impose no more than a constant multiplicative reduction of the distance, or even no reduction at all (for instance if we want to talk about the fault-tolerance of a gate on a specific small code instead of a whole family). But I hope you get the idea. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[If you have been following the quantum news lately, you certainly didn’t miss one of the biggest announcements of the year: the demonstration of various quantum codes and logical operations on up to 48 logical qubits and 280 physical qubits of a Rydberg atom array. To me, one of the most exciting features of this experiment is its inherent non-locality: it is possible to apply gates between qubits that are far away by simply moving the corresponding atoms, without inducing more errors than we are able to correct. From a quantum error correction point-of-view, this allows two things: the possibility to create codes beyond two dimensions (such as 3D codes or more general LDPC codes), and the possibility to apply logical two-qubit gates without inducing any additional space-time cost: transversal gates can be used instead of the more common lattice surgery of traditional surface code architectures.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/transversal-gates/thumbnail.png?4362984378" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/transversal-gates/thumbnail.png?4362984378" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">An interactive introduction to the surface code</title><link href="https://arthurpesah.me/blog/2023-05-13-surface-code/" rel="alternate" type="text/html" title="An interactive introduction to the surface code" /><published>2023-05-13T00:00:00+02:00</published><updated>2023-05-13T00:00:00+02:00</updated><id>https://arthurpesah.me/blog/surface-code</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-05-13-surface-code/"><![CDATA[<script>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[If you have been following the quantum news lately, you certainly didn’t miss one of the biggest announcements of the year: the demonstration of various quantum codes and logical operations on up to 48 logical qubits and 280 physical qubits of a Rydberg atom array. To me, one of the most exciting features of this experiment is its inherent non-locality: it is possible to apply gates between qubits that are far away by simply moving the corresponding atoms, without inducing more errors than we are able to correct. From a quantum error correction point-of-view, this allows two things: the possibility to create codes beyond two dimensions (such as 3D codes or more general LDPC codes), and the possibility to apply logical two-qubit gates without inducing any additional space-time cost: transversal gates can be used instead of the more common lattice surgery of traditional surface code architectures.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/transversal-gates/thumbnail.png?4362984378" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/transversal-gates/thumbnail.png?4362984378" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">An interactive introduction to the surface code</title><link href="http://localhost:4000/blog/2023-05-13-surface-code/" rel="alternate" type="text/html" title="An interactive introduction to the surface code" /><published>2023-05-13T00:00:00+02:00</published><updated>2023-05-13T00:00:00+02:00</updated><id>http://localhost:4000/blog/surface-code</id><content type="html" xml:base="http://localhost:4000/blog/2023-05-13-surface-code/"><![CDATA[<script>
     // Repair modulo bug with negative numbers
     Number.prototype.mod = function (n) {
         "use strict";
@@ -3599,7 +4108,7 @@ So the error must be a string that links those two excitations. However, the num
       <p>We assume here that we have a Pauli error model. The reasons for this choice are actually quite technical, and I hope to write a post about it one day. In the meantime, you can have a look at Section 10.3 of Nielsen &amp; Chuang to get an idea of the argument. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/surface-code/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/surface-code/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy III — Parity-check matrices and decoding</title><link href="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/" rel="alternate" type="text/html" title="The stabilizer trilogy III — Parity-check matrices and decoding" /><published>2023-03-28T00:00:00+02:00</published><updated>2023-03-28T00:00:00+02:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-3</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-03-28-stabilizer-formalism-3/"><![CDATA[<p>Welcome to the third and last post of the stabilizer trilogy! In <a href="/blog/2023-01-31-stabilizer-formalism-1/">Parts I</a> and <a href="/blog/2023-03-16-stabilizer-formalism-2/">II</a>, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/surface-code/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/surface-code/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy III — Parity-check matrices and decoding</title><link href="http://localhost:4000/blog/2023-03-28-stabilizer-formalism-3/" rel="alternate" type="text/html" title="The stabilizer trilogy III — Parity-check matrices and decoding" /><published>2023-03-28T00:00:00+02:00</published><updated>2023-03-28T00:00:00+02:00</updated><id>http://localhost:4000/blog/stabilizer-formalism-3</id><content type="html" xml:base="http://localhost:4000/blog/2023-03-28-stabilizer-formalism-3/"><![CDATA[<p>Welcome to the third and last post of the stabilizer trilogy! In <a href="/blog/2023-01-31-stabilizer-formalism-1/">Parts I</a> and <a href="/blog/2023-03-16-stabilizer-formalism-2/">II</a>, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to
 simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tool to prove theorems about them, to classify them, to decode them, and more!</p>
 
 <p>In this post, we will see how to define the parity-check matrix of a stabilizer code in the binary symplectic format, and how to express the decoding problem using it. After a short motivation section to remind you about classical parity-check matrices, we will delve into the binary symplectic format, a way to express Pauli operators using vectors. We will then define quantum parity-check matrices in this format and see how syndromes and logical operators can be expressed using them. With those tools in our hand, we will finally be able to define the decoding problem for quantum codes, and in particular see how to decode the Steane code. We will finish this post by defining quantum Tanner graphs, a graphical representation of parity-check matrices, often used in the literature to study the properties of codes and decoders.</p>
@@ -3933,7 +4442,7 @@ Each stabilizer node is then connected to the qubits in its support (with the ri
       <p>Thanks Alex Cliffe for suggesting this proof! <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[Welcome to the third and last post of the stabilizer trilogy! In Parts I and II, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tool to prove theorems about them, to classify them, to decode them, and more!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-3/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy II — Logical operators</title><link href="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/" rel="alternate" type="text/html" title="The stabilizer trilogy II — Logical operators" /><published>2023-03-16T00:00:00+01:00</published><updated>2023-03-16T00:00:00+01:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-2</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-03-16-stabilizer-formalism-2/"><![CDATA[<p>Happy to see you back for the second part of the stabilizer trilogy! In the <a href="/blog/2023-01-31-stabilizer-formalism-1">previous post</a>, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an \(X\) and a \(Z\) stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What are its Pauli logical operators? How does the decoding process work?</p>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[Welcome to the third and last post of the stabilizer trilogy! In Parts I and II, we introduced the stabilizer formalism using a group theoretic language: stabilizer codes are abelian subgroups of the Pauli group, logicals are elements of the centralizers, etc. While this formulation has a lot of merit, it might not be immediately obvious how to implement it in practice if you want to simulate a code. Fortunately, the whole formalism can be reexpressed using vectors, matrices and the whole linear algebra toolbox that comes with them: this is the parity-check matrix formulation! Parity-check matrices make it not only easy to implement stabilizer codes in your favorite programming language, they are also a very powerful tool to prove theorems about them, to classify them, to decode them, and more!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/stabilizer-formalism-3/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/stabilizer-formalism-3/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy II — Logical operators</title><link href="http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/" rel="alternate" type="text/html" title="The stabilizer trilogy II — Logical operators" /><published>2023-03-16T00:00:00+01:00</published><updated>2023-03-16T00:00:00+01:00</updated><id>http://localhost:4000/blog/stabilizer-formalism-2</id><content type="html" xml:base="http://localhost:4000/blog/2023-03-16-stabilizer-formalism-2/"><![CDATA[<p>Happy to see you back for the second part of the stabilizer trilogy! In the <a href="/blog/2023-01-31-stabilizer-formalism-1">previous post</a>, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an \(X\) and a \(Z\) stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What are its Pauli logical operators? How does the decoding process work?</p>
 
 <p>In this post, we will get down to the nitty-gritty of Pauli logical operators, whose properties form a crucial component of stabilizer codes, as they allow to derive the distance of the code, the number of logical qubits, and the main formulation of decoding. Formalizing all those ideas rigorously relies on a fair bit of abstraction, using notions such as centralizers, equivalence classes, etc. While we won’t shy away from the abstraction, we will also make every notion as concrete as possible using the Steane code as our running example.</p>
 
@@ -4077,7 +4586,7 @@ For instance, any of the three \(X\) logicals of the figure above are representa
 <strong>(c)</strong> The eigenvalues of \(\Pi_{\mathcal{C}}\) are \(1\) and \(0\), with the multiplicity of \(1\) corresponding to the dimension of the codespace (since \(\Pi_{\mathcal{C}}\) projects onto the codespace). The trace is therefore exactly this dimension. <br />
 <strong>(d)</strong> Taking the trace on both sides, we get \(\text{dim}(\mathcal{C})=\frac{1}{2^m}\sum_{S \in \mathcal{S}} \text{Tr}[S]\). Since all stabilizers are Paulis, their trace is zero except for the identity element, for which it is \(2^n\) (the total dimension of the space). Therefore, the sum is equal to \(2^n\) and we recover the desired formula.
 <br />
-<a href="#logical-gates">(Back to section)</a></p>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[Happy to see you back for the second part of the stabilizer trilogy! In the previous post, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an \(X\) and a \(Z\) stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What are its Pauli logical operators? How does the decoding process work?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-2/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy I — Stabilizer codes</title><link href="https://arthurpesah.me/blog/2023-01-31-stabilizer-formalism-1/" rel="alternate" type="text/html" title="The stabilizer trilogy I — Stabilizer codes" /><published>2023-01-31T00:00:00+01:00</published><updated>2023-01-31T00:00:00+01:00</updated><id>https://arthurpesah.me/blog/stabilizer-formalism-1</id><content type="html" xml:base="https://arthurpesah.me/blog/2023-01-31-stabilizer-formalism-1/"><![CDATA[<p>Now that you know <a href="/blog/2022-05-21-classical-error-correction/">all you need to know about classical error correction</a>, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in <a href="https://thesis.library.caltech.edu/2900/2/THESIS.pdf">his landmark 1997 PhD thesis</a> is the stabilizer formalism.
+<a href="#logical-gates">(Back to section)</a></p>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[Happy to see you back for the second part of the stabilizer trilogy! In the previous post, we defined stabilizer codes and gave a few examples of codes and constructions. In particular, we studied the Steane code, which can be defined by laying down seven qubits on a triangle with three colored faces, each representing an \(X\) and a \(Z\) stabilizer. However, we left pending a few important questions: what are the parameters of the code, and in particular the number of logical qubits and the distance? What are its Pauli logical operators? How does the decoding process work?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/stabilizer-formalism-2/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The stabilizer trilogy I — Stabilizer codes</title><link href="http://localhost:4000/blog/2023-01-31-stabilizer-formalism-1/" rel="alternate" type="text/html" title="The stabilizer trilogy I — Stabilizer codes" /><published>2023-01-31T00:00:00+01:00</published><updated>2023-01-31T00:00:00+01:00</updated><id>http://localhost:4000/blog/stabilizer-formalism-1</id><content type="html" xml:base="http://localhost:4000/blog/2023-01-31-stabilizer-formalism-1/"><![CDATA[<p>Now that you know <a href="/blog/2022-05-21-classical-error-correction/">all you need to know about classical error correction</a>, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in <a href="https://thesis.library.caltech.edu/2900/2/THESIS.pdf">his landmark 1997 PhD thesis</a> is the stabilizer formalism.
 The same way most classical codes fall into the linear code category, almost all the quantum codes you will encounter can be classified as stabilizer codes. And for a good reason: stabilizer codes are simply the quantum generalization of linear codes!
 Your beloved parity checks will turn into stabilizers, a set of commuting measurements controlling the parity of your qubits in different bases.
 Parity-check matrices and Tanner graphs will get slightly bigger and more constrained. But apart from that, if you’re more or less comfortable with the notions discussed in the last post, going quantum shouldn’t give you too much trouble.</p>
@@ -4426,7 +4935,7 @@ PP'=-P'_i P_1 \ldots P_n P'_1 \ldots P'_{i-1} P'_{i+1} \ldots P_n
       <p>The \(\vert 0 \rangle_{L}\) state of the Steane code was first implemented by an Austrian team, in <a href="https://arxiv.org/abs/1403.5426">Nigg et al., 2014</a>. Actual error correction using stabilizer measurements was then done by Honeywell in <a href="https://arxiv.org/abs/2107.07505">Ryan-Anderson et al., 2021</a>. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[Now that you know all you need to know about classical error correction, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in his landmark 1997 PhD thesis is the stabilizer formalism. The same way most classical codes fall into the linear code category, almost all the quantum codes you will encounter can be classified as stabilizer codes. And for a good reason: stabilizer codes are simply the quantum generalization of linear codes! Your beloved parity checks will turn into stabilizers, a set of commuting measurements controlling the parity of your qubits in different bases. Parity-check matrices and Tanner graphs will get slightly bigger and more constrained. But apart from that, if you’re more or less comfortable with the notions discussed in the last post, going quantum shouldn’t give you too much trouble.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-1/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/stabilizer-formalism-1/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">All you need to know about classical error correction</title><link href="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/" rel="alternate" type="text/html" title="All you need to know about classical error correction" /><published>2022-05-21T00:00:00+02:00</published><updated>2022-05-21T00:00:00+02:00</updated><id>https://arthurpesah.me/blog/classical-error-correction</id><content type="html" xml:base="https://arthurpesah.me/blog/2022-05-21-classical-error-correction/"><![CDATA[<p>When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction.
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[Now that you know all you need to know about classical error correction, the time has finally come to learn how to correct those damn errors that keep sabotaging your quantum computer! The key tool, introduced by Daniel Gottesman in his landmark 1997 PhD thesis is the stabilizer formalism. The same way most classical codes fall into the linear code category, almost all the quantum codes you will encounter can be classified as stabilizer codes. And for a good reason: stabilizer codes are simply the quantum generalization of linear codes! Your beloved parity checks will turn into stabilizers, a set of commuting measurements controlling the parity of your qubits in different bases. Parity-check matrices and Tanner graphs will get slightly bigger and more constrained. But apart from that, if you’re more or less comfortable with the notions discussed in the last post, going quantum shouldn’t give you too much trouble.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/stabilizer-formalism-1/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/stabilizer-formalism-1/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">All you need to know about classical error correction</title><link href="http://localhost:4000/blog/2022-05-21-classical-error-correction/" rel="alternate" type="text/html" title="All you need to know about classical error correction" /><published>2022-05-21T00:00:00+02:00</published><updated>2022-05-21T00:00:00+02:00</updated><id>http://localhost:4000/blog/classical-error-correction</id><content type="html" xml:base="http://localhost:4000/blog/2022-05-21-classical-error-correction/"><![CDATA[<p>When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction.
 So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, low-density parity-check (LDPC) codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!</p>
 
 <p>So what exactly are we gonna study today? The central notion in this post is that of <strong>linear code</strong>. Linear codes form one of the most important families of error-correcting codes. It includes for instance Hamming codes (some of the earliest codes, invented in 1950), Reed-Solomon codes (used in CDs and QR codes), Turbo codes (used in 3G/4G communication) and LDPC codes (used in 5G communication). While we won’t try to cover the whole zoo of linear codes here, we will introduce some crucial tools to understand them. In particular, the goal of this post is to give you a good grasp of the parity-check matrix, and its graphical representation, the Tanner graph. As we will see when going quantum, the stabilizer formalism (the dominant paradigm to construct quantum codes) can be understood as a direct generalization of linear coding theory, and the quantum parity-check matrix happens to be an essential tool to simulate quantum codes in practice. This post will also be the occasion to introduce some more general coding terminology (encoding, decoding, distance, \([n,k,d]\)-code, codewords, etc.), which will be handy when delving into QEC.</p>
@@ -5070,7 +5579,7 @@ In the parity-check picture, it comes down to showing that \(\text{Ker}(\bm{H})\
       <p>See McKay, <a href="https://www.inference.org.uk/itprnn/book.pdf">Information Theory, Inference, and Learning Algorithms</a>¸ for a great introduction to belief propagation algorithms for decoding <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction. So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, low-density parity-check (LDPC) codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/classical-error-correction/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A bird’s-eye view of quantum error correction and fault tolerance</title><link href="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/" rel="alternate" type="text/html" title="A bird’s-eye view of quantum error correction and fault tolerance" /><published>2022-01-25T00:00:00+01:00</published><updated>2022-01-25T00:00:00+01:00</updated><id>https://arthurpesah.me/blog/intro-qec-1</id><content type="html" xml:base="https://arthurpesah.me/blog/2022-01-25-intro-qec-1/"><![CDATA[<p>This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</p>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[When learning about quantum error correction (QEC) for the first time, I tried to jump directly into the core of the subject, going from the stabilizer formalism to topological codes and decoders, but completely missing the classical origin of those notions. The reason is that many introductions to the subject do a great job presenting all those concepts in a self-contained way, without assuming any knowledge in error correction. So why bother learning classical error correction at all? Because if you dig deeper, you will find classical error correction concepts sprinkled all over QEC. Important classical notions such as parity checks, linear codes, Tanner graphs, belief propagation, low-density parity-check (LDPC) codes and many more, have natural generalizations in the quantum world and have been widely used in the development of QEC. Learning about classical error correction a few months into my QEC journey was completely illuminating: many ideas that I only understood formally suddenly made sense intuitively, and I was able to understand the content of many more papers. For this reason, I’d like this second article on quantum error correction to actually be about classical error correction. You will learn all you need to start off your QEC journey on the right foot!]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/classical-error-correction/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/classical-error-correction/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A bird’s-eye view of quantum error correction and fault tolerance</title><link href="http://localhost:4000/blog/2022-01-25-intro-qec-1/" rel="alternate" type="text/html" title="A bird’s-eye view of quantum error correction and fault tolerance" /><published>2022-01-25T00:00:00+01:00</published><updated>2022-01-25T00:00:00+01:00</updated><id>http://localhost:4000/blog/intro-qec-1</id><content type="html" xml:base="http://localhost:4000/blog/2022-01-25-intro-qec-1/"><![CDATA[<p>This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.</p>
 
 <p>As I am just starting my PhD adventure, I have taken the resolution to start blogging again. And since my first task as a new PhD student is to learn as much as I can about my field, why not sharing this learning journey with you?</p>
 
@@ -5283,177 +5792,4 @@ To mitigate this effect, the basic technique simply consists in repeating the st
       <p>Ryan Babbush, Jarrod McClean, Michael Newman, Craig Gidney, Sergio Boixo, Hartmut Neven, <a href="https://arxiv.org/abs/2011.04149">Focus beyond quadratic speedups for error-corrected quantum advantage</a> <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/intro-qec/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference</title><link href="https://arthurpesah.me/blog/2018-12-23-alfi/" rel="alternate" type="text/html" title="Improve your Scientific Models with Meta-Learning and Likelihood-Free Inference" /><published>2018-12-23T00:00:00+01:00</published><updated>2018-12-23T00:00:00+01:00</updated><id>https://arthurpesah.me/blog/alfi</id><content type="html" xml:base="https://arthurpesah.me/blog/2018-12-23-alfi/"><![CDATA[<p class="message"><strong>Note</strong>: This post was first published as a <a href="https://towardsdatascience.com/improve-your-scientific-models-with-meta-learning-and-likelihood-free-inference-2f904d0bd7fa">Medium Article</a> for Towards Data Science</p>
-<p>Introduction to likelihood-free inference and distillation of the paper <a href="https://arxiv.org/abs/1811.12932">Recurrent Machines for Likelihood-Free Inference</a>, published at the <a href="http://metalearning.ml">NeurIPS 2018 Workshop on Meta-Learning</a>.</p>
-
-<p>Article jointly written by Arthur Pesah and Antoine Wehenkel</p>
-
-<h1 id="motivation">Motivation</h1>
-
-<p>There are usually two ways of coming up with a new scientific theory:</p>
-
-<ul>
-  <li>Starting from first principles, deducing the consequent laws, and coming up with experimental predictions in order to verify the theory</li>
-  <li>Starting from experiments and inferring the simplest laws that explain your data.</li>
-</ul>
-
-<p>The role of statistics and machine learning in science is usually related to the second kind of inference, also called <em>induction</em>.</p>
-
-<p>Imagine for instance that you want to model the evolution of two populations (let’s say foxes and rabbits) in an environment. A simple model is the <a href="https://en.wikipedia.org/wiki/Lotka–Volterra_equations">Lotka-Volterra differential equation</a>: you consider the probability that an event such as “a fox eating a rabbit”, “a rabbit being born”, “a fox being born”, etc. happens in a small time interval, deduce a set of differential equations depending on those probabilities, and predict the evolution of the two animals by solving those equations. By comparing your prediction with the evolution of a real population, you can infer the best model parameters (probabilities) in this environment.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*t9Lv2LZ6EJiutaVzKoQ3lQ.jpeg" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*t9Lv2LZ6EJiutaVzKoQ3lQ.jpeg" alt=""></hy-img>
-</p>
-<p>Modern theories require <strong>simulations</strong> in order to be linked to observations. It can be either a simple differential equation solver as in the case of the Lotka-Volterra model, or a complex Monte-Carlo simulator as they use in particle physics for instance.</p>
-
-<p>By comparing the results of a simulation, i.e. the predictions of a model, with real data, it is then possible to know the correctness of your model and adjust it accordingly. If this process of going back and forth between the model and the experimental data is usually done manually, the question that any machine learning practitioner would ask is: can we do it automatically? Can we build a machine that takes a tweakable simulator and real data as input, and returns the version of the simulator that fits best some real data?</p>
-
-<p>That’s the object of our recent work<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>, where we trained a neural network to come up with the best sequence of simulator tweaks in order to approximate experimental data, capitalizing on the recent advances in the fields of likelihood-free inference and meta-learning.</p>
-
-<h1 id="likelihood-free-inference">Likelihood-free inference</h1>
-
-<p>Let’s rephrase our problem in a more formal way. We can model a simulator (also called generative model) by a stochastic function that takes some parameters \(\theta\) and returns samples \(x\) drawn from a certain distribution (the so-called <em>model</em>).</p>
-
-<p>This formalism applies to any scientific theory that includes randomness, as it’s very often the case in modern science (particle collisions are governed by the law of quantum physics which are intrinsically random, biological processes or chemical reactions often occur in a noisy environment, etc.).</p>
-
-<p>Experimental data consist in a set of points living in the same space as the output of the simulator. The goal of inference is then to find the parameters \(\theta\) such that the simulator generate points as close as possible to the real data.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*328OmNFA4xBuj4xgLQdK9w.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*328OmNFA4xBuj4xgLQdK9w.png" alt=""></hy-img>
-</p>
-<p>Scientific fields using such simulators include:</p>
-
-<ul>
-  <li>Population genetics. <strong>Model:</strong> <a href="https://en.wikipedia.org/wiki/Coalescent_theory">Coalescent theory</a>. <strong>Observation:</strong> the DNA of a current population. <strong>Parameters:</strong> the DNA of the common ancestor.</li>
-  <li>High-energy particle physics. <strong>Model</strong>: <a href="https://en.wikipedia.org/wiki/Standard_Model">Standard Model</a> of particle physics. <strong>Observation:</strong> output of the detector during a collision. <strong>Parameters:</strong> coupling constants of the Standard Model (like the mass of the particles or the strength of the different forces).</li>
-  <li>Computational neuroscience. <strong>Model:</strong> <a href="https://en.wikipedia.org/wiki/Hodgkin%E2%80%93Huxley_model">Hodgkin-Huxley model</a>. <strong>Observation:</strong> evolution of the voltage of a neuron after activation. <strong>Parameters</strong>: biophysical parameters of the neuron.</li>
-</ul>
-
-<p>So how can we predict the parameters of a simulator given some real observations? Let’s consider the simple example of a Gaussian simulator, that takes a vector \(\theta=(\mu,\sigma)\) as parameters and returns samples from the Gaussian distribution \(\mathcal{N}(\mu,\sigma)\).</p>
-
-<p>The classical way to infer the parameters of such a simulator is called <em>Maximum Likelihood Estimation (MLE)</em>. The likelihood is defined as the density of the real data under a parametric model. It means that if most data points are located in high density regions, the likelihood will be high. Hence, the best parameters of a model are often the ones that maximize the likelihood of real data. If you are unfamiliar with likelihood-based inference, you can read <a href="https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1">this excellent introduction to the subject</a>.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*16t2IyuYfARkjea8mfUDTQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*16t2IyuYfARkjea8mfUDTQ.png" alt=""></hy-img>
-</p>
-
-<p>If you have explicitly access to the underlying probability distribution of your simulator, as well as the gradient of this distribution, you can for instance perform a gradient descent in the parameters space, in order to maximize the likelihood and infer the best parameters of your model.</p>
-
-<p>However, many real-life simulators have an <strong>intractable likelihood</strong>, which means that the explicit probability distribution is too hard to compute (either analytically or numerically) . We must therefore find new ways to infer the optimal parameters without using neither the likelihood function nor its gradient.</p>
-
-<p>To sum it up, we have a black-box stochastic simulator that takes parameters and generates samples from an unknown probability distribution, as well as real data that we are able to compare to the generated ones. Our goal is to find the parameters that lead the simulator to generate data as close as possible to the real ones. This setting is called <strong>likelihood-free inference</strong>.</p>
-
-<h1 id="how-can-we-likelihood-free-infer">How can we likelihood-free infer?</h1>
-
-<p>Let’s try to come up progressively with a method to solve our problem. The first thing we can do is to start from a random parameter, and simulate the corresponding data:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*Dgh8KZYJ_aAYYI73jy8wUQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*Dgh8KZYJ_aAYYI73jy8wUQ.png" alt=""></hy-img>
-<em>Representation of the two spaces of interest. The true parameter (that we wish to infer) is the red point on the left. The real data correspond to the red cloud of points on the right. We start by choosing a random parameter θ (in gray on the left) and simulating the corresponding data points (in gray on the right)</em></p>
-
-<p>By doing so, we can see how far our generated data are from the real data, but we have no way to know where to move in the parameter-space. Instead, let’s simulate several parameters:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*a6mfrolFz-s9CicMOULgvA.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*a6mfrolFz-s9CicMOULgvA.png" alt=""></hy-img>
-</p>
-<p>To do so, we consider a distribution in the parameter-space, called <strong>proposal distribution</strong> and noted \(q(\theta|\psi)\). If we choose \(q\) to be a Gaussian distribution, we will have \(\psi=(\mu,\sigma)\). The first step consists in initializing \(\psi\) randomly. In the figure above, we considered \(\psi=\mu\) for simplicity. Then, we can perform the following step until convergence:</p>
-
-<ul>
-  <li>Sampling a few parameters from the proposal distribution: 4 parameters around \(\psi\) in the figure.</li>
-  <li>Generating data from them: the 4 cloud of points on right.</li>
-  <li>Choosing a good direction to move \(\psi\).</li>
-</ul>
-
-<p>The third step is the hard one. Intuitively, you would like to move \(\psi\) towards the orange and green parameters, since the corresponding predictions (orange and green cloud of points) are the closest to the real data. A set of methods, called <em>natural evolution strategies</em> <sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>, allow you to link the performance of each \(\theta\) (in terms of similarity between its predictions and the real data) to a direction in the parameter space. A recent paper <sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> use for instance the similarity measure given by a Generative Adversarial Network (GAN) to find the best direction. Even though those algorithms perform well in the general case, one can wonder if for a given simulator, it is not possible to find a better algorithm that would exploit the particular properties of this simulator. That’s where meta-learning comes into play!</p>
-
-<h1 id="meta-learning-for-optimization">Meta-learning for optimization</h1>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*Wip2SwVt4aMqBPtE2Spffw.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*Wip2SwVt4aMqBPtE2Spffw.png" alt=""></hy-img>
-</p>
-
-<p>The idea behind meta-learning is to learn how to learn, and in our case to <strong>learn the optimization process</strong>. The main idea, introduced in the paper <a href="https://arxiv.org/abs/1606.04474">Learning to learn gradient descent by gradient descent</a><sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>, is to use a recurrent neural network (RNN) to find the best descent direction at each iteration. Below is an example of sequence of points produced by a randomly initialized RNN:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*5Axutz0l_0TjxRupjEt-1Q.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*5Axutz0l_0TjxRupjEt-1Q.png" alt=""></hy-img>
-</p>
-
-<p>Each descent direction is random and the last point produced is far from the minimum. During training, it should learn to exploit the gradient information at each point in order to move toward the minimum, giving something like:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*r2Ww8UZAmL3cBRds_p35OQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*r2Ww8UZAmL3cBRds_p35OQ.png" alt=""></hy-img>
-</p>
-
-<p>So how to train it? Generate many functions whose you know the minimum, and ask the RNN to minimize the distance between the last point of the sequence and the real minimum.</p>
-
-<h1 id="learning-to-learn-scientific-models">Learning to learn scientific models</h1>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*qKC9tH01bkQ_giLs_yGJxg.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*qKC9tH01bkQ_giLs_yGJxg.png" alt=""></hy-img>
-</p>
-
-<p>In the case of likelihood-free inference, the RNN should return a sequence of proposal parameters \(\psi\), given the real observations and the generated cloud of points at each step.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*La-daJwmoy6ksOpAeIrFkQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*La-daJwmoy6ksOpAeIrFkQ.png" alt=""></hy-img>
-</p>
-
-<p>Now, same question as for learning to learn by gradient descent, how do we train the RNN? Here, the trick is to generate many random parameters θ and to pretend for each one that it is the “true parameter”. We can then simulate each θ generated and obtain a set of “real observations”. The RNN can then be trained by passing it those real observations, looking at its final proposal distribution, and comparing it to the true parameter (that we know because we have generated it).</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*7j8kOuY8p0MlwLXnDVzOEg.png" alt=""></hy-img>
-</p>
-
-<p>Let’s go through an example to clarify all of that. In the figures below, the proposal distribution is represented in color (red = high density). At the beginning, the RNN is initialized randomly and we evaluate it on our first generated true parameter \(\theta\) (in red).</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*_PA7u4qOMkAnVEMm73XPiQ.gif" alt=""></hy-img>
-</p>
-
-<p>We can then backpropagate the loss into the RNN. After repeating this process for 200 different “true parameters”, this is what is should look like:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*j6eVXNAOHY3rQxD2AqjKWQ.gif" alt=""></hy-img>
-</p>
-
-<p>We can see that it has learnt to exploit the information of the observation space to move towards the good parameter.</p>
-
-<h1 id="results">Results</h1>
-
-<p>We evaluated our model on different toy simulators, some where we the likelihood is known and some where it is not.</p>
-
-<h2 id="non-likelihood-free-problem-poisson-simulator">Non-likelihood-free problem: Poisson Simulator</h2>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*204e7qk6Ml3dmQhwbjx7rw.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*204e7qk6Ml3dmQhwbjx7rw.png" alt=""></hy-img>
-<em>Example of Poisson distributions for various parameters. Source: Wikipedia</em></p>
-
-<p>The first simulator takes a parameter λ and draw samples from a Poisson distribution \(P(\lambda)\). The goal of this example was to see if we obtain comparable performance as the maximum likelihood estimator. Here are the results:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*ALQZ7-7AD6RVjJqQpgXfMA.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*ALQZ7-7AD6RVjJqQpgXfMA.png" alt=""></hy-img>
-<em>Comparison of ALFI (Automatic Likelihood-Free Inference, the name of our model), to a maximum likelihood estimator (MLE). Those box-plots represent the distribution of the mean-squared errors between the true parameters and the expected value of the final proposal distributions.</em></p>
-
-<p>We can see that the performance are comparable, even though we didn’t give our model access to the likelihood.</p>
-
-<h2 class="figure" id="likelihood-free-problem-particle-physics-simulator">Likelihood-free problem: Particle Physics Simulator</h2>
-
-<p>To evaluate our model in a true likelihood-free setting, we considered a simplified particle physics model that simulate the collision of an electron and a positron turning into a muon and an antimuon.</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*_Zpy-kvc2wiMW-9KzowoLw.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*_Zpy-kvc2wiMW-9KzowoLw.png" alt=""></hy-img>
-<em>Feynman diagram of the simulated process</em></p>
-
-<p>The parameters of the simulator are the energy of the incoming particles and the Fermi constant, and the output is the angle between the two muons.</p>
-
-<p>To evaluate our method, we compared the real observations with the ones generated by the last parameter found. Here are the results:</p>
-
-<p class="figure"><hy-img root-margin="511px" src="https://cdn-images-1.medium.com/max/1600/1*gr7tU9hWoGt8FRkPpZKppQ.png" alt=""><img src="https://cdn-images-1.medium.com/max/1600/1*gr7tU9hWoGt8FRkPpZKppQ.png" alt=""></hy-img>
-<em>Results of our method on a simple particle physics model. Comparison of our the real observations (angles of the produced particles) with the ones generated by our predicted parameter.</em></p>
-
-<h1 id="discussion">Discussion</h1>
-
-<p>We saw what likelihood-free inference is and how meta-learning can be used to solve it by learning the best sequence of simulator tweaks to fit a model to the reality.</p>
-
-<p>As most meta-learning models, a limitation is that it is hard to train. We had trouble scaling our method to more complex simulators, since meta-training requires a lot of simulator calls, which might be very slow in real-world settings. However, as the field of meta-learning makes progress, we hope that new methods will emerge to alleviate this problem and make it more scalable.</p>
-
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1">
-      <p>A. Pesah, A. Wehenkel and G. Louppe, <a href="https://arxiv.org/abs/1811.12932">Recurrent Machines for Likelihood-Free Inference</a> (2018), NeurIPS 2018 Workshop on Meta-Learning <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:3">
-      <p>D. Wierstra, T. Schaul, T. Glasmachers, Y. Sun, J. Peter, J. Schmidhuber, <a href="http://jmlr.org/papers/v15/wierstra14a.html">Natural Evolution Strategies</a> (2014), Journal of Machine Learning Research (JMLR). <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:4">
-      <p>G. Louppe, J. Hermans, K. Cranmer, <a href="https://arxiv.org/abs/1707.07113">Adversarial Variational Optimization of Non-Differentiable Simulator</a> (2017), arXiv e-prints 1707.07113 <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-    <li id="fn:2">
-      <p>M. Andrychowicz, M. Denil, S. Gomez, M. W. Hoffman, D. Pfau, T. Schaul, B. Shillingford, N. de Freitas, <a href="https://arxiv.org/abs/1606.04474">Learning to learn gradient descent by gradient descent</a> (2016), NIPS 2016 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-    </li>
-  </ol>
-</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="machine-learning" /><summary type="html"><![CDATA[Note: This post was first published as a Medium Article for Towards Data Science Introduction to likelihood-free inference and distillation of the paper Recurrent Machines for Likelihood-Free Inference, published at the NeurIPS 2018 Workshop on Meta-Learning.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://arthurpesah.me/assets/img/blog/alfi/cms_coverl.jpg" /><media:content medium="image" url="https://arthurpesah.me/assets/img/blog/alfi/cms_coverl.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+</div>]]></content><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><category term="blog" /><category term="quantum-computing" /><summary type="html"><![CDATA[This Summer marked the beginning of my thesis work, and with it, of my trip in the fascinating world of quantum error correction. I quickly found in this area the interdisciplinarity that I love: the field takes its roots in theoretical computer science (classical error correction), uses intuitions and techniques from theoretical physics (condensed matter, statistical physics, quantum field theory) and has deep connections to black hole research, statistical inference, algebraic topology and geometry, and many other areas of science and mathematics.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/img/blog/intro-qec/thumbnail.png" /><media:content medium="image" url="http://localhost:4000/assets/img/blog/intro-qec/thumbnail.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
