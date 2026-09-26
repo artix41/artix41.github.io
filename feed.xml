@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-26T09:12:10+02:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://arthurpesah.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://arthurpesah.me/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-26T09:14:11+02:00</updated><id>https://arthurpesah.me/feed.xml</id><title type="html">Arthur Pesah</title><subtitle>Research blog
 </subtitle><author><name>Arthur Pesah</name><email>arthur.pesah@gmail.com</email></author><entry><title type="html">The topology of topological QEC III — Cohomology groups</title><link href="https://arthurpesah.me/blog/2026-07-23-topological-qec-3/" rel="alternate" type="text/html" title="The topology of topological QEC III — Cohomology groups" /><published>2026-07-23T00:00:00+02:00</published><updated>2026-07-23T00:00:00+02:00</updated><id>https://arthurpesah.me/blog/topological-qec-3</id><content type="html" xml:base="https://arthurpesah.me/blog/2026-07-23-topological-qec-3/"><![CDATA[<p>In the two previous posts, we learned about <a href="/blog/2026-05-04-topological-qec/">chain complexes</a> and <a href="/blog/2026-06-15-topological-qec-2/">their homology groups</a>.
 We are now ready for another foundational concept needed to understand QEC from a topological perspective: in this copost, we will dive into <strong>cohomology</strong>!</p>
 
@@ -2432,7 +2432,7 @@ So the gate transforms \(XXXX\) into \(YY(-Y)(-Y)=YYYY\), which is a stabilizer 
 <p>Finally, the surface code is the simplest example to illustrate the more general concept of topological quantum error-correction. While we will only consider surface codes defined on a 2D square lattice here, they can actually be generalized to the cellulation of any manifold in any dimension (including hyperbolic!). Concepts from algebraic topology (such as homology and cohomology groups, chain complexes, etc.) can then be used to understand and analyze those codes. While we will take a brief glance at topology here, I am planning to write a separate blog post fully dedicated to the maths behind topological quantum error-correction. The goal of this post is to gain a first intuitive understanding of the surface code.</p>
 
 <p>You got it, I love the surface code, and I’m super excited to talk about it in this post!
-To do this code the honor it deserves, I’ve decided to make use of the <a href="https://gui.quantumcodes.io">interactive code visualizer</a> I have been developing for some time with my collaborator Eric Huang. I’ve embedded it in this post<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>, and you will therefore be able to play with some of the lattices presented here (e.g. by inserting errors and stabilizers, visualizing decoding, etc.). I hope you’ll enjoy!</p>
+To do this code the honor it deserves, I’ve decided to make use of the <a href="https://gui.arthurpesah.me">interactive code visualizer</a> I have been developing for some time with my collaborator Eric Huang. I’ve embedded it in this post<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>, and you will therefore be able to play with some of the lattices presented here (e.g. by inserting errors and stabilizers, visualizing decoding, etc.). I hope you’ll enjoy!</p>
 
 <p>So here is the plan for today’s post. We will first look at the definition of the surface code on a torus by laying out its stabilizers, see how to detect errors, and delve into topology in order to understand the logical operators of the code. We will then study the decoding problem and see how it can be simplified to a matching problem on a graph. Next, we will introduce the planar code and the rotated code, variants of the surface code with more practical boundary conditions and a lower overhead. Finally, we will define the notion of error correction threshold and give its different values for the surface code.</p>
 
@@ -2573,7 +2573,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     let id = 'surface-code-insert-plaquettes'
 
@@ -2586,7 +2586,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
         rotated: false
     };
 
-    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+    let gui = new Interface(params, {}, {}, 'https://gui.arthurpesah.me', id);
 
     let button = document.getElementById('button-surface-code-plaquette-reset');
     button.onclick = () => gui.removeAllErrors();
@@ -2633,7 +2633,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     let id = 'surface-code-insert-vertex'
 
@@ -2646,7 +2646,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
         rotated: false
     };
 
-    let gui = new Interface(params, {}, {}, 'https://gui.quantumcodes.io', id);
+    let gui = new Interface(params, {}, {}, 'https://gui.arthurpesah.me', id);
 
     let button = document.getElementById('button-surface-code-vertex-reset');
     button.onclick = () => gui.removeAllErrors();
@@ -2750,7 +2750,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     const params = {
         dimension: 2,
@@ -2762,7 +2762,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
         rotated: false
     };
 
-    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'surface-code-insert-errors');
+    let gui = new Interface(params, {}, keycode, 'https://gui.arthurpesah.me', 'surface-code-insert-errors');
 
     await gui.init()
     gui.addRandomErrors();
@@ -3121,7 +3121,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
 <div style="clear: both"></div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     let id = 'surface-code-insert-plaquettes-two-loops'
 
@@ -3134,7 +3134,7 @@ To do this code the honor it deserves, I’ve decided to make use of the <a href
         rotated: false
     };
 
-    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', id);
+    let gui = new Interface(params, {}, keycode, 'https://gui.arthurpesah.me', id);
 
     let button = document.getElementById('button-surface-code-plaquette-two-loops-reset');
     button.onclick = () => gui.removeAllErrors();
@@ -3700,7 +3700,7 @@ So the error must be a string that links those two excitations. However, the num
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     let params = {
         dimension: 2,
@@ -3712,7 +3712,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: false
     };
 
-    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'surface-code-decoding-insert-errors');
+    let gui = new Interface(params, {}, keycode, 'https://gui.arthurpesah.me', 'surface-code-decoding-insert-errors');
 
     await gui.init();
 
@@ -3762,7 +3762,7 @@ So the error must be a string that links those two excitations. However, the num
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     let id = 'planar-code-lattice';
 
@@ -3775,7 +3775,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: false
     };
 
-    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'planar-code-lattice');
+    let gui = new Interface(params, {}, keycode, 'https://gui.arthurpesah.me', 'planar-code-lattice');
 
     let button1 = document.getElementById('button-planar-code-random');
     button1.onclick = () => gui.addRandomErrors();
@@ -3902,7 +3902,7 @@ So the error must be a string that links those two excitations. However, the num
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     let id = 'surface-code-rectified-picture';
 
@@ -3915,7 +3915,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: true
     };
 
-    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', id);
+    let gui = new Interface(params, {}, keycode, 'https://gui.arthurpesah.me', id);
 
     let button1 = document.getElementById('button-rectified-code-random');
     button1.onclick = () => gui.addRandomErrors();
@@ -3977,7 +3977,7 @@ So the error must be a string that links those two excitations. However, the num
 </div>
 
 <script type="module">
-    import { Interface } from 'https://gui.quantumcodes.io/js/gui.js'
+    import { Interface } from 'https://gui.arthurpesah.me/js/gui.js'
 
     const params = {
         dimension: 2,
@@ -3988,7 +3988,7 @@ So the error must be a string that links those two excitations. However, the num
         rotated: true
     };
 
-    let gui = new Interface(params, {}, keycode, 'https://gui.quantumcodes.io', 'rotated-surface-code');
+    let gui = new Interface(params, {}, keycode, 'https://gui.arthurpesah.me', 'rotated-surface-code');
 
     let button1 = document.getElementById('button-rotated-code-random');
     button1.onclick = () => gui.addRandomErrors();
@@ -4092,7 +4092,7 @@ So the error must be a string that links those two excitations. However, the num
       <p>I tend to use the names <em>surface code</em> and <em>toric code</em> interchangeably. Some people use <em>surface code</em> to talk about the open-boundary version and <em>toric code</em> to talk about the periodic-boundary one, but this is not a universal convention, and the name <em>planar code</em> is also often used to talk about the open-boundary version. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:2">
-      <p>The final version of this embedding is just a few lines of Javascript, which use <a href="https://gui.quantumcodes.io">gui.quantumcodes.io</a> as an API. So if <strong>you</strong> would like to embed some codes (both 2D and 3D) in your website, feel free to contact me, and I’ll give you the instructions to do it (I might add an official tutorial in the PanQEC documentation later). <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+      <p>The final version of this embedding is just a few lines of Javascript, which use <a href="https://gui.arthurpesah.me">gui.arthurpesah.me</a> as an API. So if <strong>you</strong> would like to embed some codes (both 2D and 3D) in your website, feel free to contact me, and I’ll give you the instructions to do it (I might add an official tutorial in the PanQEC documentation later). <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
     </li>
     <li id="fn:3">
       <p>For the interested reader, the rigorous definition is that two loops are equivalent if there exists a <strong>homotopy</strong> between them. More precisely, we can define a loop as a continuous map \(\ell: S^1 \rightarrow \mathcal{M}\) (an embedding of the circle onto the manifold). A homotopy between two loops \(\ell_1, \ell_2\) is then a continuous function \(L:S^1 \times [0,1] \rightarrow \mathcal{M}\) such that \(L(\cdot, 0)=\ell_1\) and \(L(\cdot, 1)=\ell_2\). In other words, each \(L(\cdot, t)\) for \(t \in [0,1]\) defines a different loop on the path from \(\ell_1\) to \(\ell_2\). The equivalence relation defined here is called <strong>homotopy equivalence</strong>, and is one of the most important notions of equivalence in topology. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
